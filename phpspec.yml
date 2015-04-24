@@ -1,0 +1,5 @@
+suites:
+    main:
+        namespace: SATCI
+        psr4_prefix: SATCI
+        src_path: app
