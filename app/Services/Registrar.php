@@ -1,6 +1,6 @@
 <?php namespace SATCI\Services;
 
-use SATCI\User;
+use SATCI\Entities\User;
 use Validator;
 use Illuminate\Contracts\Auth\Registrar as RegistrarContract;
 

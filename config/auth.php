@@ -28,7 +28,7 @@ return [
 	|
 	*/
 
-	'model' => 'SATCI\User',
+	'model' => 'SATCI\Entities\User',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -59,7 +59,7 @@ return [
 	*/
 
 	'password' => [
-		'email' => 'emails.password',
+		'username' => 'usernames.password',
 		'table' => 'password_resets',
 		'expire' => 60,
 	],
