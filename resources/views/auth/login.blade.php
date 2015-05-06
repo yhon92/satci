@@ -17,21 +17,35 @@
 							</ul>
 						</div>
 					@endif
-
-					<form class="form-horizontal" role="form" method="POST" action="{{ url('/auth/login') }}">
+					{!! Form::open(['url' => '/auth/login']) !!}
+						<div class="form-group">
+							{{-- {!! Form::label('username', 'Usuario') !!} --}}
+							{!! Form::text('username', null, ['class' => 'form-control', 'placeholder' => 'Usuario']) !!}
+						</div>
+						<div class="form-group">
+							{{-- {!! Form::label('password', 'Contraseña') !!} --}}
+							{!! Form::password('password', ['class' => 'form-control', 'placeholder' => 'Contraseña']) !!}
+						</div>
+						<div class="form-group">
+							<div class="col-md-6 col-md-offset-4">
+								<button type="submit" class="btn btn-primary">Iniciar</button>
+							</div>
+						</div>
+					{!! Form::close() !!}
+					{{-- <form class="form-horizontal" role="form" method="POST" action="{{ url('/auth/login') }}">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">Usuario</label>
+							<label class="col-md-4 control-label" for="username">Usuario</label>
 							<div class="col-md-6">
-								<input type="text" class="form-control" name="username" value="{{ old('username') }}">
+								<input type="text" class="form-control" id="username" name="username" value="{{ old('username') }}">
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">Contraseña</label>
+							<label class="col-md-4 control-label" for="password">Contraseña</label>
 							<div class="col-md-6">
-								<input type="password" class="form-control" name="password">
+								<input type="password" class="form-control" id="password" name="password">
 							</div>
 						</div>
 
@@ -45,14 +59,14 @@
 							</div>
 						</div>
  -->
-						<div class="form-group">
+						{{-- <div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
 								<button type="submit" class="btn btn-primary">Iniciar</button>
 
 								<!-- <a class="btn btn-link" href="{{ url('/password/email') }}">Forgot Your Password?</a> -->
 							</div>
 						</div>
-					</form>
+					</form> --}}
 				</div>
 			</div>
 		</div>

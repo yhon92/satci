@@ -12,11 +12,14 @@ class UserRepo extends BaseRepo
 
 	public function getListUsers()
 	{
-		$users = User::
+		return User::
 			orderby('first_name', 'ASC')
 			->paginate();
+	}
 
-		return $users;
+	public function newUser()
+	{
+		$user = new User();
 	}
 
 }

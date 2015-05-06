@@ -4,6 +4,7 @@ use SATCI\Entities\User;
 use SATCI\Repositories\UserRepo;
 use SATCI\Http\Requests;
 use SATCI\Http\Controllers\Controller;
+use SATCI\Services\Registrar;
 
 use Illuminate\Http\Request;
 
@@ -37,7 +38,7 @@ class UsersController extends Controller {
 	 */
 	public function create()
 	{
-		//
+		return view('auth.register');
 	}
 
 	/**
@@ -45,9 +46,12 @@ class UsersController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store(Request $request)
 	{
-		//
+		$user = new User($request->all());
+		$user->save();
+
+		return redirect()->route('admin.users.index');
 	}
 
 	/**

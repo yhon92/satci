@@ -8,7 +8,7 @@
 				<div class="panel-heading">Usuarios</div>
 				<div class="panel-body">
 					<p>
-						<a class="btn btn-primary" href="{{ url('/auth/register') }}" role="button">Crear Usuario</a>
+						<a class="btn btn-primary" href="{{ route('admin.users.create') }}" role="button">Crear Usuario</a>
 					</p>
 					<table class="table table-hover">
 						<thead>
