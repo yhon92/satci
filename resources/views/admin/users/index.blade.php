@@ -30,8 +30,8 @@
 								<td>{{ $user->last_name }}</td>
 								<td>{{ $user->status }}</td>
 								<td>
-									<a href="">Edit</a>
-									<a href="">Del</a>
+									<a href="{{ route('admin.users.edit', $user) }}" class="btn btn-xs btn-warning glyphicon glyphicon-edit"></a>
+									<a href="" class="btn btn-xs btn-danger glyphicon glyphicon-remove"></a>
 								</td>
 							</tr>
 						@endforeach

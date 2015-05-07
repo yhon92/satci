@@ -22,7 +22,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['first_name', 'last_name', 'username', 'password'];
+	protected $fillable = ['first_name', 'last_name', 'username', 'password', 'active'];
 
 	/**
 	 * The attributes excluded from the model's JSON form.
@@ -38,7 +38,18 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	public function setPasswordAttribute($value)
 	{
-		$this->attributes['password'] = bcrypt($value);
+		if (!empty($value)) {
+			$this->attributes['password'] = bcrypt($value);
+		}
+	}
+
+	public function setActiveAttribute($value)
+	{
+		if ($value) {
+			$this->attributes['active'] = true;
+		}
+		else
+			$this->attributes['active'] = false;
 	}
 
 	public function getStatusAttribute()

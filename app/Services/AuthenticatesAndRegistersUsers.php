@@ -76,6 +76,10 @@ trait AuthenticatesAndRegistersUsers {
 
 		$credentials = $request->only('username', 'password');
 
+		$credentials['active'] = true;
+
+		// dd($credentials);
+
 		if ($this->auth->attempt($credentials, $request->has('remember')))
 		{
 			return redirect()->intended($this->redirectPath());

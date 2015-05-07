@@ -1,20 +1,26 @@
-@extends('app')
+ @extends('app')
 
 @section('content')
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-4 col-md-offset-4">
 			<div class="panel panel-default">
-				<div class="panel-heading">Crear Usuario</div>
+				<div class="panel-heading">Editar Usuario: <strong>{{ $user->username }}</strong></div>
 				<div class="panel-body">
 					@include('partials.message')
-					{{-- {!! Form::open(['class' => 'form-horizontal', 'role' => 'form', 'route' => 'admin.users.store', 'method' => 'POST']) !!} --}}
-					{!! Form::open(['route' => 'admin.users.store', 'method' => 'POST']) !!}
+					{!! Form::model($user, ['route' => ['admin.users.update', $user], 'method' => 'PUT']) !!}
 						@include('admin.users.partials.fields')
+						<div class="form-group">
+							<label>
+								{!! Form::checkbox('active') !!}								
+								Activo
+							</label>
+							{{-- {!! Form::label('active', 'Activo') !!} --}}
+						</div>
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
 								<button type="submit" class="btn btn-primary">
-									Crear
+									Guardar
 								</button>
 							</div>
 						</div>

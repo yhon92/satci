@@ -5,6 +5,8 @@ use SATCI\Repositories\UserRepo;
 use SATCI\Http\Requests;
 use SATCI\Http\Controllers\Controller;
 use SATCI\Services\Registrar;
+use SATCI\Utils\Helpers;
+use SATCI\Http\Requests\CreateUserRequest;
 
 use Illuminate\Http\Request;
 
@@ -14,7 +16,7 @@ class UsersController extends Controller {
 
 	public function __construct(UserRepo $userRepo)
 	{
-		$this->middleware('auth');
+		// $this->middleware('auth');
 		$this->userRepo = $userRepo;
 	}
 
@@ -46,10 +48,11 @@ class UsersController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store(Request $request)
+	public function store(CreateUserRequest $request)
 	{
-		$user = new User($request->all());
-		$user->save();
+		// $user = new User($request->all());
+		$user = User::create($request->all());
+		// $user->save();
 
 		return redirect()->route('admin.users.index');
 	}
@@ -73,7 +76,9 @@ class UsersController extends Controller {
 	 */
 	public function edit($id)
 	{
-		//
+		$user = User::findOrFail($id);
+
+		return view('admin.users.edit', compact('user'));
 	}
 
 	/**
@@ -82,9 +87,19 @@ class UsersController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update(Request $request, $id)
 	{
-		//
+		$user = User::findOrFail($id);
+
+		Helpers::isCheck($request, 'active');
+
+		// dd($request->active);
+
+		$user->fill($request->all());
+		$user->save();
+
+		// return redirect()->back();
+		return redirect()->route('admin.users.index');
 	}
 
 	/**
