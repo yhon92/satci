@@ -1,23 +1,35 @@
 <?php namespace SATCI\Http\Controllers\Admin;
 
 use SATCI\Entities\User;
-use SATCI\Repositories\UserRepo;
-use SATCI\Http\Requests;
 use SATCI\Http\Controllers\Controller;
+use SATCI\Http\Requests;
+use SATCI\Http\Requests\CreateUserRequest;
+use SATCI\Http\Requests\EditUserRequest;
+use SATCI\Repositories\UserRepo;
 use SATCI\Services\Registrar;
 use SATCI\Utils\Helpers;
-use SATCI\Http\Requests\CreateUserRequest;
 
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Session;
 
 class UsersController extends Controller {
 
-	protected $userRepo;
+	// protected $user;
 
-	public function __construct(UserRepo $userRepo)
+	public function __construct()
 	{
-		// $this->middleware('auth');
-		$this->userRepo = $userRepo;
+		$this->middleware('auth');
+		
+		$this->beforeFilter('@findUser', ['only' => ['show', 'edit', 'update', 'destroy']]);
+		
+		// $this->userRepo = $userRepo;
+	}
+
+	public function findUser(Route $route)
+	{
+		$this->user = User::findOrFail($route->getParameter('users'));
+		// $this->user = User::where('username', $route->getParameter('users'))->findOrFail();
 	}
 
 	/**
@@ -25,9 +37,9 @@ class UsersController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function index(UserRepo $userRepo)
 	{
-		$users = $this->userRepo->getListUsers();
+		$users = $userRepo->getListUsers();
 		$num = 0;
 		
 		return view('admin.users.index', compact('users', 'num'));
@@ -40,7 +52,7 @@ class UsersController extends Controller {
 	 */
 	public function create()
 	{
-		return view('auth.register');
+		return view('admin.users.create');
 	}
 
 	/**
@@ -76,9 +88,7 @@ class UsersController extends Controller {
 	 */
 	public function edit($id)
 	{
-		$user = User::findOrFail($id);
-
-		return view('admin.users.edit', compact('user'));
+		return view('admin.users.edit')->with('user', $this->user);
 	}
 
 	/**
@@ -87,16 +97,17 @@ class UsersController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update(Request $request, $id)
+	public function update($id, EditUserRequest $request)
 	{
-		$user = User::findOrFail($id);
-
 		Helpers::isCheck($request, 'active');
 
-		// dd($request->active);
+		$this->user->fill([
+			'first_name' => $request->first_name,
+			'last_name' => $request->last_name,
+			'active' => $request->active,
+			]);
 
-		$user->fill($request->all());
-		$user->save();
+		$this->user->save();
 
 		// return redirect()->back();
 		return redirect()->route('admin.users.index');
@@ -108,9 +119,9 @@ class UsersController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
+	public function destroy($id, Request $request)
 	{
-		//
+		
 	}
 
 }

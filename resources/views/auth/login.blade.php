@@ -7,16 +7,7 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">Iniciar Sesión</div>
 				<div class="panel-body">
-					@if (count($errors) > 0)
-						<div class="alert alert-danger">
-							<strong>Whoops!</strong> There were some problems with your input.<br><br>
-							<ul>
-								@foreach ($errors->all() as $error)
-									<li>{{ $error }}</li>
-								@endforeach
-							</ul>
-						</div>
-					@endif
+					@include('partials.message')
 					{!! Form::open(['url' => '/auth/login']) !!}
 						<div class="form-group">
 							{{-- {!! Form::label('username', 'Usuario') !!} --}}

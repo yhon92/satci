@@ -22,10 +22,10 @@ class EditUserRequest extends Request {
 	public function rules()
 	{
 		return [
-			'username' => 'required',
+			// 'username' => 'required|unique:users,username',
 			'first_name' => 'required',
 			'last_name' => 'required',
-			'password' => 'required',
+			// 'password' => '',
 		];
 	}
 

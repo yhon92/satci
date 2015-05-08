@@ -1,5 +1,7 @@
 <?php namespace SATCI\Services;
 
+use SATCI\Entities\User;
+
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\Registrar;
@@ -27,7 +29,7 @@ trait AuthenticatesAndRegistersUsers {
 	 */
 	public function getRegister()
 	{
-		return view('auth.register');
+		return view('admin.users.create');
 	}
 
 	/**
@@ -76,19 +78,30 @@ trait AuthenticatesAndRegistersUsers {
 
 		$credentials = $request->only('username', 'password');
 
-		$credentials['active'] = true;
+		// $credentials['active'] = true;
 
-		// dd($credentials);
-
-		if ($this->auth->attempt($credentials, $request->has('remember')))
+		$user = User::where('username', '=', $request->username)->first();
+		
+		if (!empty($user))
 		{
-			return redirect()->intended($this->redirectPath());
+			if (!$user->active) {
+				return redirect($this->loginPath())
+					->withInput($request->only('username'))
+					->withErrors([
+						'active_user' => trans('validation.active_user'),
+					]);
+			}
+
+			if ($this->auth->attempt($credentials, $request->has('remember')))
+			{
+				return redirect()->intended($this->redirectPath());
+			}
 		}
 
 		return redirect($this->loginPath())
-					->withInput($request->only('username', 'remember'))
+					->withInput($request->only('username'))
 					->withErrors([
-						'username' => $this->getFailedLoginMessage(),
+						'login' => $this->getFailedLoginMessage(),
 					]);
 	}
 
@@ -99,7 +112,7 @@ trait AuthenticatesAndRegistersUsers {
 	 */
 	protected function getFailedLoginMessage()
 	{
-		return 'These credentials do not match our records.';
+		return trans('passwords.login');
 	}
 
 	/**
@@ -126,7 +139,7 @@ trait AuthenticatesAndRegistersUsers {
 			return $this->redirectPath;
 		}
 
-		return property_exists($this, 'redirectTo') ? $this->redirectTo : '/home';
+		return property_exists($this, 'redirectTo') ? $this->redirectTo : '/';
 	}
 
 	/**

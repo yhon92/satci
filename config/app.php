@@ -52,7 +52,7 @@ return [
 	|
 	*/
 
-	'locale' => 'en',
+	'locale' => 'es',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -200,7 +200,6 @@ return [
 		/* Aliase Vendor */
 		'Form' => 'Collective\Html\FormFacade',
     'Html' => 'Collective\Html\HtmlFacade',
-
 
 	],
 

@@ -9,14 +9,7 @@
 				<div class="panel-body">
 					@include('partials.message')
 					{!! Form::model($user, ['route' => ['admin.users.update', $user], 'method' => 'PUT']) !!}
-						@include('admin.users.partials.fields')
-						<div class="form-group">
-							<label>
-								{!! Form::checkbox('active') !!}								
-								Activo
-							</label>
-							{{-- {!! Form::label('active', 'Activo') !!} --}}
-						</div>
+						@include('admin.users.partials.edit-fields')
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
 								<button type="submit" class="btn btn-primary">
