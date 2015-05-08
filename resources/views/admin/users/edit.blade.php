@@ -20,6 +20,7 @@
 					{!! Form::close() !!}
 				</div>
 			</div>
+			@include('admin.users.partials.delete-form')
 		</div>
 	</div>
 </div>

@@ -121,7 +121,21 @@ class UsersController extends Controller {
 	 */
 	public function destroy($id, Request $request)
 	{
-		
+		// User::destroy($id);
+		$this->user->delete();
+
+		$message = 'El usuario ' . $this->user->full_name . ' fue eliminado';
+
+		if ($request->ajax()) {
+			return response()->json([
+				'id' 			=> $this->user->id,
+				'message' => $message
+				]);
+		}
+
+		session()->flash('message', $message);
+
+		return redirect()->route('admin.users.index');
 	}
 
 }
