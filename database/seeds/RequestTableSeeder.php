@@ -21,7 +21,7 @@ class RequestTableSeeder extends Seeder
 			Request::create([
 				'request_number'			=> '000-'.$index+=122,
 				'reception_date'			=> $date,
-				'identification_type'	=> $faker->randomElement(['Cédula', 'RIF']),
+				'identification_type'	=> $faker->randomElement(['Natural', 'Jurídica']),
 				'applicant_id'				=> $faker->numberBetween($min = 1, $max = 30),
 				'document_date'				=> $date,
 				'topic'								=> $faker->text($maxNbChars = 200),

@@ -16,7 +16,6 @@ class AreaTableSeeder extends Seeder
 		foreach (range(1, 12) as $index) {
 
 			Area::create([
-				// 'name'	=> $faker->unique()->sentence($nbWords = 1),
 				'name'					=> $faker->unique()->word,
 				'director_id'		=> $faker->unique()->numberBetween($min = 1, $max = 12),
 			]);

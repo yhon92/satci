@@ -17,7 +17,7 @@ class CreateRequestsTable extends Migration {
 			$table->increments('id');
 			$table->string('request_number')->unique();
 			$table->date('reception_date');
-			$table->enum('identification_type', ['Cédula', 'RIF']);
+			$table->enum('identification_type', ['Natural', 'Jurídica']);
 			$table->integer('applicant_id')->unsigned();
 			$table->date('document_date');
 			$table->text('topic');

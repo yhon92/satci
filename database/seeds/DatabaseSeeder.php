@@ -22,6 +22,10 @@ class DatabaseSeeder extends Seeder {
 		$this->call('ThemeTableSeeder');
 		$this->call('AreaTableSeeder');
 		$this->call('RequestTableSeeder');
+		$this->call('ThemeRequestTableSeeder');
+		$this->call('AreaRequestTableSeeder');
+		$this->call('InstrumentTableSeeder');
+		$this->call('ResponseTableSeeder');
 	}
 
 }
