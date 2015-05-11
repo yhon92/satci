@@ -15,8 +15,8 @@ class CreateInstitutionsTable extends Migration {
 		Schema::create('institutions', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('rif')->unique();
-			$table->string('name');
+			$table->string('identification')->unique();
+			$table->string('full_name');
 			$table->text('address');
 			$table->string('prefix_phone', 4);
 			$table->string('number_phone', 10);

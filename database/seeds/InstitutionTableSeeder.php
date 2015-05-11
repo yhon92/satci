@@ -22,8 +22,8 @@ class InstitutionTableSeeder extends Seeder
 
 
 			Institution::create([
-				'rif' 					 				=> $faker->regexify('[A-J]{1}-[0-9+]{9}'),
-				'name' 	 	 			 				=> $faker->company,
+				'identification' 				=> $faker->regexify('[A-J]{1}-[0-9+]{9}'),
+				'full_name' 	 	 			 	=> $faker->company,
 				'address' 	 	 	 				=> $faker->address,
 				'prefix_phone' 	 				=> $faker->randomElement(['0412', '0414', '0424', '0416', '0426', '0253', '0251', '0212']),
 				'number_phone' 	 				=> $faker->randomNumber(7),
