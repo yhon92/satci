@@ -17,8 +17,9 @@ class CreateAreasTable extends Migration {
 			$table->increments('id');
 			$table->string('name');
 			$table->integer('director_id')->unsigned();
+			$table->timestamps();
 
-			$table->foreign('director_id')->reference('id')->on('directors');
+			$table->foreign('director_id')->references('id')->on('directors');
 		});
 	}
 

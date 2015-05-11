@@ -15,7 +15,12 @@ class CreateAreaRequestsTable extends Migration {
 		Schema::create('area_requests', function(Blueprint $table)
 		{
 			$table->increments('id');
+			$table->integer('theme_request_id')->unsigned();
+			$table->integer('area_id')->unsigned();
 			$table->timestamps();
+
+			$table->foreign('theme_request_id')->references('id')->on('theme_requests');
+			$table->foreign('area_id')->references('id')->on('areas');
 		});
 	}
 

@@ -15,7 +15,12 @@ class CreateResponsesTable extends Migration {
 		Schema::create('responses', function(Blueprint $table)
 		{
 			$table->increments('id');
+			$table->integer('instrument_id')->unsigned();
+			$table->string('number_job');
+			$table->text('observation');
 			$table->timestamps();
+
+			$table->foreign('instrument_id')->references('id')->on('instruments');
 		});
 	}
 

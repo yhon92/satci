@@ -20,10 +20,12 @@ class CreateInstitutionsTable extends Migration {
 			$table->text('address');
 			$table->string('prefix_phone', 4);
 			$table->string('number_phone', 10);
+			$table->string('agent_identification');
+			$table->string('agent_full_name');
 			$table->string('agent_first_name');
 			$table->string('agent_last_name');
-			$table->string('agent_identification');
 			$table->integer('parish_id')->unsigned();
+			$table->timestamps();
 			
 			$table->foreign('parish_id')->references('id')->on('parishes');
 		});

@@ -2,17 +2,17 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class Citizen extends Model {
+class Director extends Model {
 
-	protected $table = 'citizens';
+	protected $table = 'directors';
 
 	protected $fillable = ['identification', 
 													'full_name', 
 													'first_name', 
 													'last_name', 
-													'address', 
 													'prefix_phone', 
 													'number_phone', 
-													'parish_id'];
+													'email', 
+													'resolution'];
 
 }

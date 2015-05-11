@@ -1,51 +1,52 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use SATCI\Entities\Parish;
 
 class ParishTableSeeder extends Seeder
 {
 	
 	public function run()
 	{
-		\DB::table('parishes')->insert(array(
+		Parish::create([
 			'id' => '1',
 			'name' => 'Coronel Mariano Peraza',
-			));
+			]);
 
-		\DB::table('parishes')->insert(array(
+		Parish::create([
 			'id' => '2',
 			'name' => 'Cuara',
-			));
+			]);
 
-		\DB::table('parishes')->insert(array(
+		Parish::create([
 			'id' => '3',
 			'name' => 'Diego de Lozada',
-			));
+			]);
 
-		\DB::table('parishes')->insert(array(
+		Parish::create([
 			'id' => '4',
 			'name' => 'José Bernardo Dorante',
-			));
+			]);
 
-		\DB::table('parishes')->insert(array(
+		Parish::create([
 			'id' => '5',
 			'name' => 'Juan Bautista Rodríguez',
-			));
+			]);
 
-		\DB::table('parishes')->insert(array(
+		Parish::create([
 			'id' => '6',
 			'name' => 'Paraíso de San José',
-			));
+			]);
 
-		\DB::table('parishes')->insert(array(
+		Parish::create([
 			'id' => '7',
 			'name' => 'San Miguel',
-			));
+			]);
 
-		\DB::table('parishes')->insert(array(
+		Parish::create([
 			'id' => '8',
 			'name' => 'Tintorero',
-			));
+			]);
 
 		/*\DB::table('parishes')->insert(array(
 			'id' => '',

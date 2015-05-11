@@ -23,7 +23,7 @@
 									<th>Usuario</th>
 									<th>Nombres</th>
 									<th>Apellidos</th>
-									<th>Status</th>
+									<th>Estatus</th>
 									<th>Acciones</th>
 								</tr>
 							</thead>

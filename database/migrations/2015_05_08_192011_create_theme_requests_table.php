@@ -15,7 +15,12 @@ class CreateThemeRequestsTable extends Migration {
 		Schema::create('theme_requests', function(Blueprint $table)
 		{
 			$table->increments('id');
+			$table->integer('request_id')->unsigned();
+			$table->integer('theme_id')->unsigned();
 			$table->timestamps();
+
+			$table->foreign('request_id')->references('id')->on('requests');
+			$table->foreign('theme_id')->references('id')->on('themes');
 		});
 	}
 
