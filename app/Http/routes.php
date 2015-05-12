@@ -23,7 +23,9 @@ Route::controllers([
 ]);
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function (){
-	
 	Route::resource('users', 'UsersController');
+});
 
+Route::group(['namespace' => 'Solicitude'], function (){
+	Route::resource('solicitude', 'SolicitudeController');
 });

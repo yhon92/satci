@@ -2,11 +2,11 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class Request extends Model {
+class Solicitude extends Model {
 
-	protected $table = 'requests';
+	protected $table = 'solicitudes';
 
-	protected $fillable = ['request_number', 
+	protected $fillable = ['solicitude_number', 
 													'reception_date', 
 													'identification_type', 
 													'applicant_id', 
@@ -40,12 +40,12 @@ class Request extends Model {
 	{
 		$type = $this->attributes['identification_type'];
 
-		if ($type == 'Natural') 
+		if ($type === 'Natural') 
 		{
 			// dd('Hola: ' . $type);
 			return $this->hasOne('SATCI\Entities\Citizen', 'id', 'applicant_id');
 		}
-		if ($type == 'Jurídica') 
+		if ($type === 'Jurídica') 
 		{
 			// dd('Hola: ' . $type);
 			return $this->hasOne('SATCI\Entities\Institution', 'id', 'applicant_id');

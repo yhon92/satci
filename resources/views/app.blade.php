@@ -21,7 +21,7 @@
 	<![endif]-->
 </head>
 <body>
-	<nav class="navbar navbar-default">
+	<nav class="navbar navbar-default navbar-fixed-top">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -39,6 +39,7 @@
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
 						<li><a href="{{ url('/') }}">Inicio</a></li>
+						<li><a href="{{ route('solicitude.index') }}">Solicitud</a></li>
 					</ul>
 
 					<ul class="nav navbar-nav navbar-right">
@@ -53,9 +54,11 @@
 			@endif
 		</div>
 	</nav>
-
+	<div class="bs-docs-section">
+		
 	@yield('content')
 
+	</div>
 	<!-- Scripts -->
 	{{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> --}}
 	<script src="{{ asset('js/jquery.min.js') }}"></script>

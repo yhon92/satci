@@ -21,11 +21,11 @@ class DatabaseSeeder extends Seeder {
 		$this->call('InstitutionTableSeeder');
 		$this->call('ThemeTableSeeder');
 		$this->call('AreaTableSeeder');
-		$this->call('RequestTableSeeder');
-		$this->call('ThemeRequestTableSeeder');
-		$this->call('AreaRequestTableSeeder');
+		$this->call('SolicitudeTableSeeder');
+		$this->call('ThemeSolicitudeTableSeeder');
+		$this->call('AreaSolicitudeTableSeeder');
 		$this->call('InstrumentTableSeeder');
-		$this->call('ResponseTableSeeder');
+		$this->call('AnswerTableSeeder');
 	}
 
 }

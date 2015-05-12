@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateThemeRequestsTable extends Migration {
+class CreateThemeSolicitudesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,14 +12,14 @@ class CreateThemeRequestsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('theme_requests', function(Blueprint $table)
+		Schema::create('theme_solicitudes', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('request_id')->unsigned();
+			$table->integer('solicitude_id')->unsigned();
 			$table->integer('theme_id')->unsigned();
 			$table->timestamps();
 
-			$table->foreign('request_id')->references('id')->on('requests');
+			$table->foreign('solicitude_id')->references('id')->on('solicitudes');
 			$table->foreign('theme_id')->references('id')->on('themes');
 		});
 	}
@@ -31,7 +31,7 @@ class CreateThemeRequestsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('theme_requests');
+		Schema::drop('theme_solicitudes');
 	}
 
 }

@@ -1,11 +1,11 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use SATCI\Entities\AreaRequest;
+use SATCI\Entities\AreaSolicitude;
 
 use Faker\Factory as Faker;
 
-class AreaRequestTableSeeder extends Seeder
+class AreaSolicitudeTableSeeder extends Seeder
 {
 	
 	public function run()
@@ -15,8 +15,8 @@ class AreaRequestTableSeeder extends Seeder
 
 		foreach (range(1, 100) as $index) {
 
-			AreaRequest::create([
-				'theme_request_id'	=> $faker->numberBetween($min = 1, $max = 100),
+			AreaSolicitude::create([
+				'theme_solicitude_id'	=> $faker->numberBetween($min = 1, $max = 100),
 				'area_id'		=> $faker->numberBetween($min = 1, $max = 12),
 			]);
 

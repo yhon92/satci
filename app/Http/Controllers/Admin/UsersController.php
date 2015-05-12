@@ -2,7 +2,7 @@
 
 use SATCI\Entities\User;
 use SATCI\Http\Controllers\Controller;
-use SATCI\Http\Requests;
+// use SATCI\Http\Requests;
 use SATCI\Http\Requests\CreateUserRequest;
 use SATCI\Http\Requests\EditUserRequest;
 use SATCI\Repositories\UserRepo;
@@ -14,8 +14,6 @@ use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Session;
 
 class UsersController extends Controller {
-
-	// protected $user;
 
 	public function __construct()
 	{

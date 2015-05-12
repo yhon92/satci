@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateResponsesTable extends Migration {
+class CreateAnswersTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,7 +12,7 @@ class CreateResponsesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('responses', function(Blueprint $table)
+		Schema::create('answers', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->integer('instrument_id')->unsigned();
@@ -31,7 +31,7 @@ class CreateResponsesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('responses');
+		Schema::drop('answers');
 	}
 
 }

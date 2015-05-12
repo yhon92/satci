@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRequestsTable extends Migration {
+class CreateSolicitudesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,10 +12,10 @@ class CreateRequestsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('requests', function(Blueprint $table)
+		Schema::create('solicitudes', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('request_number')->unique();
+			$table->string('solicitude_number')->unique();
 			$table->date('reception_date');
 			$table->enum('identification_type', ['Natural', 'Jurídica']);
 			$table->integer('applicant_id')->unsigned();
@@ -34,7 +34,7 @@ class CreateRequestsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('requests');
+		Schema::drop('solicitudes');
 	}
 
 }

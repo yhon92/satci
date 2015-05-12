@@ -1,11 +1,11 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use SATCI\Entities\Response;
+use SATCI\Entities\Answer;
 
 use Faker\Factory as Faker;
 
-class ResponseTableSeeder extends Seeder
+class AnswerTableSeeder extends Seeder
 {
 	
 	public function run()
@@ -15,7 +15,7 @@ class ResponseTableSeeder extends Seeder
 
 		foreach (range(1, 100) as $index) {
 
-			Response::create([
+			Answer::create([
 				'instrument_id'	=> $faker->numberBetween($min = 1, $max = 100),
 				'number_job'		=> 'ATC-O-'.$index+=122,
 				'observation'		=> $faker->realText($maxNbChars = 200),

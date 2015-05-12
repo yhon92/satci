@@ -6,6 +6,6 @@ class Instrument extends Model {
 
 	protected $table = 'instruments';
 
-	protected $fillable = ['date', 'area_request_id', 'observation'];
+	protected $fillable = ['date', 'area_solicitude_id', 'observation'];
 
 }

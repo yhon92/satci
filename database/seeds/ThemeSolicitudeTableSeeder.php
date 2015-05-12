@@ -1,11 +1,11 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use SATCI\Entities\ThemeRequest;
+use SATCI\Entities\ThemeSolicitude;
 
 use Faker\Factory as Faker;
 
-class ThemeRequestTableSeeder extends Seeder
+class ThemeSolicitudeTableSeeder extends Seeder
 {
 	
 	public function run()
@@ -15,8 +15,8 @@ class ThemeRequestTableSeeder extends Seeder
 
 		foreach (range(1, 100) as $index) {
 
-			ThemeRequest::create([
-				'request_id'	=> $faker->numberBetween($min = 1, $max = 765),
+			ThemeSolicitude::create([
+				'solicitude_id'	=> $faker->numberBetween($min = 1, $max = 765),
 				'theme_id'		=> $faker->numberBetween($min = 1, $max = 12),
 			]);
 

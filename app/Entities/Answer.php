@@ -2,9 +2,9 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class Response extends Model {
+class Answer extends Model {
 
-	protected $table = 'responses';
+	protected $table = 'answers';
 
 	protected $fillable = ['instrument_id', 'number_job', 'observation'];
 

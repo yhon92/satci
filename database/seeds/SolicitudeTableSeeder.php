@@ -1,11 +1,11 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use SATCI\Entities\Request;
+use SATCI\Entities\Solicitude;
 
 use Faker\Factory as Faker;
 
-class RequestTableSeeder extends Seeder
+class SolicitudeTableSeeder extends Seeder
 {
 	
 	public function run()
@@ -18,8 +18,8 @@ class RequestTableSeeder extends Seeder
 			// $date = $faker->date($format = 'Y-m-d', $max = 'now');
 			$date = $faker->dateTimeBetween($startDate = '-4 months', $endDate = 'now');
 
-			Request::create([
-				'request_number'			=> '000-'.$index+=122,
+			Solicitude::create([
+				'solicitude_number'			=> '000-'.$index+=122,
 				'reception_date'			=> $date,
 				'identification_type'	=> $faker->randomElement(['Natural', 'Jurídica']),
 				'applicant_id'				=> $faker->numberBetween($min = 1, $max = 30),

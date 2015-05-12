@@ -2,6 +2,14 @@
 
 @section('content')
 <div class="container">
+	<div class="col-md-6">
+		{{-- <div class="bs-component"> --}}
+			<p>
+				<a href="{{ route('solicitude.create') }}" class="btn btn-primary">Nueva Solicitud</a>
+			</p>
+		{{-- </div> --}}
+	</div>
+		
 	{{-- <div class="row">
 		<div class="col-md-12">
 			<div class="panel panel-default">
