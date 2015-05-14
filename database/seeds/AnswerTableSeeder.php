@@ -17,6 +17,7 @@ class AnswerTableSeeder extends Seeder
 
 			Answer::create([
 				'instrument_id'	=> $faker->numberBetween($min = 1, $max = 100),
+				'date'					=> $faker->dateTimeBetween($startDate = '-4 months', $endDate = 'now'),
 				'number_job'		=> 'ATC-O-'.$index+=122,
 				'observation'		=> $faker->realText($maxNbChars = 200),
 			]);

@@ -16,6 +16,7 @@ class CreateAnswersTable extends Migration {
 		{
 			$table->increments('id');
 			$table->integer('instrument_id')->unsigned();
+			$table->date('date');
 			$table->string('number_job');
 			$table->text('observation');
 			$table->timestamps();
