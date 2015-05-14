@@ -1,11 +1,11 @@
-@extends('app')
+{{-- @extends('app') --}}
 
-@section('content')
+{{-- @section('content') --}}
 <div class="container-fluid">
-	<div class="row">
+	<div class="bs-docs-section">
 		<div class="col-md-4 col-md-offset-4">
-			<div class="panel panel-default">
-				<div class="panel-heading">Iniciar Sesión</div>
+			<div class="panel panel-primary">
+				<div class="panel-heading"><strong>Iniciar Sesión</strong></div>
 				<div class="panel-body">
 					@include('partials.message')
 					{!! Form::open(['url' => '/auth/login']) !!}
@@ -63,4 +63,4 @@
 		</div>
 	</div>
 </div>
-@endsection
+{{-- @endsection --}}

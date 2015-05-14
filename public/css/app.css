@@ -1,3 +1,7 @@
+body {
+	padding-top: 67px;
+	background-color: #f8f8f8;
+}
 .navbar-brand {
 	padding: 5px 15px;
 }
@@ -6,3 +10,8 @@
 	vertical-align: middle;
 }
 
+.sidebar{
+	background-color: white;
+	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+	border-right: none;
+}

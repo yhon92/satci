@@ -1,14 +1,14 @@
 @extends('app')
 
 @section('content')
-<div class="container">
-	<div class="col-md-6">
+{{-- <div class="container"> --}}
+	{{-- <div class="col-md-6"> --}}
 		{{-- <div class="bs-component"> --}}
 			<p>
 				<a href="{{ route('solicitude.create') }}" class="btn btn-primary">Nueva Solicitud</a>
 			</p>
 		{{-- </div> --}}
-	</div>
+	{{-- </div> --}}
 		
 	{{-- <div class="row">
 		<div class="col-md-12">
@@ -50,5 +50,5 @@
 			</div>
 		</div>
 	</div> --}}
-</div>
+{{-- </div> --}}
 @endsection
