@@ -22,10 +22,17 @@ Route::controllers([
 	'password' => 'Auth\PasswordController',
 ]);
 
-Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function (){
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function ()
+{
 	Route::resource('users', 'UsersController');
 });
 
-Route::group(['namespace' => 'Solicitude'], function (){
+Route::group(['namespace' => 'Solicitude'], function ()
+{
 	Route::resource('solicitude', 'SolicitudeController');
+});
+
+Route::group(['namespace' => 'Applicant'], function ()
+{
+	Route::resource('applicant', 'ApplicantController');
 });

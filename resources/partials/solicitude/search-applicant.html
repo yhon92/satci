@@ -1,0 +1,19 @@
+<div class="col-md-5">
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<fieldset>
+				<legend>Solicitante</legend>
+				<div class="form-group">
+				{!! Form::open(['class' => 'form-horizontal','route' => 'applicant.show', 'method' => 'GET']) !!}
+				{{-- {!! Form::label('solicitude_number', 'Nº de Solicitud', ['class' => 'col-lg-4 control-label']) !!} --}}
+				
+					<div class="col-lg-10">
+					{!! Form::text('search_applicant', null, ['class' => 'form-control', 'placeholder' => 'Buscar Solicitante', 'ng-model' => 'identification']) !!}
+				</div>
+				<button type="button" class="btn btn-primary btn-circle"><strong>+</strong></button>
+			</div>
+			{!! Form::close() !!}
+			</fieldset>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,54 @@
+<div>
+	{!! Form::open(['class' => 'form-horizontal','route' => 'applicant.store', 'method' => 'POST']) !!}
+	<div class="form-group">
+		{!! Form::label('identification', 'Cédula', ['class' => 'col-lg-3 control-label']) !!}
+		<div class="col-lg-9">
+			{!! Form::text('identification', null, ['class' => 'form-control', 'placeholder' => 'Número de Cédula']) !!}
+		</div>
+	</div>
+	<div class="form-group">
+		{!! Form::label('first_name', 'Nombres', ['class' => 'col-lg-3 control-label']) !!}
+		<div class="col-lg-9">
+			{!! Form::text('first_name', null, ['class' => 'form-control', 'placeholder' => 'Nombres']) !!}
+		</div>
+	</div>
+	<div class="form-group">
+		{!! Form::label('last_name', 'Apellidos', ['class' => 'col-lg-3 control-label']) !!}
+		<div class="col-lg-9">
+			{!! Form::text('last_name', null, ['class' => 'form-control', 'placeholder' => 'Apellidos']) !!}
+		</div>
+	</div>
+	<div class="form-group">
+		{!! Form::label('address', 'Dirección', ['class' => 'col-lg-3 control-label']) !!}
+		<div class="col-lg-9">
+			{!! Form::textarea('address', null, ['class' => 'form-control', 'placeholder' => 'Dirección', 'rows' => '3']) !!}
+		</div>
+	</div>
+	<div class="form-group">
+		{!! Form::label('phone', 'Teléfono', ['class' => 'col-lg-3 control-label']) !!}
+		<div class="col-lg-9">
+			<div class="col-xs-3 padding-none">
+				{!! Form::select('prefix_phone', ['0212' => '0212', '0251' => '0251', '0253' => '0253', '0412' => '0412', '0414' => '0414', '0416' => '0416', '0424' => '0424', '0426' => '0426'], '0412', ['class' => 'form-control']) !!}
+			</div>
+			<div class="col-xs-9 padding-none">
+				{!! Form::text('number_phone', null, ['class' => 'form-control', 'placeholder' => 'Teléfono']) !!}
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		{!! Form::label('parish_id', 'Parroquia', ['class' => 'col-lg-3 control-label']) !!}
+		<div class="col-lg-9">
+			{!! Form::select('parish_id', [
+				'null' => 'Seleccione...', 
+				'1' => 'Coronel Mariano Peraza', 
+				'2' => 'Cuara', 
+				'3' => 'Diego de Lozada', 
+				'4' => 'José Bernardo Dorante', 
+				'5' => 'Juan Bautista Rodríguez', 
+				'6' => 'Paraíso de San José', 
+				'7' => 'San Miguel', 
+				'8' => 'Tintorero'], null, ['class' => 'form-control']) !!}
+			</div>
+		</div>
+		{!! Form::close() !!}
+	</div>

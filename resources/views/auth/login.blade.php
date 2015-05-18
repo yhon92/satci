@@ -18,7 +18,7 @@
 							{!! Form::password('password', ['class' => 'form-control', 'placeholder' => 'Contraseña']) !!}
 						</div>
 						<div class="form-group">
-							<div class="col-md-6 col-md-offset-4">
+							<div class="col-xs-6 col-xs-offset-4">
 								<button type="submit" class="btn btn-primary">Iniciar</button>
 							</div>
 						</div>
