@@ -1,5 +1,11 @@
 (function () {
 	'use stric';
+	
+	window.PathTemplates = {
+		// views: 		'/satci/public/templates/views/solicitude/index.html',
+		views: 		'templates/views/',
+		partials: 'templates/partials/',
+	}
 
 	var satci = angular.module('SATCI', 
 	[
@@ -13,6 +19,11 @@
 
 	.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider)
 	{
+		$routeProvider
+			.when('/solicitude', {
+				templateUrl: PathTemplates.views + 'solicitude/index.html',
+				controller: 'SolicitudeCtrl'
+			})
 		
 		$locationProvider.html5Mode(true);
 

@@ -1,7 +1,8 @@
 @extends('app')
 
 @section('content')
-<div class="container">
+<div ng-view></div>
+{{-- <div class="container"> --}}
 	{{-- <div class="row">
 		<div class="col-md-12">
 			<div class="panel panel-default">
@@ -42,5 +43,5 @@
 			</div>
 		</div>
 	</div> --}}
-</div>
+{{-- </div> --}}
 @endsection

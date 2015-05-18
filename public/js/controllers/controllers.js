@@ -93,5 +93,16 @@
 
 			return '';
 		};
-	});
+	})
+	
+	.controller('CreateSolicitudeCtrl', function ($scope) {
+		
+		$scope.applicant = function (type){
+			alert(type);
+		}
+	})
+
+	.controller('SolicitudeCtrl', function ($scope) {
+		console.log('BIEN');
+	})
 })();

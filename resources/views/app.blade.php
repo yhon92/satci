@@ -7,7 +7,8 @@
 	<link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
 	<title>Sistema de Atención al Ciudadano</title>
 	
-	<base href="satci/public/">
+	{{-- <base href="satci/public/"> --}}
+	<base href="/satci/public/">
 	
 	<link href="{{ asset('/css/style.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/dashboard.css') }}" rel="stylesheet">
@@ -65,8 +66,8 @@
 				@if (Auth::check())
 				<div class="col-sm-3 col-md-2 sidebar">
 					<ul class="nav nav-sidebar">
-						<li><a href="{{ url('/') }}">Inicio</a></li>
-						<li><a href="{{ route('solicitude.index') }}">Solicitud</a></li>
+						<li><a href="home/">Inicio</a></li>
+						<li><a href="solicitude/">Solicitud</a></li>
 						{{-- <li><a href="#">Analytics</a></li> --}}
 						<li><a href="{{ route('admin.users.index') }}">Administrador</a></li>
 					</ul>
@@ -92,19 +93,19 @@
 		</div>
 		<!-- Scripts -->
 		{{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> --}}
-		<script src="{{ asset('js/lib/jquery.min.js') }}"></script>
-		<script src="{{ asset('js/lib/bootstrap.min.js') }}"></script>
+		<script src="{{ asset('js/libs/jquery.min.js') }}"></script>
+		<script src="{{ asset('js/libs/bootstrap.min.js') }}"></script>
 		{{-- <script src="{{ asset('js/lib/moment.js') }}"></script> --}}
-		<script src="{{ asset('js/lib/angular.min.js') }}"></script>
-		<script src="{{ asset('js/lib/angular-route.min.js') }}"></script>
-		<script src="{{ asset('js/lib/angular-resource.min.js') }}"></script>
-		<script src="{{ asset('js/lib/angular-animate.min.js') }}"></script>
-		<script src="{{ asset('js/lib/ui-bootstrap.min.js') }}"></script>
+		<script src="{{ asset('js/libs/angular.min.js') }}"></script>
+		<script src="{{ asset('js/libs/angular-route.min.js') }}"></script>
+		<script src="{{ asset('js/libs/angular-resource.min.js') }}"></script>
+		<script src="{{ asset('js/libs/angular-animate.min.js') }}"></script>
+		<script src="{{ asset('js/libs/ui-bootstrap.min.js') }}"></script>
 		<script src="{{ asset('js/app.js') }}"></script>
-		<script src="{{ asset('js/controllers.js') }}"></script>
-		<script src="{{ asset('js/directives.js') }}"></script>
 		<script src="{{ asset('js/filters.js') }}"></script>
-		<script src="{{ asset('js/services.js') }}"></script>
+		<script src="{{ asset('js/controllers/controllers.js') }}"></script>
+		<script src="{{ asset('js/directives/directives.js') }}"></script>
+		<script src="{{ asset('js/services/services.js') }}"></script>
 
 		@yield('scripts')
 	</body>
