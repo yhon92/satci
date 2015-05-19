@@ -24,7 +24,15 @@
 				templateUrl: PathTemplates.views + 'solicitude/index.html',
 				controller: 'SolicitudeCtrl'
 			})
-		
+			
+			.when('/solicitude/create', {
+				templateUrl: PathTemplates.views + 'solicitude/create.html',
+				controller: 'SolicitudeCtrl'
+			})
+
+
+
+
 		$locationProvider.html5Mode(true);
 
 	}])

@@ -27,12 +27,12 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function ()
 	Route::resource('users', 'UsersController');
 });
 
-Route::group(['namespace' => 'Solicitude'], function ()
+Route::group(['prefix' => 'api', 'namespace' => 'Solicitude'], function ()
 {
 	Route::resource('solicitude', 'SolicitudeController');
 });
 
-Route::group(['namespace' => 'Applicant'], function ()
+Route::group(['prefix' => 'api', 'namespace' => 'Applicant'], function ()
 {
 	Route::resource('applicant', 'ApplicantController');
 });

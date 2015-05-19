@@ -34,10 +34,10 @@ class SolicitudeController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function create()
+/*	public function create()
 	{
 		return view('solicitude.create');
-	}
+	}*/
 
 	/**
 	 * Store a newly created resource in storage.
@@ -66,10 +66,10 @@ class SolicitudeController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+/*	public function edit($id)
 	{
 		//
-	}
+	}*/
 
 	/**
 	 * Update the specified resource in storage.

@@ -20,7 +20,7 @@
 		};
 
 	})
-	.controller('DatepickerDemoCtrl', function ($scope) {
+	.controller('DatepickerCtrl', function ($scope) {
 		$scope.today = function() {
 			$scope.dt = new Date();
 		};

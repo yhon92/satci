@@ -22,11 +22,11 @@ class ApplicantController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function create()
+/*	public function create()
 	{
 		//
 	}
-
+*/
 	/**
 	 * Store a newly created resource in storage.
 	 *
@@ -54,10 +54,10 @@ class ApplicantController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+/*	public function edit($id)
 	{
 		//
-	}
+	}*/
 
 	/**
 	 * Update the specified resource in storage.

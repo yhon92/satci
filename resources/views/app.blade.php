@@ -7,7 +7,6 @@
 	<link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
 	<title>Sistema de Atención al Ciudadano</title>
 	
-	{{-- <base href="satci/public/"> --}}
 	<base href="/satci/public/">
 	
 	<link href="{{ asset('/css/style.css') }}" rel="stylesheet">
