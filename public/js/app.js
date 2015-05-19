@@ -2,7 +2,6 @@
 	'use stric';
 	
 	window.PathTemplates = {
-		// views: 		'/satci/public/templates/views/solicitude/index.html',
 		views: 		'templates/views/',
 		partials: 'templates/partials/',
 	}
@@ -27,7 +26,7 @@
 			
 			.when('/solicitude/create', {
 				templateUrl: PathTemplates.views + 'solicitude/create.html',
-				controller: 'SolicitudeCtrl'
+				controller: 'CreateSolicitudeCtrl'
 			})
 
 

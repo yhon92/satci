@@ -1,18 +1,22 @@
+<!-- <div class="col-md-5" ng-controller="ApplicantSolicitudeCtrl"> -->
 <div class="col-md-5">
 	<div class="panel panel-default">
 		<div class="panel-body">
 			<fieldset>
 				<legend>Solicitante</legend>
 				<div class="form-group">
-				{!! Form::open(['class' => 'form-horizontal','route' => 'applicant.show', 'method' => 'GET']) !!}
-				{{-- {!! Form::label('solicitude_number', 'Nº de Solicitud', ['class' => 'col-lg-4 control-label']) !!} --}}
-				
-					<div class="col-lg-10">
-					{!! Form::text('search_applicant', null, ['class' => 'form-control', 'placeholder' => 'Buscar Solicitante', 'ng-model' => 'identification']) !!}
+					<button type="button" class="btn btn-primary btn-circle" ng-click="search()">
+						<strong><span class="glyphicon glyphicon-search"></span></strong>
+					</button>
+					<button type="button" class="btn btn-primary btn-circle">
+						<strong><span class="glyphicon glyphicon-plus"></span></strong>
+					</button>
 				</div>
-				<button type="button" class="btn btn-primary btn-circle"><strong>+</strong></button>
-			</div>
-			{!! Form::close() !!}
+				<form class="form-horizontal" ng-show="searchShow">
+					<input class="form-control" type="text" placeholder="Buscar Solicitante" ng-model="$parent.identification">
+				</form>
+				{{applicant}}
+				<div ng-include=""></div>
 			</fieldset>
 		</div>
 	</div>

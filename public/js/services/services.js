@@ -15,4 +15,11 @@
 		});
 	})
 
+	.factory('servingData', function () {
+		return {
+			data: {}
+		};
+	})
+
+	
 })();

@@ -15,12 +15,14 @@
 
 Route::get('/', 'HomeController@index');
 
-
+// Route::get('solicitude/', 'HomeController@index');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
 ]);
+
+
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function ()
 {

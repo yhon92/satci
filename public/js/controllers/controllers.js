@@ -94,15 +94,34 @@
 			return '';
 		};
 	})
-	
-	.controller('CreateSolicitudeCtrl', function ($scope) {
-		
-		$scope.applicant = function (type){
-			alert(type);
-		}
-	})
 
 	.controller('SolicitudeCtrl', function ($scope) {
+		
 		console.log('BIEN');
+	
 	})
+	
+	.controller('CreateSolicitudeCtrl', ['$scope', 'servingData', function ($scope, servingData) {
+		
+		$scope.searchShow = false;
+
+		$scope.applicant = function (type){
+			servingData.data.applicant = type;
+			$scope.template = 'templates/partials/solicitude/search-applicant.html';
+		};
+
+		$scope.search = function (){
+			return $scope.searchShow = true;
+		};
+		
+	
+	}])
+
+	.controller('ApplicantSolicitudeCtrl', ['$scope', 'servingData', function ($scope, servingData) {
+
+		$scope.applicant = servingData.data.applicant;
+
+		$scope.$watch($scope.applicant);
+	}])
+
 })();
