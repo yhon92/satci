@@ -1,0 +1,19 @@
+<!-- <form class="form-horizontal"> -->
+<input class="form-control" type="text" placeholder="Buscar Solicitante" ng-model="full_name">
+<!-- </form> -->
+<div class="table-responsive">
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>Cédula / RIF</th>
+				<th>Nombre</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="applicant in applicants | filter:full_name">
+				<td>{{applicant.identification}}</td>
+				<td>{{applicant.full_name}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

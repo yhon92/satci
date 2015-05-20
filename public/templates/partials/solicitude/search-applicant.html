@@ -1,23 +1,34 @@
 <!-- <form class="form-horizontal"> -->
-<input class="form-control" type="text" placeholder="Buscar Solicitante" ng-model="$parent.identification">
+<input class="form-control" type="text" placeholder="Buscar Solicitante">
 <!-- </form> -->
 <div class="table-responsive">
-	<table class="table table-hover">
+	<table class="table table-hover" st-pipe="callServer()" st-table="displayed">
 		<thead>
 			<tr>
-				<th>Cédula / RIF</th>
-				<th>Nombre</th>
+				<th st-sort="identification">Cédula / RIF</th>
+				<th st-sort="full_name">Nombre</th>
+			</tr>
+			<tr>
+				<th><input class="form-control" type="text" st-search="identification"></th>
+				<th><input class="form-control" type="text" st-search="full_name"></th>
 			</tr>
 		</thead>
-		<tbody>
-			<tr>
-				<td>22.264.602</td>
-				<td>Oscar Yhonnerry Guevara Siano</td>
-			</tr>
-			<tr>
-				<td>00.000.000</td>
-				<td>Sadday Nazareth Guevara Siano</td>
+		<tbody ng-show="!isLoading">
+			<tr ng-repeat="row in displayed">
+				<td>{{row.identification}}</td>
+				<td>{{row.full_name}}</td>
 			</tr>
 		</tbody>
+		<tbody ng-show="isLoading">
+			<tr>
+				<td colspan="4" class="text-center">Loading ... </td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<td class="text-center" st-pagination="" st-items-by-page="8" colspan="4">
+				</td>
+			</tr>
+		</tfoot>
 	</table>
 </div>

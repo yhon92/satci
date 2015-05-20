@@ -100,6 +100,7 @@
 		<script src="{{ asset('js/libs/angular-resource.min.js') }}"></script>
 		<script src="{{ asset('js/libs/angular-animate.min.js') }}"></script>
 		<script src="{{ asset('js/libs/ui-bootstrap.min.js') }}"></script>
+		<script src="{{ asset('js/libs/smart-table.min.js') }}"></script>
 		<script src="{{ asset('js/app.js') }}"></script>
 		<script src="{{ asset('js/filters.js') }}"></script>
 		<script src="{{ asset('js/controllers/controllers.js') }}"></script>

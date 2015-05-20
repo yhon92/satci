@@ -10,7 +10,9 @@
 	[
 		'ngRoute',
 		'ngAnimate',
+		'ngResource',
 		'ui.bootstrap',
+		'smart-table',
 		'SATCI.controllers',
 		'SATCI.services',
 		

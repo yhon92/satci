@@ -68,14 +68,14 @@
 		afterTomorrow.setDate(tomorrow.getDate() + 2);
 		$scope.events =
 		[
-			{
-				date: tomorrow,
-				status: 'full'
-			},
-			{
-				date: afterTomorrow,
-				status: 'partially'
-			}
+		{
+			date: tomorrow,
+			status: 'full'
+		},
+		{
+			date: afterTomorrow,
+			status: 'partially'
+		}
 		];
 
 		$scope.getDayClass = function(date, mode) {
@@ -95,55 +95,93 @@
 		};
 	})
 
-	.controller('SolicitudeCtrl', function ($scope) {
-		
-		console.log('BIEN');
+.controller('SolicitudeCtrl', function ($scope) {
 	
-	})
+	console.log('BIEN');
 	
-	.controller('CreateSolicitudeCtrl', ['$scope', 'Applicant', function ($scope, ) {
-		
-		var add = false
-		var applicantType = '';
+})
 
-		$scope.getApplicant = function (type){
-			$scope.applicantType = applicantType = type;
-			$scope.template = 'templates/partials/solicitude/applicant.html';
+.controller('CreateSolicitudeCtrl', ['$scope', 'Citizens', 'paginateService', function ($scope, Citizens, paginateService) {
+	
+	var add = false;
+	var applicantType = '';
 
-		};
+	$scope.getApplicant = function (type){
+		$scope.applicantType = applicantType = type;
+		$scope.template = 'templates/partials/solicitude/applicant.html';
+	};
 
-		$scope.addApplicant = function (){
-			$scope.applicantTemplate = 'templates/partials/applicant/'+ applicantType +'-form.html';
-			add = true;
+	$scope.addApplicant = function (){
+		$scope.applicantTemplate = 'templates/partials/applicant/'+ applicantType +'-form.html';
+		add = true;
+	};
+
+	$scope.close = function (){
+		$scope.template = '';
+	};
+
+	$scope.searchApplicant = function (){
+		add = false;
+
+		if (applicantType === 'citizen') {
+			Citizens.get(function (data) {
+				$scope.applicants = data.citizens;
+			});
 		}
 
-		$scope.close = function (){
-			$scope.template = '';
-		};
-
-		function changeIdentification (argument) {
-			
+		$scope.applicantTemplate = 'templates/partials/solicitude/search-applicant.html';
+	};
+	
+	$scope.$watch(function () {
+		if (add) {
+			$scope.addApplicant()
 		}
+	});
 
-		$scope.searchApplicant = function (){
-			add = false;
-			$scope.applicantTemplate = 'templates/partials/solicitude/search-applicant.html';
+
+	// var ctrl = this;
+
+	$scope.displayed = [];
+
+	$scope.callServer = function callServer(tableState) {
+
+		$scope.isLoading = true;
+
+		var pagination = tableState.pagination;
+
+		var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
+		var number = pagination.number || 10;  // Number of entries showed per page.
+
+			service.getPage($scope.applicants, start, number, tableState).then(function (result) {
+				$scope.displayed = result.data;
+				tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
+				$scope.isLoading = false;
+			});
 		};
-		
-		$scope.$watch(function () {
-			if (add) {
-				$scope.addApplicant()
-			}
-		});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 	}])
 
-	.controller('ApplicantSolicitudeCtrl', ['$scope', 'servingData', function ($scope, servingData) {
+.controller('ApplicantSolicitudeCtrl', ['$scope', 'servingData', function ($scope, servingData) {
 
-		$scope.applicant = $parent.applicantType;
+	$scope.applicant = $parent.applicantType;
 
-	}])
+}])
 
 })();

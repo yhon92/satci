@@ -34,12 +34,12 @@ Route::group(['prefix' => 'api', 'namespace' => 'Solicitude'], function ()
 	Route::resource('solicitude', 'SolicitudeController');
 });
 
-Route::group(['prefix' => 'api', 'namespace' => 'Controllers'], function ()
+Route::group(['prefix' => 'api'], function ()
 {
 	Route::resource('citizen', 'CitizenController');
 });
 
-Route::group(['prefix' => 'api', 'namespace' => 'Institution'], function ()
+Route::group(['prefix' => 'api'], function ()
 {
 	Route::resource('institution', 'InstitutionController');
 });
