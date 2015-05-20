@@ -101,27 +101,49 @@
 	
 	})
 	
-	.controller('CreateSolicitudeCtrl', ['$scope', 'servingData', function ($scope, servingData) {
+	.controller('CreateSolicitudeCtrl', ['$scope', 'Applicant', function ($scope, ) {
 		
-		$scope.searchShow = false;
+		var add = false
+		var applicantType = '';
 
-		$scope.applicant = function (type){
-			servingData.data.applicant = type;
-			$scope.template = 'templates/partials/solicitude/search-applicant.html';
+		$scope.getApplicant = function (type){
+			$scope.applicantType = applicantType = type;
+			$scope.template = 'templates/partials/solicitude/applicant.html';
+
 		};
 
-		$scope.search = function (){
-			return $scope.searchShow = true;
+		$scope.addApplicant = function (){
+			$scope.applicantTemplate = 'templates/partials/applicant/'+ applicantType +'-form.html';
+			add = true;
+		}
+
+		$scope.close = function (){
+			$scope.template = '';
+		};
+
+		function changeIdentification (argument) {
+			
+		}
+
+		$scope.searchApplicant = function (){
+			add = false;
+			$scope.applicantTemplate = 'templates/partials/solicitude/search-applicant.html';
 		};
 		
-	
+		$scope.$watch(function () {
+			if (add) {
+				$scope.addApplicant()
+			}
+		});
+
+
+
 	}])
 
 	.controller('ApplicantSolicitudeCtrl', ['$scope', 'servingData', function ($scope, servingData) {
 
-		$scope.applicant = servingData.data.applicant;
+		$scope.applicant = $parent.applicantType;
 
-		$scope.$watch($scope.applicant);
 	}])
 
 })();

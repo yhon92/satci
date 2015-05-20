@@ -1,23 +1,23 @@
-<!-- <div class="col-md-5" ng-controller="ApplicantSolicitudeCtrl"> -->
-<div class="col-md-5">
-	<div class="panel panel-default">
-		<div class="panel-body">
-			<fieldset>
-				<legend>Solicitante</legend>
-				<div class="form-group">
-					<button type="button" class="btn btn-primary btn-circle" ng-click="search()">
-						<strong><span class="glyphicon glyphicon-search"></span></strong>
-					</button>
-					<button type="button" class="btn btn-primary btn-circle">
-						<strong><span class="glyphicon glyphicon-plus"></span></strong>
-					</button>
-				</div>
-				<form class="form-horizontal" ng-show="searchShow">
-					<input class="form-control" type="text" placeholder="Buscar Solicitante" ng-model="$parent.identification">
-				</form>
-				{{applicant}}
-				<div ng-include=""></div>
-			</fieldset>
-		</div>
-	</div>
+<!-- <form class="form-horizontal"> -->
+<input class="form-control" type="text" placeholder="Buscar Solicitante" ng-model="$parent.identification">
+<!-- </form> -->
+<div class="table-responsive">
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>Cédula / RIF</th>
+				<th>Nombre</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>22.264.602</td>
+				<td>Oscar Yhonnerry Guevara Siano</td>
+			</tr>
+			<tr>
+				<td>00.000.000</td>
+				<td>Sadday Nazareth Guevara Siano</td>
+			</tr>
+		</tbody>
+	</table>
 </div>
