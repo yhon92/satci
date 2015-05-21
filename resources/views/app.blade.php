@@ -105,6 +105,7 @@
 		<script src="{{ asset('js/filters.js') }}"></script>
 		<script src="{{ asset('js/controllers/controllers.js') }}"></script>
 		<script src="{{ asset('js/directives/directives.js') }}"></script>
+		<script src="{{ asset('js/services/resources.js') }}"></script>
 		<script src="{{ asset('js/services/services.js') }}"></script>
 
 		@yield('scripts')

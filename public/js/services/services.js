@@ -1,31 +1,7 @@
 (function () {
 	'use stric';
 	
-	angular.module('SATCI.services', ['ngResource'])
-
-	.factory('Solicitudes', function ($resource){
-		return $resource('http://localhost/satci/public/api/solicitude/:id', {id: '@_id'}, {
-			update: {method: 'PUT', params: {id: '@_id'}}
-		});
-	})
-
-	.factory('Citizens', function ($resource){
-		return $resource('http://localhost/satci/public/api/citizen/:id', {id: '@_id'}, {
-			update: {method: 'PUT', params: {id: '@_id'}}
-		});
-	})
-
-	.factory('Institutions', function ($resource){
-		return $resource('http://localhost/satci/public/api/institution/:id', {id: '@_id'}, {
-			update: {method: 'PUT', params: {id: '@_id'}}
-		});
-	})
-
-/*	.factory('Applicant', function ($resource){
-		return $resource('http://localhost/satci/public/applicant/:id', {id: '@_id'}, {
-			update: {method: 'PUT', params: {id: '@_id'}}
-		});
-	})*/
+	angular.module('SATCI.services', [])
 
 	.factory('servingData', function () {
 		return {
@@ -50,7 +26,8 @@
 		$timeout(function () {
 			deferred.resolve({
 				data: result,
-				numberOfPages: Math.ceil(1000 / number)
+				numberOfPages: (number - 1)
+				// numberOfPages: Math.ceil(1000 / number)
 			});
 		}, 1500);
 

@@ -15,6 +15,8 @@
 		'smart-table',
 		'SATCI.controllers',
 		'SATCI.services',
+		'SATCI.resources',
+		'SATCI.filters',
 		
 	])
 

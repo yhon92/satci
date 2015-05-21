@@ -2,15 +2,15 @@
 <!-- <input class="form-control" type="text" placeholder="Buscar Solicitante"> -->
 <!-- </form> -->
 <div class="table-responsive">
-	<table class="table table-hover" st-pipe="callServer()" st-table="displayed">
+	<table class="table table-hover margin-none" st-pipe="callServer" st-table="displayed" st-safe-src="applicants">
 		<thead>
 			<tr>
-				<th st-sort="identification">Cédula / RIF</th>
-				<th st-sort="full_name">Nombre</th>
+				<th class="" st-sort="identification">{{applicantType | indentification}}</th>
+				<th class="" st-sort="full_name">Nombre</th>
 			</tr>
 			<tr>
-				<th><input class="form-control" type="text" placeholder="Cédula / RIF" st-search="identification"></th>
-				<th><input class="form-control" type="text" placeholder="Nombre" st-search="full_name"></th>
+				<th class="col-xs-3"><input class="col-xs-12" type="text" placeholder="{{applicantType | indentification}}" st-search="identification"></th>
+				<th><input class="col-xs-12" type="text" placeholder="Nombre" st-search="full_name"></th>
 			</tr>
 		</thead>
 		<tbody ng-show="!isLoading">
@@ -26,7 +26,7 @@
 		</tbody>
 		<tfoot>
 			<tr>
-				<!-- <td class="text-center" st-pagination="" st-items-by-page="8" colspan="4"></td> -->
+				<td class="text-center" st-pagination="" st-items-by-page="6" colspan="4"></td>
 			</tr>
 		</tfoot>
 	</table>

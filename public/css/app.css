@@ -18,6 +18,9 @@ body {
 	text-align: left;
 	color: #2196f3;
 }
+.margin-none{
+	margin: 0;
+}
 .padding-none{
 	padding: 0;
 }
