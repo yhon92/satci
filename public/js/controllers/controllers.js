@@ -94,14 +94,19 @@
 			return '';
 		};
 	})
-/*	.controller('SolicitudeCtrl', function ($scope) {
+	.controller('SolicitudeCtrl', function ($scope) {
 
 			// console.log('BIEN');
 			
-		})*/
-	.controller('CreateSolicitudeCtrl', ['$scope', 'Citizens', 'paginateService', function ($scope, Citizens, paginateService) {
+		})
+	.controller('CreateSolicitudeCtrl', 
 
-		var add = false;
+		['$scope', 'Citizens', 'Institutions', 'paginateService', 
+		
+		function ($scope, Citizens, Institutions, paginateService) {
+
+		var add = null;
+		var search = null;
 		var applicantType = '';
 
 		$scope.getApplicant = function (type){
@@ -116,6 +121,8 @@
 
 		$scope.close = function (){
 			$scope.template = '';
+			add = false;
+			$scope.applicantTemplate = '';
 		};
 
 		$scope.searchApplicant = function (){
@@ -126,13 +133,18 @@
 					$scope.applicants = data.citizens;
 				});
 			}
+			if (applicantType === 'institution') {
+				Institutions.get(function (data) {
+					$scope.applicants = data.institutions;
+				});
+			}
 
 			$scope.applicantTemplate = 'templates/partials/solicitude/search-applicant.html';
 		};
 
 		$scope.$watch(function () {
 			if (add) {
-				$scope.addApplicant()
+				$scope.addApplicant();
 			}
 		});
 

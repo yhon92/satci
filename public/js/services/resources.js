@@ -1,22 +1,27 @@
 (function () {
 	'use stric';
 	
+	var resourceUrl = 'http://localhost/satci/public/api/';
+	// var resourceUrl = 'http://192.168.1.26/satci/public/api/';
+	// var resourceUrl = 'http://192.168.0.103/satci/public/api/';
+	
 	angular.module('SATCI.resources', ['ngResource'])
 
+
 	.factory('Solicitudes', function ($resource){
-		return $resource('http://localhost/satci/public/api/solicitude/:id', {id: '@_id'}, {
+		return $resource( resourceUrl +'solicitude/:id', {id: '@_id'}, {
 			update: {method: 'PUT', params: {id: '@_id'}}
 		});
 	})
 
 	.factory('Citizens', function ($resource){
-		return $resource('http://localhost/satci/public/api/citizen/:id', {id: '@_id'}, {
+		return $resource( resourceUrl + 'citizen/:id', {id: '@_id'}, {
 			update: {method: 'PUT', params: {id: '@_id'}}
 		});
 	})
 
 	.factory('Institutions', function ($resource){
-		return $resource('http://localhost/satci/public/api/institution/:id', {id: '@_id'}, {
+		return $resource( resourceUrl + 'institution/:id', {id: '@_id'}, {
 			update: {method: 'PUT', params: {id: '@_id'}}
 		});
 	})

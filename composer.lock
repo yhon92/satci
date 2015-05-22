@@ -1916,12 +1916,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "dd79ca74f5b404a0b212d3a3e4dd777ca15ed08b"
+                "reference": "bcc07d0cb56cf5ec4fb6e66dda5f5fb9e39e5c27"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/dd79ca74f5b404a0b212d3a3e4dd777ca15ed08b",
-                "reference": "dd79ca74f5b404a0b212d3a3e4dd777ca15ed08b",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/bcc07d0cb56cf5ec4fb6e66dda5f5fb9e39e5c27",
+                "reference": "bcc07d0cb56cf5ec4fb6e66dda5f5fb9e39e5c27",
                 "shasum": ""
             },
             "require": {
@@ -1960,7 +1960,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2015-05-20 12:39:29"
+            "time": "2015-05-20 13:03:42"
         },
         {
             "name": "maximebf/debugbar",

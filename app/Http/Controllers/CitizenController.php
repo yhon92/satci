@@ -25,11 +25,9 @@ class CitizenController extends Controller {
 	{
 		$citizens = $this->citizenRepo->getListCitizen();
 		
-		// dd($citizens);
-
 		return response()->json([
 
-			'citizens' => $citizens->toArray()
+			'citizens' => $citizens->toArray(),
 
 			], 200
 		);

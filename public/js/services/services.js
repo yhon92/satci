@@ -29,7 +29,7 @@
 				numberOfPages: (number - 1)
 				// numberOfPages: Math.ceil(1000 / number)
 			});
-		}, 1500);
+		}, 600);
 
 		return deferred.promise;
 	}

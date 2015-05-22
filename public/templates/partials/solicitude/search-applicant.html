@@ -9,19 +9,27 @@
 				<th class="" st-sort="full_name">Nombre</th>
 			</tr>
 			<tr>
-				<th class="col-xs-3"><input class="col-xs-12" type="text" placeholder="{{applicantType | indentification}}" st-search="identification"></th>
+				<th class="col-xs-4"><input class="col-xs-12" type="text" placeholder="{{applicantType | indentification}}" st-search="identification"></th>
 				<th><input class="col-xs-12" type="text" placeholder="Nombre" st-search="full_name"></th>
 			</tr>
 		</thead>
 		<tbody ng-show="!isLoading">
-			<tr ng-repeat="row in displayed">
+			<tr class="pointer" st-select-row="row" st-select-mode ng-repeat="row in displayed">
 				<td>{{row.identification}}</td>
 				<td>{{row.full_name}}</td>
 			</tr>
 		</tbody>
 		<tbody ng-show="isLoading">
 			<tr>
-				<td colspan="4" class="text-center">Loading ... </td>
+				<!-- <td colspan="4" class="text-center">Loading ... </td> -->
+				<td colspan="4" class="text-center">
+					<small>Cargando...</small>
+					<progressbar class="progress-striped active" value="dynamic" type=""></progressbar>
+					<!-- <div class="progress progress-striped active" style="height: 214px"> -->
+					<!-- <div class="progress progress-striped active">
+						<div class="progress-bar progress-bar-success" style="width: 100%"></div>
+					</div> -->
+				</td>
 			</tr>
 		</tbody>
 		<tfoot>

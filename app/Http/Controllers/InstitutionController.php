@@ -2,10 +2,18 @@
 
 use SATCI\Http\Requests;
 use SATCI\Http\Controllers\Controller;
+use SATCI\Repositories\InstitutionRepo;
 
 use Illuminate\Http\Request;
 
 class InstitutionController extends Controller {
+
+	protected $institutionRepo;
+
+	public function __construct (InstitutionRepo $institutionRepo)
+	{
+		$this->institutionRepo = $institutionRepo;
+	}
 
 	/**
 	 * Display a listing of the resource.
@@ -14,7 +22,13 @@ class InstitutionController extends Controller {
 	 */
 	public function index()
 	{
-		//
+		$institutions = $this->institutionRepo->getListInstitution();
+
+		return response()->json([
+
+			'institutions' => $institutions->toArray(),
+
+			], 200);
 	}
 
 	/**
