@@ -124,6 +124,13 @@
 			add = false;
 			$scope.applicantTemplate = '';
 		};
+		$scope.clear = function (){
+			$scope.identification = null;
+			$scope.full_name = null;
+			$scope.template = null;
+			$scope.applicantType = null;
+			$scope.applicantTemplate = null;
+		}
 
 		$scope.searchApplicant = function (){
 			add = false;
@@ -166,6 +173,12 @@
 
 			});
 		};
+
+		$scope.selectApplicant = function (id, identification, full_name) {
+			console.log(id + ' - ' + identification + ' - ' + full_name);
+			$scope.identification = identification;
+			$scope.full_name = full_name;
+		}
 	}])
 
 	.controller('ApplicantSolicitudeCtrl', ['$scope', 'servingData', function ($scope, servingData) {

@@ -7,14 +7,14 @@
 					<div class="form-group">
 						<label class="col-lg-4 control-label" for="solicitude_number">Nº de Solicitud</label>
 						<div class="col-lg-8">
-							<input class="form-control" type="text" id="solicitude_number" placeholder="Número de Solicitud" ng-required="true">
+							<input class="form-control" type="text" id="solicitude_number" ng-model='solicitude_number' ui-mask="999-999" ng-required="true">
 						</div>
 					</div>
 					<div class="form-group" ng-controller="DatepickerCtrl">
 						<label class="col-lg-4 control-label" for="reception_date">Fecha de Recepción</label>
 						<div class="col-lg-8">
 							<p class="input-group">
-								<input class="form-control" type="text" id="reception_date" placeholder="Fecha de Recepción" datepicker-popup="dd-MM-yyyy" ng-model="dt" is-open="opened" min-date="minDate" max-date="maxDate" picker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close">
+								<input class="form-control" type="text" id="reception_date" placeholder="Fecha de Recepción" datepicker-popup="dd-MM-yyyy" ng-model="dt" is-open="opened" min-date="minDate" max-date="maxDate" picker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Cerrar">
 								<span class="input-group-btn">
 									<button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
 								</span>
@@ -39,7 +39,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-lg-4 control-label">Cédula / RIF</label>
+						<label class="col-lg-4 control-label">{{applicantType | indentification}}</label>
 						<div class="col-lg-8">
 							<label class="form-label">{{identification}}</label>
 						</div>
@@ -47,14 +47,14 @@
 					<div class="form-group">
 						<label class="col-lg-4 control-label">Solicitante</label>
 						<div class="col-lg-8">
-							<label class="form-label">{{fullName}}</label>
+							<label class="form-label">{{full_name}}</label>
 						</div>
 					</div>
 					<div class="form-group" ng-controller="DatepickerCtrl">
 						<label class="col-lg-4 control-label" for="document_date">Fecha del Documento</label>
 						<div class="col-lg-8">
 							<p class="input-group">
-								<input class="form-control" type="text" id="document_date" placeholder="Fecha del Documento" datepicker-popup="dd-MM-yyyy" ng-model="dt" is-open="opened" min-date="minDate" max-date="maxDate" picker-options="dateOptions" ng-required="true" close-text="Close">
+								<input class="form-control" type="text" id="document_date" placeholder="Fecha del Documento" datepicker-popup="dd-MM-yyyy" ng-model="dt" is-open="opened" min-date="minDate" max-date="maxDate" picker-options="dateOptions" ng-required="true" close-text="Cerrar">
 								<span class="input-group-btn">
 									<button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
 								</span>
@@ -68,7 +68,7 @@
 						</div>
 					</div>
 					<div class="col-md-6 col-md-offset-3">
-						<button type="reset" class="btn btn-default">Cancelar</button>
+						<button type="reset" class="btn btn-default" ng-click="clear()">Cancelar</button>
 						<button type="submit" class="btn btn-primary">Guardar</button>
 					</div>
 				</fieldset>

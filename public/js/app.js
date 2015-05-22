@@ -12,6 +12,8 @@
 		'ngAnimate',
 		'ngResource',
 		'ui.bootstrap',
+		'ui.utils',
+		'ui.utils.masks',
 		'smart-table',
 		'SATCI.controllers',
 		'SATCI.services',
@@ -39,5 +41,7 @@
 		$locationProvider.html5Mode(true);
 
 	}])
+
+
 
 })();

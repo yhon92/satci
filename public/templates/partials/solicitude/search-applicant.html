@@ -14,7 +14,7 @@
 			</tr>
 		</thead>
 		<tbody ng-show="!isLoading">
-			<tr class="pointer" st-select-row="row" st-select-mode ng-repeat="row in displayed">
+			<tr class="pointer" st-select-row="row" st-select-mode ng-repeat="row in displayed" ng-click="selectApplicant(row.id, row.identification, row.full_name)">
 				<td>{{row.identification}}</td>
 				<td>{{row.full_name}}</td>
 			</tr>
