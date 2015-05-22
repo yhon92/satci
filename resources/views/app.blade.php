@@ -103,6 +103,7 @@
 		<script src="{{ asset('js/libs/ui-utils.min.js') }}"></script>
 		<script src="{{ asset('js/libs/ui-utils-masks.min.js') }}"></script>
 		<script src="{{ asset('js/libs/smart-table.min.js') }}"></script>
+		<script src="{{ asset('js/validation.js') }}"></script>
 		<script src="{{ asset('js/app.js') }}"></script>
 		<script src="{{ asset('js/filters.js') }}"></script>
 		<script src="{{ asset('js/controllers/controllers.js') }}"></script>

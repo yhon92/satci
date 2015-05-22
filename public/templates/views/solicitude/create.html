@@ -7,7 +7,7 @@
 					<div class="form-group">
 						<label class="col-lg-4 control-label" for="solicitude_number">Nº de Solicitud</label>
 						<div class="col-lg-8">
-							<input class="form-control" type="text" id="solicitude_number" ng-model='solicitude_number' ui-mask="999-999" ng-required="true">
+							<input class="form-control" type="text" id="solicitude_number" placeholder="Nº de Solicitud" ng-model='solicitude_number' onkeypress="return soloNum(event);" onkeyup="format(this);" ng-required="true">
 						</div>
 					</div>
 					<div class="form-group" ng-controller="DatepickerCtrl">

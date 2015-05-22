@@ -1,8 +1,8 @@
 (function () {
 	'use stric';
 	
-	var resourceUrl = 'http://localhost/satci/public/api/';
-	// var resourceUrl = 'http://192.168.1.26/satci/public/api/';
+	// var resourceUrl = 'http://localhost/satci/public/api/';
+	var resourceUrl = 'http://192.168.1.26/satci/public/api/';
 	// var resourceUrl = 'http://192.168.0.103/satci/public/api/';
 	
 	angular.module('SATCI.resources', ['ngResource'])
