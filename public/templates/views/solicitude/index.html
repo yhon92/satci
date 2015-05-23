@@ -19,13 +19,13 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr data-id='{{  }}'>
-							<td>{{  }}</td>
-							<td>{{  }}</td>
-							<td>{{  }}</td>
-							<td>{{  }}</td>
-							<td>{{  }}</td>
-							<td>{{  }}</td>
+						<tr ng-repeat="row in solicitudes" data-id='{{ row.id }}'>
+							<td>{{ row.solicitude_number }}</td>
+							<td>{{ row.reception_date }}</td>
+							<td>{{ row.identification_type }}</td>
+							<td>{{ row.applicant.full_name }}</td>
+							<td>{{ row.topic }}</td>
+							<td>{{ row.status }}</td>
 							<td>
 								<a href="#" class="btn btn-xs btn-warning glyphicon glyphicon-edit"></a>
 								<a href="#" class="btn btn-xs btn-danger glyphicon glyphicon-remove"></a>

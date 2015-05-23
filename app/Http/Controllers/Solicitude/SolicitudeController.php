@@ -1,6 +1,6 @@
 <?php namespace SATCI\Http\Controllers\Solicitude;
 
-use SATCI\Http\Entities\Solicitude;
+use SATCI\Repositories\SolicitudeRepo;
 use SATCI\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
@@ -8,17 +8,19 @@ use Illuminate\Routing\Route;
 
 class SolicitudeController extends Controller {
 
-	public function __construct()
+	protected $solicitudeRepo;
+
+	public function __construct(SolicitudeRepo $solicitudeRepo)
 	{
 		$this->middleware('auth');
-
-		$this->beforeFilter('@findSolicitude', ['only' => ['show', 'edit', 'update', 'destroy']]);
+		$this->solicitudeRepo = $solicitudeRepo;
+		// $this->beforeFilter('@findSolicitude', ['only' => ['show', 'edit', 'update', 'destroy']]);
 	}
 
-	public function findSolicitude(Route $route)
+/*	public function findSolicitude(Route $route)
 	{
 		$this->solicitude = Solicitude::findOrFail($route->getParameter('solicitude'));
-	}
+	}*/
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -26,7 +28,12 @@ class SolicitudeController extends Controller {
 	 */
 	public function index()
 	{
-		return view('solicitude.index');
+		$solicitudes = $this->solicitudeRepo->getListSolicitude();
+
+		return response()->json([
+			'solicitudes' => $solicitudes
+			], 200
+		);
 	}
 
 	/**

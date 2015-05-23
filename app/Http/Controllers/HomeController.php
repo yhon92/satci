@@ -1,7 +1,5 @@
 <?php namespace SATCI\Http\Controllers;
 
-use SATCI\Entities\Solicitude;
-
 class HomeController extends Controller {
 
 	/*
@@ -30,11 +28,11 @@ class HomeController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function index(Solicitude $solicitude)
+	public function index()
 	{
-		$solicitudes = $solicitude->paginate(10)->all();
+		// $solicitudes = $solicitude->paginate(10)->all();
 		// dd($requests);
-		return view('home', compact('solicitudes'));
+		return view('home');
 	}
 
 }

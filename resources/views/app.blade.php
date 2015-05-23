@@ -60,15 +60,15 @@
 				@endif
 			</div>
 		</nav>
-		<div class="container-fluid">
+		<div class="container-fluid" ng-controller="NavCtrl">
 			<div class="row">
 				@if (Auth::check())
 				<div class="col-sm-3 col-md-2 sidebar">
 					<ul class="nav nav-sidebar">
-						<li><a href="home/">Inicio</a></li>
-						<li><a href="solicitude/">Solicitud</a></li>
+						<li ng-class="navClass('home')"><a href="home/">Inicio</a></li>
+						<li ng-class="navClass('solicitude')"><a href="solicitude/">Solicitud</a></li>
 						{{-- <li><a href="#">Analytics</a></li> --}}
-						<li><a href="{{ route('admin.users.index') }}">Administrador</a></li>
+						<li ng-class="navClass('admin')"><a href="{{ route('admin.users.index') }}">Administrador</a></li>
 					</ul>
 {{-- 					<ul class="nav nav-sidebar">
 						<li><a href="">Nav item</a></li>

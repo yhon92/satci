@@ -2,6 +2,15 @@
 	'use stric';
 	
 	angular.module('SATCI.controllers',[])
+	.controller('NavCtrl', ['$scope', '$location', function ($scope, $location) {
+		$scope.navClass = function (page) {
+			var path = $location.path().substring(1) || 'home';
+			var stop = path.search('/')
+			var currentRoute = path.substr(0,stop);
+			return page === currentRoute ? 'active' : '';
+		};
+	}])
+
 	.controller('DropdownCtrl', function($scope){
 		
 		$scope.navbarCollapsed = true;
@@ -94,11 +103,11 @@
 			return '';
 		};
 	})
-	.controller('SolicitudeCtrl', function ($scope) {
-
-			// console.log('BIEN');
-			
-		})
+	.controller('SolicitudeCtrl', ['$scope', 'Solicitudes', function ($scope, Solicitudes) {
+			/*Solicitudes.get(function (data){
+				$scope.solicitudes = data.solicitudes;
+			});*/
+		}])
 	.controller('CreateSolicitudeCtrl', 
 
 		['$scope', 'Citizens', 'Institutions', 'paginateService', 
