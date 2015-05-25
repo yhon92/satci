@@ -7,14 +7,14 @@
 					<div class="form-group">
 						<label class="col-lg-4 control-label" for="solicitude_number">Nº de Solicitud</label>
 						<div class="col-lg-8">
-							<input class="form-control" type="text" id="solicitude_number" placeholder="Nº de Solicitud" ng-model='solicitude_number' onkeypress="return soloNum(event);" onkeyup="format(this);" ng-required="true">
+							<input class="form-control" type="text" id="solicitude_number" placeholder="Nº de Solicitud" onkeypress="return solicitudeNumberMask(this,event);" ng-model='solicitude_number' ng-required="true">
 						</div>
 					</div>
 					<div class="form-group" ng-controller="DatepickerCtrl">
 						<label class="col-lg-4 control-label" for="reception_date">Fecha de Recepción</label>
 						<div class="col-lg-8">
 							<p class="input-group">
-								<input class="form-control" type="text" id="reception_date" placeholder="Fecha de Recepción" datepicker-popup="dd-MM-yyyy" ng-model="dt" is-open="opened" min-date="minDate" max-date="maxDate" picker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Cerrar">
+								<input class="form-control" type="text" id="reception_date" placeholder="Fecha de Recepción" onkeydown="return noKey(event);" datepicker-popup="dd-MM-yyyy" ng-model="dt" is-open="opened" min-date="minDate" max-date="maxDate" picker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Cerrar">
 								<span class="input-group-btn">
 									<button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
 								</span>
@@ -42,6 +42,7 @@
 						<label class="col-lg-4 control-label">{{applicantType | indentification}}</label>
 						<div class="col-lg-8">
 							<label class="form-label">{{identification}}</label>
+							<input type="hidden" name="applicantId" value="{{applicantId}}">
 						</div>
 					</div>
 					<div class="form-group">
@@ -54,7 +55,7 @@
 						<label class="col-lg-4 control-label" for="document_date">Fecha del Documento</label>
 						<div class="col-lg-8">
 							<p class="input-group">
-								<input class="form-control" type="text" id="document_date" placeholder="Fecha del Documento" datepicker-popup="dd-MM-yyyy" ng-model="dt" is-open="opened" min-date="minDate" max-date="maxDate" picker-options="dateOptions" ng-required="true" close-text="Cerrar">
+								<input class="form-control" type="text" id="document_date" placeholder="Fecha del Documento" onkeydown="return noKey(event);" datepicker-popup="dd-MM-yyyy" ng-model="dt" is-open="opened" min-date="minDate" max-date="maxDate" picker-options="dateOptions" ng-required="true" close-text="Cerrar">
 								<span class="input-group-btn">
 									<button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
 								</span>

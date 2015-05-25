@@ -65,8 +65,8 @@
 				@if (Auth::check())
 				<div class="col-sm-3 col-md-2 sidebar">
 					<ul class="nav nav-sidebar">
-						<li ng-class="navClass('home')"><a href="home/">Inicio</a></li>
-						<li ng-class="navClass('solicitude')"><a href="solicitude/">Solicitud</a></li>
+						<li ng-class="navClass('home')"><a href="home">Inicio</a></li>
+						<li ng-class="navClass('solicitude')"><a href="solicitude">Solicitud</a></li>
 						{{-- <li><a href="#">Analytics</a></li> --}}
 						<li ng-class="navClass('admin')"><a href="{{ route('admin.users.index') }}">Administrador</a></li>
 					</ul>
@@ -100,8 +100,9 @@
 		<script src="{{ asset('js/libs/angular-resource.min.js') }}"></script>
 		<script src="{{ asset('js/libs/angular-animate.min.js') }}"></script>
 		<script src="{{ asset('js/libs/ui-bootstrap.min.js') }}"></script>
-		<script src="{{ asset('js/libs/ui-utils.min.js') }}"></script>
-		<script src="{{ asset('js/libs/ui-utils-masks.min.js') }}"></script>
+		{{-- // <script src="{{ asset('js/libs/ui-utils.min.js') }}"></script> --}}
+		{{-- // <script src="{{ asset('js/libs/ui-utils-masks.min.js') }}"></script> --}}
+		{{-- // <script src="{{ asset('js/libs/ngMask.min.js') }}"></script> --}}
 		<script src="{{ asset('js/libs/smart-table.min.js') }}"></script>
 		<script src="{{ asset('js/validation.js') }}"></script>
 		<script src="{{ asset('js/app.js') }}"></script>

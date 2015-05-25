@@ -12,8 +12,9 @@
 		'ngAnimate',
 		'ngResource',
 		'ui.bootstrap',
-		'ui.utils',
-		'ui.utils.masks',
+		// 'ngMask',
+		// 'ui.utils',
+		// 'ui.utils.masks',
 		'smart-table',
 		'SATCI.controllers',
 		'SATCI.services',
@@ -33,6 +34,10 @@
 			.when('/solicitude/create', {
 				templateUrl: PathTemplates.views + 'solicitude/create.html',
 				controller: 'CreateSolicitudeCtrl'
+			})
+			.when('/solicitude/edit/:id', {
+				templateUrl: PathTemplates.views + 'solicitude/index.html',
+				controller: 'SolicitudeCtrl'
 			})
 
 
