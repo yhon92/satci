@@ -118,27 +118,53 @@
 
 	.controller('CreateSolicitudeCtrl', 
 
-		['$rootScope', '$scope', 'Citizens', 'Institutions', 'paginateService', 
+		['$scope', 'Citizens', 'Institutions', 'paginateService', 
 		
-		function ($rootScope, $scope, Citizens, Institutions, paginateService) {
+		function ($scope, Citizens, Institutions, paginateService) {
 
 		var add = null;
 		var search = null;
 		var applicantType = '';
 
-		$rootScope.full_name = null;
-		$rootScope.applicantId = null;
-		$rootScope.identification = null;
+		$scope.full_name = null;
+		$scope.applicantId = null;
+		$scope.identification = 'hola';
+
+		var prueba = {
+			full_name: '',
+			applicantId: '',
+			identification: ''
+		}
+
+		$scope.$on('add', function (event, data){
+			prueba.full_name = data.full_name;
+			prueba.applicantId = data.applicantId;
+			prueba.identification = data.identification;
+
+			setApplicant(prueba)
+		});
+
+		setApplicant = function (data) {
+			console.log(data)
+			$scope.full_name = data.full_name;
+			$scope.applicantId = data.applicantId;
+			$scope.identification = data.identification;
+			console.log(data.identification)
+			console.log($scope)
+		}
+
+		$scope.applicant = false;
 
 		$scope.getApplicant = function (type){
 			$scope.applicantType = applicantType = type;
-			$scope.template = 'templates/partials/solicitude/applicant.html';
+			$scope.applicant = true;
+			// $scope.template = 'templates/partials/solicitude/applicant.html';
 		};
 
 		$scope.addApplicant = function (){
-			$rootScope.identification = null;
-			$rootScope.full_name = null;
-			$rootScope.applicantId = null;
+			$scope.full_name = null;
+			$scope.applicantId = null;
+			$scope.identification = null;
 
 			$scope.applicantTemplate = 'templates/partials/applicant/'+ applicantType +'-form.html';
 			add = true;
@@ -146,13 +172,15 @@
 
 		$scope.close = function (){
 			$scope.template = '';
+			$scope.applicant = false;
 			add = false;
 			$scope.applicantTemplate = '';
 		};
+
 		$scope.clear = function (){
-			$rootScope.identification = null;
-			$rootScope.full_name = null;
-			$rootScope.applicantId = null;
+			$scope.identification = 'null';
+			$scope.full_name = 'null';
+			$scope.applicantId = 'null';
 			$scope.template = null;
 			$scope.applicantType = null;
 			$scope.applicantTemplate = null;
@@ -202,21 +230,34 @@
 
 		$scope.selectApplicant = function (id, identification, full_name) {
 			// console.log(id + ' - ' + identification + ' - ' + full_name);
-			$rootScope.applicantId = id;
-			$rootScope.identification = identification;
-			$rootScope.full_name = full_name;
+			$scope.full_name = full_name;
+			$scope.applicantId = id;
+			$scope.identification = identification;
 		}
 	}])
 
-	.controller('CreateApplicantCtrl', ['$rootScope', '$scope', 'Citizens', 'Institutions', 
+	.controller('CreateApplicantCtrl', ['$scope', 'Citizens', 'Institutions', 
 		
-		function ($rootScope, $scope, Citizens, Institutions) {
+		function ($scope, Citizens, Institutions) {
+
+			$scope.applicant = {
+				identification: '',
+				first_name: '',
+				last_name: '',
+				address: '',
+				prefix_phone: '',
+				number_phone: '',
+				parish_id: ''
+			}
 
 		$scope.submit = function (){
-			$rootScope.full_name = $scope.applicant.first_name;
-			$rootScope.applicantId = $scope.applicant.identification;
-			$rootScope.identification = $scope.applicant.identification;
-			console.log($scope.applicant.first_name);
+			$scope.$emit('add', 
+				{
+					full_name: $scope.applicant.first_name + $scope.applicant.last_name,
+					identification: $scope.applicant.identification,
+					applicantId: $scope.applicant.identification
+				}
+			);
 		}
 
 	}])

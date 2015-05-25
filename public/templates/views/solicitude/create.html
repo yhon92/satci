@@ -77,4 +77,22 @@
 		</div>
 	</div>
 </div>
-<div ng-include="template"></div>
+<!-- <div ng-include="template"></div> -->
+<div class="col-md-5" ng-show="applicant">
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<fieldset>
+				<legend>Solicitante {{applicantType | translateApplicant}}<button class="close" ng-click="close()">×</button></legend>
+				<div class="form-group">
+					<button type="button" class="btn btn-primary btn-circle" ng-click="searchApplicant()">
+						<strong><span class="glyphicon glyphicon-search"></span></strong>
+					</button>
+					<button type="button" class="btn btn-primary btn-circle" ng-click="addApplicant()">
+						<strong><span class="glyphicon glyphicon-plus"></span></strong>
+					</button>
+				</div>
+				<div ng-include="applicantTemplate"></div>
+			</fieldset>
+		</div>
+	</div>
+</div>
