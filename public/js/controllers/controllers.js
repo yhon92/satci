@@ -114,79 +114,60 @@
 			/*Solicitudes.get(function (data){
 				$scope.solicitudes = data.solicitudes;
 			});*/
-		}])
+	}])
 
 	.controller('CreateSolicitudeCtrl', 
 
-		['$scope', 'Citizens', 'Institutions', 'paginateService', 
+		['$scope', '$controller', 'Citizens', 'Institutions', 'paginateService', 
 		
-		function ($scope, Citizens, Institutions, paginateService) {
+		function ($scope, $controller, Citizens, Institutions, paginateService) {
 
+		$controller('CreateCitizenCtrl', {$scope : $scope});
+		$controller('CreateInstitutionCtrl', {$scope : $scope});
+		
 		var add = null;
 		var search = null;
-		var applicantType = '';
+		// var applicantType = '';
 
 		$scope.full_name = null;
 		$scope.applicantId = null;
-		$scope.identification = 'hola';
-
-		var prueba = {
-			full_name: '',
-			applicantId: '',
-			identification: ''
-		}
-
-		$scope.$on('add', function (event, data){
-			prueba.full_name = data.full_name;
-			prueba.applicantId = data.applicantId;
-			prueba.identification = data.identification;
-
-			setApplicant(prueba)
-		});
-
-		setApplicant = function (data) {
-			console.log(data)
-			$scope.full_name = data.full_name;
-			$scope.applicantId = data.applicantId;
-			$scope.identification = data.identification;
-			console.log(data.identification)
-			console.log($scope)
-		}
-
-		$scope.applicant = false;
+		$scope.identification = null;
 
 		$scope.getApplicant = function (type){
 			$scope.applicantType = applicantType = type;
-			$scope.applicant = true;
-			// $scope.template = 'templates/partials/solicitude/applicant.html';
+			$scope.template = 'templates/partials/solicitude/applicant.html';
 		};
 
 		$scope.addApplicant = function (){
+			add = true;
+			search = false;
+
 			$scope.full_name = null;
 			$scope.applicantId = null;
 			$scope.identification = null;
 
 			$scope.applicantTemplate = 'templates/partials/applicant/'+ applicantType +'-form.html';
-			add = true;
 		};
 
 		$scope.close = function (){
+			add = null;
+			search = null
 			$scope.template = '';
 			$scope.applicant = false;
-			add = false;
 			$scope.applicantTemplate = '';
 		};
 
 		$scope.clear = function (){
-			$scope.identification = 'null';
-			$scope.full_name = 'null';
-			$scope.applicantId = 'null';
+			$scope.identification = null;
+			$scope.full_name = null;
+			$scope.applicantId = null;
 			$scope.template = null;
 			$scope.applicantType = null;
 			$scope.applicantTemplate = null;
 		}
 
 		$scope.searchApplicant = function (){
+			search = true;
 			add = false;
 
 			if (applicantType === 'citizen') {
@@ -203,9 +184,15 @@
 			$scope.applicantTemplate = 'templates/partials/solicitude/search-applicant.html';
 		};
 
-		$scope.$watch(function () {
+		$scope.$watch('applicantType', function () {
 			if (add) {
+			console.log('add')
 				$scope.addApplicant();
+			}
+			if (search) {
+				console.log('Search')
+				$scope.applicantTemplate = '';
+				$scope.searchApplicant();
 			}
 		});
 
@@ -234,11 +221,13 @@
 			$scope.applicantId = id;
 			$scope.identification = identification;
 		}
+
+
 	}])
 
-	.controller('CreateApplicantCtrl', ['$scope', 'Citizens', 'Institutions', 
+	.controller('CreateCitizenCtrl', ['$scope', 'Citizens', 
 		
-		function ($scope, Citizens, Institutions) {
+		function ($scope, Citizens) {
 
 			$scope.applicant = {
 				identification: '',
@@ -250,14 +239,34 @@
 				parish_id: ''
 			}
 
-		$scope.submit = function (){
-			$scope.$emit('add', 
-				{
-					full_name: $scope.applicant.first_name + $scope.applicant.last_name,
-					identification: $scope.applicant.identification,
-					applicantId: $scope.applicant.identification
-				}
-			);
+		$scope.saveCitizen = function (){
+			$scope.full_name = $scope.applicant.first_name +' '+ $scope.applicant.last_name;
+			$scope.identification = $scope.applicant.identification;
+			$scope.applicantId = $scope.applicant.identification;
+		}
+
+	}])
+
+	.controller('CreateInstitutionCtrl', ['$scope', 'Institutions', 
+		
+		function ($scope, Institutions) {
+
+			$scope.applicant = {
+				identification: '',
+				full_name: '',
+				address: '',
+				prefix_phone: '',
+				number_phone: '',
+				parish_id: '',
+				agent_identification: '',
+				agent_first_name: '',
+				agent_last_name: ''
+			}
+
+		$scope.saveInstitution = function (){
+			$scope.full_name = $scope.applicant.full_name;
+			$scope.identification = $scope.applicant.identification.toUpperCase();
+			$scope.applicantId = $scope.applicant.identification;
 		}
 
 	}])

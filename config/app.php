@@ -139,7 +139,7 @@ return [
 		/* Vendor Providers */
 
 		'Collective\Html\HtmlServiceProvider',
-		'Barryvdh\Debugbar\ServiceProvider',
+		// 'Barryvdh\Debugbar\ServiceProvider',
 
 		/*
 		 * Application Service Providers...
@@ -201,7 +201,7 @@ return [
 		/* Aliase Vendor */
 		'Form' => 'Collective\Html\FormFacade',
     'Html' => 'Collective\Html\HtmlFacade',
-    'Debugbar' => 'Barryvdh\Debugbar\Facade',
+    // 'Debugbar' => 'Barryvdh\Debugbar\Facade',
 
 	],
 

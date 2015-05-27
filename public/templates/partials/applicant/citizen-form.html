@@ -1,21 +1,21 @@
 <div>
-	<form class="form-horizontal" ng-controller="CreateApplicantCtrl">
+	<form class="form-horizontal">
 		<div class="form-group">
 			<label class="col-lg-3 control-label" for="identification">Cédula</label>
 			<div class="col-lg-9">
-				<input class="form-control" type="text" id="identification" placeholder="Cédula" ng-model="applicant.identification" ng-required="true">
+				<input class="form-control" type="text" id="identification" placeholder="Cédula" onkeypress="return onlyNumbers(event)" onkeyup="cedulaMask(this)" ng-model="applicant.identification" ng-required="true">
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-lg-3 control-label" for="first_name">Nombres</label>
 			<div class="col-lg-9">
-				<input class="form-control" type="text" id="first_name" placeholder="Nombres" ng-model="applicant.first_name" ng-required="true">
+				<input class="form-control" type="text" id="first_name" placeholder="Nombres" onkeypress="return onlyLetters(event)" ng-model="applicant.first_name" ng-required="true">
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-lg-3 control-label" for="last_name">Apellidos</label>
 			<div class="col-lg-9">
-				<input class="form-control" type="text" id="last_name" placeholder="Apellidos" ng-model="applicant.last_name" ng-required="true">
+				<input class="form-control" type="text" id="last_name" placeholder="Apellidos" onkeypress="return onlyLetters(event)" ng-model="applicant.last_name" ng-required="true">
 			</div>
 		</div>
 		<div class="form-group">
@@ -40,7 +40,7 @@
 					</select>
 				</div>
 				<div class="col-xs-9 padding-none">
-					<input class="form-control" type="text" id="number_phone" placeholder="Teléfono" ng-model="applicant.number_phone" ng-required="true">
+					<input class="form-control" type="text" id="number_phone" placeholder="Teléfono" onkeypress="return onlyNumbers(event)" ng-model="applicant.number_phone" ng-required="true">
 				</div>
 			</div>
 		</div>
@@ -61,7 +61,7 @@
 		</div>
 		<div class="col-md-8 col-md-offset-2">
 			<button type="reset" class="btn btn-default">Limpiar</button>
-			<button type="submit" class="btn btn-primary" ng-click="submit()">Agregar</button>
+			<button type="submit" class="btn btn-primary" ng-click="saveCitizen()">Agregar</button>
 		</div>
 	</form>
 </div>
