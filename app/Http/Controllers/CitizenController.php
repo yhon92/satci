@@ -38,9 +38,12 @@ class CitizenController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store(Request $request)
 	{
-		//
+		// dd($request->firs_name);
+		return response()->json([
+				'success' => true,
+			]);
 	}
 
 	/**

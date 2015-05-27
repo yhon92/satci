@@ -132,6 +132,7 @@
 		$scope.full_name = null;
 		$scope.applicantId = null;
 		$scope.identification = null;
+		$scope.alert = []
 
 		$scope.getApplicant = function (type){
 			$scope.applicantType = applicantType = type;
@@ -220,11 +221,14 @@
 			$scope.full_name = full_name;
 			$scope.applicantId = id;
 			$scope.identification = identification;
-		}
+		};
 
+		$scope.closeAlert = function(index) {
+			$scope.alerts.splice(index, 1);
+		};
 
 	}])
-
+	
 	.controller('CreateCitizenCtrl', ['$scope', 'Citizens', 
 		
 		function ($scope, Citizens) {
@@ -240,9 +244,20 @@
 			}
 
 		$scope.saveCitizen = function (){
-			$scope.full_name = $scope.applicant.first_name +' '+ $scope.applicant.last_name;
-			$scope.identification = $scope.applicant.identification;
-			$scope.applicantId = $scope.applicant.identification;
+			console.log($scope.applicant)
+			Citizens.save($scope.applicant).$promise.then(function (data) {
+				if (data.success) {
+					$scope.full_name = $scope.applicant.first_name +' '+ $scope.applicant.last_name;
+					$scope.identification = $scope.applicant.identification;
+					$scope.applicantId = $scope.applicant.identification;
+					$scope.alerts = [{
+						type: 'success',
+						message: 'Persona registrada exitosamente',
+					}];
+					$scope.close();
+				}
+			})
+
 		}
 
 	}])
@@ -264,11 +279,13 @@
 			}
 
 		$scope.saveInstitution = function (){
+
 			$scope.full_name = $scope.applicant.full_name;
 			$scope.identification = $scope.applicant.identification.toUpperCase();
 			$scope.applicantId = $scope.applicant.identification;
 		}
 
 	}])
+
 
 })();
