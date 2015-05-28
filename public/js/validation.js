@@ -54,15 +54,27 @@ function noKey (e){
 }
 // Forma de Uso: onkeyup="cedulaMask(this)"
 function cedulaMask (input){
-	var num = input.value.replace(/\./g,'');
-	if(!isNaN(num)){
-		num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g,'$1.');
-		num = num.split('').reverse().join('').replace(/^[\.]/,'');
-		input.value = num;
-	}else{
-		// alert('Solo se permiten numeros');
-		// input.value = input.value.replace(/[^\d\.]*/g,'');
+	var number = new String(input.value);
+	number = number.replace(/\./g,''); //quita todos los puntos de la cadena
+	var result = '';
+	while( number.length > 3 ){
+		result = '.' + number.substr(number.length - 3) + result;
+		number = number.substring(0, number.length - 3);
 	}
+	result = number + result;
+	input.value = result;
+
+
+
+	// var num = input.value.replace(/\./g,'');
+	// if(!isNaN(num)){
+	// 	num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g,'$1.');
+	// 	num = num.split('').reverse().join('').replace(/^[\.]/,'');
+	// 	input.value = num;
+	// }else{
+	// 	// alert('Solo se permiten numeros');
+	// 	// input.value = input.value.replace(/[^\d\.]*/g,'');
+	// }
 }
 
 function solicitudeNumberMask (input, e) {
@@ -86,11 +98,11 @@ function rifMask (input, e){
 		69 = E, 101 = e, 71 = G, 103 = g, 73 = I, 105 = i
 		74 = J, 106 = j, 77 = M, 109 = m, 80 = P, 112 = p
 		82 = R, 114 = r, 86 = V, 118 = v
-	*/
-	if (((key == 69 || key == 101) || (key == 71 || key == 103) || (key == 73 || key == 105) || 
-			 (key == 74 || key == 106) || (key == 77 || key == 109) || (key == 80 || key == 112) ||
-			 (key == 82 || key == 114) ||	(key == 86 || key == 118)) && input.length === 0 ) {
-		return true;
+		*/
+		if (((key == 69 || key == 101) || (key == 71 || key == 103) || (key == 73 || key == 105) || 
+			(key == 74 || key == 106) || (key == 77 || key == 109) || (key == 80 || key == 112) ||
+			(key == 82 || key == 114) ||	(key == 86 || key == 118)) && input.length === 0 ) {
+			return true;
 	}
 	if (key == 45 && (input.length === 1 || input.length === 10)) {
 		return true;

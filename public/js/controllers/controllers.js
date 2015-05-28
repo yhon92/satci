@@ -32,7 +32,6 @@
 			$scope.status.isOpen = !$scope.status.isOpen;
 
 		};
-
 	})
 
 	.controller('DatepickerCtrl', function ($scope) {
@@ -117,9 +116,7 @@
 	}])
 
 	.controller('CreateSolicitudeCtrl', 
-
 		['$scope', '$controller', 'Citizens', 'Institutions', 'paginateService', 
-		
 		function ($scope, $controller, Citizens, Institutions, paginateService) {
 
 		$controller('CreateCitizenCtrl', {$scope : $scope});
@@ -193,7 +190,7 @@
 			if (search) {
 				console.log('Search')
 				$scope.applicantTemplate = '';
-				$scope.searchApplicant();
+				// $scope.searchApplicant();
 			}
 		});
 
@@ -226,22 +223,18 @@
 		$scope.closeAlert = function(index) {
 			$scope.alerts.splice(index, 1);
 		};
-
 	}])
 	
-	.controller('CreateCitizenCtrl', ['$scope', 'Citizens', 
-		
-		function ($scope, Citizens) {
-
-			$scope.applicant = {
-				identification: '',
-				first_name: '',
-				last_name: '',
-				address: '',
-				prefix_phone: '',
-				number_phone: '',
-				parish_id: ''
-			}
+	.controller('CreateCitizenCtrl', ['$scope', 'Citizens', function ($scope, Citizens) {
+		$scope.applicant = {
+			identification: '',
+			first_name: '',
+			last_name: '',
+			address: '',
+			prefix_phone: '',
+			number_phone: '',
+			parish_id: ''
+		};
 
 		$scope.saveCitizen = function (){
 			console.log($scope.applicant)
@@ -259,32 +252,26 @@
 			})
 
 		}
-
 	}])
 
-	.controller('CreateInstitutionCtrl', ['$scope', 'Institutions', 
-		
-		function ($scope, Institutions) {
-
-			$scope.applicant = {
-				identification: '',
-				full_name: '',
-				address: '',
-				prefix_phone: '',
-				number_phone: '',
-				parish_id: '',
-				agent_identification: '',
-				agent_first_name: '',
-				agent_last_name: ''
-			}
+	.controller('CreateInstitutionCtrl', ['$scope', 'Institutions',	function ($scope, Institutions) {
+		$scope.applicant = {
+			identification: '',
+			full_name: '',
+			address: '',
+			prefix_phone: '',
+			number_phone: '',
+			parish_id: '',
+			agent_identification: '',
+			agent_first_name: '',
+			agent_last_name: ''
+		};
 
 		$scope.saveInstitution = function (){
-
 			$scope.full_name = $scope.applicant.full_name;
 			$scope.identification = $scope.applicant.identification.toUpperCase();
 			$scope.applicantId = $scope.applicant.identification;
 		}
-
 	}])
 
 
