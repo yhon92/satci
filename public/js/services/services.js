@@ -22,12 +22,11 @@
 		}
 
 		var result = filtered.slice(start, start + number);
-
 		$timeout(function () {
 			deferred.resolve({
 				data: result,
-				numberOfPages: (number - 1)
-				// numberOfPages: Math.ceil(1000 / number)
+				// numberOfPages: (number )
+				numberOfPages: Math.ceil(data.length / number)
 			});
 		}, 600);
 

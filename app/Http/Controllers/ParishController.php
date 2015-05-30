@@ -2,18 +2,17 @@
 
 // use SATCI\Http\Requests;
 use SATCI\Http\Controllers\Controller;
-// use SATCI\Entities\Citizen;
-use SATCI\Repositories\CitizenRepo;
+use SATCI\Repositories\ParishRepo;
 
 use Illuminate\Http\Request;
 
-class CitizenController extends Controller {
+class ParishController extends Controller {
 
-	protected $citizenRepo;
+	protected $parishRepo;
 
-	public function __construct (CitizenRepo $citizenRepo)
+	public function __construct (ParishRepo $parishRepo)
 	{
-		$this->citizenRepo = $citizenRepo;
+		$this->parishRepo = $parishRepo;
 	}
 
 	/**
@@ -23,12 +22,12 @@ class CitizenController extends Controller {
 	 */
 	public function index()
 	{
-		$citizens = $this->citizenRepo->getListCitizens();
-		
+		$parishes = $this->parishRepo->getListParishes();
+
 		return response()->json([
 
-			'citizens' => $citizens->toArray(),
-
+			'parishes' => $parishes->toArray(),
+			
 			], 200
 		);
 	}
@@ -38,12 +37,9 @@ class CitizenController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store(Request $request)
+	public function store()
 	{
-		// dd($request->parish['id']);
-		return response()->json([
-				'success' => true,
-			]);
+		//
 	}
 
 	/**

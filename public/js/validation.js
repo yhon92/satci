@@ -54,26 +54,27 @@ function noKey (e){
 }
 // Forma de Uso: onkeyup="cedulaMask(this)"
 function cedulaMask (input){
-	var number = new String(input.value);
-	number = number.replace(/\./g,''); //quita todos los puntos de la cadena
-	var result = '';
-	while( number.length > 3 ){
-		result = '.' + number.substr(number.length - 3) + result;
-		number = number.substring(0, number.length - 3);
+	// var number = new String(input.value);
+	// number = number.replace(/\./g,''); //quita todos los puntos de la cadena
+	// var result = '';
+	// while( number.length > 3 ){
+	// 	result = '.' + number.substr(number.length - 3) + result;
+	// 	number = number.substring(0, number.length - 3);
+	// }
+	// result = number + result;
+	// input.value = result;
+
+
+
+	var num = input.value.replace(/\./g,'');
+	if(!isNaN(num)){
+		num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g,'$1.');
+		num = num.split('').reverse().join('').replace(/^[\.]/,'');
+		input.value = num;
 	}
-	result = number + result;
-	input.value = result;
-
-
-
-	// var num = input.value.replace(/\./g,'');
-	// if(!isNaN(num)){
-	// 	num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g,'$1.');
-	// 	num = num.split('').reverse().join('').replace(/^[\.]/,'');
-	// 	input.value = num;
-	// }else{
-	// 	// alert('Solo se permiten numeros');
-	// 	// input.value = input.value.replace(/[^\d\.]*/g,'');
+	// else{
+		// alert('Solo se permiten numeros');
+		// input.value = input.value.replace(/[^\d\.]*/g,'');
 	// }
 }
 

@@ -116,8 +116,8 @@
 	}])
 
 	.controller('CreateSolicitudeCtrl', 
-		['$scope', '$controller', 'Citizens', 'Institutions', 'paginateService', 
-		function ($scope, $controller, Citizens, Institutions, paginateService) {
+		['$scope', '$controller', 'Citizens', 'Institutions', 'Parishes', 'paginateService', 
+		function ($scope, $controller, Citizens, Institutions, Parishes, paginateService) {
 
 		$controller('CreateCitizenCtrl', {$scope : $scope});
 		$controller('CreateInstitutionCtrl', {$scope : $scope});
@@ -131,11 +131,6 @@
 		$scope.identification = null;
 		$scope.alert = []
 
-		$scope.getApplicant = function (type){
-			$scope.applicantType = applicantType = type;
-			$scope.template = 'templates/partials/solicitude/applicant.html';
-		};
-
 		$scope.addApplicant = function (){
 			add = true;
 			search = false;
@@ -147,14 +142,6 @@
 			$scope.applicantTemplate = 'templates/partials/applicant/'+ applicantType +'-form.html';
 		};
 
-		$scope.close = function (){
-			add = null;
-			search = null
-			$scope.template = '';
-			$scope.applicant = false;
-			$scope.applicantTemplate = '';
-		};
-
 		$scope.clear = function (){
 			$scope.identification = null;
 			$scope.full_name = null;
@@ -163,6 +150,27 @@
 			$scope.applicantType = null;
 			$scope.applicantTemplate = null;
 		}
+
+		$scope.close = function (){
+			add = null;
+			search = null
+			$scope.template = '';
+			$scope.applicant = false;
+			$scope.applicantTemplate = '';
+		};
+
+		$scope.closeAlert = function(index) {
+			$scope.alerts.splice(index, 1);
+		};
+
+		$scope.getApplicant = function (type){
+			$scope.applicantType = applicantType = type;
+			$scope.template = 'templates/partials/solicitude/applicant.html';
+		};
+
+		$scope.parishes = Parishes.get(function (data) {
+			return $scope.parishes = data.parishes;
+		})
 
 		$scope.searchApplicant = function (){
 			search = true;
@@ -180,6 +188,13 @@
 			}
 
 			$scope.applicantTemplate = 'templates/partials/solicitude/search-applicant.html';
+		};
+
+		$scope.selectApplicant = function (id, identification, full_name) {
+			// console.log(id + ' - ' + identification + ' - ' + full_name);
+			$scope.full_name = full_name;
+			$scope.applicantId = id;
+			$scope.identification = identification;
 		};
 
 		$scope.$watch('applicantType', function () {
@@ -200,9 +215,13 @@
 
 			$scope.isLoading = true;
 			var pagination = tableState.pagination;
+			// $scope.DisplayedPages = 1;
+			// console.log(tableState)
 
 			var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
 			var number = pagination.number || 10;  // Number of entries showed per page.
+
+			// console.log(number)
 
 			paginateService.getPage($scope.applicants, start, number, tableState).then(function (result) {
 				
@@ -212,37 +231,26 @@
 
 			});
 		};
-
-		$scope.selectApplicant = function (id, identification, full_name) {
-			// console.log(id + ' - ' + identification + ' - ' + full_name);
-			$scope.full_name = full_name;
-			$scope.applicantId = id;
-			$scope.identification = identification;
-		};
-
-		$scope.closeAlert = function(index) {
-			$scope.alerts.splice(index, 1);
-		};
 	}])
 	
 	.controller('CreateCitizenCtrl', ['$scope', 'Citizens', function ($scope, Citizens) {
-		$scope.applicant = {
+		$scope.citizen = {
 			identification: '',
 			first_name: '',
 			last_name: '',
 			address: '',
 			prefix_phone: '',
 			number_phone: '',
-			parish_id: ''
+			parish: ''
 		};
 
 		$scope.saveCitizen = function (){
-			console.log($scope.applicant)
-			Citizens.save($scope.applicant).$promise.then(function (data) {
+			console.log($scope.citizen)
+			Citizens.save($scope.citizen).$promise.then(function (data) {
 				if (data.success) {
-					$scope.full_name = $scope.applicant.first_name +' '+ $scope.applicant.last_name;
-					$scope.identification = $scope.applicant.identification;
-					$scope.applicantId = $scope.applicant.identification;
+					$scope.full_name = $scope.citizen.first_name +' '+ $scope.citizen.last_name;
+					$scope.identification = $scope.citizen.identification;
+					$scope.applicantId = $scope.citizen.identification;
 					$scope.alerts = [{
 						type: 'success',
 						message: 'Persona registrada exitosamente',
@@ -255,22 +263,22 @@
 	}])
 
 	.controller('CreateInstitutionCtrl', ['$scope', 'Institutions',	function ($scope, Institutions) {
-		$scope.applicant = {
+		$scope.institution = {
 			identification: '',
 			full_name: '',
 			address: '',
 			prefix_phone: '',
 			number_phone: '',
-			parish_id: '',
+			parish: '',
 			agent_identification: '',
 			agent_first_name: '',
 			agent_last_name: ''
 		};
 
 		$scope.saveInstitution = function (){
-			$scope.full_name = $scope.applicant.full_name;
-			$scope.identification = $scope.applicant.identification.toUpperCase();
-			$scope.applicantId = $scope.applicant.identification;
+			$scope.full_name = $scope.institution.full_name;
+			$scope.identification = $scope.institution.identification.toUpperCase();
+			$scope.applicantId = $scope.institution.identification;
 		}
 	}])
 

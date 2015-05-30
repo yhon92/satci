@@ -22,7 +22,7 @@ class InstitutionController extends Controller {
 	 */
 	public function index()
 	{
-		$institutions = $this->institutionRepo->getListInstitution();
+		$institutions = $this->institutionRepo->getListInstitutions();
 
 		return response()->json([
 

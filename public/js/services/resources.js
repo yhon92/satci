@@ -26,10 +26,10 @@
 		});
 	})
 
-/*	.factory('Applicant', function ($resource){
-		return $resource('http://localhost/satci/public/applicant/:id', {id: '@_id'}, {
+	.factory('Parishes', function ($resource){
+		return $resource( resourceUrl + 'parish/:id', {id: '@_id'}, {
 			update: {method: 'PUT', params: {id: '@_id'}}
 		});
-	})*/
+	})
 
 })();

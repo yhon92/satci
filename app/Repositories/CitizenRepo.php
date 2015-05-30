@@ -10,7 +10,7 @@ class CitizenRepo extends BaseRepo
 		return new Citizen;
 	}
 
-	public function getListCitizen()
+	public function getListCitizens()
 	{
 		return Citizen::
 			orderby('full_name', 'ASC')
@@ -20,7 +20,7 @@ class CitizenRepo extends BaseRepo
 
 	public function newCitizen()
 	{
-		$user = new Citizen();
+		$citizen = new Citizen();
 	}
 
 }

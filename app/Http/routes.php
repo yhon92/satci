@@ -45,3 +45,8 @@ Route::group(['prefix' => 'api'], function ()
 {
 	Route::resource('institution', 'InstitutionController');
 });
+
+Route::group(['prefix' => 'api'], function ()
+{
+	Route::resource('parish', 'ParishController');
+});

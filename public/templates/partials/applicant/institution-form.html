@@ -3,26 +3,26 @@
 		<div class="form-group">
 			<label class="col-lg-3 control-label" for="identification">RIF</label>
 			<div class="col-lg-9">
-				<input class="form-control" type="text" id="identification" placeholder="RIF" onkeypress="return rifMask(this,event)" ng-model="applicant.identification" ng-required="true">
+				<input class="form-control" type="text" id="identification" placeholder="RIF" onkeypress="return rifMask(this,event)" ng-model="institution.identification" ng-required="true">
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-lg-3 control-label" for="full_name">Nombre</label>
 			<div class="col-lg-9">
-				<input class="form-control" type="text" id="full_name" placeholder="Nombre" onkeypress="return onlyLetters(event)" ng-model="applicant.full_name" ng-required="true">
+				<input class="form-control" type="text" id="full_name" placeholder="Nombre" onkeypress="return onlyLetters(event)" ng-model="institution.full_name" ng-required="true">
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-lg-3 control-label" for="address">Dirección</label>
 			<div class="col-lg-9">
-				<textarea class="form-control" id="address" placeholder="Dirección" rows="3" ng-model="applicant.address" ng-required="true"></textarea>
+				<textarea class="form-control" id="address" placeholder="Dirección" rows="3" ng-model="institution.address" ng-required="true"></textarea>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-lg-3 control-label" for="number_phone">Teléfono</label>
 			<div class="col-lg-9">
 				<div class="col-xs-3 padding-none">
-					<select class="form-control" name="prefix_phone" id="prefix_phone" ng-model="applicant.prefix_phone" ng-required="true">
+					<select class="form-control" name="prefix_phone" id="prefix_phone" ng-model="institution.prefix_phone" ng-required="true">
 						<option value="0212">0212</option>
 						<option value="0251">0251</option>
 						<option value="0253">0253</option>
@@ -34,22 +34,22 @@
 					</select>
 				</div>
 				<div class="col-xs-9 padding-none">
-					<input class="form-control" type="text" id="number_phone" placeholder="Teléfono" onkeypress="return onlyNumbers(event)" ng-model="applicant.first_name" ng-model="applicant.number_phone" ng-required="true">
+					<input class="form-control" type="text" id="number_phone" placeholder="Teléfono" onkeypress="return onlyNumbers(event)" ng-model="institution.first_name" ng-model="institution.number_phone" ng-required="true">
 				</div>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-lg-3 control-label" for="parish">Parroquia</label>
 			<div class="col-lg-9">
-				<select class="form-control" name="parish" id="parish" ng-model="applicant.parish_id" ng-required="true">
-					<option value="1">Coronel Mariano Peraza</option>
+				<select type="role" class="form-control" name="parish" id="parish" ng-options="parish.name for parish in parishes" ng-model="institution.parish" ng-required="true">
+					<!-- <option value="1">Coronel Mariano Peraza</option>
 					<option value="2">Cuara</option>
 					<option value="3">Diego de Lozada</option>
 					<option value="4">José Bernardo Dorante</option>
 					<option value="5">Juan Bautista Rodríguez</option>
 					<option value="6">Paraíso de San José</option>
 					<option value="7">San Miguel</option>
-					<option value="8">Tintorero</option>
+					<option value="8">Tintorero</option> -->
 				</select>
 			</div>
 		</div>
@@ -57,19 +57,19 @@
 		<div class="form-group">
 			<label class="col-lg-3 control-label" for="agent_identification">Cédula</label>
 			<div class="col-lg-9">
-				<input class="form-control" type="text" id="agent_identification" onkeypress="return onlyNumbers(event)" onkeyup="cedulaMask(this)" placeholder="Cédula" ng-model="applicant.agent_identification" ng-required="true">
+				<input class="form-control" type="text" id="agent_identification" onkeypress="return onlyNumbers(event)" onkeyup="cedulaMask(this)" placeholder="Cédula" ng-model="institution.agent_identification" ng-required="true">
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-lg-3 control-label" for="agent_first_name">Nombres</label>
 			<div class="col-lg-9">
-				<input class="form-control" type="text" id="agent_first_name" placeholder="Nombres" onkeypress="return onlyLetters(event)" ng-model="applicant.agent_first_name" ng-required="true">
+				<input class="form-control" type="text" id="agent_first_name" placeholder="Nombres" onkeypress="return onlyLetters(event)" ng-model="institution.agent_first_name" ng-required="true">
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-lg-3 control-label" for="agent_last_name">Apellidos</label>
 			<div class="col-lg-9">
-				<input class="form-control" type="text" id="agent_last_name" placeholder="Apellidos" onkeypress="return onlyLetters(event)" ng-model="applicant.agent_last_name" ng-required="true">
+				<input class="form-control" type="text" id="agent_last_name" placeholder="Apellidos" onkeypress="return onlyLetters(event)" ng-model="institution.agent_last_name" ng-required="true">
 			</div>
 		</div>
 		<div class="col-md-8 col-md-offset-2">

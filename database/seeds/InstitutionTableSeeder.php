@@ -13,7 +13,7 @@ class InstitutionTableSeeder extends Seeder
 
 		$faker = Faker::create('es_VE');
 
-		foreach (range(1, 30) as $index) {
+		foreach (range(1, 15) as $index) {
 
 			$first_name = $faker->firstName.' '.$faker->firstName;
 			$last_name = $faker->lastName.' '.$faker->lastName;

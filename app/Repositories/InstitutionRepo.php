@@ -10,7 +10,7 @@ class InstitutionRepo extends BaseRepo
 		return new Institution;
 	}
 
-	public function getListInstitution()
+	public function getListInstitutions()
 	{
 		return Institution::
 			orderby('full_name', 'ASC')
@@ -20,7 +20,7 @@ class InstitutionRepo extends BaseRepo
 
 	public function newInstitution()
 	{
-		$user = new Institution();
+		$institution = new Institution();
 	}
 
 }

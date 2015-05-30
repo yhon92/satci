@@ -10,7 +10,7 @@ class SolicitudeRepo extends BaseRepo
 		return new Solicitude;
 	}
 
-	public function getListSolicitude()
+	public function getListSolicitudes()
 	{
 		return Solicitude::get();
 			// orderby('full_name', 'ASC')
@@ -20,7 +20,7 @@ class SolicitudeRepo extends BaseRepo
 
 	public function newSolicitude()
 	{
-		$user = new Solicitude();
+		$solicitude = new Solicitude();
 	}
 
 }
