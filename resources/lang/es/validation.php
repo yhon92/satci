@@ -108,6 +108,7 @@ return [
 		'username' 	 		 			 => 'Usuario',
 		'password' 	 		 			 => 'Contraseña',
 		'name'			 		 			 => 'Nombre',
+		'full_name'			 		 	 => 'Nombre',
 		'first_name' 		 			 => 'Nombres',
 		'last_name'			 			 => 'Apellidos',
 		'address' 			 			 => 'Dirección',

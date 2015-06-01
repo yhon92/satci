@@ -245,20 +245,30 @@
 		};
 
 		$scope.saveCitizen = function (){
-			console.log($scope.citizen)
-			Citizens.save($scope.citizen).$promise.then(function (data) {
-				if (data.success) {
-					$scope.full_name = $scope.citizen.first_name +' '+ $scope.citizen.last_name;
-					$scope.identification = $scope.citizen.identification;
-					$scope.applicantId = $scope.citizen.identification;
-					$scope.alerts = [{
-						type: 'success',
-						message: 'Persona registrada exitosamente',
-					}];
-					$scope.close();
-				}
-			})
+			
+			$scope.citizen.full_name = $scope.citizen.first_name +' '+ $scope.citizen.last_name;
+			$scope.citizen.parish_id = $scope.citizen.parish.id;
+			delete $scope.citizen.parish;
 
+
+			console.log($scope.citizen)
+			Citizens.save($scope.citizen).$promise.then(
+				function (data) {
+					console.log(data)
+					if (data.success) {
+						$scope.full_name = $scope.citizen.first_name +' '+ $scope.citizen.last_name;
+						$scope.identification = $scope.citizen.identification;
+						$scope.applicantId = $scope.citizen.identification;
+						$scope.alerts = [{
+							type: 'success',
+							message: 'Persona registrada exitosamente',
+						}];
+						$scope.close();
+					}
+				},
+				function (fails) {
+					console.log(fails.data)
+				})
 		}
 	}])
 

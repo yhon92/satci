@@ -1,8 +1,7 @@
 <?php namespace SATCI\Http\Controllers;
 
-// use SATCI\Http\Requests;
 use SATCI\Http\Controllers\Controller;
-// use SATCI\Entities\Citizen;
+use SATCI\Http\Requests\CreateCitizenRequest;
 use SATCI\Repositories\CitizenRepo;
 
 use Illuminate\Http\Request;
@@ -38,7 +37,7 @@ class CitizenController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store(Request $request)
+	public function store(CreateCitizenRequest $request)
 	{
 		// dd($request->parish['id']);
 		return response()->json([
