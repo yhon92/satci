@@ -129,7 +129,9 @@
 		$scope.full_name = null;
 		$scope.applicantId = null;
 		$scope.identification = null;
-		$scope.alert = []
+		$scope.solicitude = {
+			alerts: [],
+		}
 
 		$scope.addApplicant = function (){
 			add = true;
@@ -159,8 +161,8 @@
 			$scope.applicantTemplate = '';
 		};
 
-		$scope.closeAlert = function(index) {
-			$scope.alerts.splice(index, 1);
+		$scope.closeAlertSolicitude = function(index) {
+			$scope.solicitude.alerts.splice(index, 1);
 		};
 
 		$scope.getApplicant = function (type){
@@ -191,7 +193,6 @@
 		};
 
 		$scope.selectApplicant = function (id, identification, full_name) {
-			// console.log(id + ' - ' + identification + ' - ' + full_name);
 			$scope.full_name = full_name;
 			$scope.applicantId = id;
 			$scope.identification = identification;
@@ -199,11 +200,9 @@
 
 		$scope.$watch('applicantType', function () {
 			if (add) {
-			console.log('add')
 				$scope.addApplicant();
 			}
 			if (search) {
-				console.log('Search')
 				$scope.applicantTemplate = '';
 				// $scope.searchApplicant();
 			}
@@ -216,12 +215,9 @@
 			$scope.isLoading = true;
 			var pagination = tableState.pagination;
 			// $scope.DisplayedPages = 1;
-			// console.log(tableState)
 
 			var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
 			var number = pagination.number || 10;  // Number of entries showed per page.
-
-			// console.log(number)
 
 			paginateService.getPage($scope.applicants, start, number, tableState).then(function (result) {
 				
@@ -234,6 +230,10 @@
 	}])
 	
 	.controller('CreateCitizenCtrl', ['$scope', 'Citizens', function ($scope, Citizens) {
+		$scope.applicant = {
+			alerts: [],
+		}
+
 		$scope.citizen = {
 			identification: '',
 			first_name: '',
@@ -244,14 +244,20 @@
 			parish: ''
 		};
 
+		$scope.closeAlertApplicant = function(index) {
+			$scope.applicant.alerts.splice(index, 1);
+		};
+
 		$scope.saveCitizen = function (){
-			
+			$scope.applicant = {
+				alerts: [],
+			}
 			$scope.citizen.full_name = $scope.citizen.first_name +' '+ $scope.citizen.last_name;
 			$scope.citizen.parish_id = $scope.citizen.parish.id;
 			delete $scope.citizen.parish;
 
 
-			console.log($scope.citizen)
+			// console.log($scope.citizen)
 			Citizens.save($scope.citizen).$promise.then(
 				function (data) {
 					console.log(data)
@@ -259,7 +265,7 @@
 						$scope.full_name = $scope.citizen.first_name +' '+ $scope.citizen.last_name;
 						$scope.identification = $scope.citizen.identification;
 						$scope.applicantId = $scope.citizen.identification;
-						$scope.alerts = [{
+						$scope.solicitude.alerts = [{
 							type: 'success',
 							message: 'Persona registrada exitosamente',
 						}];
@@ -267,12 +273,19 @@
 					}
 				},
 				function (fails) {
-					console.log(fails.data)
+/*					angular.forEach(fails.data, function (value, key) {
+						console.log(value)
+						$scope.applicant.alerts.push({type: 'danger', message: value})
+					})*/
 				})
 		}
 	}])
 
 	.controller('CreateInstitutionCtrl', ['$scope', 'Institutions',	function ($scope, Institutions) {
+		$scope.applicant = {
+			alerts: [],
+		}
+
 		$scope.institution = {
 			identification: '',
 			full_name: '',

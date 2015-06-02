@@ -33,4 +33,5 @@ class CreateCitizenRequest extends Request {
 		];
 	}
 
+
 }

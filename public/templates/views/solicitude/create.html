@@ -1,7 +1,6 @@
 <div class="col-md-6">
-	<!-- <div ng-controller="AlertCtrl"> -->
 	<div>
-		<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.message}}</alert>
+		<alert ng-repeat="alert in solicitude.alerts" type="{{alert.type}}" close="closeAlertSolicitude($index)">{{alert.message}}</alert>
 	</div>
 	<div class="panel panel-default">
 		<div class="panel-body">
