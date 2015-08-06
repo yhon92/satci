@@ -18,9 +18,9 @@ class InstitutionRepo extends BaseRepo
 			// ->paginate();
 	}
 
-	public function newInstitution()
+	public function newInstitution($data)
 	{
-		$institution = new Institution();
+		return Institution::create($data);
 	}
 
 }

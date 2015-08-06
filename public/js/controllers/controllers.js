@@ -256,15 +256,12 @@
 			$scope.citizen.parish_id = $scope.citizen.parish.id;
 			delete $scope.citizen.parish;
 
-
-			// console.log($scope.citizen)
 			Citizens.save($scope.citizen).$promise.then(
 				function (data) {
-					console.log(data)
 					if (data.success) {
 						$scope.full_name = $scope.citizen.first_name +' '+ $scope.citizen.last_name;
 						$scope.identification = $scope.citizen.identification;
-						$scope.applicantId = $scope.citizen.identification;
+						$scope.applicantId = data.citizen.id;
 						$scope.solicitude.alerts = [{
 							type: 'success',
 							message: 'Persona registrada exitosamente',
@@ -273,10 +270,10 @@
 					}
 				},
 				function (fails) {
-/*					angular.forEach(fails.data, function (value, key) {
+					angular.forEach(fails.data, function (value, key) {
 						console.log(value)
 						$scope.applicant.alerts.push({type: 'danger', message: value})
-					})*/
+					})
 				})
 		}
 	}])
@@ -298,10 +295,38 @@
 			agent_last_name: ''
 		};
 
+		$scope.closeAlertApplicant = function(index) {
+			$scope.applicant.alerts.splice(index, 1);
+		};
+		
 		$scope.saveInstitution = function (){
+			$scope.applicant = {
+				alerts: [],
+			}
 			$scope.full_name = $scope.institution.full_name;
 			$scope.identification = $scope.institution.identification.toUpperCase();
 			$scope.applicantId = $scope.institution.identification;
+
+			Institutions.save($scope.institution).$promise.then(
+				function (data) {
+					if (data.success) {
+						$scope.full_name = $scope.institution.full_name;
+						$scope.identification = $scope.institution.identification;
+						$scope.applicantId = data.institution.id;
+						$scope.solicitude.alerts = [{
+							type: 'success',
+							message: 'Institución registrada exitosamente',
+						}];
+						$scope.close();
+					}
+				},
+				function (fails) {
+					angular.forEach(fails.data, function (value, key) {
+						console.log(value)
+						$scope.applicant.alerts.push({type: 'danger', message: value})
+					})
+				})
+
 		}
 	}])
 

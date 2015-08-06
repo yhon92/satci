@@ -18,9 +18,9 @@ class CitizenRepo extends BaseRepo
 			// ->paginate();
 	}
 
-	public function newCitizen()
+	public function newCitizen($data)
 	{
-		$citizen = new Citizen();
+		return Citizen::create($data);
 	}
 
 }

@@ -113,7 +113,7 @@ return [
 		'last_name'			 			 => 'Apellidos',
 		'address' 			 			 => 'Dirección',
 		'email' 				 			 => 'Correo Electrónico',
-		'identification' 			 => 'Cédula',
+		'identification' 			 => 'Identificacíon',
 		'prefix_phone' 	 			 => 'Operadora',
 		'number_phone' 	 			 => 'Número Telefónico',
 		'resolution' 		 			 => 'Resolución',

@@ -1,5 +1,5 @@
 <div>
-	<form class="form-horizontal">
+	<form class="form-horizontal" ng-submit="saveInstitution()">
 		<div class="form-group">
 			<label class="col-lg-3 control-label" for="identification">RIF</label>
 			<div class="col-lg-9">
@@ -57,7 +57,7 @@
 		<div class="form-group">
 			<label class="col-lg-3 control-label" for="agent_identification">Cédula</label>
 			<div class="col-lg-9">
-				<input class="form-control" type="text" id="agent_identification" onkeypress="return onlyNumbers(event)" onkeyup="cedulaMask(this)" placeholder="Cédula" ng-model="institution.agent_identification" ng-required="true">
+				<input class="form-control" type="text" id="agent_identification" onkeypress="return onlyNumbers(event)" placeholder="Cédula" ng-model="institution.agent_identification" ng-required="true">
 			</div>
 		</div>
 		<div class="form-group">
@@ -74,7 +74,7 @@
 		</div>
 		<div class="col-md-8 col-md-offset-2">
 			<button type="reset" class="btn btn-default">Limpiar</button>
-			<button type="submit" class="btn btn-primary" ng-click="saveInstitution()">Agregar</button>
+			<button type="submit" class="btn btn-primary">Agregar</button>
 		</div>
 	</form>
 </div>

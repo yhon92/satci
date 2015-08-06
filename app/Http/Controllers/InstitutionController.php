@@ -1,7 +1,7 @@
 <?php namespace SATCI\Http\Controllers;
 
-use SATCI\Http\Requests;
 use SATCI\Http\Controllers\Controller;
+use SATCI\Http\Requests\CreateInstitutionRequest;
 use SATCI\Repositories\InstitutionRepo;
 
 use Illuminate\Http\Request;
@@ -36,9 +36,14 @@ class InstitutionController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store(CreateInstitutionRequest $request)
 	{
-		//
+		$institution = $this->institutionRepo->newInstitution($request->all());
+
+		return response()->json([
+				'success' => true,
+				'institution' => $institution,
+			]);
 	}
 
 	/**

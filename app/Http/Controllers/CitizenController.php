@@ -39,9 +39,8 @@ class CitizenController extends Controller {
 	 */
 	public function store(CreateCitizenRequest $request)
 	{
-		// dd($request);
-		$citizen = $this->CitizenRepo->newCitizen($request->all());
-		dd($citizen);
+		$citizen = $this->citizenRepo->newCitizen($request->all());
+		
 		return response()->json([
 				'success' => true,
 				'citizen' => $citizen,
