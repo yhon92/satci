@@ -271,7 +271,6 @@
 				},
 				function (fails) {
 					angular.forEach(fails.data, function (value, key) {
-						console.log(value)
 						$scope.applicant.alerts.push({type: 'danger', message: value})
 					})
 				})
