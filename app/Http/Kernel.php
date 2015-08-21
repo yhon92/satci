@@ -15,7 +15,7 @@ class Kernel extends HttpKernel {
 		'Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse',
 		'Illuminate\Session\Middleware\StartSession',
 		'Illuminate\View\Middleware\ShareErrorsFromSession',
-		'SATCI\Http\Middleware\VerifyCsrfToken',
+		// 'SATCI\Http\Middleware\VerifyCsrfToken',
 	];
 
 	/**
@@ -24,9 +24,11 @@ class Kernel extends HttpKernel {
 	 * @var array
 	 */
 	protected $routeMiddleware = [
-		'auth' => 'SATCI\Http\Middleware\Authenticate',
-		'auth.basic' => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
-		'guest' => 'SATCI\Http\Middleware\RedirectIfAuthenticated',
+		'auth' 				=> 'SATCI\Http\Middleware\Authenticate',
+		'auth.basic'  => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
+		'guest' 			=> 'SATCI\Http\Middleware\RedirectIfAuthenticated',
+		'jwt.auth' 		=> 'Tymon\JWTAuth\Middleware\GetUserFromToken',
+    'jwt.refresh' => 'Tymon\JWTAuth\Middleware\RefreshToken',
 	];
 
 }

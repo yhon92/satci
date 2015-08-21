@@ -12,6 +12,7 @@ class CitizenController extends Controller {
 
 	public function __construct (CitizenRepo $citizenRepo)
 	{
+		$this->middleware('jwt.auth');
 		$this->citizenRepo = $citizenRepo;
 	}
 

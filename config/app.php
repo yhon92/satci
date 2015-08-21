@@ -139,6 +139,7 @@ return [
 		/* Vendor Providers */
 
 		'Collective\Html\HtmlServiceProvider',
+		'Tymon\JWTAuth\Providers\JWTAuthServiceProvider',
 		// 'Barryvdh\Debugbar\ServiceProvider',
 
 		/*
@@ -199,8 +200,10 @@ return [
 		'View'      => 'Illuminate\Support\Facades\View',
 
 		/* Aliase Vendor */
-		'Form' => 'Collective\Html\FormFacade',
-    'Html' => 'Collective\Html\HtmlFacade',
+		'Form' 			 => 'Collective\Html\FormFacade',
+    'Html' 			 => 'Collective\Html\HtmlFacade',
+    'JWTAuth' 	 => 'Tymon\JWTAuth\Facades\JWTAuth',
+    'JWTFactory' => 'Tymon\JWTAuth\Facades\JWTFactory',
     // 'Debugbar' => 'Barryvdh\Debugbar\Facade',
 
 	],

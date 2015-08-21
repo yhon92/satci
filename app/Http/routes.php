@@ -1,5 +1,6 @@
 <?php
-
+Blade::setContentTags('<%', '%>'); // for variables and all things Blade
+Blade::setEscapedContentTags('<%%', '%%>'); // for escaped data
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -12,19 +13,19 @@
 */
 
 Route::get('/', function (){
-	return redirect()->to('/home');
+	return view('layout');
 });
 
-Route::get('/home', 'HomeController@index');
-
-// Route::get('solicitude/', 'HomeController@index');
-
-Route::controllers([
+/*Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
-]);
+]);*/
 
-
+Route::group(['prefix' => 'api', 'namespace' => 'Auth'], function ()
+{
+  Route::post('auth/login', 'AuthController@login');
+  Route::get('auth/user', 'AuthController@getUser');
+});
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function ()
 {

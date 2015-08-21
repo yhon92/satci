@@ -11,7 +11,8 @@ class Handler extends ExceptionHandler {
 	 * @var array
 	 */
 	protected $dontReport = [
-		'Symfony\Component\HttpKernel\Exception\HttpException'
+		// 'Symfony\Component\HttpKernel\Exception\HttpException'
+		HttpException::class,
 	];
 
 	/**
@@ -38,7 +39,7 @@ class Handler extends ExceptionHandler {
 	{
 		if($e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException)
 		{
-			return response()->view('home')->header('Content-Type', 'text/html');
+			return response()->view('layout')->header('Content-Type', 'text/html');
 		}
 		return parent::render($request, $e);
 	}
