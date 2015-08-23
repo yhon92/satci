@@ -1,0 +1,11 @@
+"build": "npm run styl && otra_tarea && otra_tarea && otra_tarea"
+
+"styl": "stylus --use nib --compress --watch front_dev/styl/app.styl --out public/css",
+
+"jade" : "jade --watch --pretty front_dev/index.jade --out ./public",
+
+"babel": "babel --watch front_dev/js/app.js --out-dir /public/js",
+
+"browserify": "browserify -t babelify -t jadeify lib/app.js > public/app.js",
+
+

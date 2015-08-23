@@ -12,10 +12,11 @@ class SolicitudeRepo extends BaseRepo
 
 	public function getListSolicitudes()
 	{
-		return Solicitude::get();
-			// orderby('full_name', 'ASC')
-				// ->get();
-			// ->paginate();
+		/*return Solicitude::join('citizens', 'applicant_id' ,'=', 'citizens.id')
+			->where('applicant_type' ,'=', 'Natural')
+			->orderBy('solicitude_number', 'desc')
+			->get();*/
+		return Solicitude::all();
 	}
 
 	public function newSolicitude()

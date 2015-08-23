@@ -13,10 +13,10 @@ class AnswerTableSeeder extends Seeder
 
 		$faker = Faker::create('es_VE');
 
-		foreach (range(1, 100) as $index) {
+		foreach (range(1, 50) as $index) {
 
 			Answer::create([
-				'instrument_id'	=> $faker->numberBetween($min = 1, $max = 100),
+				'instrument_id'	=> $faker->numberBetween($min = 1, $max = 50),
 				'date'					=> $faker->dateTimeBetween($startDate = '-4 months', $endDate = 'now'),
 				'number_job'		=> 'ATC-O-'.$index+=122,
 				'observation'		=> $faker->realText($maxNbChars = 200),

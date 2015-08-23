@@ -1,9 +1,10 @@
 function onlyLetters(e){
-	key = e.keyCode || e.which;
-	tecla = String.fromCharCode(key).toLowerCase();
-	letras = " áéíóúüabcdefghijklmnñopqrstuvwxyz";
-	especiales = [8,37,39,46];
+	var key = e.keyCode || e.which,
+	tecla = String.fromCharCode(key).toLowerCase(),
+	letras = " áéíóúüabcdefghijklmnñopqrstuvwxyz",
+	especiales = [8,37,39,46],
 	tecla_especial = false
+
 	for(var i in especiales){
 		if(key == especiales[i]){
 			tecla_especial = true;
@@ -16,11 +17,12 @@ function onlyLetters(e){
 }
 
 function onlyNumbers(e){
-	key = e.keyCode || e.which;
-	tecla = String.fromCharCode(key).toLowerCase();
-	num = "0123456789";
-	especiales = [8,37,39,46];
+	var key = e.keyCode || e.which,
+	tecla = String.fromCharCode(key).toLowerCase(),
+	num = "0123456789",
+	especiales = [8,37,39,46],
 	tecla_especial = false
+
 	for(var i in especiales){
 		if(key == especiales[i]){
 			tecla_especial = true;
@@ -33,11 +35,12 @@ function onlyNumbers(e){
 }
 
 function onlyClear(e){
-	key = e.keyCode || e.which;
-	tecla = String.fromCharCode(key).toLowerCase();
-	num = "";
-	especiales = [8,13,];
+	var key = e.keyCode || e.which,
+	tecla = String.fromCharCode(key).toLowerCase(),
+	num = "",
+	especiales = [8,13,],
 	tecla_especial = false
+	
 	for(var i in especiales){
 		if(key == especiales[i]){
 			tecla_especial = true;

@@ -1,7 +1,25 @@
 {
   "private": true,
   "devDependencies": {
+    "angular": "^1.4.3",
+    "angular-animate": "^1.4.3",
+    "angular-loading-bar": "^0.8.0",
+    "angular-resource": "^1.4.3",
+    "angular-route": "^1.4.3",
+    "angular-smart-table": "^2.1.2",
+    "angular-ui-router": "^0.2.15",
+    "bootstrap": "^3.3.5",
     "gulp": "^3.8.8",
-    "laravel-elixir": "*"
+    "gulp-livereload": "^3.8.0",
+    "jquery": "^2.1.4",
+    "laravel-elixir": "*",
+    "nib": "*",
+    "satellizer": "0.12.*",
+    "stylus": "*"
+  },
+  "scripts": {
+    "styl": "stylus --compress --watch front_dev/styl/app.styl --out public/css",
+    "babel": "babel --watch front_dev/js/app.js --out-dir /public/js",
+    "build": "npm run styl"
   }
 }

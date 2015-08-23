@@ -1,6 +1,6 @@
 <?php namespace SATCI\Http\Controllers;
 
-class HomeController extends Controller {
+class IndexController extends Controller {
 
 	/*
 	|--------------------------------------------------------------------------
@@ -20,7 +20,7 @@ class HomeController extends Controller {
 	 */
 	public function __construct()
 	{
-		$this->middleware('auth');
+		// $this->middleware('jwt.auth');
 	}
 
 	/**
@@ -32,7 +32,7 @@ class HomeController extends Controller {
 	{
 		// $solicitudes = $solicitude->paginate(10)->all();
 		// dd($requests);
-		return view('home');
+		return view('layout');
 	}
 
 }

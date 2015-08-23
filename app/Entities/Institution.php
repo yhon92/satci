@@ -16,5 +16,9 @@ class Institution extends Model {
 													'agent_first_name',
 													'agent_last_name',
 													'parish_id'];
-
+  
+  public function solicitudes()
+  {
+    return $this->morphMany('SATCI\Entities\Solicitude', 'applicant');
+  }
 }

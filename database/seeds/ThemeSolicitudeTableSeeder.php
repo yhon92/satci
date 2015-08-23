@@ -13,10 +13,10 @@ class ThemeSolicitudeTableSeeder extends Seeder
 
 		$faker = Faker::create('es_VE');
 
-		foreach (range(1, 100) as $index) {
+		foreach (range(1, 50) as $index) {
 
 			ThemeSolicitude::create([
-				'solicitude_id'	=> $faker->numberBetween($min = 1, $max = 765),
+				'solicitude_id'	=> $faker->numberBetween($min = 1, $max = 100),
 				'theme_id'		=> $faker->numberBetween($min = 1, $max = 12),
 			]);
 

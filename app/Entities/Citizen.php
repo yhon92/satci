@@ -15,4 +15,8 @@ class Citizen extends Model {
 													'number_phone', 
 													'parish_id'];
 
+  public function solicitudes()
+  {
+    return $this->morphMany('SATCI\Entities\Solicitude', 'applicant');
+  }
 }

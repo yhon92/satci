@@ -13,7 +13,7 @@ class CitizenRepo extends BaseRepo
 	public function getListCitizens()
 	{
 		return Citizen::
-			orderby('full_name', 'ASC')
+			orderBy('full_name', 'ASC')
 				->get();
 			// ->paginate();
 	}

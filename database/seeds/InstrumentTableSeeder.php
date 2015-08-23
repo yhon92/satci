@@ -13,11 +13,11 @@ class InstrumentTableSeeder extends Seeder
 
 		$faker = Faker::create('es_VE');
 
-		foreach (range(1, 100) as $index) {
+		foreach (range(1, 50) as $index) {
 
 			Instrument::create([
 				'date'						=> $faker->dateTimeBetween($startDate = '-4 months', $endDate = 'now'),
-				'area_solicitude_id'	=> $faker->numberBetween($min = 1, $max = 100),
+				'area_solicitude_id'	=> $faker->numberBetween($min = 1, $max = 50),
 				'observation'			=> $faker->realText($maxNbChars = 200),
 			]);
 

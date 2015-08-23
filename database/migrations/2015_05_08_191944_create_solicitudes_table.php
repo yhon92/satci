@@ -17,7 +17,7 @@ class CreateSolicitudesTable extends Migration {
 			$table->increments('id');
 			$table->string('solicitude_number')->unique();
 			$table->date('reception_date');
-			$table->enum('identification_type', ['Natural', 'Jurídica']);
+			$table->enum('applicant_type', ['SATCI\Entities\Citizen', 'SATCI\Entities\Institution']);
 			$table->integer('applicant_id')->unsigned();
 			$table->date('document_date');
 			$table->text('topic');
