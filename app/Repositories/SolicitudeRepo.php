@@ -10,16 +10,26 @@ class SolicitudeRepo extends BaseRepo
 		return new Solicitude;
 	}
 
-	public function getListSolicitudes()
+	static public function getListSolicitudes()
 	{
-		/*return Solicitude::join('citizens', 'applicant_id' ,'=', 'citizens.id')
-			->where('applicant_type' ,'=', 'Natural')
-			->orderBy('solicitude_number', 'desc')
-			->get();*/
 		return Solicitude::all();
 	}
 
-	public function newSolicitude()
+	static public function getApplicant($type, $id){
+		return $type::find($id);
+	}
+
+	static public function getListByApplicant($type)
+	{
+		$type = 'SATCI\Entities\\'.$type;
+		return Solicitude::
+		// join('citizens', 'applicant_id' ,'=', 'citizens.id')
+		where('applicant_type' ,'=', $type)
+		->orderBy('solicitude_number', 'desc')
+		->get();
+	}
+
+	static public function newSolicitude()
 	{
 		$solicitude = new Solicitude();
 	}

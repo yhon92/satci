@@ -9,25 +9,35 @@
 	angular.module('SATCI.resources', ['ngResource'])
 
 
-	.factory('Solicitudes', function ($resource){
+	.factory('Solicitudes', function($resource){
 		return $resource( resourceUrl +'solicitude/:id', {id: '@_id'}, {
-			update: {method: 'PUT', params: {id: '@_id'}}
+			update: {
+				method: 'PUT', 
+				params: {
+					id: '@_id'
+				}
+			}
 		});
 	})
+	.factory('SolicitudesList', function($http){
+		return function(applicant=''){
+				return $http.get( resourceUrl +'solicitude/list/' + applicant);
+			}
+		})	
 
-	.factory('Citizens', function ($resource){
+	.factory('Citizens', function($resource){
 		return $resource( resourceUrl + 'citizen/:id', {id: '@_id'}, {
 			update: {method: 'PUT', params: {id: '@_id'}}
 		});
 	})
 
-	.factory('Institutions', function ($resource){
+	.factory('Institutions', function($resource){
 		return $resource( resourceUrl + 'institution/:id', {id: '@_id'}, {
 			update: {method: 'PUT', params: {id: '@_id'}}
 		});
 	})
 
-	.factory('Parishes', function ($resource){
+	.factory('Parishes', function($resource){
 		return $resource( resourceUrl + 'parish/:id', {id: '@_id'}, {
 			update: {method: 'PUT', params: {id: '@_id'}}
 		});

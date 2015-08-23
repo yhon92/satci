@@ -10,15 +10,15 @@ class InstitutionRepo extends BaseRepo
 		return new Institution;
 	}
 
-	public function getListInstitutions()
+	static public function getListInstitutions()
 	{
 		return Institution::
-			orderby('full_name', 'ASC')
-				->get();
+		orderby('full_name', 'ASC')
+		->get();
 			// ->paginate();
 	}
 
-	public function newInstitution($data)
+	static public function newInstitution($data)
 	{
 		return Institution::create($data);
 	}

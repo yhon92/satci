@@ -36,7 +36,7 @@ gulp.task('watch-lr', function () {
 });
 
 elixir(function(mix) {
-  mix.scripts(['/libs/jquery.min.js', 
+  /*mix.scripts(['/libs/jquery.min.js', 
                '/libs/bootstrap.min.js', 
                '/libs/angular.min.js', 
                //'/libs/angular-route.min.js', 
@@ -48,7 +48,7 @@ elixir(function(mix) {
                '/libs/satellizer.min.js', 
                '/libs/loading-bar.min.js', 
                // '', 
-              ], './public/js/libs.js')
+              ], './public/js/libs.js')*/
 
   mix.babel(['app.js', 
                '/filters/*.js', 

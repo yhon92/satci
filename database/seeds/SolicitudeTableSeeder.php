@@ -22,7 +22,7 @@ class SolicitudeTableSeeder extends Seeder
 				'solicitude_number'	=> '000-'.$index+=122,
 				'reception_date'		=> $date,
 				'applicant_type'		=> $faker->randomElement(['SATCI\Entities\Citizen', 'SATCI\Entities\Institution']),
-				'applicant_id'			=> $faker->numberBetween($min = 1, $max = 30),
+				'applicant_id'			=> $faker->numberBetween($min = 1, $max = 20),
 				'document_date'			=> $date,
 				'topic'							=> $faker->text($maxNbChars = 200),
 				'status'						=> 'Recibido',

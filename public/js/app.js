@@ -282,14 +282,25 @@
 
 			return '';
 		};
-	}).controller('SolicitudeCtrl', ['$scope', 'Solicitudes', function ($scope, Solicitudes) {
+	}).controller('SolicitudeCtrl', function ($scope, $http, SolicitudesList) {
 		/*	$scope.parishes = Parishes.get(function (data) {
   			return $scope.parishes = data.parishes;
   		})*/
-		Solicitudes.get(function (data) {
-			$scope.solicitudes = data.solicitudes;
+
+		SolicitudesList('Citizen').then(function (response) {
+			// console.log(response.data.solicitudes);
+			$scope.citizen = response.data.solicitudes;
+		}, function (error) {
+			console.log(error);
 		});
-	}]).controller('CreateSolicitudeCtrl', ['$scope', '$controller', 'Citizens', 'Institutions', 'Parishes', 'paginateService', function ($scope, $controller, Citizens, Institutions, Parishes, paginateService) {
+
+		SolicitudesList('Institution').then(function (response) {
+			// console.log(response.data.solicitudes);
+			$scope.institution = response.data.solicitudes;
+		}, function (error) {
+			console.log(error);
+		});
+	}).controller('CreateSolicitudeCtrl', ['$scope', '$controller', 'Citizens', 'Institutions', 'Parishes', 'paginateService', function ($scope, $controller, Citizens, Institutions, Parishes, paginateService) {
 
 		$controller('CreateCitizenCtrl', { $scope: $scope });
 		$controller('CreateInstitutionCtrl', { $scope: $scope });
@@ -505,8 +516,19 @@
 
 	angular.module('SATCI.resources', ['ngResource']).factory('Solicitudes', function ($resource) {
 		return $resource(resourceUrl + 'solicitude/:id', { id: '@_id' }, {
-			update: { method: 'PUT', params: { id: '@_id' } }
+			update: {
+				method: 'PUT',
+				params: {
+					id: '@_id'
+				}
+			}
 		});
+	}).factory('SolicitudesList', function ($http) {
+		return function () {
+			var applicant = arguments.length <= 0 || arguments[0] === undefined ? '' : arguments[0];
+
+			return $http.get(resourceUrl + 'solicitude/list/' + applicant);
+		};
 	}).factory('Citizens', function ($resource) {
 		return $resource(resourceUrl + 'citizen/:id', { id: '@_id' }, {
 			update: { method: 'PUT', params: { id: '@_id' } }

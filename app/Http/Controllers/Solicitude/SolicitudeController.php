@@ -3,6 +3,7 @@
 use SATCI\Repositories\SolicitudeRepo;
 use SATCI\Repositories\CitizenRepo;
 use SATCI\Http\Controllers\Controller;
+use SATCI\Utils\Helpers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
@@ -32,22 +33,37 @@ class SolicitudeController extends Controller {
 	public function index()
 	{
 		$solicitudes = $this->solicitudeRepo->getListSolicitudes();
-		// dd($solicitudes);
-		foreach ($solicitudes as $key => $value) {
-			
-			$citizen = $this->citizenRepo->find($value->applicant_id);
 
-			unset($value['applicant_type'], $value['applicant_id']);
+		Helpers::concatSolicitudeWithApplicant($solicitudes);
 
-			$value->applicant = $citizen;
-		}
-			// return $solicitudes;
 		return response()->json([
 			'solicitudes' => $solicitudes
 			], 200
 		);
 	}
 
+	public function listByApplicant($type)
+	{
+		$type = ucwords($type);
+		if ( $type === 'Citizen' || $type === 'Institution' )
+		{
+			$solicitudes = $this->solicitudeRepo->getListByApplicant($type);
+
+			Helpers::concatSolicitudeWithApplicant($solicitudes);
+
+			return response()->json([
+				'solicitudes' => $solicitudes,
+				], 200
+			);
+		}
+		else
+		{
+			return response()->json([
+				'error' => 'Solicitante Inválido'
+				], 200
+			);
+		}
+	}
 	/**
 	 * Show the form for creating a new resource.
 	 *

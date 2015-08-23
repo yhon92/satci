@@ -10,15 +10,15 @@ class CitizenRepo extends BaseRepo
 		return new Citizen;
 	}
 
-	public function getListCitizens()
+	static public function getListCitizens()
 	{
 		return Citizen::
-			orderBy('full_name', 'ASC')
-				->get();
+		orderBy('full_name', 'ASC')
+		->get();
 			// ->paginate();
 	}
 
-	public function newCitizen($data)
+	static public function newCitizen($data)
 	{
 		return Citizen::create($data);
 	}
