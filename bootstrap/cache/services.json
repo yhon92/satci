@@ -24,7 +24,10 @@
         "Illuminate\\View\\ViewServiceProvider",
         "Collective\\Html\\HtmlServiceProvider",
         "Tymon\\JWTAuth\\Providers\\JWTAuthServiceProvider",
+<<<<<<< HEAD
         "Barryvdh\\Debugbar\\ServiceProvider",
+=======
+>>>>>>> 830769aad708569dcab2dfeba2b3540418fae017
         "SATCI\\Providers\\AppServiceProvider",
         "SATCI\\Providers\\BusServiceProvider",
         "SATCI\\Providers\\ConfigServiceProvider",
@@ -44,7 +47,10 @@
         "Illuminate\\Validation\\ValidationServiceProvider",
         "Illuminate\\View\\ViewServiceProvider",
         "Tymon\\JWTAuth\\Providers\\JWTAuthServiceProvider",
+<<<<<<< HEAD
         "Barryvdh\\Debugbar\\ServiceProvider",
+=======
+>>>>>>> 830769aad708569dcab2dfeba2b3540418fae017
         "SATCI\\Providers\\AppServiceProvider",
         "SATCI\\Providers\\BusServiceProvider",
         "SATCI\\Providers\\ConfigServiceProvider",

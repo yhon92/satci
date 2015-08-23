@@ -1,8 +1,13 @@
+<<<<<<< HEAD
 <!-- <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main"> -->
+=======
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+>>>>>>> 830769aad708569dcab2dfeba2b3540418fae017
 	<div class="col-md-12" ui-view>
 		<p>
 			<a ui-sref=".create" class="btn btn-primary">Nueva Solicitud</a>
 		</p>
+<<<<<<< HEAD
 
 		<div class="panel panel-default">
 			<div class="panel-heading">Solicitudes de <strong>Personas</strong></div>
@@ -18,11 +23,27 @@
 								<th style="width: 520px;">Asunto</th>
 								<th>Estado</th>
 								<th style="width: 60px;"></th>
+=======
+		<div class="panel panel-default">
+			<div class="panel-heading">Solicitudes</div>
+			<div class="panel-body">
+				<div class="table-responsive">
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>Nº Solicitud</th>
+								<th>Recepción</th>
+								<th>R. Social</th>
+								<th>Nombre</th>
+								<th>Asunto</th>
+								<th>Estado</th>
+>>>>>>> 830769aad708569dcab2dfeba2b3540418fae017
 							</tr>
 						</thead>
 						<tbody>
 							<tr ng-repeat="row in solicitudes" data-id='{{ row.id }}'>
 								<td>{{ row.solicitude_number }}</td>
+<<<<<<< HEAD
 								<td>{{ row.reception_date | date:'dd-MM-yyyy' }}</td>
 								<td>{{ row.applicant.identification }}</td>
 								<td>{{ row.applicant.full_name}}</td>
@@ -62,6 +83,12 @@
 								<td>{{ row.identification_type }}</td>
 								<td> Administrador del Sistema </td>
 								<td>{{ row.topic | limitTo:140 }}</td>
+=======
+								<td>{{ row.reception_date }}</td>
+								<td>{{ row.identification_type }}</td>
+								<td>{{ row.applicant.full_name }}</td>
+								<td>{{ row.topic }}</td>
+>>>>>>> 830769aad708569dcab2dfeba2b3540418fae017
 								<td>{{ row.status }}</td>
 								<td>
 									<a href="#" class="btn btn-xs btn-warning glyphicon glyphicon-edit"></a>
@@ -74,4 +101,8 @@
 			</div>
 		</div>
 	</div>
+<<<<<<< HEAD
 <!-- </div>
+=======
+</div>
+>>>>>>> 830769aad708569dcab2dfeba2b3540418fae017

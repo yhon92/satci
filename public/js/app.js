@@ -2,6 +2,7 @@
 
 (function () {
 	'use stric';
+<<<<<<< HEAD
 	angular.module('SATCI', [
 	// 'ngRoute',
 	'ngAnimate', 'ngResource', 'ui.bootstrap', 'ui.router', 'satellizer', 'smart-table', 'angular-loading-bar',
@@ -21,6 +22,28 @@
 		$authProvider.tokenPrefix = "SATCI";
 		$authProvider.storageType = 'sessionStorage';
 
+=======
+
+	angular.module('SATCI', [
+	// 'ngRoute',
+	'ngAnimate', 'ngResource', 'ui.bootstrap', 'ui.router', 'satellizer', 'smart-table', 'angular-loading-bar',
+	// '',
+	'SATCI.controllers', 'SATCI.services', 'SATCI.resources', 'SATCI.filters']).constant('PathTemplates', {
+		views: 'templates/views/',
+		partials: 'templates/partials/'
+	})
+	// .config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider)
+	.config(function ($authProvider, $stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, PathTemplates) {
+		// Push the new factory onto the $http interceptor array
+		$httpProvider.interceptors.push('redirectWhenLoggedOut');
+
+		$authProvider.loginUrl = "/api/auth/login";
+		// $authProvider.signupUrl = "http://api.com/auth/signup";
+		$authProvider.tokenName = "token";
+		$authProvider.tokenPrefix = "SATCI";
+		$authProvider.storageType = 'sessionStorage';
+
+>>>>>>> 830769aad708569dcab2dfeba2b3540418fae017
 		$urlRouterProvider.otherwise('/auth/login');
 
 		$stateProvider.state('login', {
@@ -115,8 +138,12 @@
 (function () {
 	'use stric';
 
+<<<<<<< HEAD
 	angular.module('SATCI.controllers', []).controller('LoginCtrl', function ($auth, $state, $http, $scope, $rootScope, cfpLoadingBar) {
 		cfpLoadingBar.start();
+=======
+	angular.module('SATCI.controllers', []).controller('LoginCtrl', function ($auth, $state, $http, $scope, $rootScope) {
+>>>>>>> 830769aad708569dcab2dfeba2b3540418fae017
 
 		$scope.loginError = false;
 		$scope.loginErrorText;
@@ -157,10 +184,14 @@
 				$state.go('home');
 			});
 		};
+<<<<<<< HEAD
 		setTimeout(function () {
 			cfpLoadingBar.complete();
 		}, 600);
 	}).controller('NavCtrl', function ($auth, $state, $scope, $rootScope, $location) {
+=======
+	}).controller('NavCtrl', function ($auth, $state, $scope, $rootScope) {
+>>>>>>> 830769aad708569dcab2dfeba2b3540418fae017
 		$scope.logout = function () {
 			//Remove the satellizer_token from localstorage
 			$auth.logout().then(function () {
@@ -174,6 +205,7 @@
 				$state.go('login');
 			});
 		};
+<<<<<<< HEAD
 
 		$scope.navClass = function (page) {
 			var currentRoute;
@@ -186,6 +218,8 @@
 			}
 			return page === currentRoute ? 'active' : '';
 		};
+=======
+>>>>>>> 830769aad708569dcab2dfeba2b3540418fae017
 	}).controller('SidebarCtrl', ['$scope', '$location', function ($scope, $location) {
 		$scope.navClass = function (page) {
 			var currentRoute;
@@ -283,12 +317,18 @@
 			return '';
 		};
 	}).controller('SolicitudeCtrl', ['$scope', 'Solicitudes', function ($scope, Solicitudes) {
+<<<<<<< HEAD
 		/*	$scope.parishes = Parishes.get(function (data) {
   			return $scope.parishes = data.parishes;
   		})*/
 		Solicitudes.get(function (data) {
 			$scope.solicitudes = data.solicitudes;
 		});
+=======
+		/*Solicitudes.get(function (data){
+  	$scope.solicitudes = data.solicitudes;
+  });*/
+>>>>>>> 830769aad708569dcab2dfeba2b3540418fae017
 	}]).controller('CreateSolicitudeCtrl', ['$scope', '$controller', 'Citizens', 'Institutions', 'Parishes', 'paginateService', function ($scope, $controller, Citizens, Institutions, Parishes, paginateService) {
 
 		$controller('CreateCitizenCtrl', { $scope: $scope });
@@ -379,6 +419,7 @@
 				// $scope.searchApplicant();
 			}
 		});
+<<<<<<< HEAD
 
 		$scope.displayed = [];
 
@@ -391,6 +432,20 @@
 			var start = pagination.start || 0; // This is NOT the page number, but the index of item in the list that you want to use to display the table.
 			var number = pagination.number || 10; // Number of entries showed per page.
 
+=======
+
+		$scope.displayed = [];
+
+		$scope.callServer = function callServer(tableState) {
+
+			$scope.isLoading = true;
+			var pagination = tableState.pagination;
+			// $scope.DisplayedPages = 1;
+
+			var start = pagination.start || 0; // This is NOT the page number, but the index of item in the list that you want to use to display the table.
+			var number = pagination.number || 10; // Number of entries showed per page.
+
+>>>>>>> 830769aad708569dcab2dfeba2b3540418fae017
 			paginateService.getPage($scope.applicants, start, number, tableState).then(function (result) {
 
 				$scope.displayed = result.data;
@@ -585,12 +640,20 @@
 	}]);
 })();
 function onlyLetters(e) {
+<<<<<<< HEAD
 	var key = e.keyCode || e.which,
 	    tecla = String.fromCharCode(key).toLowerCase(),
 	    letras = " áéíóúüabcdefghijklmnñopqrstuvwxyz",
 	    especiales = [8, 37, 39, 46],
 	    tecla_especial = false;
 
+=======
+	key = e.keyCode || e.which;
+	tecla = String.fromCharCode(key).toLowerCase();
+	letras = " áéíóúüabcdefghijklmnñopqrstuvwxyz";
+	especiales = [8, 37, 39, 46];
+	tecla_especial = false;
+>>>>>>> 830769aad708569dcab2dfeba2b3540418fae017
 	for (var i in especiales) {
 		if (key == especiales[i]) {
 			tecla_especial = true;
@@ -603,12 +666,20 @@ function onlyLetters(e) {
 }
 
 function onlyNumbers(e) {
+<<<<<<< HEAD
 	var key = e.keyCode || e.which,
 	    tecla = String.fromCharCode(key).toLowerCase(),
 	    num = "0123456789",
 	    especiales = [8, 37, 39, 46],
 	    tecla_especial = false;
 
+=======
+	key = e.keyCode || e.which;
+	tecla = String.fromCharCode(key).toLowerCase();
+	num = "0123456789";
+	especiales = [8, 37, 39, 46];
+	tecla_especial = false;
+>>>>>>> 830769aad708569dcab2dfeba2b3540418fae017
 	for (var i in especiales) {
 		if (key == especiales[i]) {
 			tecla_especial = true;
@@ -621,12 +692,20 @@ function onlyNumbers(e) {
 }
 
 function onlyClear(e) {
+<<<<<<< HEAD
 	var key = e.keyCode || e.which,
 	    tecla = String.fromCharCode(key).toLowerCase(),
 	    num = "",
 	    especiales = [8, 13],
 	    tecla_especial = false;
 
+=======
+	key = e.keyCode || e.which;
+	tecla = String.fromCharCode(key).toLowerCase();
+	num = "";
+	especiales = [8, 13];
+	tecla_especial = false;
+>>>>>>> 830769aad708569dcab2dfeba2b3540418fae017
 	for (var i in especiales) {
 		if (key == especiales[i]) {
 			tecla_especial = true;
