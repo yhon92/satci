@@ -1,6 +1,20 @@
 {
   "private": true,
   "devDependencies": {
+    "gulp": "^3.9.*",
+    "gulp-concat": "^2.6.0",
+    "gulp-jshint": "^1.11.2",
+    "gulp-livereload": "^3.8.0",
+    "gulp-minify-css": "^1.2.1",
+    "gulp-stylus": "^2.0.6",
+    "gulp-uglify": "^1.2.0",
+    "gulp-watch": "^4.3.5",
+    "jshint-stylish": "^2.0.1",
+    "laravel-elixir": "*",
+    "nib": "*",
+    "stylus": "*"
+  },
+  "dependencies": {
     "angular": "^1.4.3",
     "angular-animate": "^1.4.3",
     "angular-loading-bar": "^0.8.0",
@@ -9,13 +23,8 @@
     "angular-smart-table": "^2.1.2",
     "angular-ui-router": "^0.2.15",
     "bootstrap": "^3.3.5",
-    "gulp": "^3.8.8",
-    "gulp-livereload": "^3.8.0",
     "jquery": "^2.1.4",
-    "laravel-elixir": "*",
-    "nib": "*",
-    "satellizer": "0.12.*",
-    "stylus": "*"
+    "satellizer": "0.12.*"
   },
   "scripts": {
     "styl": "stylus --compress --watch front_dev/styl/app.styl --out public/css",

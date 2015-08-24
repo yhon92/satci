@@ -20,7 +20,7 @@
 		});
 	})
 	.factory('SolicitudesList', function($http){
-		return function(applicant=''){
+		return function(applicant){
 				return $http.get( resourceUrl +'solicitude/list/' + applicant);
 			}
 		})	

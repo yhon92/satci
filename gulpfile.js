@@ -1,78 +1,72 @@
 'use-stric';
-var gulp       = require('gulp');
-var elixir     = require('laravel-elixir');
-var livereload = require('gulp-livereload');
+
+/*
+* Posibles Paquetes:
+* -gulp-uglify
+* -gulp-concat
+* -gulp-sourcemaps
+*
+*
+*
+*
+*
+*/
+var gulp          = require('gulp'),
+    stylus        = require('gulp-stylus'),
+    nib           = require('nib'),
+    minifyCSS     = require('gulp-minify-css'),
+    livereload    = require('gulp-livereload'),
+    jshint        = require('gulp-jshint'),
+    concat        = require('gulp-concat'),
+    uglify        = require('gulp-uglify'),
+
+    elixir        = require('laravel-elixir')
 
 elixir.config.assetsPath = 'front_dev';
 
-//console.log(elixir.config.assetsPath);
-/*
- |--------------------------------------------------------------------------
- | Elixir Asset Management
- |--------------------------------------------------------------------------
- |
- | Elixir provides a clean, fluent API for defining some basic Gulp tasks
- | for your Laravel application. By default, we are compiling the Less
- | file for our application, as well as publishing vendor resources.
- |
- */
+gulp.task('css', function() {
+  gulp.src('./front_dev/styl/app.styl')
+  .pipe(stylus({
+      compress: true,
+      //use: nib()
+    }))
+  .pipe(gulp.dest('./public/css/'))
+  //.pipe(minifyCSS())
+  .pipe(livereload());
 
-/**
- * Logic for LiveReload to work properly on watch task.
- */
-gulp.on('task_start', function (e) {
-  // only start LiveReload server if task is 'watch'
-  if (e.task === 'watch') {
-    livereload.listen();
-  }
-});
-gulp.task('watch-lr-css', function () {
-  // notify a CSS change, so that livereload can update it without a page refresh
-  livereload.changed('app.css');
-});
-gulp.task('watch-lr', function () {
-  // notify any other changes, so that livereload can refresh the page
-  livereload.changed('app.js');
 });
 
-elixir(function(mix) {
-  /*mix.scripts(['/libs/jquery.min.js', 
-               '/libs/bootstrap.min.js', 
-               '/libs/angular.min.js', 
-               //'/libs/angular-route.min.js', 
-               '/libs/angular-ui-router.min.js', 
-               '/libs/angular-resource.min.js', 
-               '/libs/angular-animate.min.js', 
-               '/libs/ui-bootstrap.min.js', 
-               '/libs/smart-table.min.js', 
-               '/libs/satellizer.min.js', 
-               '/libs/loading-bar.min.js', 
-               // '', 
-              ], './public/js/libs.js')*/
-
-  mix.babel(['app.js', 
-               '/filters/*.js', 
-               '/controllers/*.js', 
-               '/directives/*.js', 
-               '/services/*.js', 
-               // '//*.js', 
-               // '//*.js', 
-               '*.js', 
-              ], './public/js/app.js')
-     //.scripts(['app.js', '/**/*.js'], './public/js/app.js')
-     //.scripts(['app.js', '/**/*.js'], './public/js/app.js')
+gulp.task('jshint', function() {
+  gulp.src(['./front_dev/js/**/*.js', '!./front_dev/js/**/*.min.js'])
+    .pipe(jshint())
+    .pipe(jshint.reporter('jshint-stylish'))
 });
 
-gulp.task('speak', function() {
-    var message = 'Tea...Earl Grey...Hot';
-
-    gulp.src('').pipe(shell('say ' + message));
+gulp.task('js-libs', function(){
+  gulp.src('./front_dev/js/libs/**/*.js')
+    .pipe(concat('app.js'))
+    //.pipe(uglify())
+    .pipe(gulp.dest('./public/js/'))
+    .pipe(livereload());
 });
 
-elixir(function(mix) {
-    // mix.task('speak');
+gulp.task('js-app', function(){
+  gulp.src('./front_dev/js/app/**/*.js')
+    .pipe(concat('app.js'))
+    //.pipe(uglify())
+    .pipe(gulp.dest('./public/js/'))
+    .pipe(livereload());
 });
 
-elixir(function(mix) {
-    // mix.task('speak', 'app/**/*.php');
+gulp.task('watch', function() {
+  livereload.listen();
+  //gulp.watch(['./app/**/*.html'], ['html']);
+  gulp.watch(['./front_dev/styl/**/*.styl'], ['css']);
+  gulp.watch(['./front_dev/js/app/**/*.js'], ['js-app']);
+  //gulp.watch(['./front_dev/js/app/**/*.js'], ['jshint', 'js-app']);
+  //gulp.watch(['./app/js/**/*.js'], ['jshint']);
+  //gulp.watch(['./app/stylus/**/*.styl'], ['css', 'inject']);
+  //gulp.watch(['./app/js/**/*.js', './Gulpfile.js'], ['jshint', 'inject']);
 });
+
+gulp.task('default', ['watch']);
