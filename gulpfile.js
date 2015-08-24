@@ -19,10 +19,16 @@ var gulp          = require('gulp'),
     jshint        = require('gulp-jshint'),
     concat        = require('gulp-concat'),
     uglify        = require('gulp-uglify'),
+    jade          = require('gulp-jade'),
 
     elixir        = require('laravel-elixir')
 
 elixir.config.assetsPath = 'front_dev';
+
+gulp.task('html', function() {
+  gulp.src(['./public/templates/**/*.html', './resources/views/**/*.html', './resources/views/**/*.blade.php'])
+  .pipe(livereload());
+});
 
 gulp.task('css', function() {
   gulp.src('./front_dev/styl/app.styl')
@@ -60,7 +66,7 @@ gulp.task('js-app', function(){
 
 gulp.task('watch', function() {
   livereload.listen();
-  //gulp.watch(['./app/**/*.html'], ['html']);
+  gulp.watch(['./public/templates/**/*.html', './resources/views/**/*.html', './resources/views/**/*.blade.php'], ['html']);
   gulp.watch(['./front_dev/styl/**/*.styl'], ['css']);
   gulp.watch(['./front_dev/js/app/**/*.js'], ['js-app']);
   //gulp.watch(['./front_dev/js/app/**/*.js'], ['jshint', 'js-app']);
