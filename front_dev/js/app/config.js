@@ -10,12 +10,26 @@
     'satellizer',
     'smart-table',
     'angular-loading-bar',
-    // '',
-    'SATCI.controllers',
-    'SATCI.services',
-    'SATCI.resources',
-    'SATCI.filters',
+
     
+    'SATCI.controllers.CreateCitizenCtrl',
+    'SATCI.controllers.CreateInstitutionCtrl',
+    'SATCI.controllers.CreateSolicitudeCtrl',
+    'SATCI.controllers.DatepickerCtrl',
+    'SATCI.controllers.DropdownCtrl',
+    'SATCI.controllers.LoginCtrl',
+    'SATCI.controllers.NavCtrl',
+    'SATCI.controllers.SidebarCtrl',
+    'SATCI.controllers.SolicitudeCtrl',
+
+
+    'SATCI.services',
+
+
+    'SATCI.resources',
+
+
+    'SATCI.filters',    
     ])
   .constant('PathTemplates', {
     views:    'templates/views/',
