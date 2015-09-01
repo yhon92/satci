@@ -15,6 +15,12 @@ class Helpers
 			return $request[$InputName] = false;
 	}
 
+  static public function longApplicant(&$type)
+  {
+    $type = 'SATCI\Entities\\'.ucwords($type);
+    return $type;
+  }
+
   static public function concatSolicitudeWithApplicant(&$solicitudes)
   {
     foreach ($solicitudes as $key => $value) {
@@ -27,5 +33,11 @@ class Helpers
       unset($value['applicant_type'], $value['applicant_id']);
     }
     return $solicitudes;
+  }
+
+  static public function getSolicitudeNumber($lastId)
+  {
+    $nextId = $lastId + 1;
+    return str_pad($nextId, 8, '0', STR_PAD_LEFT);
   }
 }

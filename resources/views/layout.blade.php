@@ -43,12 +43,12 @@
 					</ul>
 
 					<ul class="nav navbar-nav navbar-right" ng-if="authenticated">
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+						<li class="dropdown" dropdown>
+							<a href="#" class="dropdown-toggle" role="button" dropdown-toggle>
 								{{ currentUser.first_name +' '+currentUser.last_name }}
 								<span class="caret"></span></a>
-								<ul class="dropdown-menu" role="menu">
-									<li><a ng-click="logout()">Cerra Sesión</a></li>
+								<ul class="dropdown-menu" role="menu" aria-labelledby="simple-dropdown">
+									<li role="menuitem"><a ng-click="logout()">Cerra Sesión</a></li>
 								</ul>
 							</li>
 						</ul>

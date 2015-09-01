@@ -2,6 +2,7 @@
 
 use SATCI\Repositories\SolicitudeRepo;
 use SATCI\Repositories\CitizenRepo;
+use SATCI\Http\Requests\CreateSolicitudeRequest;
 use SATCI\Http\Controllers\Controller;
 use SATCI\Utils\Helpers;
 
@@ -47,6 +48,8 @@ class SolicitudeController extends Controller {
 		$type = ucwords($type);
 		if ( $type === 'Citizen' || $type === 'Institution' )
 		{
+			Helpers::longApplicant($type);
+
 			$solicitudes = $this->solicitudeRepo->getListByApplicant($type);
 
 			Helpers::concatSolicitudeWithApplicant($solicitudes);
@@ -65,23 +68,25 @@ class SolicitudeController extends Controller {
 		}
 	}
 	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-/*	public function create()
-	{
-		return view('solicitude.create');
-	}*/
-
-	/**
 	 * Store a newly created resource in storage.
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store(CreateSolicitudeRequest $request)
 	{
-		//
+
+		$lastId = $this->solicitudeRepo->lastId();
+		$solicitude_number = Helpers::getSolicitudeNumber($lastId);
+		$request['solicitude_number'] = $solicitude_number;
+		$type = $request['applicant_type'];
+		Helpers::longApplicant($type);
+		$request['applicant_type'] = $type;
+		// dd($request->all());
+		return response()->json([
+			'request' => $request->all(),
+			]);
+
+		// $solicitude = $this->solicitudeRepo->lastId();
 	}
 
 	/**

@@ -3,75 +3,10 @@
 	<p>
 		<a ui-sref=".create" class="btn btn-primary">Nueva Solicitud</a>
 	</p>
-	<div class="panel panel-default">
-		<div class="panel-heading">Solicitudes de <strong>Personas</strong></div>
-		<div class="panel-body">
-			<div class="table-responsive table-small">
-				<table class="table table-hover">
-					<thead>
-						<tr>
-							<th style="min-width: 80px;">Nº Solicitud</th>
-							<th style="min-width: 80px;">Recepción</th>
-							<th style="min-width: 64px;">Identificacíon</th>
-							<th style="min-width: 165px;">Nombre</th>
-							<th style="width: 520px;">Asunto</th>
-							<th>Estado</th>
-							<th style="width: 60px;"></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="row in citizen" data-id='{{ row.id }}'>
-							<td>{{ row.solicitude_number }}</td>
-							<td>{{ row.reception_date | date:'dd-MM-yyyy' }}</td>
-							<td>{{ row.applicant.identification }}</td>
-							<td>{{ row.applicant.full_name}}</td>
-							<td>{{ row.topic | limitTo:140 }}</td>
-							<td>{{ row.status }}</td>
-							<td>
-								<a href="#" class="btn btn-xs btn-warning glyphicon glyphicon-edit"></a>
-								<a href="#" class="btn btn-xs btn-danger glyphicon glyphicon-remove"></a>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-	</div>
-
-	<div class="panel panel-default">
-		<div class="panel-heading">Solicitudes de <strong>Instituciones</strong></div>
-		<div class="panel-body">
-			<div class="table-responsive table-small">
-				<table class="table table-hover">
-					<thead>
-						<tr>
-							<th style="min-width: 80px;">Nº Solicitud</th>
-							<th style="min-width: 80px;">Recepción</th>
-							<th style="min-width: 64px;">Identificacíon</th>
-							<th style="min-width: 165px;">Nombre</th>
-							<th style="width: 520px;">Asunto</th>
-							<th>Estado</th>
-							<th style="width: 60px;"></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="row in institution" data-id='{{ row.id }}'>
-							<td>{{ row.solicitude_number }}</td>
-							<td>{{ row.reception_date | date:'dd-MM-yyyy' }}</td>
-							<td>{{ row.applicant.identification }}</td>
-							<td>{{ row.applicant.full_name}}</td>
-							<td>{{ row.topic | limitTo:140 }}</td>
-							<td>{{ row.status }}</td>
-							<td>
-								<a href="#" class="btn btn-xs btn-warning glyphicon glyphicon-edit"></a>
-								<a href="#" class="btn btn-xs btn-danger glyphicon glyphicon-remove"></a>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-	</div>
+	<solicitude-list type='citizens'></solicitude-list>
+	
+	<solicitude-list type='institutions'></solicitude-list>
+	
 </div>
 <!-- </div> -->
 

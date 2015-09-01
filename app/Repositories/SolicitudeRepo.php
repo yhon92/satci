@@ -21,7 +21,6 @@ class SolicitudeRepo extends BaseRepo
 
 	static public function getListByApplicant($type)
 	{
-		$type = 'SATCI\Entities\\'.$type;
 		return Solicitude::
 		// join('citizens', 'applicant_id' ,'=', 'citizens.id')
 		where('applicant_type' ,'=', $type)
@@ -34,4 +33,9 @@ class SolicitudeRepo extends BaseRepo
 		$solicitude = new Solicitude();
 	}
 
+	static public function lastId()
+	{
+		$solicitude = Solicitude::all();
+		return $solicitude->last()->id;
+	}
 }

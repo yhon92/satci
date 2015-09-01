@@ -39,7 +39,7 @@ var paths = {
 gulp.task('html', function() {
   gulp.src(paths.src.html)
   .pipe(livereload())
-  .pipe(notify("Templates Completo!"))
+  //.pipe(notify("Templates Completo!"))
 });
 
 gulp.task('css', function() {

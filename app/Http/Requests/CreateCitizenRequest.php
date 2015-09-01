@@ -22,7 +22,7 @@ class CreateCitizenRequest extends Request {
 	public function rules()
 	{
 		return [
-			'identification' => 'required|unique:citizens,identification', 
+			'identification' => 'required|min:6|max:8|unique:citizens,identification', 
 			'full_name' => 'required', 
 			'first_name' => 'required', 
 			'last_name' => 'required', 
