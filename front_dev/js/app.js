@@ -9,6 +9,8 @@ import 'angular-smart-table';
 // import 'angular-moment';
 import 'satellizer';
 
+import './libs/ng-alertify';
+
 import './app/validation';
 
 /*** Import Modules of SATCI ***/
@@ -31,7 +33,7 @@ angular.module('SATCI', [
   'smart-table',
   // 'angularMoment',
   'angular-loading-bar',
-
+  'Alertify',
 
   'SATCI.Citizen',
   'SATCI.Home',
@@ -53,6 +55,7 @@ angular.module('SATCI', [
   $httpProvider, 
   PathTemplates
   ) => {
+
   // Push the new factory onto the $http interceptor array
   $httpProvider.interceptors.push('redirectWhenLoggedOut');
 

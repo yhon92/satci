@@ -1,8 +1,9 @@
-angular.module('Solicitude.Create', ['SATCI.Shared', 'Solicitude.resources'])
+angular.module('Solicitude.Create', ['Alertify', 'SATCI.Shared', 'Solicitude.resources'])
 .controller('CreateSolicitudeCtrl', (
   $scope, 
   $filter, 
   $controller, 
+  Alertify,
   Citizens, 
   Institutions, 
   Parishes, 
