@@ -74,19 +74,24 @@ class SolicitudeController extends Controller {
 	 */
 	public function store(CreateSolicitudeRequest $request)
 	{
+		$lastSolicitude = $this->solicitudeRepo->lastSolicitude();
 
-		$lastId = $this->solicitudeRepo->lastId();
-		$solicitude_number = Helpers::getSolicitudeNumber($lastId);
+		$solicitude_number = Helpers::getSolicitudeNumber($lastSolicitude);
+
 		$request['solicitude_number'] = $solicitude_number;
-		$type = $request['applicant_type'];
-		Helpers::longApplicant($type);
-		$request['applicant_type'] = $type;
-		// dd($request->all());
-		return response()->json([
-			'request' => $request->all(),
-			]);
 
-		// $solicitude = $this->solicitudeRepo->lastId();
+		$type = $request['applicant_type'];
+
+		Helpers::longApplicant($type);
+
+		$request['applicant_type'] = $type;
+		
+		$solicitude = $this->solicitudeRepo->newSolicitude($request->all());
+
+		return response()->json([
+			'success' => true,
+			'solicitude' => $solicitude,
+			]);
 	}
 
 	/**

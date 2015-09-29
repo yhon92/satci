@@ -28,14 +28,14 @@ class SolicitudeRepo extends BaseRepo
 		->get();
 	}
 
-	static public function newSolicitude()
+	static public function newSolicitude($data)
 	{
-		$solicitude = new Solicitude();
+		return Solicitude::create($data);
 	}
 
-	static public function lastId()
+	static public function lastSolicitude()
 	{
-		$solicitude = Solicitude::all();
-		return $solicitude->last()->id;
+		$solicitude = \DB::table('solicitudes')->count();
+		return $solicitude;
 	}
 }

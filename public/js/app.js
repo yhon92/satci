@@ -672,11 +672,11 @@ angular.module('Solicitude.resources', ['ngResource', 'SATCI.Shared']).factory('
 },{}],23:[function(require,module,exports){
 'use strict';
 
-angular.module('Solicitude.Create', ['Alertify', 'SATCI.Shared', 'Solicitude.resources']).controller('CreateSolicitudeCtrl', function ($scope, $filter, $controller, Alertify, Citizens, Institutions, Parishes, Solicitudes, paginateService, PathTemplates) {
+angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'Solicitude.resources']).controller('CreateSolicitudeCtrl', function ($state, $scope, $filter, $controller, Alertify, Citizens, Institutions, Parishes, Solicitudes, paginateService, PathTemplates) {
 
   $controller('CreateCitizenCtrl', { $scope: $scope });
   $controller('CreateInstitutionCtrl', { $scope: $scope });
-  $controller('DatepickerCtrl', { $scope: $scope });
+  // $controller('DatepickerCtrl', {$scope : $scope});
 
   var add = null;
   var search = null;
@@ -759,17 +759,22 @@ angular.module('Solicitude.Create', ['Alertify', 'SATCI.Shared', 'Solicitude.res
     // debugger;
     Solicitudes.save(solicitude).$promise.then(function (data) {
       if (data.success) {
-        $scope.solicitude.alerts = [{
+        Alertify.success('Solicitud registrada exitosamente');
+        $state.transitionTo('solicitude', {
+          reload: true, inherit: false, notify: false
+        });
+        /*$scope.solicitude.alerts = [{
           type: 'success',
-          message: 'Solicitud registrada exitosamente'
-        }];
+          message: 'Solicitud registrada exitosamente',
+        }];*/
       }
     }, function (fails) {
-      angular.forEach(fails.data, function (values, key) {
-        angular.forEach(values, function (value) {
-          $scope.applicant.alerts.push({ type: 'danger', message: value });
-        });
-      });
+      console.log(fails);
+      /*angular.forEach(fails.data, (values, key) => {
+        angular.forEach(values, (value) => {
+          $scope.applicant.alerts.push({type: 'danger', message: value})
+        })
+      })*/
     });
   };
 
@@ -1834,7 +1839,7 @@ function rifMask(input, e) {
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],27:[function(require,module,exports){
 /**
- * @license AngularJS v1.4.4
+ * @license AngularJS v1.4.5
  * (c) 2010-2015 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -2214,6 +2219,55 @@ function $$BodyProvider() {
   }];
 }
 
+var $$rAFSchedulerFactory = ['$$rAF', function($$rAF) {
+  var queue, cancelFn;
+
+  function scheduler(tasks) {
+    // we make a copy since RAFScheduler mutates the state
+    // of the passed in array variable and this would be difficult
+    // to track down on the outside code
+    queue = queue.concat(tasks);
+    nextTick();
+  }
+
+  queue = scheduler.queue = [];
+
+  /* waitUntilQuiet does two things:
+   * 1. It will run the FINAL `fn` value only when an uncancelled RAF has passed through
+   * 2. It will delay the next wave of tasks from running until the quiet `fn` has run.
+   *
+   * The motivation here is that animation code can request more time from the scheduler
+   * before the next wave runs. This allows for certain DOM properties such as classes to
+   * be resolved in time for the next animation to run.
+   */
+  scheduler.waitUntilQuiet = function(fn) {
+    if (cancelFn) cancelFn();
+
+    cancelFn = $$rAF(function() {
+      cancelFn = null;
+      fn();
+      nextTick();
+    });
+  };
+
+  return scheduler;
+
+  function nextTick() {
+    if (!queue.length) return;
+
+    var items = queue.shift();
+    for (var i = 0; i < items.length; i++) {
+      items[i]();
+    }
+
+    if (!cancelFn) {
+      $$rAF(function() {
+        if (!cancelFn) nextTick();
+      });
+    }
+  }
+}];
+
 var $$AnimateChildrenDirective = [function() {
   return function(scope, element, attrs) {
     var val = attrs.ngAnimateChildren;
@@ -2227,6 +2281,8 @@ var $$AnimateChildrenDirective = [function() {
     }
   };
 }];
+
+var ANIMATE_TIMER_KEY = '$$animateCss';
 
 /**
  * @ngdoc service
@@ -2554,8 +2610,10 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
   var gcsLookup = createLocalCacheLookup();
   var gcsStaggerLookup = createLocalCacheLookup();
 
-  this.$get = ['$window', '$$jqLite', '$$AnimateRunner', '$timeout', '$$forceReflow', '$sniffer', '$$rAF',
-       function($window,   $$jqLite,   $$AnimateRunner,   $timeout,   $$forceReflow,   $sniffer,   $$rAF) {
+  this.$get = ['$window', '$$jqLite', '$$AnimateRunner', '$timeout',
+               '$$forceReflow', '$sniffer', '$$rAFScheduler', '$animate',
+       function($window,   $$jqLite,   $$AnimateRunner,   $timeout,
+                $$forceReflow,   $sniffer,   $$rAFScheduler, $animate) {
 
     var applyAnimationClasses = applyAnimationClassesFactory($$jqLite);
 
@@ -2615,12 +2673,8 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
     var cancelLastRAFRequest;
     var rafWaitQueue = [];
     function waitUntilQuiet(callback) {
-      if (cancelLastRAFRequest) {
-        cancelLastRAFRequest(); //cancels the request
-      }
       rafWaitQueue.push(callback);
-      cancelLastRAFRequest = $$rAF(function() {
-        cancelLastRAFRequest = null;
+      $$rAFScheduler.waitUntilQuiet(function() {
         gcsLookup.flush();
         gcsStaggerLookup.flush();
 
@@ -2637,8 +2691,6 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
       });
     }
 
-    return init;
-
     function computeTimings(node, className, cacheKey) {
       var timings = computeCachedCssStyles(node, className, cacheKey, DETECT_CSS_PROPERTIES);
       var aD = timings.animationDelay;
@@ -2653,9 +2705,11 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
       return timings;
     }
 
-    function init(element, options) {
+    return function init(element, options) {
       var node = getDomNode(element);
-      if (!node || !node.parentNode) {
+      if (!node
+          || !node.parentNode
+          || !$animate.enabled()) {
         return closeAndReturnNoopAnimator();
       }
 
@@ -2711,7 +2765,6 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
       // there actually is a detected transition or keyframe animation
       if (options.applyClassesEarly && addRemoveClassName.length) {
         applyAnimationClasses(element, options);
-        addRemoveClassName = '';
       }
 
       var preparationClasses = [structuralClassName, addRemoveClassName].join(' ').trim();
@@ -2824,6 +2877,18 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
 
       if (maxDuration === 0 && !flags.recalculateTimingStyles) {
         return closeAndReturnNoopAnimator();
+      }
+
+      if (options.delay != null) {
+        var delayStyle = parseFloat(options.delay);
+
+        if (flags.applyTransitionDelay) {
+          temporaryStyles.push(getCssDelayStyle(delayStyle));
+        }
+
+        if (flags.applyAnimationDelay) {
+          temporaryStyles.push(getCssDelayStyle(delayStyle, true));
+        }
       }
 
       // we need to recalculate the delay value since we used a pre-emptive negative
@@ -2940,6 +3005,8 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
           cancel: cancelFn
         });
 
+        // should flush the cache animation
+        waitUntilQuiet(noop);
         close();
 
         return {
@@ -3037,27 +3104,16 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
             flags.hasAnimations = timings.animationDuration > 0;
           }
 
-          if (flags.applyTransitionDelay || flags.applyAnimationDelay) {
+          if (flags.applyAnimationDelay) {
             relativeDelay = typeof options.delay !== "boolean" && truthyTimingValue(options.delay)
                   ? parseFloat(options.delay)
                   : relativeDelay;
 
             maxDelay = Math.max(relativeDelay, 0);
-
-            var delayStyle;
-            if (flags.applyTransitionDelay) {
-              timings.transitionDelay = relativeDelay;
-              delayStyle = getCssDelayStyle(relativeDelay);
-              temporaryStyles.push(delayStyle);
-              node.style[delayStyle[0]] = delayStyle[1];
-            }
-
-            if (flags.applyAnimationDelay) {
-              timings.animationDelay = relativeDelay;
-              delayStyle = getCssDelayStyle(relativeDelay, true);
-              temporaryStyles.push(delayStyle);
-              node.style[delayStyle[0]] = delayStyle[1];
-            }
+            timings.animationDelay = relativeDelay;
+            delayStyle = getCssDelayStyle(relativeDelay, true);
+            temporaryStyles.push(delayStyle);
+            node.style[delayStyle[0]] = delayStyle[1];
           }
 
           maxDelayTime = maxDelay * ONE_SECOND;
@@ -3086,17 +3142,47 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
           }
 
           startTime = Date.now();
-          element.on(events.join(' '), onAnimationProgress);
-          $timeout(onAnimationExpired, maxDelayTime + CLOSING_TIME_BUFFER * maxDurationTime, false);
+          var timerTime = maxDelayTime + CLOSING_TIME_BUFFER * maxDurationTime;
+          var endTime = startTime + timerTime;
 
+          var animationsData = element.data(ANIMATE_TIMER_KEY) || [];
+          var setupFallbackTimer = true;
+          if (animationsData.length) {
+            var currentTimerData = animationsData[0];
+            setupFallbackTimer = endTime > currentTimerData.expectedEndTime;
+            if (setupFallbackTimer) {
+              $timeout.cancel(currentTimerData.timer);
+            } else {
+              animationsData.push(close);
+            }
+          }
+
+          if (setupFallbackTimer) {
+            var timer = $timeout(onAnimationExpired, timerTime, false);
+            animationsData[0] = {
+              timer: timer,
+              expectedEndTime: endTime
+            };
+            animationsData.push(close);
+            element.data(ANIMATE_TIMER_KEY, animationsData);
+          }
+
+          element.on(events.join(' '), onAnimationProgress);
           applyAnimationToStyles(element, options);
         }
 
         function onAnimationExpired() {
-          // although an expired animation is a failed animation, getting to
-          // this outcome is very easy if the CSS code screws up. Therefore we
-          // should still continue normally as if the animation completed correctly.
-          close();
+          var animationsData = element.data(ANIMATE_TIMER_KEY);
+
+          // this will be false in the event that the element was
+          // removed from the DOM (via a leave animation or something
+          // similar)
+          if (animationsData) {
+            for (var i = 1; i < animationsData.length; i++) {
+              animationsData[i]();
+            }
+            element.removeData(ANIMATE_TIMER_KEY);
+          }
         }
 
         function onAnimationProgress(event) {
@@ -3123,7 +3209,7 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
           }
         }
       }
-    }
+    };
   }];
 }];
 
@@ -3149,13 +3235,13 @@ var $$AnimateCssDriverProvider = ['$$animationProvider', function($$animationPro
 
     var applyAnimationClasses = applyAnimationClassesFactory($$jqLite);
 
-    return function initDriverFn(animationDetails, onBeforeClassesAppliedCb) {
+    return function initDriverFn(animationDetails) {
       return animationDetails.from && animationDetails.to
           ? prepareFromToAnchorAnimation(animationDetails.from,
                                          animationDetails.to,
                                          animationDetails.classes,
                                          animationDetails.anchors)
-          : prepareRegularAnimation(animationDetails, onBeforeClassesAppliedCb);
+          : prepareRegularAnimation(animationDetails);
     };
 
     function filterCssClasses(classes) {
@@ -3351,21 +3437,14 @@ var $$AnimateCssDriverProvider = ['$$animationProvider', function($$animationPro
       };
     }
 
-    function prepareRegularAnimation(animationDetails, onBeforeClassesAppliedCb) {
+    function prepareRegularAnimation(animationDetails) {
       var element = animationDetails.element;
       var options = animationDetails.options || {};
 
-      // since the ng-EVENT, class-ADD and class-REMOVE classes are applied inside
-      // of the animateQueue pre and postDigest stages then there is no need to add
-      // then them here as well.
-      options.$$skipPreparationClasses = true;
-
-      // during the pre/post digest stages inside of animateQueue we also performed
-      // the blocking (transition:-9999s) so there is no point in doing that again.
-      options.skipBlocking = true;
-
       if (animationDetails.structural) {
         options.event = animationDetails.event;
+        options.structural = true;
+        options.applyClassesEarly = true;
 
         // we special case the leave animation since we want to ensure that
         // the element is removed as soon as the animation is over. Otherwise
@@ -3374,11 +3453,6 @@ var $$AnimateCssDriverProvider = ['$$animationProvider', function($$animationPro
           options.onDone = options.domOperation;
         }
       }
-
-      // we apply the classes right away since the pre-digest took care of the
-      // preparation classes.
-      onBeforeClassesAppliedCb(element);
-      applyAnimationClasses(element, options);
 
       // We assign the preparationClasses as the actual animation event since
       // the internals of $animateCss will just suffix the event token values
@@ -3403,8 +3477,8 @@ var $$AnimateCssDriverProvider = ['$$animationProvider', function($$animationPro
 //  by the time...
 
 var $$AnimateJsProvider = ['$animateProvider', function($animateProvider) {
-  this.$get = ['$injector', '$$AnimateRunner', '$$rAFMutex', '$$jqLite',
-       function($injector,   $$AnimateRunner,   $$rAFMutex,   $$jqLite) {
+  this.$get = ['$injector', '$$AnimateRunner', '$$jqLite',
+       function($injector,   $$AnimateRunner,   $$jqLite) {
 
     var applyAnimationClasses = applyAnimationClassesFactory($$jqLite);
          // $animateJs(element, 'enter');
@@ -4099,9 +4173,6 @@ var $$AnimateQueueProvider = ['$animateProvider', function($animateProvider) {
         return runner;
       }
 
-      applyGeneratedPreparationClasses(element, isStructural ? event : null, options);
-      blockTransitions(node, SAFE_FAST_FORWARD_DURATION_VALUE);
-
       // the counter keeps track of cancelled animations
       var counter = (existingAnimation.counter || 0) + 1;
       newAnimation.counter = counter;
@@ -4160,10 +4231,7 @@ var $$AnimateQueueProvider = ['$animateProvider', function($animateProvider) {
             : animationDetails.event;
 
         markElementAnimationState(element, RUNNING_STATE);
-        var realRunner = $$animation(element, event, animationDetails.options, function(e) {
-          $$forceReflow();
-          blockTransitions(getDomNode(e), false);
-        });
+        var realRunner = $$animation(element, event, animationDetails.options);
 
         realRunner.done(function(status) {
           close(!status);
@@ -4308,19 +4376,34 @@ var $$AnimateQueueProvider = ['$animateProvider', function($animateProvider) {
   }];
 }];
 
-var $$rAFMutexFactory = ['$$rAF', function($$rAF) {
+var $$AnimateAsyncRunFactory = ['$$rAF', function($$rAF) {
+  var waitQueue = [];
+
+  function waitForTick(fn) {
+    waitQueue.push(fn);
+    if (waitQueue.length > 1) return;
+    $$rAF(function() {
+      for (var i = 0; i < waitQueue.length; i++) {
+        waitQueue[i]();
+      }
+      waitQueue = [];
+    });
+  }
+
   return function() {
     var passed = false;
-    $$rAF(function() {
+    waitForTick(function() {
       passed = true;
     });
-    return function(fn) {
-      passed ? fn() : $$rAF(fn);
+    return function(callback) {
+      passed ? callback() : waitForTick(callback);
     };
   };
 }];
 
-var $$AnimateRunnerFactory = ['$q', '$$rAFMutex', function($q, $$rAFMutex) {
+var $$AnimateRunnerFactory = ['$q', '$sniffer', '$$animateAsyncRun',
+                      function($q,   $sniffer,   $$animateAsyncRun) {
+
   var INITIAL_STATE = 0;
   var DONE_PENDING_STATE = 1;
   var DONE_COMPLETE_STATE = 2;
@@ -4365,7 +4448,7 @@ var $$AnimateRunnerFactory = ['$q', '$$rAFMutex', function($q, $$rAFMutex) {
     this.setHost(host);
 
     this._doneCallbacks = [];
-    this._runInAnimationFrame = $$rAFMutex();
+    this._runInAnimationFrame = $$animateAsyncRun();
     this._state = 0;
   }
 
@@ -4477,8 +4560,8 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
     return element.data(RUNNER_STORAGE_KEY);
   }
 
-  this.$get = ['$$jqLite', '$rootScope', '$injector', '$$AnimateRunner', '$$HashMap',
-       function($$jqLite,   $rootScope,   $injector,   $$AnimateRunner,   $$HashMap) {
+  this.$get = ['$$jqLite', '$rootScope', '$injector', '$$AnimateRunner', '$$HashMap', '$$rAFScheduler',
+       function($$jqLite,   $rootScope,   $injector,   $$AnimateRunner,   $$HashMap,   $$rAFScheduler) {
 
     var animationQueue = [];
     var applyAnimationClasses = applyAnimationClassesFactory($$jqLite);
@@ -4546,11 +4629,11 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
           if (remainingLevelEntries <= 0) {
             remainingLevelEntries = nextLevelEntries;
             nextLevelEntries = 0;
-            result = result.concat(row);
+            result.push(row);
             row = [];
           }
           row.push(entry.fn);
-          forEach(entry.children, function(childEntry) {
+          entry.children.forEach(function(childEntry) {
             nextLevelEntries++;
             queue.push(childEntry);
           });
@@ -4558,14 +4641,15 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
         }
 
         if (row.length) {
-          result = result.concat(row);
+          result.push(row);
         }
+
         return result;
       }
     }
 
     // TODO(matsko): document the signature in a better way
-    return function(element, event, options, onBeforeClassesAppliedCb) {
+    return function(element, event, options) {
       options = prepareAnimationOptions(options);
       var isStructural = ['enter', 'move', 'leave'].indexOf(event) >= 0;
 
@@ -4617,8 +4701,7 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
           // the element was destroyed early on which removed the runner
           // form its storage. This means we can't animate this element
           // at all and it already has been closed due to destruction.
-          var elm = entry.element;
-          if (getRunner(elm) && getDomNode(elm).parentNode) {
+          if (getRunner(entry.element)) {
             animations.push(entry);
           } else {
             entry.close();
@@ -4649,7 +4732,7 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
                   : animationEntry.element;
 
               if (getRunner(targetElement)) {
-                var operation = invokeFirstDriver(animationEntry, onBeforeClassesAppliedCb);
+                var operation = invokeFirstDriver(animationEntry);
                 if (operation) {
                   startAnimationFn = operation.start;
                 }
@@ -4669,11 +4752,9 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
         });
 
         // we need to sort each of the animations in order of parent to child
-        // relationships. This ensures that the parent to child classes are
-        // applied at the right time.
-        forEach(sortAnimations(toBeSortedAnimations), function(triggerAnimation) {
-          triggerAnimation();
-        });
+        // relationships. This ensures that the child classes are applied at the
+        // right time.
+        $$rAFScheduler(sortAnimations(toBeSortedAnimations));
       });
 
       return runner;
@@ -4743,7 +4824,7 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
           var lookupKey = from.animationID.toString();
           if (!anchorGroups[lookupKey]) {
             var group = anchorGroups[lookupKey] = {
-              // TODO(matsko): double-check this code
+              structural: true,
               beforeStart: function() {
                 fromAnimation.beforeStart();
                 toAnimation.beforeStart();
@@ -4797,7 +4878,7 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
         return matches.join(' ');
       }
 
-      function invokeFirstDriver(animationDetails, onBeforeClassesAppliedCb) {
+      function invokeFirstDriver(animationDetails) {
         // we loop in reverse order since the more general drivers (like CSS and JS)
         // may attempt more elements, but custom drivers are more particular
         for (var i = drivers.length - 1; i >= 0; i--) {
@@ -4805,7 +4886,7 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
           if (!$injector.has(driverName)) continue; // TODO(matsko): remove this check
 
           var factory = $injector.get(driverName);
-          var driver = factory(animationDetails, onBeforeClassesAppliedCb);
+          var driver = factory(animationDetails);
           if (driver) {
             return driver;
           }
@@ -4861,7 +4942,8 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
 /* global angularAnimateModule: true,
 
    $$BodyProvider,
-   $$rAFMutexFactory,
+   $$AnimateAsyncRunFactory,
+   $$rAFSchedulerFactory,
    $$AnimateChildrenDirective,
    $$AnimateRunnerFactory,
    $$AnimateQueueProvider,
@@ -4878,7 +4960,7 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
  * @description
  *
  * The `ngAnimate` module provides support for CSS-based animations (keyframes and transitions) as well as JavaScript-based animations via
- * callback hooks. Animations are not enabled by default, however, by including `ngAnimate` then the animation hooks are enabled for an Angular app.
+ * callback hooks. Animations are not enabled by default, however, by including `ngAnimate` the animation hooks are enabled for an Angular app.
  *
  * <div doc-module-components="ngAnimate"></div>
  *
@@ -4911,7 +4993,7 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
  * CSS-based animations with ngAnimate are unique since they require no JavaScript code at all. By using a CSS class that we reference between our HTML
  * and CSS code we can create an animation that will be picked up by Angular when an the underlying directive performs an operation.
  *
- * The example below shows how an `enter` animation can be made possible on a element using `ng-if`:
+ * The example below shows how an `enter` animation can be made possible on an element using `ng-if`:
  *
  * ```html
  * <div ng-if="bool" class="fade">
@@ -5046,8 +5128,8 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
  *   /&#42; this will have a 100ms delay between each successive leave animation &#42;/
  *   transition-delay: 0.1s;
  *
- *   /&#42; in case the stagger doesn't work then the duration value
- *    must be set to 0 to avoid an accidental CSS inheritance &#42;/
+ *   /&#42; As of 1.4.4, this must always be set: it signals ngAnimate
+ *     to not accidentally inherit a delay property from another CSS class &#42;/
  *   transition-duration: 0s;
  * }
  * .my-animation.ng-enter.ng-enter-active {
@@ -5596,16 +5678,16 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
  * @description
  * The ngAnimate `$animate` service documentation is the same for the core `$animate` service.
  *
- * Click here {@link ng.$animate $animate to learn more about animations with `$animate`}.
+ * Click here {@link ng.$animate to learn more about animations with `$animate`}.
  */
 angular.module('ngAnimate', [])
   .provider('$$body', $$BodyProvider)
 
   .directive('ngAnimateChildren', $$AnimateChildrenDirective)
-
-  .factory('$$rAFMutex', $$rAFMutexFactory)
+  .factory('$$rAFScheduler', $$rAFSchedulerFactory)
 
   .factory('$$AnimateRunner', $$AnimateRunnerFactory)
+  .factory('$$animateAsyncRun', $$AnimateAsyncRunFactory)
 
   .provider('$$animateQueue', $$AnimateQueueProvider)
   .provider('$$animation', $$AnimationProvider)
@@ -11561,7 +11643,7 @@ module.exports = 'angular-loading-bar';
 
 },{"./build/loading-bar":30}],32:[function(require,module,exports){
 /**
- * @license AngularJS v1.4.4
+ * @license AngularJS v1.4.5
  * (c) 2010-2015 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -11915,6 +11997,7 @@ function shallowClearAndCopy(src, dst) {
  */
 angular.module('ngResource', ['ng']).
   provider('$resource', function() {
+    var PROTOCOL_AND_DOMAIN_REGEX = /^https?:\/\/[^\/]*/;
     var provider = this;
 
     this.defaults = {
@@ -11989,7 +12072,8 @@ angular.module('ngResource', ['ng']).
           var self = this,
             url = actionUrl || self.template,
             val,
-            encodedVal;
+            encodedVal,
+            protocolAndDomain = '';
 
           var urlParams = self.urlParams = {};
           forEach(url.split(/\W/), function(param) {
@@ -12002,6 +12086,10 @@ angular.module('ngResource', ['ng']).
             }
           });
           url = url.replace(/\\:/g, ':');
+          url = url.replace(PROTOCOL_AND_DOMAIN_REGEX, function(match) {
+            protocolAndDomain = match;
+            return '';
+          });
 
           params = params || {};
           forEach(self.urlParams, function(_, urlParam) {
@@ -12032,7 +12120,7 @@ angular.module('ngResource', ['ng']).
           // E.g. `http://url.com/id./format?q=x` becomes `http://url.com/id.format?q=x`
           url = url.replace(/\/\.(?=\w+($|\?))/, '.');
           // replace escaped `/\.` with `/.`
-          config.url = url.replace(/\/\\\./, '/.');
+          config.url = protocolAndDomain + url.replace(/\/\\\./, '/.');
 
 
           // set params - delegate param encoding to $http
@@ -12236,7 +12324,7 @@ module.exports = 'ngResource';
 
 },{"./angular-resource":32}],34:[function(require,module,exports){
 /** 
-* @version 2.1.2
+* @version 2.1.3
 * @license MIT
 */
 (function (ng, undefined){
@@ -12307,19 +12395,19 @@ ng.module('smart-table')
       }
     }
 
-    function deepDelete(object, path) {
+    function deepDelete (object, path) {
       if (path.indexOf('.') != -1) {
-          var partials = path.split('.');
-          var key = partials.pop();
-          var parentPath = partials.join('.'); 
-          var parentObject = $parse(parentPath)(object)
-          delete parentObject[key]; 
-          if (Object.keys(parentObject).length == 0) {
-            deepDelete(object, parentPath);
-          }
-        } else {
-          delete object[path];
+        var partials = path.split('.');
+        var key = partials.pop();
+        var parentPath = partials.join('.');
+        var parentObject = $parse(parentPath)(object)
+        delete parentObject[key];
+        if (Object.keys(parentObject).length == 0) {
+          deepDelete(object, parentPath);
         }
+      } else {
+        delete object[path];
+      }
     }
 
     if ($attrs.stSafeSrc) {
@@ -12337,6 +12425,7 @@ ng.module('smart-table')
         return safeGetter($scope);
       }, function (newValue, oldValue) {
         if (newValue !== oldValue) {
+          tableState.pagination.start = 0;
           updateSafeCopy();
         }
       });
@@ -17118,7 +17207,7 @@ angular.module('ui.router.state')
 })(window, window.angular);
 },{}],37:[function(require,module,exports){
 /**
- * @license AngularJS v1.4.4
+ * @license AngularJS v1.4.5
  * (c) 2010-2015 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -17176,7 +17265,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message += '\nhttp://errors.angularjs.org/1.4.4/' +
+    message += '\nhttp://errors.angularjs.org/1.4.5/' +
       (module ? module + '/' : '') + code;
 
     for (i = SKIP_INDEXES, paramPrefix = '?'; i < templateArgs.length; i++, paramPrefix = '&') {
@@ -19493,11 +19582,11 @@ function toDebugString(obj) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.4.4',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.4.5',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 4,
-  dot: 4,
-  codeName: 'pylon-requirement'
+  dot: 5,
+  codeName: 'permanent-internship'
 };
 
 
@@ -19702,7 +19791,7 @@ function publishExternalAPI(angular) {
  * - [`html()`](http://api.jquery.com/html/)
  * - [`next()`](http://api.jquery.com/next/) - Does not support selectors
  * - [`on()`](http://api.jquery.com/on/) - Does not support namespaces, selectors or eventData
- * - [`off()`](http://api.jquery.com/off/) - Does not support namespaces or selectors
+ * - [`off()`](http://api.jquery.com/off/) - Does not support namespaces, selectors or event object as parameter
  * - [`one()`](http://api.jquery.com/one/) - Does not support namespaces or selectors
  * - [`parent()`](http://api.jquery.com/parent/) - Does not support selectors
  * - [`prepend()`](http://api.jquery.com/prepend/)
@@ -19716,7 +19805,7 @@ function publishExternalAPI(angular) {
  * - [`text()`](http://api.jquery.com/text/)
  * - [`toggleClass()`](http://api.jquery.com/toggleClass/)
  * - [`triggerHandler()`](http://api.jquery.com/triggerHandler/) - Passes a dummy event object to handlers.
- * - [`unbind()`](http://api.jquery.com/unbind/) - Does not support namespaces
+ * - [`unbind()`](http://api.jquery.com/unbind/) - Does not support namespaces or event object as parameter
  * - [`val()`](http://api.jquery.com/val/)
  * - [`wrap()`](http://api.jquery.com/wrap/)
  *
@@ -22511,10 +22600,10 @@ var $CoreAnimateCssProvider = function() {
         return this.getPromise().then(f1,f2);
       },
       'catch': function(f1) {
-        return this.getPromise().catch(f1);
+        return this.getPromise()['catch'](f1);
       },
       'finally': function(f1) {
-        return this.getPromise().finally(f1);
+        return this.getPromise()['finally'](f1);
       }
     };
 
@@ -32036,7 +32125,7 @@ function $$RAFProvider() { //rAF
                                $window.webkitCancelRequestAnimationFrame;
 
     var rafSupported = !!requestAnimationFrame;
-    var rafFn = rafSupported
+    var raf = rafSupported
       ? function(fn) {
           var id = requestAnimationFrame(fn);
           return function() {
@@ -32050,47 +32139,9 @@ function $$RAFProvider() { //rAF
           };
         };
 
-    queueFn.supported = rafSupported;
+    raf.supported = rafSupported;
 
-    var cancelLastRAF;
-    var taskCount = 0;
-    var taskQueue = [];
-    return queueFn;
-
-    function flush() {
-      for (var i = 0; i < taskQueue.length; i++) {
-        var task = taskQueue[i];
-        if (task) {
-          taskQueue[i] = null;
-          task();
-        }
-      }
-      taskCount = taskQueue.length = 0;
-    }
-
-    function queueFn(asyncFn) {
-      var index = taskQueue.length;
-
-      taskCount++;
-      taskQueue.push(asyncFn);
-
-      if (index === 0) {
-        cancelLastRAF = rafFn(flush);
-      }
-
-      return function cancelQueueFn() {
-        if (index >= 0) {
-          taskQueue[index] = null;
-          index = null;
-
-          if (--taskCount === 0 && cancelLastRAF) {
-            cancelLastRAF();
-            cancelLastRAF = null;
-            taskQueue.length = 0;
-          }
-        }
-      };
-    }
+    return raf;
   }];
 }
 
@@ -37447,7 +37498,6 @@ function FormController(element, attrs, $scope, $animate, $interpolate) {
        </script>
        <style>
         .my-form {
-          -webkit-transition:all linear 0.5s;
           transition:all linear 0.5s;
           background: transparent;
         }
@@ -39836,7 +39886,6 @@ function classDirective(name, selector) {
      </file>
      <file name="style.css">
        .base-class {
-         -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
          transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
        }
 
@@ -41011,7 +41060,6 @@ forEach(
       }
 
       .animate-if.ng-enter, .animate-if.ng-leave {
-        -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
         transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
       }
 
@@ -41160,7 +41208,6 @@ var ngIfDirective = ['$animate', function($animate) {
       }
 
       .slide-animate.ng-enter, .slide-animate.ng-leave {
-        -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
         transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
 
         position:absolute;
@@ -42499,7 +42546,6 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
        </script>
        <style>
          .my-input {
-           -webkit-transition:all linear 0.5s;
            transition:all linear 0.5s;
            background: transparent;
          }
@@ -44173,7 +44219,6 @@ var ngPluralizeDirective = ['$locale', '$interpolate', '$log', function($locale,
       .animate-repeat.ng-move,
       .animate-repeat.ng-enter,
       .animate-repeat.ng-leave {
-        -webkit-transition:all linear 0.5s;
         transition:all linear 0.5s;
       }
 
@@ -44570,9 +44615,7 @@ var NG_HIDE_IN_PROGRESS_CLASS = 'ng-hide-animate';
         background: white;
       }
 
-      .animate-show.ng-hide-add.ng-hide-add-active,
-      .animate-show.ng-hide-remove.ng-hide-remove-active {
-        -webkit-transition: all linear 0.5s;
+      .animate-show.ng-hide-add, .animate-show.ng-hide-remove {
         transition: all linear 0.5s;
       }
 
@@ -44729,7 +44772,6 @@ var ngShowDirective = ['$animate', function($animate) {
     </file>
     <file name="animations.css">
       .animate-hide {
-        -webkit-transition: all linear 0.5s;
         transition: all linear 0.5s;
         line-height: 20px;
         opacity: 1;
@@ -44928,7 +44970,6 @@ var ngStyleDirective = ngDirective(function(scope, element, attr) {
       }
 
       .animate-switch.ng-animate {
-        -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
         transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
 
         position:absolute;
@@ -45269,31 +45310,162 @@ var SelectController =
  * @description
  * HTML `SELECT` element with angular data-binding.
  *
- * In many cases, `ngRepeat` can be used on `<option>` elements instead of {@link ng.directive:ngOptions
- * ngOptions} to achieve a similar result. However, `ngOptions` provides some benefits such as reducing
- * memory and increasing speed by not creating a new scope for each repeated instance, as well as providing
- * more flexibility in how the `<select>`'s model is assigned via the `select` **`as`** part of the
- * comprehension expression.
+ * The `select` directive is used together with {@link ngModel `ngModel`} to provide data-binding
+ * between the scope and the `<select>` control (including setting default values).
+ * Ìt also handles dynamic `<option>` elements, which can be added using the {@link ngRepeat `ngRepeat}` or
+ * {@link ngOptions `ngOptions`} directives.
  *
- * When an item in the `<select>` menu is selected, the array element or object property
- * represented by the selected option will be bound to the model identified by the `ngModel`
- * directive.
+ * When an item in the `<select>` menu is selected, the value of the selected option will be bound
+ * to the model identified by the `ngModel` directive. With static or repeated options, this is
+ * the content of the `value` attribute or the textContent of the `<option>`, if the value attribute is missing.
+ * If you want dynamic value attributes, you can use interpolation inside the value attribute.
  *
- * If the viewValue contains a value that doesn't match any of the options then the control
- * will automatically add an "unknown" option, which it then removes when this is resolved.
+ * <div class="alert alert-warning">
+ * Note that the value of a `select` directive used without `ngOptions` is always a string.
+ * When the model needs to be bound to a non-string value, you must either explictly convert it
+ * using a directive (see example below) or use `ngOptions` to specify the set of options.
+ * This is because an option element can only be bound to string values at present.
+ * </div>
+ *
+ * If the viewValue of `ngModel` does not match any of the options, then the control
+ * will automatically add an "unknown" option, which it then removes when the mismatch is resolved.
  *
  * Optionally, a single hard-coded `<option>` element, with the value set to an empty string, can
  * be nested into the `<select>` element. This element will then represent the `null` or "not selected"
  * option. See example below for demonstration.
  *
  * <div class="alert alert-info">
- * The value of a `select` directive used without `ngOptions` is always a string.
- * When the model needs to be bound to a non-string value, you must either explictly convert it
- * using a directive (see example below) or use `ngOptions` to specify the set of options.
- * This is because an option element can only be bound to string values at present.
+ * In many cases, `ngRepeat` can be used on `<option>` elements instead of {@link ng.directive:ngOptions
+ * ngOptions} to achieve a similar result. However, `ngOptions` provides some benefits, such as
+ * more flexibility in how the `<select>`'s model is assigned via the `select` **`as`** part of the
+ * comprehension expression, and additionally in reducing memory and increasing speed by not creating
+ * a new scope for each repeated instance.
  * </div>
  *
- * ### Example (binding `select` to a non-string value)
+ *
+ * @param {string} ngModel Assignable angular expression to data-bind to.
+ * @param {string=} name Property name of the form under which the control is published.
+ * @param {string=} required Sets `required` validation error key if the value is not entered.
+ * @param {string=} ngRequired Adds required attribute and required validation constraint to
+ * the element when the ngRequired expression evaluates to true. Use ngRequired instead of required
+ * when you want to data-bind to the required attribute.
+ * @param {string=} ngChange Angular expression to be executed when selected option(s) changes due to user
+ *    interaction with the select element.
+ * @param {string=} ngOptions sets the options that the select is populated with and defines what is
+ * set on the model on selection. See {@link ngOptions `ngOptions`}.
+ *
+ * @example
+ * ### Simple `select` elements with static options
+ *
+ * <example name="static-select" module="staticSelect">
+ * <file name="index.html">
+ * <div ng-controller="ExampleController">
+ *   <form name="myForm">
+ *     <label for="singleSelect"> Single select: </label><br>
+ *     <select name="singleSelect" ng-model="data.singleSelect">
+ *       <option value="option-1">Option 1</option>
+ *       <option value="option-2">Option 2</option>
+ *     </select><br>
+ *
+ *     <label for="singleSelect"> Single select with "not selected" option and dynamic option values: </label><br>
+ *     <select name="singleSelect" ng-model="data.singleSelect">
+ *       <option value="">---Please select---</option> <!-- not selected / blank option -->
+ *       <option value="{{data.option1}}">Option 1</option> <!-- interpolation -->
+ *       <option value="option-2">Option 2</option>
+ *     </select><br>
+ *     <button ng-click="forceUnknownOption()">Force unknown option</button><br>
+ *     <tt>singleSelect = {{data.singleSelect}}</tt>
+ *
+ *     <hr>
+ *     <label for="multipleSelect"> Multiple select: </label><br>
+ *     <select name="multipleSelect" id="multipleSelect" ng-model="data.multipleSelect" multiple>
+ *       <option value="option-1">Option 1</option>
+ *       <option value="option-2">Option 2</option>
+ *       <option value="option-3">Option 3</option>
+ *     </select><br>
+ *     <tt>multipleSelect = {{data.multipleSelect}}</tt><br/>
+ *   </form>
+ * </div>
+ * </file>
+ * <file name="app.js">
+ *  angular.module('staticSelect', [])
+ *    .controller('ExampleController', ['$scope', function($scope) {
+ *      $scope.data = {
+ *       singleSelect: null,
+ *       multipleSelect: [],
+ *       option1: 'option-1',
+ *      };
+ *
+ *      $scope.forceUnknownOption = function() {
+ *        $scope.data.singleSelect = 'nonsense';
+ *      };
+ *   }]);
+ * </file>
+ *</example>
+ *
+ * ### Using `ngRepeat` to generate `select` options
+ * <example name="ngrepeat-select" module="ngrepeatSelect">
+ * <file name="index.html">
+ * <div ng-controller="ExampleController">
+ *   <form name="myForm">
+ *     <label for="repeatSelect"> Repeat select: </label>
+ *     <select name="repeatSelect" ng-model="data.repeatSelect">
+ *       <option ng-repeat="option in data.availableOptions" value="{{option.id}}">{{option.name}}</option>
+ *     </select>
+ *   </form>
+ *   <hr>
+ *   <tt>repeatSelect = {{data.repeatSelect}}</tt><br/>
+ * </div>
+ * </file>
+ * <file name="app.js">
+ *  angular.module('ngrepeatSelect', [])
+ *    .controller('ExampleController', ['$scope', function($scope) {
+ *      $scope.data = {
+ *       singleSelect: null,
+ *       availableOptions: [
+ *         {id: '1', name: 'Option A'},
+ *         {id: '2', name: 'Option B'},
+ *         {id: '3', name: 'Option C'}
+ *       ],
+ *      };
+ *   }]);
+ * </file>
+ *</example>
+ *
+ *
+ * ### Using `select` with `ngOptions` and setting a default value
+ * See the {@link ngOptions ngOptions documentation} for more `ngOptions` usage examples.
+ *
+ * <example name="select-with-default-values" module="defaultValueSelect">
+ * <file name="index.html">
+ * <div ng-controller="ExampleController">
+ *   <form name="myForm">
+ *     <label for="mySelect">Make a choice:</label>
+ *     <select name="mySelect" id="mySelect"
+ *       ng-options="option.name for option in data.availableOptions track by option.id"
+ *       ng-model="data.selectedOption"></select>
+ *   </form>
+ *   <hr>
+ *   <tt>option = {{data.selectedOption}}</tt><br/>
+ * </div>
+ * </file>
+ * <file name="app.js">
+ *  angular.module('defaultValueSelect', [])
+ *    .controller('ExampleController', ['$scope', function($scope) {
+ *      $scope.data = {
+ *       availableOptions: [
+ *         {id: '1', name: 'Option A'},
+ *         {id: '2', name: 'Option B'},
+ *         {id: '3', name: 'Option C'}
+ *       ],
+ *       selectedOption: {id: '3', name: 'Option C'} //This sets the default value of the select in the ui
+ *       };
+ *   }]);
+ * </file>
+ *</example>
+ *
+ *
+ * ### Binding `select` to a non-string value via `ngModel` parsing / formatting
  *
  * <example name="select-with-non-string-options" module="nonStringSelect">
  *   <file name="index.html">
@@ -45527,8 +45699,9 @@ var patternDirective = function() {
         ctrl.$validate();
       });
 
-      ctrl.$validators.pattern = function(value) {
-        return ctrl.$isEmpty(value) || isUndefined(regexp) || regexp.test(value);
+      ctrl.$validators.pattern = function(modelValue, viewValue) {
+        // HTML5 pattern constraint validates the input value, so we validate the viewValue
+        return ctrl.$isEmpty(viewValue) || isUndefined(regexp) || regexp.test(viewValue);
       };
     }
   };
@@ -45727,9 +45900,9 @@ module.exports = angular;
 
 },{"./angular":37}],39:[function(require,module,exports){
 /**
- * Satellizer 0.12.2
- * (c) 2015 Sahat Yalkabov
+ * Satellizer 0.12.4
+ * (c) 2014-2015 Sahat Yalkabov
  * License: MIT
  */
-!function(e,t,n){"use strict";t.module("satellizer",[]).constant("SatellizerConfig",{httpInterceptor:!0,withCredentials:!0,tokenRoot:null,cordova:!1,baseUrl:"/",loginUrl:"/auth/login",signupUrl:"/auth/signup",unlinkUrl:"/auth/unlink/",tokenName:"token",tokenPrefix:"satellizer",authHeader:"Authorization",authToken:"Bearer",storageType:"localStorage",providers:{google:{name:"google",url:"/auth/google",authorizationEndpoint:"https://accounts.google.com/o/oauth2/auth",redirectUri:e.location.origin||e.location.protocol+"//"+e.location.host,scope:["profile","email"],scopePrefix:"openid",scopeDelimiter:" ",requiredUrlParams:["scope"],optionalUrlParams:["display"],display:"popup",type:"2.0",popupOptions:{width:452,height:633}},facebook:{name:"facebook",url:"/auth/facebook",authorizationEndpoint:"https://www.facebook.com/v2.3/dialog/oauth",redirectUri:(e.location.origin||e.location.protocol+"//"+e.location.host)+"/",scope:["email"],scopeDelimiter:",",requiredUrlParams:["display","scope"],display:"popup",type:"2.0",popupOptions:{width:580,height:400}},linkedin:{name:"linkedin",url:"/auth/linkedin",authorizationEndpoint:"https://www.linkedin.com/uas/oauth2/authorization",redirectUri:e.location.origin||e.location.protocol+"//"+e.location.host,requiredUrlParams:["state"],scope:["r_emailaddress"],scopeDelimiter:" ",state:"STATE",type:"2.0",popupOptions:{width:527,height:582}},github:{name:"github",url:"/auth/github",authorizationEndpoint:"https://github.com/login/oauth/authorize",redirectUri:e.location.origin||e.location.protocol+"//"+e.location.host,optionalUrlParams:["scope"],scope:["user:email"],scopeDelimiter:" ",type:"2.0",popupOptions:{width:1020,height:618}},yahoo:{name:"yahoo",url:"/auth/yahoo",authorizationEndpoint:"https://api.login.yahoo.com/oauth2/request_auth",redirectUri:e.location.origin||e.location.protocol+"//"+e.location.host,scope:[],scopeDelimiter:",",type:"2.0",popupOptions:{width:559,height:519}},twitter:{name:"twitter",url:"/auth/twitter",authorizationEndpoint:"https://api.twitter.com/oauth/authenticate",redirectUri:e.location.origin||e.location.protocol+"//"+e.location.host,type:"1.0",popupOptions:{width:495,height:645}},live:{name:"live",url:"/auth/live",authorizationEndpoint:"https://login.live.com/oauth20_authorize.srf",redirectUri:e.location.origin||e.location.protocol+"//"+e.location.host,scope:["wl.emails"],scopeDelimiter:" ",requiredUrlParams:["display","scope"],display:"popup",type:"2.0",popupOptions:{width:500,height:560}}}}).provider("$auth",["SatellizerConfig",function(e){Object.defineProperties(this,{httpInterceptor:{get:function(){return e.httpInterceptor},set:function(t){e.httpInterceptor=t}},baseUrl:{get:function(){return e.baseUrl},set:function(t){e.baseUrl=t}},loginUrl:{get:function(){return e.loginUrl},set:function(t){e.loginUrl=t}},signupUrl:{get:function(){return e.signupUrl},set:function(t){e.signupUrl=t}},tokenRoot:{get:function(){return e.tokenRoot},set:function(t){e.tokenRoot=t}},tokenName:{get:function(){return e.tokenName},set:function(t){e.tokenName=t}},tokenPrefix:{get:function(){return e.tokenPrefix},set:function(t){e.tokenPrefix=t}},unlinkUrl:{get:function(){return e.unlinkUrl},set:function(t){e.unlinkUrl=t}},authHeader:{get:function(){return e.authHeader},set:function(t){e.authHeader=t}},authToken:{get:function(){return e.authToken},set:function(t){e.authToken=t}},withCredentials:{get:function(){return e.withCredentials},set:function(t){e.withCredentials=t}},cordova:{get:function(){return e.cordova},set:function(t){e.cordova=t}},storageType:{get:function(){return e.storageType},set:function(t){e.storageType=t}}}),t.forEach(Object.keys(e.providers),function(n){this[n]=function(r){return t.extend(e.providers[n],r)}},this);var n=function(n){e.providers[n.name]=e.providers[n.name]||{},t.extend(e.providers[n.name],n)};this.oauth1=function(t){n(t),e.providers[t.name].type="1.0"},this.oauth2=function(t){n(t),e.providers[t.name].type="2.0"},this.$get=["$q","SatellizerShared","SatellizerLocal","SatellizerOauth",function(e,t,n,r){var o={};return o.login=function(e,t){return n.login(e,t)},o.signup=function(e){return n.signup(e)},o.logout=function(){return t.logout()},o.authenticate=function(e,t){return r.authenticate(e,t)},o.link=function(e,t){return r.authenticate(e,t)},o.unlink=function(e,t){return r.unlink(e,t)},o.isAuthenticated=function(){return t.isAuthenticated()},o.getToken=function(){return t.getToken()},o.setToken=function(e){t.setToken({access_token:e})},o.removeToken=function(){return t.removeToken()},o.getPayload=function(){return t.getPayload()},o.setStorageType=function(e){return t.setStorageType(e)},o}]}]).factory("SatellizerShared",["$q","$window","SatellizerConfig","SatellizerStorage",function(n,r,o,i){var a={},u=o.tokenPrefix?[o.tokenPrefix,o.tokenName].join("_"):o.tokenName;return a.getToken=function(){return i.get(u)},a.getPayload=function(){var t=i.get(u);if(t&&3===t.split(".").length){var n=t.split(".")[1],r=n.replace("-","+").replace("_","/");return JSON.parse(decodeURIComponent(escape(e.atob(r))))}},a.setToken=function(e){var n,r=e&&e.access_token;if(r&&(t.isObject(r)&&t.isObject(r.data)?e=r:t.isString(r)&&(n=r)),!n&&e){var a=o.tokenRoot&&o.tokenRoot.split(".").reduce(function(e,t){return e[t]},e.data);n=a?a[o.tokenName]:e.data[o.tokenName]}if(!n){var l=o.tokenRoot?o.tokenRoot+"."+o.tokenName:o.tokenName;throw new Error('Expecting a token named "'+l+'" but instead got: '+JSON.stringify(e.data))}i.set(u,n)},a.removeToken=function(){i.remove(u)},a.isAuthenticated=function(){var e=i.get(u);if(e){if(3===e.split(".").length){var t=e.split(".")[1],n=t.replace("-","+").replace("_","/"),o=JSON.parse(r.atob(n)).exp;return o?Math.round((new Date).getTime()/1e3)<=o:!0}return!0}return!1},a.logout=function(){return i.remove(u),n.when()},a.setStorageType=function(e){o.storageType=e},a}]).factory("SatellizerOauth",["$q","$http","SatellizerConfig","SatellizerUtils","SatellizerShared","SatellizerOauth1","SatellizerOauth2",function(e,t,n,r,o,i,a){var u={};return u.authenticate=function(t,r){var u="1.0"===n.providers[t].type?new i:new a,l=e.defer();return u.open(n.providers[t],r||{}).then(function(e){o.setToken(e,!1),l.resolve(e)})["catch"](function(e){l.reject(e)}),l.promise},u.unlink=function(e,o){return o=o||{},o.url=n.baseUrl?r.joinUrl(n.baseUrl,n.unlinkUrl):n.unlinkUrl,o.data={provider:e}||o.data,o.method=o.method||"POST",t(o)},u}]).factory("SatellizerLocal",["$http","SatellizerUtils","SatellizerShared","SatellizerConfig",function(e,t,n,r){var o={};return o.login=function(o,i){return i=i||{},i.url=r.baseUrl?t.joinUrl(r.baseUrl,r.loginUrl):r.loginUrl,i.data=o||i.data,i.method=i.method||"POST",e(i).then(function(e){return n.setToken(e),e})},o.signup=function(n,o){return o=o||{},o.url=r.baseUrl?t.joinUrl(r.baseUrl,r.signupUrl):r.signupUrl,o.data=n||o.data,o.method=o.method||"POST",e(o)},o}]).factory("SatellizerOauth2",["$q","$http","$window","SatellizerPopup","SatellizerUtils","SatellizerConfig","SatellizerStorage",function(e,n,r,o,i,a,u){return function(){var r={},l={defaultUrlParams:["response_type","client_id","redirect_uri"],responseType:"code",responseParams:{code:"code",clientId:"clientId",redirectUri:"redirectUri"}};return r.open=function(n,p){l=i.merge(n,l);var c,s=[l.authorizationEndpoint,r.buildQueryString()].join("?"),d=l.name+"_state";return t.isFunction(l.state)?u.set(d,l.state()):t.isString(l.state)&&u.set(d,l.state),c=a.cordova?o.open(s,l.name,l.popupOptions,l.redirectUri).eventListener(l.redirectUri):o.open(s,l.name,l.popupOptions,l.redirectUri).pollPopup(),c.then(function(t){return"token"===l.responseType?t:t.state&&t.state!==u.get(d)?e.reject('OAuth "state" mismatch'):r.exchangeForToken(t,p)})},r.exchangeForToken=function(e,r){var o=t.extend({},r);t.forEach(l.responseParams,function(t,n){switch(n){case"code":o[t]=e.code;break;case"clientId":o[t]=l.clientId;break;case"redirectUri":o[t]=l.redirectUri;break;default:o[t]=e[n]}}),e.state&&(o.state=e.state);var u=a.baseUrl?i.joinUrl(a.baseUrl,l.url):l.url;return n.post(u,o,{withCredentials:a.withCredentials})},r.buildQueryString=function(){var e=[],n=["defaultUrlParams","requiredUrlParams","optionalUrlParams"];return t.forEach(n,function(n){t.forEach(l[n],function(n){var r=i.camelCase(n),o=t.isFunction(l[n])?l[n]():l[r];if("state"===n){var a=l.name+"_state";o=encodeURIComponent(u.get(a))}"scope"===n&&Array.isArray(o)&&(o=o.join(l.scopeDelimiter),l.scopePrefix&&(o=[l.scopePrefix,o].join(l.scopeDelimiter))),e.push([n,o])})}),e.map(function(e){return e.join("=")}).join("&")},r}}]).factory("SatellizerOauth1",["$q","$http","SatellizerPopup","SatellizerConfig","SatellizerUtils",function(e,n,r,o,i){return function(){var e={},a={url:null,name:null,popupOptions:null,redirectUri:null,authorizationEndpoint:null};return e.open=function(u,l){t.extend(a,u);var p,c=o.baseUrl?i.joinUrl(o.baseUrl,a.url):a.url;return o.cordova||(p=r.open("",a.name,a.popupOptions,a.redirectUri)),n.post(c,a).then(function(t){o.cordova?p=r.open([a.authorizationEndpoint,e.buildQueryString(t.data)].join("?"),a.name,a.popupOptions,a.redirectUri):p.popupWindow.location=[a.authorizationEndpoint,e.buildQueryString(t.data)].join("?");var n=o.cordova?p.eventListener(a.redirectUri):p.pollPopup();return n.then(function(t){return e.exchangeForToken(t,l)})})},e.exchangeForToken=function(e,r){var u=t.extend({},r,e),l=o.baseUrl?i.joinUrl(o.baseUrl,a.url):a.url;return n.post(l,u,{withCredentials:o.withCredentials})},e.buildQueryString=function(e){var n=[];return t.forEach(e,function(e,t){n.push(encodeURIComponent(t)+"="+encodeURIComponent(e))}),n.join("&")},e}}]).factory("SatellizerPopup",["$q","$interval","$window","SatellizerConfig","SatellizerUtils",function(r,o,i,a,u){var l={};return l.url="",l.popupWindow=null,l.open=function(t,n,r){l.url=t;var o=l.stringifyOptions(l.prepareOptions(r)),i=a.cordova?"_blank":n;return l.popupWindow=e.open(t,i,o),e.popup=l.popupWindow,l.popupWindow&&l.popupWindow.focus&&l.popupWindow.focus(),l},l.eventListener=function(e){var n=r.defer();return l.popupWindow.addEventListener("loadstart",function(r){if(0===r.url.indexOf(e)){var o=document.createElement("a");if(o.href=r.url,o.search||o.hash){var i=o.search.substring(1).replace(/\/$/,""),a=o.hash.substring(1).replace(/\/$/,""),p=u.parseQueryString(a),c=u.parseQueryString(i);t.extend(c,p),c.error||n.resolve(c),l.popupWindow.close()}}}),l.popupWindow.addEventListener("loaderror",function(){n.reject("Authorization Failed")}),n.promise},l.pollPopup=function(){var e=r.defer(),i=o(function(){try{var r=document.location.host,a=l.popupWindow.location.host;if(a===r&&(l.popupWindow.location.search||l.popupWindow.location.hash)){var p=l.popupWindow.location.search.substring(1).replace(/\/$/,""),c=l.popupWindow.location.hash.substring(1).replace(/[\/$]/,""),s=u.parseQueryString(c),d=u.parseQueryString(p);t.extend(d,s),d.error||e.resolve(d),l.popupWindow.close(),o.cancel(i)}}catch(h){}(!l.popupWindow||l.popupWindow.closed||l.popupWindow.closed===n)&&o.cancel(i)},50);return e.promise},l.prepareOptions=function(e){e=e||{};var n=e.width||500,r=e.height||500;return t.extend({width:n,height:r,left:i.screenX+(i.outerWidth-n)/2,top:i.screenY+(i.outerHeight-r)/2.5},e)},l.stringifyOptions=function(e){var n=[];return t.forEach(e,function(e,t){n.push(t+"="+e)}),n.join(",")},l}]).service("SatellizerUtils",function(){this.camelCase=function(e){return e.replace(/([\:\-\_]+(.))/g,function(e,t,n,r){return r?n.toUpperCase():n})},this.parseQueryString=function(e){var n,r,o={};return t.forEach((e||"").split("&"),function(e){e&&(r=e.split("="),n=decodeURIComponent(r[0]),o[n]=t.isDefined(r[1])?decodeURIComponent(r[1]):!0)}),o},this.joinUrl=function(e,t){if(/^(?:[a-z]+:)?\/\//i.test(t))return t;var n=[e,t].join("/"),r=function(e){return e.replace(/[\/]+/g,"/").replace(/\/\?/g,"?").replace(/\/\#/g,"#").replace(/\:\//g,"://")};return r(n)},this.merge=function(e,t){var n={};for(var r in e)e.hasOwnProperty(r)&&(n[r]=r in t&&"object"==typeof e[r]&&null!==r?this.merge(e[r],t[r]):e[r]);for(r in t)if(t.hasOwnProperty(r)){if(r in n)continue;n[r]=t[r]}return n}}).factory("SatellizerStorage",["$window","SatellizerConfig",function(e,t){var r=function(){try{var n=t.storageType in e&&null!==e[t.storageType];if(n){var r=Math.random().toString(36).substring(7);e[t.storageType].setItem(r,""),e[t.storageType].removeItem(r)}return n}catch(o){return!1}}();return r||console.warn("Satellizer Warning: "+t.storageType+" is not available."),{get:function(o){return r?e[t.storageType].getItem(o):n},set:function(o,i){return r?e[t.storageType].setItem(o,i):n},remove:function(o){return r?e[t.storageType].removeItem(o):n}}}]).factory("SatellizerInterceptor",["$q","SatellizerConfig","SatellizerStorage","SatellizerShared",function(e,t,n,r){return{request:function(e){if(e.skipAuthorization)return e;if(r.isAuthenticated()&&t.httpInterceptor){var o=t.tokenPrefix?t.tokenPrefix+"_"+t.tokenName:t.tokenName,i=n.get(o);t.authHeader&&t.authToken&&(i=t.authToken+" "+i),e.headers[t.authHeader]=i}return e},responseError:function(t){return e.reject(t)}}}]).config(["$httpProvider",function(e){e.interceptors.push("SatellizerInterceptor")}])}(window,window.angular);
+!function(e,t,n){"use strict";t.module("satellizer",[]).constant("SatellizerConfig",{httpInterceptor:!0,withCredentials:!0,tokenRoot:null,cordova:!1,baseUrl:"/",loginUrl:"/auth/login",signupUrl:"/auth/signup",unlinkUrl:"/auth/unlink/",tokenName:"token",tokenPrefix:"satellizer",authHeader:"Authorization",authToken:"Bearer",storageType:"localStorage",providers:{facebook:{name:"facebook",url:"/auth/facebook",authorizationEndpoint:"https://www.facebook.com/v2.3/dialog/oauth",redirectUri:(e.location.origin||e.location.protocol+"//"+e.location.host)+"/",requiredUrlParams:["display","scope"],scope:["email"],scopeDelimiter:",",display:"popup",type:"2.0",popupOptions:{width:580,height:400}},google:{name:"google",url:"/auth/google",authorizationEndpoint:"https://accounts.google.com/o/oauth2/auth",redirectUri:e.location.origin||e.location.protocol+"//"+e.location.host,requiredUrlParams:["scope"],optionalUrlParams:["display"],scope:["profile","email"],scopePrefix:"openid",scopeDelimiter:" ",display:"popup",type:"2.0",popupOptions:{width:452,height:633}},github:{name:"github",url:"/auth/github",authorizationEndpoint:"https://github.com/login/oauth/authorize",redirectUri:e.location.origin||e.location.protocol+"//"+e.location.host,optionalUrlParams:["scope"],scope:["user:email"],scopeDelimiter:" ",type:"2.0",popupOptions:{width:1020,height:618}},linkedin:{name:"linkedin",url:"/auth/linkedin",authorizationEndpoint:"https://www.linkedin.com/uas/oauth2/authorization",redirectUri:e.location.origin||e.location.protocol+"//"+e.location.host,requiredUrlParams:["state"],scope:["r_emailaddress"],scopeDelimiter:" ",state:"STATE",type:"2.0",popupOptions:{width:527,height:582}},twitter:{name:"twitter",url:"/auth/twitter",authorizationEndpoint:"https://api.twitter.com/oauth/authenticate",redirectUri:e.location.origin||e.location.protocol+"//"+e.location.host,type:"1.0",popupOptions:{width:495,height:645}},twitch:{name:"twitch",url:"/auth/twitch",authorizationEndpoint:"https://api.twitch.tv/kraken/oauth2/authorize",redirectUri:e.location.origin||e.location.protocol+"//"+e.location.host,requiredUrlParams:["scope"],scope:["user_read"],scopeDelimiter:" ",display:"popup",type:"2.0",popupOptions:{width:500,height:560}},live:{name:"live",url:"/auth/live",authorizationEndpoint:"https://login.live.com/oauth20_authorize.srf",redirectUri:e.location.origin||e.location.protocol+"//"+e.location.host,requiredUrlParams:["display","scope"],scope:["wl.emails"],scopeDelimiter:" ",display:"popup",type:"2.0",popupOptions:{width:500,height:560}},yahoo:{name:"yahoo",url:"/auth/yahoo",authorizationEndpoint:"https://api.login.yahoo.com/oauth2/request_auth",redirectUri:e.location.origin||e.location.protocol+"//"+e.location.host,scope:[],scopeDelimiter:",",type:"2.0",popupOptions:{width:559,height:519}}}}).provider("$auth",["SatellizerConfig",function(e){Object.defineProperties(this,{httpInterceptor:{get:function(){return e.httpInterceptor},set:function(t){e.httpInterceptor=t}},baseUrl:{get:function(){return e.baseUrl},set:function(t){e.baseUrl=t}},loginUrl:{get:function(){return e.loginUrl},set:function(t){e.loginUrl=t}},signupUrl:{get:function(){return e.signupUrl},set:function(t){e.signupUrl=t}},tokenRoot:{get:function(){return e.tokenRoot},set:function(t){e.tokenRoot=t}},tokenName:{get:function(){return e.tokenName},set:function(t){e.tokenName=t}},tokenPrefix:{get:function(){return e.tokenPrefix},set:function(t){e.tokenPrefix=t}},unlinkUrl:{get:function(){return e.unlinkUrl},set:function(t){e.unlinkUrl=t}},authHeader:{get:function(){return e.authHeader},set:function(t){e.authHeader=t}},authToken:{get:function(){return e.authToken},set:function(t){e.authToken=t}},withCredentials:{get:function(){return e.withCredentials},set:function(t){e.withCredentials=t}},cordova:{get:function(){return e.cordova},set:function(t){e.cordova=t}},storageType:{get:function(){return e.storageType},set:function(t){e.storageType=t}}}),t.forEach(Object.keys(e.providers),function(n){this[n]=function(o){return t.extend(e.providers[n],o)}},this);var n=function(n){e.providers[n.name]=e.providers[n.name]||{},t.extend(e.providers[n.name],n)};this.oauth1=function(t){n(t),e.providers[t.name].type="1.0"},this.oauth2=function(t){n(t),e.providers[t.name].type="2.0"},this.$get=["$q","SatellizerShared","SatellizerLocal","SatellizerOauth",function(e,t,n,o){var r={};return r.login=function(e,t){return n.login(e,t)},r.signup=function(e,t){return n.signup(e,t)},r.logout=function(){return t.logout()},r.authenticate=function(e,t){return o.authenticate(e,t)},r.link=function(e,t){return o.authenticate(e,t)},r.unlink=function(e,t){return o.unlink(e,t)},r.isAuthenticated=function(){return t.isAuthenticated()},r.getToken=function(){return t.getToken()},r.setToken=function(e){t.setToken({access_token:e})},r.removeToken=function(){return t.removeToken()},r.getPayload=function(){return t.getPayload()},r.setStorageType=function(e){return t.setStorageType(e)},r}]}]).factory("SatellizerShared",["$q","$window","SatellizerConfig","SatellizerStorage",function(n,o,r,i){var a={},u=r.tokenPrefix?[r.tokenPrefix,r.tokenName].join("_"):r.tokenName;return a.getToken=function(){return i.get(u)},a.getPayload=function(){var t=i.get(u);if(t&&3===t.split(".").length){var n=t.split(".")[1],o=n.replace("-","+").replace("_","/");return JSON.parse(decodeURIComponent(escape(e.atob(o))))}},a.setToken=function(e){var n,o=e&&e.access_token;if(o&&(t.isObject(o)&&t.isObject(o.data)?e=o:t.isString(o)&&(n=o)),!n&&e){var a=r.tokenRoot&&r.tokenRoot.split(".").reduce(function(e,t){return e[t]},e.data);n=a?a[r.tokenName]:e.data[r.tokenName]}if(!n){var l=r.tokenRoot?r.tokenRoot+"."+r.tokenName:r.tokenName;throw new Error('Expecting a token named "'+l+'" but instead got: '+JSON.stringify(e.data))}i.set(u,n)},a.removeToken=function(){i.remove(u)},a.isAuthenticated=function(){var e=i.get(u);if(e){if(3===e.split(".").length){var t=e.split(".")[1],n=t.replace("-","+").replace("_","/"),r=JSON.parse(o.atob(n)).exp;if(r){var a=Math.round((new Date).getTime()/1e3)>=r;return a?(i.remove(u),!1):!0}return!0}return!0}return!1},a.logout=function(){return i.remove(u),n.when()},a.setStorageType=function(e){r.storageType=e},a}]).factory("SatellizerOauth",["$q","$http","SatellizerConfig","SatellizerUtils","SatellizerShared","SatellizerOauth1","SatellizerOauth2",function(e,t,n,o,r,i,a){var u={};return u.authenticate=function(t,o){var u="1.0"===n.providers[t].type?new i:new a,l=e.defer();return u.open(n.providers[t],o||{}).then(function(e){r.setToken(e,!1),l.resolve(e)})["catch"](function(e){l.reject(e)}),l.promise},u.unlink=function(e,r){return r=r||{},r.url=n.baseUrl?o.joinUrl(n.baseUrl,n.unlinkUrl):n.unlinkUrl,r.data={provider:e}||r.data,r.method=r.method||"POST",t(r)},u}]).factory("SatellizerLocal",["$http","SatellizerUtils","SatellizerShared","SatellizerConfig",function(e,t,n,o){var r={};return r.login=function(r,i){return i=i||{},i.url=o.baseUrl?t.joinUrl(o.baseUrl,o.loginUrl):o.loginUrl,i.data=r||i.data,i.method=i.method||"POST",e(i).then(function(e){return n.setToken(e),e})},r.signup=function(n,r){return r=r||{},r.url=o.baseUrl?t.joinUrl(o.baseUrl,o.signupUrl):o.signupUrl,r.data=n||r.data,r.method=r.method||"POST",e(r)},r}]).factory("SatellizerOauth2",["$q","$http","$window","SatellizerPopup","SatellizerUtils","SatellizerConfig","SatellizerStorage",function(e,n,o,r,i,a,u){return function(){var o={},l={defaultUrlParams:["response_type","client_id","redirect_uri"],responseType:"code",responseParams:{code:"code",clientId:"clientId",redirectUri:"redirectUri"}};return o.open=function(n,p){l=i.merge(n,l);var c,s,h=l.name+"_state";return t.isFunction(l.state)?u.set(h,l.state()):t.isString(l.state)&&u.set(h,l.state),c=[l.authorizationEndpoint,o.buildQueryString()].join("?"),s=a.cordova?r.open(c,l.name,l.popupOptions,l.redirectUri).eventListener(l.redirectUri):r.open(c,l.name,l.popupOptions,l.redirectUri).pollPopup(),s.then(function(t){return"token"===l.responseType?t:t.state&&t.state!==u.get(h)?e.reject('OAuth "state" mismatch'):o.exchangeForToken(t,p)})},o.exchangeForToken=function(e,o){var r=t.extend({},o);t.forEach(l.responseParams,function(t,n){switch(n){case"code":r[t]=e.code;break;case"clientId":r[t]=l.clientId;break;case"redirectUri":r[t]=l.redirectUri;break;default:r[t]=e[n]}}),e.state&&(r.state=e.state);var u=a.baseUrl?i.joinUrl(a.baseUrl,l.url):l.url;return n.post(u,r,{withCredentials:a.withCredentials})},o.buildQueryString=function(){var e=[],n=["defaultUrlParams","requiredUrlParams","optionalUrlParams"];return t.forEach(n,function(n){t.forEach(l[n],function(n){var o=i.camelCase(n),r=t.isFunction(l[n])?l[n]():l[o];if("state"===n){var a=l.name+"_state";r=encodeURIComponent(u.get(a))}"scope"===n&&Array.isArray(r)&&(r=r.join(l.scopeDelimiter),l.scopePrefix&&(r=[l.scopePrefix,r].join(l.scopeDelimiter))),e.push([n,r])})}),e.map(function(e){return e.join("=")}).join("&")},o}}]).factory("SatellizerOauth1",["$q","$http","SatellizerPopup","SatellizerConfig","SatellizerUtils",function(e,n,o,r,i){return function(){var e={},a={url:null,name:null,popupOptions:null,redirectUri:null,authorizationEndpoint:null};return e.open=function(u,l){t.extend(a,u);var p,c=r.baseUrl?i.joinUrl(r.baseUrl,a.url):a.url;return r.cordova||(p=o.open("",a.name,a.popupOptions,a.redirectUri)),n.post(c,a).then(function(t){r.cordova?p=o.open([a.authorizationEndpoint,e.buildQueryString(t.data)].join("?"),a.name,a.popupOptions,a.redirectUri):p.popupWindow.location=[a.authorizationEndpoint,e.buildQueryString(t.data)].join("?");var n=r.cordova?p.eventListener(a.redirectUri):p.pollPopup();return n.then(function(t){return e.exchangeForToken(t,l)})})},e.exchangeForToken=function(e,o){var u=t.extend({},o,e),l=r.baseUrl?i.joinUrl(r.baseUrl,a.url):a.url;return n.post(l,u,{withCredentials:r.withCredentials})},e.buildQueryString=function(e){var n=[];return t.forEach(e,function(e,t){n.push(encodeURIComponent(t)+"="+encodeURIComponent(e))}),n.join("&")},e}}]).factory("SatellizerPopup",["$q","$interval","$window","SatellizerConfig","SatellizerUtils",function(o,r,i,a,u){var l={};return l.url="",l.popupWindow=null,l.open=function(t,n,o){l.url=t;var r=l.stringifyOptions(l.prepareOptions(o)),i=a.cordova?"_blank":n;return l.popupWindow=e.open(t,i,r),e.popup=l.popupWindow,l.popupWindow&&l.popupWindow.focus&&l.popupWindow.focus(),l},l.eventListener=function(e){var n=o.defer();return l.popupWindow.addEventListener("loadstart",function(o){if(0===o.url.indexOf(e)){var r=document.createElement("a");if(r.href=o.url,r.search||r.hash){var i=r.search.substring(1).replace(/\/$/,""),a=r.hash.substring(1).replace(/\/$/,""),p=u.parseQueryString(a),c=u.parseQueryString(i);t.extend(c,p),c.error||n.resolve(c),l.popupWindow.close()}}}),l.popupWindow.addEventListener("loaderror",function(){n.reject("Authorization Failed")}),n.promise},l.pollPopup=function(){var e=o.defer(),i=r(function(){try{var o=document.location.host,a=l.popupWindow.location.host;if(a===o&&(l.popupWindow.location.search||l.popupWindow.location.hash)){var p=l.popupWindow.location.search.substring(1).replace(/\/$/,""),c=l.popupWindow.location.hash.substring(1).replace(/[\/$]/,""),s=u.parseQueryString(c),h=u.parseQueryString(p);t.extend(h,s),h.error||e.resolve(h),l.popupWindow.close(),r.cancel(i)}}catch(d){}(!l.popupWindow||l.popupWindow.closed||l.popupWindow.closed===n)&&r.cancel(i)},50);return e.promise},l.prepareOptions=function(e){e=e||{};var n=e.width||500,o=e.height||500;return t.extend({width:n,height:o,left:i.screenX+(i.outerWidth-n)/2,top:i.screenY+(i.outerHeight-o)/2.5},e)},l.stringifyOptions=function(e){var n=[];return t.forEach(e,function(e,t){n.push(t+"="+e)}),n.join(",")},l}]).service("SatellizerUtils",function(){this.camelCase=function(e){return e.replace(/([\:\-\_]+(.))/g,function(e,t,n,o){return o?n.toUpperCase():n})},this.parseQueryString=function(e){var n,o,r={};return t.forEach((e||"").split("&"),function(e){e&&(o=e.split("="),n=decodeURIComponent(o[0]),r[n]=t.isDefined(o[1])?decodeURIComponent(o[1]):!0)}),r},this.joinUrl=function(e,t){if(/^(?:[a-z]+:)?\/\//i.test(t))return t;var n=[e,t].join("/"),o=function(e){return e.replace(/[\/]+/g,"/").replace(/\/\?/g,"?").replace(/\/\#/g,"#").replace(/\:\//g,"://")};return o(n)},this.merge=function(e,t){var n={};for(var o in e)e.hasOwnProperty(o)&&(n[o]=o in t&&"object"==typeof e[o]&&null!==o?this.merge(e[o],t[o]):e[o]);for(o in t)if(t.hasOwnProperty(o)){if(o in n)continue;n[o]=t[o]}return n}}).factory("SatellizerStorage",["$window","SatellizerConfig",function(e,t){var o=function(){try{var n=t.storageType in e&&null!==e[t.storageType];if(n){var o=Math.random().toString(36).substring(7);e[t.storageType].setItem(o,""),e[t.storageType].removeItem(o)}return n}catch(r){return!1}}();return o||console.warn("Satellizer Warning: "+t.storageType+" is not available."),{get:function(r){return o?e[t.storageType].getItem(r):n},set:function(r,i){return o?e[t.storageType].setItem(r,i):n},remove:function(r){return o?e[t.storageType].removeItem(r):n}}}]).factory("SatellizerInterceptor",["$q","SatellizerConfig","SatellizerStorage","SatellizerShared",function(e,t,n,o){return{request:function(e){if(e.skipAuthorization)return e;if(o.isAuthenticated()&&t.httpInterceptor){var r=t.tokenPrefix?t.tokenPrefix+"_"+t.tokenName:t.tokenName,i=n.get(r);t.authHeader&&t.authToken&&(i=t.authToken+" "+i),e.headers[t.authHeader]=i}return e},responseError:function(t){return e.reject(t)}}}]).config(["$httpProvider",function(e){e.interceptors.push("SatellizerInterceptor")}])}(window,window.angular);
 },{}]},{},[1]);

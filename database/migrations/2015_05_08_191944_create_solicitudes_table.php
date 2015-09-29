@@ -21,7 +21,7 @@ class CreateSolicitudesTable extends Migration {
 			$table->integer('applicant_id')->unsigned();
 			$table->date('document_date');
 			$table->text('topic');
-			$table->enum('status', ['Recibido', 'Procesando', 'Aceptado', 'Denegado']);
+			$table->enum('status', ['Recibido', 'Procesando', 'Aceptado', 'Denegado'])->default('Recibido');
 
 			$table->timestamps();
 		});

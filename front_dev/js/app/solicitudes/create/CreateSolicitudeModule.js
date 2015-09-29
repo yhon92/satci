@@ -1,5 +1,6 @@
-angular.module('Solicitude.Create', ['Alertify', 'SATCI.Shared', 'Solicitude.resources'])
+angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'Solicitude.resources'])
 .controller('CreateSolicitudeCtrl', (
+  $state,
   $scope, 
   $filter, 
   $controller, 
@@ -13,7 +14,7 @@ angular.module('Solicitude.Create', ['Alertify', 'SATCI.Shared', 'Solicitude.res
 
   $controller('CreateCitizenCtrl', {$scope : $scope});
   $controller('CreateInstitutionCtrl', {$scope : $scope});
-  $controller('DatepickerCtrl', {$scope : $scope});
+  // $controller('DatepickerCtrl', {$scope : $scope});
 
   let add = null;
   let search = null;
@@ -97,18 +98,23 @@ angular.module('Solicitude.Create', ['Alertify', 'SATCI.Shared', 'Solicitude.res
     Solicitudes.save(solicitude).$promise.then(
       (data) => {
         if (data.success) {
-          $scope.solicitude.alerts = [{
+          Alertify.success('Solicitud registrada exitosamente');
+          $state.transitionTo('solicitude', { 
+            reload: true, inherit: false, notify: false 
+          });
+          /*$scope.solicitude.alerts = [{
             type: 'success',
             message: 'Solicitud registrada exitosamente',
-          }];
+          }];*/
         }
       }, 
       (fails) => {
-        angular.forEach(fails.data, (values, key) => {
+        console.log(fails)
+        /*angular.forEach(fails.data, (values, key) => {
           angular.forEach(values, (value) => {
             $scope.applicant.alerts.push({type: 'danger', message: value})
           })
-        })
+        })*/
       })
   }
 

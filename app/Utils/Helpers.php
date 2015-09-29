@@ -35,9 +35,9 @@ class Helpers
     return $solicitudes;
   }
 
-  static public function getSolicitudeNumber($lastId)
+  static public function getSolicitudeNumber($lastSolicitude)
   {
-    $nextId = $lastId + 1;
-    return str_pad($nextId, 8, '0', STR_PAD_LEFT);
+    $nextSolicitude = $lastSolicitude + 1;
+    return str_pad($nextSolicitude, 8, '0', STR_PAD_LEFT);
   }
 }

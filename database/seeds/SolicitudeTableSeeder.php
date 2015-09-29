@@ -19,7 +19,7 @@ class SolicitudeTableSeeder extends Seeder
 			$date = $faker->dateTimeBetween($startDate = '-4 months', $endDate = 'now');
 
 			Solicitude::create([
-				'solicitude_number'	=> '000-'.$index+=122,
+				'solicitude_number'	=> str_pad($index, 8, '0', STR_PAD_LEFT),
 				'reception_date'		=> $date,
 				'applicant_type'		=> $faker->randomElement(['SATCI\Entities\Citizen', 'SATCI\Entities\Institution']),
 				'applicant_id'			=> $faker->numberBetween($min = 1, $max = 20),
