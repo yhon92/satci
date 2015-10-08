@@ -593,9 +593,17 @@ angular.module('Shared.services', []).factory('paginateService', ['$q', '$filter
 'use strict';
 
 angular.module('Solicitude.controller', []).controller('SolicitudeCtrl', function ($scope, $http, SolicitudesList) {
+  $scope.citizens = '';
+  $scope.institutions = '';
+
   /*$scope.parishes = Parishes.get(function (data) {
     return $scope.parishes = data.parishes;
   })*/
+
+  $scope.showSolicitude = function (id) {
+    console.log(id);
+  };
+
   SolicitudesList('Citizen').then(function (response) {
     $scope.citizens = response.data.solicitudes;
     $scope.citizens.type = 'Personas';
@@ -623,7 +631,8 @@ angular.module('Solicitude.directives', ['SATCI.Shared']).directive('solicitudeL
   return {
     restrict: 'E',
     scope: {
-      applicant: '=type'
+      applicant: '=type',
+      show: '&'
     },
     templateUrl: PathTemplates.partials + 'solicitude/solicitude-list-applicant.html'
   };
