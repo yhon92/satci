@@ -11,6 +11,10 @@ angular.module('Solicitude.controller',[])
     console.log(id);
   };
   
+  $scope.removeSolicitude = (id) => {
+    console.log(id);
+  };
+
   SolicitudesList('Citizen').then( (response) => {
     $scope.citizens = response.data.solicitudes;
     $scope.citizens.type = 'Personas';

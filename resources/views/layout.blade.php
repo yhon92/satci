@@ -68,7 +68,103 @@
 			</div>
 			<!-- Scripts -->
 			<%-- <script src="<% asset('js/libs.js') %>"></script> --%>
+
 			<script src="<% asset('js/app.js') %>"></script>
 
+			<script type="text/ng-template" id="modalShowCitizen-template">
+				<section class="modal-header">
+					<button type="button" class="close" ng-click="close()">×</button>
+					<h4 class="modal-title">Solicitante</h4>
+				</section>
+				<section class="modal-body form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-3 control-label" for="identification"><strong>Cédula:</strong></label>
+						<div class="col-sm-9">
+							<label class="form-label">{{ applicant.identification }}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-lg-3 control-label" for="first_name"><strong>Nombres:</strong></label>
+						<div class="col-lg-9">
+							<label class="form-label" for="first_name">{{ applicant.first_name }}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-lg-3 control-label" for="last_name"><strong>Apellidos:</strong></label>
+						<div class="col-lg-9">
+							<label class="form-label">{{ applicant.last_name }}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-lg-3 control-label" for="address"><strong>Dirección:</strong></label>
+						<div class="col-lg-9">
+							<label class="form-label">{{ applicant.address }}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-lg-3 control-label" for="number_phone"><strong>Teléfono:</strong></label>
+						<div class="col-lg-9">
+							<label class="form-label">{{ applicant.prefix_phone }} - {{ applicant.number_phone }}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-lg-3 control-label" for="parish"><strong>Parroquia:</strong></label>
+						<div class="col-lg-9">
+							<label class="form-label">{{ applicant.parish }}</label>
+						</div>
+					</div>
+				</section>
+				<section class="modal-footer">
+					<button class="btn btn-sm btn-warning" type="button" ng-click="close()">Cerrar</button>
+				</section>
+			</script>
+
+			<script type="text/ng-template" id="modalShowInstitution-template">
+				<section class="modal-header">
+					<button type="button" class="close" ng-click="close()">×</button>
+					<h4 class="modal-title">Solicitante</h4>
+				</section>
+				<section class="modal-body form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-3 control-label" for="identification"><strong>RIF:</strong></label>
+						<div class="col-sm-9">
+							<label class="form-label">{{ applicant.identification }}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-lg-3 control-label" for="first_name"><strong>Nombres:</strong></label>
+						<div class="col-lg-9">
+							<label class="form-label" for="first_name">{{ applicant.first_name }}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-lg-3 control-label" for="last_name"><strong>Apellidos:</strong></label>
+						<div class="col-lg-9">
+							<label class="form-label">{{ applicant.last_name }}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-lg-3 control-label" for="address"><strong>Dirección:</strong></label>
+						<div class="col-lg-9">
+							<label class="form-label">{{ applicant.address }}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-lg-3 control-label" for="number_phone"><strong>Teléfono:</strong></label>
+						<div class="col-lg-9">
+							<label class="form-label">{{ applicant.prefix_phone }} - {{ applicant.number_phone }}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-lg-3 control-label" for="parish"><strong>Parroquia:</strong></label>
+						<div class="col-lg-9">
+							<label class="form-label">{{ applicant.parish }}</label>
+						</div>
+					</div>
+				</section>
+				<section class="modal-footer">
+					<button class="btn btn-sm btn-warning" type="button" ng-click="close()">Cerrar</button>
+				</section>
+			</script>
 		</body>
 		</html>

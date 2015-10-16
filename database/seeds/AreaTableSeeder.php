@@ -13,11 +13,11 @@ class AreaTableSeeder extends Seeder
 
 		$faker = Faker::create('es_VE');
 
-		foreach (range(1, 12) as $index) {
+		foreach (range(1, 10) as $index) {
 
 			Area::create([
 				'name'					=> $faker->unique()->word,
-				'director_id'		=> $faker->unique()->numberBetween($min = 1, $max = 12),
+				'director_id'		=> $faker->unique()->numberBetween($min = 1, $max = 10),
 			]);
 
 

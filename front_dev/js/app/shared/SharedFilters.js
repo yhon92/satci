@@ -26,10 +26,10 @@ angular.module('Shared.filters', [])
 .filter('translateApplicant', () => {
   return (applicant) => {
     if(applicant != null) {
-      if (applicant === 'citizen') {
+      if (applicant === 'citizen' || applicant === 'Citizen') {
         return 'Natural';
       }
-      if (applicant === 'institution') {
+      if (applicant === 'institution' || applicant === 'Institution') {
         return 'Jurídico';
       }
     }
@@ -39,10 +39,10 @@ angular.module('Shared.filters', [])
 .filter('indentification', () => {
   return (applicant) => {
     if(applicant != null) {
-      if (applicant === 'citizen') {
+      if (applicant === 'citizen' || applicant === 'Citizen') {
         return 'Cédula';
       }
-      if (applicant === 'institution') {
+      if (applicant === 'institution' || applicant === 'Institution') {
         return 'RIF';
       }
     }

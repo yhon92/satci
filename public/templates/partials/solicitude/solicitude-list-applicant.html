@@ -15,7 +15,7 @@
           </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="row in applicant" ng-click="show(row)">
+        <tr class="pointer" ng-repeat="row in applicant">
             <td>{{ row.solicitude_number }}</td>
             <td>{{ row.reception_date | date:'dd-MM-yyyy' }}</td>
             <td>{{ row.applicant.identification }}</td>
@@ -23,8 +23,8 @@
             <td>{{ row.topic | limitTo:140 }}</td>
             <td>{{ row.status }}</td>
             <td>
-              <a href="#" class="btn btn-xs btn-warning glyphicon glyphicon-edit"></a>
-              <a href="#" class="btn btn-xs btn-danger glyphicon glyphicon-remove"></a>
+              <a ui-sref=".assign({id: row.id})" class="btn btn-xs btn-success glyphicon glyphicon-ok"></a>
+              <a ui-sref=".edit({id: row.id})" class="btn btn-xs btn-warning glyphicon glyphicon-edit"></a>
             </td>
           </tr>
         </tbody>

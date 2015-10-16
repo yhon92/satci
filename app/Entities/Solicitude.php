@@ -14,6 +14,8 @@ class Solicitude extends Model {
 													'topic', 
 													'status'];
 
+	// protected $hidden = ['applicant_id', 'applicant_type'];
+	
 	public function applicant()
 	{
 		return $this->morphTo();

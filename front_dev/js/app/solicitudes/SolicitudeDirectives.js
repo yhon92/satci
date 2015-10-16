@@ -10,6 +10,7 @@ angular.module('Solicitude.directives', ['SATCI.Shared'])
     scope: {
       applicant: '=type',
       show: '&',
+      remove: '&',
     },
     templateUrl: `${PathTemplates.partials}solicitude/solicitude-list-applicant.html`
   };

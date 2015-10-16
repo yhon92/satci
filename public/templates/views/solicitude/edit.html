@@ -1,12 +1,9 @@
-<div class="col-md-5">
-	<div>
-		<alert ng-repeat="alert in solicitude.alerts" type="{{alert.type}}" close="closeAlertSolicitude($index)">{{alert.message}}</alert>
-	</div>
+<div class="col-md-6">
 	<div class="panel panel-default">
 		<div class="panel-body">
 			<form class="form-horizontal" ng-submit="saveSolicitude()">
 				<fieldset>
-					<legend>Solicitud</legend>
+					<legend>Solicitud - Edición</legend>
 					<!-- <div class="form-group">
 						<label class="col-lg-4 control-label" for="solicitude_number">Nº de Solicitud</label>
 						<div class="col-lg-8">
@@ -71,9 +68,9 @@
 							<textarea class="form-control" id="topic" placeholder="Asunto" rows="3" ng-model='topic'></textarea>
 						</div>
 					</div>
-					<div class="align-center">
-						<button type="reset" class="btn btn-default btn-sm" ng-click="clear()">Cancelar</button>
-						<button type="submit" class="btn btn-primary btn-sm">Guardar</button>
+					<div class="col-md-7 col-md-offset-3">
+						<button type="reset" class="btn btn-default" ng-click="clear()">Cancelar</button>
+						<button type="submit" class="btn btn-primary">Guardar</button>
 					</div>
 				</fieldset>
 			</form>

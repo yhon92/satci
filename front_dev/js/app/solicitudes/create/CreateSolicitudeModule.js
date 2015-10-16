@@ -10,7 +10,7 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
   Parishes, 
   Solicitudes, 
   paginateService, 
-  PathTemplates)  => {
+  PathTemplates) => {
 
   $controller('CreateCitizenCtrl', {$scope : $scope});
   $controller('CreateInstitutionCtrl', {$scope : $scope});

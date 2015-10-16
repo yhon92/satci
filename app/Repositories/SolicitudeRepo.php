@@ -10,6 +10,12 @@ class SolicitudeRepo extends BaseRepo
 		return new Solicitude;
 	}
 
+	/*static public function getSolicitude($id)
+	{
+		$solicitude = find($id);
+		return 
+	}*/
+
 	static public function getListSolicitudes()
 	{
 		return Solicitude::all();

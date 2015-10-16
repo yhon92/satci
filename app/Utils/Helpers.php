@@ -1,6 +1,7 @@
 <?php namespace SATCI\Utils;
 
 use SATCI\Repositories\SolicitudeRepo;
+use SATCI\Repositories\ParishRepo;
 
 /**
 * 
@@ -21,9 +22,23 @@ class Helpers
     return $type;
   }
 
-  static public function concatSolicitudeWithApplicant(&$solicitudes)
+  static public function shortApplicant(&$type)
   {
-    foreach ($solicitudes as $key => $value) {
+    if ( strpos($type, 'Citizen') )
+    {
+      $type = 'Citizen';
+    }
+    if ( strpos($type, 'Institution') )
+    {
+      $type = 'Institution';
+    }
+    return $type;
+  }
+
+  static public function concatSolicitudesWithApplicants(&$solicitudes)
+  {
+    foreach ($solicitudes as $key => $value) 
+    {
       $type = $value->applicant_type;
       $id   = $value->applicant_id;
 
@@ -33,6 +48,31 @@ class Helpers
       unset($value['applicant_type'], $value['applicant_id']);
     }
     return $solicitudes;
+  }
+
+  static public function concatSolicitudeWithApplicant(&$solicitude)
+  {
+    $type = $solicitude->applicant_type;
+    $id   = $solicitude->applicant_id;
+
+    $applicant = SolicitudeRepo::getApplicant($type, $id);
+    $solicitude->applicant = $applicant;
+    
+    unset($solicitude['applicant_id']);
+
+    return $solicitude;
+  }
+
+  static public function concatApplicantWithParish(&$applicant)
+  {
+    $id = $applicant->parish_id;
+
+    $parish = ParishRepo::get($id);
+    $applicant->parish = $parish->name;
+
+    unset($applicant['parish_id']);
+
+    return $applicant;
   }
 
   static public function getSolicitudeNumber($lastSolicitude)

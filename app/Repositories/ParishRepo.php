@@ -22,4 +22,9 @@ class ParishRepo extends BaseRepo
 		$parish = new Parish();
 	}
 
+	static public function get($id)
+	{
+		return Parish::find($id);
+	}
+
 }

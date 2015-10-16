@@ -52,7 +52,7 @@ class SolicitudeController extends Controller {
 
 			$solicitudes = $this->solicitudeRepo->getListByApplicant($type);
 
-			Helpers::concatSolicitudeWithApplicant($solicitudes);
+			Helpers::concatSolicitudesWithApplicants($solicitudes);
 
 			return response()->json([
 				'solicitudes' => $solicitudes,
@@ -78,13 +78,13 @@ class SolicitudeController extends Controller {
 
 		$solicitude_number = Helpers::getSolicitudeNumber($lastSolicitude);
 
-		$request['solicitude_number'] = $solicitude_number;
+		$request->solicitude_number = $solicitude_number;
 
-		$type = $request['applicant_type'];
+		$type = $request->applicant_type;
 
 		Helpers::longApplicant($type);
 
-		$request['applicant_type'] = $type;
+		$request->applicant_type = $type;
 		
 		$solicitude = $this->solicitudeRepo->newSolicitude($request->all());
 
@@ -102,7 +102,22 @@ class SolicitudeController extends Controller {
 	 */
 	public function show($id)
 	{
-		//
+		$solicitude = $this->solicitudeRepo->find($id);
+		
+		Helpers::concatSolicitudeWithApplicant($solicitude);
+
+		$type = $solicitude->applicant_type;
+
+    Helpers::shortApplicant($type);
+
+		$solicitude->applicant_type = $type;
+
+		Helpers::concatApplicantWithParish($solicitude->applicant);
+
+		return response()->json([
+			'success' => true,
+			'solicitude' => $solicitude,
+			]);
 	}
 
 	/**

@@ -140,7 +140,7 @@ return [
 
 		'Collective\Html\HtmlServiceProvider',
 		'Tymon\JWTAuth\Providers\JWTAuthServiceProvider',
-		'Barryvdh\Debugbar\ServiceProvider',
+		// 'Barryvdh\Debugbar\ServiceProvider',
 
 		/*
 		 * Application Service Providers...
@@ -204,7 +204,7 @@ return [
     'Html' 			 => 'Collective\Html\HtmlFacade',
     'JWTAuth' 	 => 'Tymon\JWTAuth\Facades\JWTAuth',
     'JWTFactory' => 'Tymon\JWTAuth\Facades\JWTFactory',
-    'Debugbar' 	 => 'Barryvdh\Debugbar\Facade',
+    // 'Debugbar' 	 => 'Barryvdh\Debugbar\Facade',
 
 	],
 
