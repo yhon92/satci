@@ -393,7 +393,7 @@ angular.module('SATCI.Nav', []).controller('NavCtrl', function ($auth, $state, $
     $scope.status.isOpen = !$scope.status.isOpen;
   };
 
-  $scope.navClass = function (page) {
+  $scope.navActive = function (page) {
     var currentRoute = undefined;
     var path = $location.path().substring(1) || 'home';
     var stop = path.search('/');
@@ -673,6 +673,10 @@ angular.module('SATCI.Solicitude', ['ui.router', 'SATCI.Shared', 'Solicitude.con
     url: '/assign/:id',
     templateUrl: PathTemplates.views + 'solicitude/assign.html',
     controller: 'AssignSolicitudeCtrl'
+  }).state('solicitude.show', {
+    url: '/show/:id',
+    templateUrl: PathTemplates.views + 'solicitude/show.html',
+    controller: 'AssignSolicitudeCtrl'
   });
 });
 
@@ -712,6 +716,7 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.bootstrap', 'Alertify', 'S
       templateUrl: 'modalShow' + type + '-template',
       controller: function controller($scope, $modalInstance, applicant) {
         $scope.applicant = applicant;
+        console.log(applicant);
 
         $scope.close = function () {
           $modalInstance.close();

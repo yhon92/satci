@@ -23,11 +23,11 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.bootstrap', 'Alertify', 'S
 
   $scope.showApplicant = (type, applicant) => {
     console.log(type);
-    type = 
     let modalInstance = $uibModal.open({
       templateUrl: `modalShow${type}-template`,
       controller: ($scope, $modalInstance, applicant) => {
         $scope.applicant = applicant;
+        console.log(applicant);
 
         $scope.close = function () {
           $modalInstance.close();

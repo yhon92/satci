@@ -38,16 +38,18 @@
 				</div>
 				<div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1" ng-if="authenticated">
 					<ul class="nav navbar-nav">
-						<li ng-class="navClass('home')"><a ui-sref="home">Inicio</a></li>
-						<li ng-class="navClass('solicitude')"><a ui-sref="solicitude">Solicitud</a></li>
+						<li ng-class="navActive('home')"><a ui-sref="home">Inicio</a></li>
+						<li ng-class="navActive('solicitude')"><a ui-sref="solicitude">Solicitud</a></li>
+						<li ng-class="navActive('develotment')"><a ui-sref="develotment">En desarrollo</a></li>
+
 					</ul>
 
 					<ul class="nav navbar-nav navbar-right" ng-if="authenticated">
-						<li class="dropdown" dropdown>
-							<a href="#" class="dropdown-toggle" role="button" dropdown-toggle>
+						<li class="dropdown" uib-dropdown>
+							<a href="#" class="dropdown-toggle" role="button" uib-dropdown-toggle>
 								{{ currentUser.first_name +' '+currentUser.last_name }}
 								<span class="caret"></span></a>
-								<ul class="dropdown-menu" role="menu" aria-labelledby="simple-dropdown">
+								<ul class="uib-dropdown-menu" role="menu" aria-labelledby="simple-dropdown">
 									<li role="menuitem"><a ng-click="logout()">Cerra Sesión</a></li>
 								</ul>
 							</li>
@@ -59,8 +61,9 @@
 				<div class="row">
 					<%-- <div class="col-sm-3 col-md-2 sidebar" ng-controller="SidebarCtrl" ng-if="authenticated">
 						<ul class="nav nav-sidebar">
-							<li ng-class="navClass('home')"><a ui-sref="home">Inicio</a></li>
-							<li ng-class="navClass('solicitude')"><a ui-sref="solicitude">Solicitud</a></li>
+							<li ng-class="navActive('home')"><a ui-sref="home">Inicio</a></li>
+							<li ng-class="navActive('solicitude')"><a ui-sref="solicitude">Solicitud</a></li>
+							<li ng-class="navActive('dev')"><a ui-sref="develotment">En desarrollo</a></li>
 						</ul>				
 					</div> --%>
 					<section ui-view></section>
@@ -132,15 +135,9 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-lg-3 control-label" for="first_name"><strong>Nombres:</strong></label>
+						<label class="col-lg-3 control-label" for="first_name"><strong>Nombre:</strong></label>
 						<div class="col-lg-9">
-							<label class="form-label" for="first_name">{{ applicant.first_name }}</label>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-lg-3 control-label" for="last_name"><strong>Apellidos:</strong></label>
-						<div class="col-lg-9">
-							<label class="form-label">{{ applicant.last_name }}</label>
+							<label class="form-label" for="first_name">{{ applicant.full_name }}</label>
 						</div>
 					</div>
 					<div class="form-group">
@@ -159,6 +156,19 @@
 						<label class="col-lg-3 control-label" for="parish"><strong>Parroquia:</strong></label>
 						<div class="col-lg-9">
 							<label class="form-label">{{ applicant.parish }}</label>
+						</div>
+					</div>
+					<legend class="text-center">Representante Legal</legend>
+					<div class="form-group">
+						<label class="col-sm-3 control-label" for="identification"><strong>Cédula:</strong></label>
+						<div class="col-sm-9">
+							<label class="form-label">{{ applicant.agent_identification }}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-lg-3 control-label" for="agent_first_name"><strong>Nombre:</strong></label>
+						<div class="col-lg-9">
+							<label class="form-label">{{ applicant.agent_full_name }}</label>
 						</div>
 					</div>
 				</section>

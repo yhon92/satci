@@ -26,7 +26,7 @@ angular.module('SATCI.Nav',[])
     $scope.status.isOpen = !$scope.status.isOpen;
   };
 
-  $scope.navClass = (page) => {
+  $scope.navActive = (page) => {
     let currentRoute;
     let path = $location.path().substring(1) || 'home';
     let stop = path.search('/');
