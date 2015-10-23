@@ -4,6 +4,8 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
   $scope, 
   $filter, 
   $controller, 
+  $q, 
+  $timeout, 
   Alertify,
   Citizens, 
   Institutions, 
@@ -71,19 +73,24 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
   $scope.searchApplicant = () => {
     search = true;
     add = false;
+    let dataUploaded = $q.defer();
 
     if (applicant_type === 'citizen') {
       Citizens.get((data) => {
         $scope.applicants = data.citizens;
+        dataUploaded.resolve();
       });
     }
     if (applicant_type === 'institution') {
       Institutions.get((data) => {
         $scope.applicants = data.institutions;
+        dataUploaded.resolve();
       });
     }
 
-    $scope.applicantTemplate = `${PathTemplates.partials}solicitude/search-applicant.html`;
+    dataUploaded.promise.then(() => {
+      $scope.applicantTemplate = `${PathTemplates.partials}solicitude/search-applicant.html`;
+    })
   };
 
   $scope.saveSolicitude = () => {
@@ -146,12 +153,10 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
       let number = pagination.number || 10;  // Number of entries showed per page.
 
       paginateService.getPage($scope.applicants, start, number, tableState).then(function (result) {
-
         $scope.displayed = result.data;
         tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
         $scope.isLoading = false;
-
-      });
+      })
     };
 
     /******************************************************Datepicker******************************************************/

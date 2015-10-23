@@ -25,7 +25,7 @@ var paths = {
   src: {
     js    : './front_dev/js/app.js',
     css   : './front_dev/styl/app.styl',
-    html  : ['./public/templates/**/*.html', 
+    html  : ['./public/template/**/*.html', 
             './resources/views/**/*.html', 
             './resources/views/**/*.blade.php']
   },

@@ -64,7 +64,8 @@ angular.module('SATCI', ['ngAnimate', 'ui.bootstrap', 'ui.router', 'satellizer',
   $httpProvider.interceptors.push('redirectWhenLoggedOut');
 
   $locationProvider.html5Mode(true);
-}).run(function ($rootScope, $state, i18n_es) {
+}).run(function ($rootScope, $state, i18n_es, $templateCache) {
+  $templateCache.remove('template/smart-table/pagination.html');
   // amMoment.changeLocale('de');
   // $stateChangeStart is fired whenever the state changes. We can use some parameters
   // such as toState to hook into details about the state as it is changing
@@ -522,8 +523,8 @@ require('./SharedResources');
 require('./SharedServices');
 
 angular.module('SATCI.Shared', ['Shared.directives', 'Shared.filters', 'Shared.resources', 'Shared.services']).constant('PathTemplates', {
-  views: 'templates/views/',
-  partials: 'templates/partials/'
+  views: 'template/views/',
+  partials: 'template/partials/'
 }).constant('ResourcesUrl', {
   api: '/api/'
 });
@@ -735,7 +736,7 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.bootstrap', 'Alertify', 'S
 },{}],24:[function(require,module,exports){
 'use strict';
 
-angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'Solicitude.resources']).controller('CreateSolicitudeCtrl', function ($state, $scope, $filter, $controller, Alertify, Citizens, Institutions, Parishes, Solicitudes, paginateService, PathTemplates) {
+angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'Solicitude.resources']).controller('CreateSolicitudeCtrl', function ($state, $scope, $filter, $controller, $q, $timeout, Alertify, Citizens, Institutions, Parishes, Solicitudes, paginateService, PathTemplates) {
 
   $controller('CreateCitizenCtrl', { $scope: $scope });
   $controller('CreateInstitutionCtrl', { $scope: $scope });
@@ -796,19 +797,24 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
   $scope.searchApplicant = function () {
     search = true;
     add = false;
+    var dataUploaded = $q.defer();
 
     if (applicant_type === 'citizen') {
       Citizens.get(function (data) {
         $scope.applicants = data.citizens;
+        dataUploaded.resolve();
       });
     }
     if (applicant_type === 'institution') {
       Institutions.get(function (data) {
         $scope.applicants = data.institutions;
+        dataUploaded.resolve();
       });
     }
 
-    $scope.applicantTemplate = PathTemplates.partials + 'solicitude/search-applicant.html';
+    dataUploaded.promise.then(function () {
+      $scope.applicantTemplate = PathTemplates.partials + 'solicitude/search-applicant.html';
+    });
   };
 
   $scope.saveSolicitude = function () {
@@ -869,7 +875,6 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
     var number = pagination.number || 10; // Number of entries showed per page.
 
     paginateService.getPage($scope.applicants, start, number, tableState).then(function (result) {
-
       $scope.displayed = result.data;
       tableState.pagination.numberOfPages = result.numberOfPages; //set the number of pages so the pagination can update
       $scope.isLoading = false;

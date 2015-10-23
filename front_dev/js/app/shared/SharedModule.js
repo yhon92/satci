@@ -5,8 +5,8 @@ import './SharedServices';
 
 angular.module('SATCI.Shared', ['Shared.directives', 'Shared.filters', 'Shared.resources', 'Shared.services'])
 .constant('PathTemplates', {
-  views:    'templates/views/',
-  partials: 'templates/partials/',
+  views:    'template/views/',
+  partials: 'template/partials/',
 })
 .constant('ResourcesUrl', {
   api:    '/api/',

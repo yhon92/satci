@@ -72,7 +72,8 @@ angular.module('SATCI', [
   $locationProvider.html5Mode(true);
 
 })
-.run(($rootScope, $state, i18n_es) => {
+.run(($rootScope, $state, i18n_es, $templateCache) => {
+  $templateCache.remove('template/smart-table/pagination.html');
   // amMoment.changeLocale('de');
   // $stateChangeStart is fired whenever the state changes. We can use some parameters
   // such as toState to hook into details about the state as it is changing
