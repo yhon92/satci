@@ -25,9 +25,6 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
   $scope.full_name = null;
   $scope.applicant_id = null;
   $scope.identification = null;
-  $scope.solicitude = {
-    alerts: [],
-  }
 
   $scope.addApplicant = () =>{
     add = true;
@@ -55,10 +52,6 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
     $scope.template = '';
     $scope.applicant = false;
     $scope.applicantTemplate = '';
-  };
-
-  $scope.closeAlertSolicitude = (index) => {
-    $scope.solicitude.alerts.splice(index, 1);
   };
 
   $scope.getApplicant = (type) => {
@@ -101,7 +94,7 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
       document_date: $filter('date')($scope.document_date, 'yyyy-MM-dd'), 
       topic: $scope.topic, 
     }
-    // debugger;
+
     Solicitudes.save(solicitude).$promise.then(
       (data) => {
         if (data.success) {
@@ -109,19 +102,21 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
           $state.transitionTo('solicitude', { 
             reload: true, inherit: false, notify: false 
           });
-          /*$scope.solicitude.alerts = [{
-            type: 'success',
-            message: 'Solicitud registrada exitosamente',
-          }];*/
         }
       }, 
       (fails) => {
-        console.log(fails)
-        /*angular.forEach(fails.data, (values, key) => {
-          angular.forEach(values, (value) => {
-            $scope.applicant.alerts.push({type: 'danger', message: value})
+        if (fails.status != 500) 
+        {
+          angular.forEach(fails.data, (values, key) => {
+            angular.forEach(values, (value) => {
+              Alertify.error(value)
+            })
           })
-        })*/
+        }
+        else
+        {
+          console.log(fails);
+        };
       })
   }
 

@@ -78,14 +78,14 @@ class SolicitudeController extends Controller {
 
 		$solicitude_number = Helpers::getSolicitudeNumber($lastSolicitude);
 
-		$request->solicitude_number = $solicitude_number;
+		$request['solicitude_number'] = $solicitude_number;
 
 		$type = $request->applicant_type;
 
 		Helpers::longApplicant($type);
 
-		$request->applicant_type = $type;
-		
+		$request['applicant_type'] = $type;
+
 		$solicitude = $this->solicitudeRepo->newSolicitude($request->all());
 
 		return response()->json([

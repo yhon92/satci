@@ -1,119 +1,121 @@
-<div class="col-md-5">
-	<div class="panel panel-default">
-		<div class="panel-body">
-			<form class="form-horizontal" ng-submit="saveSolicitude()">
-				<fieldset>
-					<legend>Asignar Solicitud</legend>
-					<div class="form-group">
-						<label class="col-lg-4 control-label" for="solicitude_number"><strong>Nº de Solicitud:</strong></label>
-						<div class="col-lg-8">
-							<label class="form-label">{{ solicitude.solicitude_number }}</label>
+<div class="col-md-12" ui-view>
+	<div class="col-md-5">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<form class="form-horizontal" ng-submit="saveSolicitude()">
+					<fieldset>
+						<legend>Asignar Solicitud</legend>
+						<div class="form-group">
+							<label class="col-lg-4 control-label" for="solicitude_number"><strong>Nº de Solicitud:</strong></label>
+							<div class="col-lg-8">
+								<label class="form-label">{{ solicitude.solicitude_number }}</label>
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-lg-4 control-label" for="reception_date"><strong>Fecha de Recepción:</strong></label>
-						<div class="col-lg-8">
-							<label class="form-label">{{ solicitude.reception_date | date:'EEEE, dd MMMM, y' }}</label>
+						<div class="form-group">
+							<label class="col-lg-4 control-label" for="reception_date"><strong>Fecha de Recepción:</strong></label>
+							<div class="col-lg-8">
+								<label class="form-label">{{ solicitude.reception_date | date:'EEEE, dd MMMM, y' }}</label>
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-lg-4 control-label"><strong>Razon Social:</strong></label>
-						<div class="col-lg-8">
-							<label class="form-label">{{ solicitude.applicant_type | translateApplicant }}</label>
+						<div class="form-group">
+							<label class="col-lg-4 control-label"><strong>Razon Social:</strong></label>
+							<div class="col-lg-8">
+								<label class="form-label">{{ solicitude.applicant_type | translateApplicant }}</label>
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-lg-4 control-label"><strong>{{solicitude.applicant_type | indentification}}:</strong></label>
-						<div class="col-lg-8">
-							<a class="form-label pointer" ng-click="showApplicant(solicitude.applicant_type, solicitude.applicant)">{{solicitude.applicant.identification}}</a>
+						<div class="form-group">
+							<label class="col-lg-4 control-label"><strong>{{solicitude.applicant_type | indentification}}:</strong></label>
+							<div class="col-lg-8">
+								<a class="form-label pointer" ng-click="showApplicant(solicitude.applicant_type, solicitude.applicant)">{{solicitude.applicant.identification}}</a>
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-lg-4 control-label"><strong>Solicitante:</strong></label>
-						<div class="col-lg-8">
-							<a class="form-label pointer" ng-click="showApplicant(solicitude.applicant_type, solicitude.applicant)">{{solicitude.applicant.full_name}}</a>
+						<div class="form-group">
+							<label class="col-lg-4 control-label"><strong>Solicitante:</strong></label>
+							<div class="col-lg-8">
+								<a class="form-label pointer" ng-click="showApplicant(solicitude.applicant_type, solicitude.applicant)">{{solicitude.applicant.full_name}}</a>
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-lg-4 control-label" for="document_date"><strong>Fecha del Documento:</strong></label>
-						<div class="col-lg-8">
-							<label class="form-label">{{ solicitude.document_date | date:'EEEE, dd MMMM, y' }}</label>
+						<div class="form-group">
+							<label class="col-lg-4 control-label" for="document_date"><strong>Fecha del Documento:</strong></label>
+							<div class="col-lg-8">
+								<label class="form-label">{{ solicitude.document_date | date:'EEEE, dd MMMM, y' }}</label>
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-lg-4 control-label" for="topic"><strong>Asunto:</strong></label>
-						<div class="col-lg-8">
-							<!-- <blockquote class="col-lg-8"> -->
-							<p>{{ solicitude.topic }}</p>
-							<!-- </blockquote> -->
+						<div class="form-group">
+							<label class="col-lg-4 control-label" for="topic"><strong>Asunto:</strong></label>
+							<div class="col-lg-8">
+								<!-- <blockquote class="col-lg-8"> -->
+								<p>{{ solicitude.topic }}</p>
+								<!-- </blockquote> -->
+							</div>
 						</div>
-					</div>
-					<!-- <div class="col-md-7 col-md-offset-3">
-						<button type="reset" class="btn btn-default" ng-click="clear()">Cancelar</button>
-						<button type="submit" class="btn btn-primary">Guardar</button>
-					</div> -->
-				</fieldset>
-			</form>
+						<!-- <div class="col-md-7 col-md-offset-3">
+							<button type="reset" class="btn btn-default" ng-click="clear()">Cancelar</button>
+							<button type="submit" class="btn btn-primary">Guardar</button>
+						</div> -->
+					</fieldset>
+				</form>
+			</div>
 		</div>
 	</div>
-</div>
-<div class="col-md-5">
-	<div class="panel panel-default">
-		<div class="panel-body">
-			<form class="form-horizontal" ng-submit="saveSolicitude()">
-				<fieldset>
-					<legend>Asignar Solicitud</legend>
-					<div class="form-group">
-						<label class="col-lg-4 control-label" for="solicitude_number"><strong>Nº de Solicitud:</strong></label>
-						<div class="col-lg-8">
-							<label class="form-label">{{ solicitude.solicitude_number }}</label>
+	<div class="col-md-5">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<form class="form-horizontal" ng-submit="saveSolicitude()">
+					<fieldset>
+						<legend>Asignar Solicitud</legend>
+						<div class="form-group">
+							<label class="col-lg-4 control-label" for="solicitude_number"><strong>Nº de Solicitud:</strong></label>
+							<div class="col-lg-8">
+								<label class="form-label">{{ solicitude.solicitude_number }}</label>
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-lg-4 control-label" for="reception_date"><strong>Fecha de Recepción:</strong></label>
-						<div class="col-lg-8">
-							<label class="form-label">{{ solicitude.reception_date | date:'EEEE, dd MMMM, y' }}</label>
+						<div class="form-group">
+							<label class="col-lg-4 control-label" for="reception_date"><strong>Fecha de Recepción:</strong></label>
+							<div class="col-lg-8">
+								<label class="form-label">{{ solicitude.reception_date | date:'EEEE, dd MMMM, y' }}</label>
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-lg-4 control-label"><strong>Razon Social:</strong></label>
-						<div class="col-lg-8">
-							<label class="form-label">{{ solicitude.applicant_type | translateApplicant }}</label>
+						<div class="form-group">
+							<label class="col-lg-4 control-label"><strong>Razon Social:</strong></label>
+							<div class="col-lg-8">
+								<label class="form-label">{{ solicitude.applicant_type | translateApplicant }}</label>
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-lg-4 control-label"><strong>{{solicitude.applicant_type | indentification}}:</strong></label>
-						<div class="col-lg-8">
-							<a class="form-label pointer" ng-click="showApplicant(solicitude.applicant_type, solicitude.applicant)">{{solicitude.applicant.identification}}</a>
+						<div class="form-group">
+							<label class="col-lg-4 control-label"><strong>{{solicitude.applicant_type | indentification}}:</strong></label>
+							<div class="col-lg-8">
+								<a class="form-label pointer" ng-click="showApplicant(solicitude.applicant_type, solicitude.applicant)">{{solicitude.applicant.identification}}</a>
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-lg-4 control-label"><strong>Solicitante:</strong></label>
-						<div class="col-lg-8">
-							<a class="form-label pointer" ng-click="showApplicant(solicitude.applicant_type, solicitude.applicant)">{{solicitude.applicant.full_name}}</a>
+						<div class="form-group">
+							<label class="col-lg-4 control-label"><strong>Solicitante:</strong></label>
+							<div class="col-lg-8">
+								<a class="form-label pointer" ng-click="showApplicant(solicitude.applicant_type, solicitude.applicant)">{{solicitude.applicant.full_name}}</a>
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-lg-4 control-label" for="document_date"><strong>Fecha del Documento:</strong></label>
-						<div class="col-lg-8">
-							<label class="form-label">{{ solicitude.document_date | date:'EEEE, dd MMMM, y' }}</label>
+						<div class="form-group">
+							<label class="col-lg-4 control-label" for="document_date"><strong>Fecha del Documento:</strong></label>
+							<div class="col-lg-8">
+								<label class="form-label">{{ solicitude.document_date | date:'EEEE, dd MMMM, y' }}</label>
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-lg-4 control-label" for="topic"><strong>Asunto:</strong></label>
-						<div class="col-lg-8">
-							<!-- <blockquote class="col-lg-8"> -->
-							<p>{{ solicitude.topic }}</p>
-							<!-- </blockquote> -->
+						<div class="form-group">
+							<label class="col-lg-4 control-label" for="topic"><strong>Asunto:</strong></label>
+							<div class="col-lg-8">
+								<!-- <blockquote class="col-lg-8"> -->
+								<p>{{ solicitude.topic }}</p>
+								<!-- </blockquote> -->
+							</div>
 						</div>
-					</div>
-					<!-- <div class="col-md-7 col-md-offset-3">
-						<button type="reset" class="btn btn-default" ng-click="clear()">Cancelar</button>
-						<button type="submit" class="btn btn-primary">Guardar</button>
-					</div> -->
-				</fieldset>
-			</form>
+						<!-- <div class="col-md-7 col-md-offset-3">
+							<button type="reset" class="btn btn-default" ng-click="clear()">Cancelar</button>
+							<button type="submit" class="btn btn-primary">Guardar</button>
+						</div> -->
+					</fieldset>
+				</form>
+			</div>
 		</div>
 	</div>
+	<!-- <div ng-include="template"></div> -->
 </div>
-<!-- <div ng-include="template"></div> -->

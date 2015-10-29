@@ -1,8 +1,9 @@
 import './SolicitudeController';
 import './SolicitudeDirectives';
 import './SolicitudeResources';
-import './create/CreateSolicitudeModule';
 import './assign/AssignSolicitudeModule';
+import './create/CreateSolicitudeModule';
+import './show/ShowSolicitudeModule';
 
 angular.module('SATCI.Solicitude', [
   'ui.router', 
@@ -10,35 +11,47 @@ angular.module('SATCI.Solicitude', [
   'Solicitude.controller', 
   'Solicitude.directives', 
   'Solicitude.resources', 
+  'Solicitude.Assign',
   'Solicitude.Create',
-  'Solicitude.Assign'])
+  'Solicitude.Show'])
 
 .config(($authProvider, $stateProvider, PathTemplates) => {
   $stateProvider
   .state('solicitude', {
-        url: '/solicitude',
-        templateUrl: `${PathTemplates.views}solicitude/index.html`,
-        controller: 'SolicitudeCtrl'
-      })
-  .state('solicitude.create', {
-    url: '/create',
+    url: '/solicitude',
+    templateUrl: `${PathTemplates.views}solicitude/index.html`,
+    controller: 'SolicitudeCtrl'
+  })
+  .state('solicitudeCreate', {
+    url: '/solicitude/create',
     templateUrl: `${PathTemplates.views}solicitude/create.html`,
     controller: 'CreateSolicitudeCtrl'
   })
-  .state('solicitude.edit', {
-    url: '/edit/:id',
+  .state('solicitudeEdit', {
+    url: '/solicitude/edit/:id',
     templateUrl: `${PathTemplates.views}solicitude/edit.html`,
     controller: 'SolicitudeCtrl'
   })
-  .state('solicitude.assign', {
-    url: '/assign/:id',
-    templateUrl: `${PathTemplates.views}solicitude/assign.html`,
-    controller: 'AssignSolicitudeCtrl'
+  .state('solicitudeAssign', {
+    url: '/solicitude/assign/:id',
+    views: {
+      '': {
+        templateUrl: `${PathTemplates.views}solicitude/assign.html`,
+      },
+      'show@solicitudeAssign': {
+        templateUrl: `${PathTemplates.partials}solicitude/show.html`,
+        controller: 'ShowSolicitudeCtrl'
+      },
+      'assign@solicitudeAssign': {
+        templateUrl: `${PathTemplates.partials}solicitude/assign.html`,
+        controller: 'AssignSolicitudeCtrl'
+      }
+    }
   })
-  .state('solicitude.show', {
-    url: '/show/:id',
+  .state('solicitudeShow', {
+    url: '/solicitude/show/:id',
     templateUrl: `${PathTemplates.views}solicitude/show.html`,
-    controller: 'AssignSolicitudeCtrl'
+    controller: 'ShowSolicitudeCtrl'
   })
 
 })

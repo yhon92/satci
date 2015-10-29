@@ -22,7 +22,7 @@ class CreateInstitutionRequest extends Request {
 	public function rules()
 	{
 		return [
-			'identification' => 'required|unique:institution,identification', 
+			'identification' => 'required|unique:institutions,identification', 
 			'full_name' => 'required', 
 			'address' => 'required', 
 			'prefix_phone' => 'required|min:4|max:4', 

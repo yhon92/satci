@@ -39,6 +39,7 @@ class InstitutionController extends Controller {
 	 */
 	public function store(CreateInstitutionRequest $request)
 	{
+		
 		$institution = $this->institutionRepo->newInstitution($request->all());
 
 		return response()->json([

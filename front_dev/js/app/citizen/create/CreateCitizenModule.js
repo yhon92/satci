@@ -4,10 +4,7 @@
 * Description
 */
 angular.module('Citizen.Create', ['Citizen.resources'])
-.controller('CreateCitizenCtrl', ['$scope', 'Citizens', ($scope, Citizens) => {
-  $scope.applicant = {
-    alerts: [],
-  }
+.controller('CreateCitizenCtrl', ($scope, $filter, Alertify, Citizens) => {
 
   $scope.citizen = {
     identification: '',
@@ -19,37 +16,42 @@ angular.module('Citizen.Create', ['Citizen.resources'])
     parish: ''
   };
 
-  $scope.closeAlertApplicant = (index) => {
-    $scope.applicant.alerts.splice(index, 1);
-  };
-
   $scope.saveCitizen = () =>{
-    $scope.applicant = {
-      alerts: [],
-    }
-    $scope.citizen.full_name = $scope.citizen.first_name +' '+ $scope.citizen.last_name;
-    $scope.citizen.parish_id = $scope.citizen.parish.id;
-    delete $scope.citizen.parish;
 
-    Citizens.save($scope.citizen).$promise.then(
+    let dataCitizen = {
+      identification: $scope.citizen.identification,
+      full_name: $filter('titleCase')($scope.citizen.first_name +' '+ $scope.citizen.last_name),
+      first_name: $filter('titleCase')($scope.citizen.first_name),
+      last_name: $filter('titleCase')($scope.citizen.last_name),
+      address: $scope.citizen.address,
+      prefix_phone: $scope.citizen.prefix_phone,
+      number_phone: $scope.citizen.number_phone,
+      parish_id: $scope.citizen.parish.id
+    }
+
+    Citizens.save(dataCitizen).$promise.then(
       (data) => {
         if (data.success) {
-          $scope.full_name = $scope.citizen.first_name +' '+ $scope.citizen.last_name;
-          $scope.identification = $scope.citizen.identification;
+          $scope.full_name = data.citizen.full_name;
+          $scope.identification = data.citizen.identification;
           $scope.applicant_id = data.citizen.id;
-          $scope.solicitude.alerts = [{
-            type: 'success',
-            message: 'Persona registrada exitosamente',
-          }];
+          Alertify.success('Persona registrada exitosamente');
           $scope.close();
         }
       },
       (fails) => {
-        angular.forEach(fails.data, (values, key) => {
-          angular.forEach(values, (value) => {
-            $scope.applicant.alerts.push({type: 'danger', message: value})
+        if (fails.status != 500) 
+        {
+          angular.forEach(fails.data, (values, key) => {
+            angular.forEach(values, (value) => {
+              Alertify.error(value)
+            })
           })
-        })
+        }
+        else
+        {
+          console.log(fails);
+        };
       })
   }
-}])
+})

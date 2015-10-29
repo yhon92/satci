@@ -1,18 +1,19 @@
 <div class="col-md-5">
-	<div>
-		<alert ng-repeat="alert in applicant.alerts" type="{{alert.type}}" close="closeAlertApplicant($index)">{{alert.message}}</alert>
-	</div>
 	<div class="panel panel-default">
 		<div class="panel-body">
 			<fieldset>
 				<legend>Solicitante {{applicant_type | translateApplicant}}<button class="close" ng-click="close()">×</button></legend>
 				<div class="form-group">
+				<div class="inline-block border-right">
 					<button type="button" class="btn btn-primary btn-circle" title="Buscar" ng-click="searchApplicant()">
 						<strong><span class="glyphicon glyphicon-search"></span></strong>
 					</button>
+						Buscar
+				</div>
 					<button type="button" class="btn btn-primary btn-circle" title="Agregar" ng-click="addApplicant()">
 						<strong><span class="glyphicon glyphicon-plus"></span></strong>
 					</button>
+					Agregar
 				</div>
 				<div ng-include="applicantTemplate"></div>
 			</fieldset>

@@ -13,13 +13,34 @@ angular.module('Shared.filters', [])
 
   console.log('return input ' +  input);
   return input;
-  }
+}
 })
 .filter("capitalize", () => {
   return (text) => {
     if(text != null){
       return text.substring(0,1).toUpperCase()+text.substring(1);
     }
+  }
+})
+
+.filter('titleCase', () => {
+  return (input) => {
+    let smallWords = /^(de|para|vs?\.?|via)$/i;
+
+    return input.replace(/[A-Za-z0-9\u00C0-\u00FF]+[^\s-]*/g, (match, index, title) => {
+      if (index > 0 && index + match.length !== title.length &&
+        match.search(smallWords) > -1 && title.charAt(index - 2) !== ":" &&
+        (title.charAt(index + match.length) !== '-' || title.charAt(index - 1) === '-') &&
+        title.charAt(index - 1).search(/[^\s-]/) < 0) {
+        return match.toLowerCase();
+    }
+
+    if (match.substr(1).search(/[A-Z]|\../) > -1) {
+      return match;
+    }
+
+    return match.charAt(0).toUpperCase() + match.substr(1);
+  });
   }
 })
 
