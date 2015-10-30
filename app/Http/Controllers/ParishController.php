@@ -1,10 +1,12 @@
-<?php namespace SATCI\Http\Controllers;
+<?php 
+namespace SATCI\Http\Controllers;
+
+use Illuminate\Http\Request;
 
 // use SATCI\Http\Requests;
 use SATCI\Http\Controllers\Controller;
 use SATCI\Repositories\ParishRepo;
 
-use Illuminate\Http\Request;
 
 class ParishController extends Controller {
 
@@ -12,7 +14,7 @@ class ParishController extends Controller {
 
 	public function __construct (ParishRepo $parishRepo)
 	{
-		$this->middleware('jwt.auth');
+		// $this->middleware('jwt.auth');
 		$this->parishRepo = $parishRepo;
 	}
 
@@ -26,9 +28,7 @@ class ParishController extends Controller {
 		$parishes = $this->parishRepo->getListParishes();
 
 		return response()->json([
-
-			'parishes' => $parishes->toArray(),
-			
+			'parishes' => $parishes,
 			], 200
 		);
 	}

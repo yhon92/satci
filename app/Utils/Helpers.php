@@ -1,4 +1,5 @@
-<?php namespace SATCI\Utils;
+<?php 
+namespace SATCI\Utils;
 
 use SATCI\Repositories\SolicitudeRepo;
 use SATCI\Repositories\ParishRepo;

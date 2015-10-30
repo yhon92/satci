@@ -1,10 +1,11 @@
-<?php namespace SATCI\Http\Controllers;
+<?php 
+namespace SATCI\Http\Controllers;
+
+use Illuminate\Http\Request;
 
 use SATCI\Http\Controllers\Controller;
 use SATCI\Http\Requests\CreateCitizenRequest;
 use SATCI\Repositories\CitizenRepo;
-
-use Illuminate\Http\Request;
 
 class CitizenController extends Controller {
 

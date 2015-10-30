@@ -52,3 +52,8 @@ Route::group(['prefix' => 'api'], function ()
 {
 	Route::resource('parish', 'ParishController');
 });
+
+Route::group(['prefix' => 'api'], function ()
+{
+	Route::resource('theme', 'ThemeController');
+});
