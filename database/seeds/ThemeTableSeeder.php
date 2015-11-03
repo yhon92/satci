@@ -16,7 +16,7 @@ class ThemeTableSeeder extends Seeder
 		foreach (range(1, 12) as $index) {
 
 			Theme::create([
-				'name'	=> $faker->unique()->word,
+				'name'	=> 'Tema-'.$index,
 			]);
 
 

@@ -40,6 +40,8 @@ require('./app/shared/SharedModule');
 
 require('./app/solicitudes/SolicitudeModule');
 
+require('./app/theme/ThemeModule');
+
 // import './app/';
 
 require('./app/services/RedirectWhenLoggedOut');
@@ -48,7 +50,7 @@ require('./app/ui/Datepicker');
 
 angular.module('SATCI', ['ngAnimate', 'ui.bootstrap', 'ui.router', 'satellizer', 'smart-table',
 // 'angularMoment',
-'angular-loading-bar', 'Alertify', 'SATCI.Citizen', 'SATCI.Home', 'SATCI.Institution', 'SATCI.Login', 'SATCI.Nav', 'SATCI.Shared', 'SATCI.Solicitude', 'SATCI.RedirectWhenLoggedOutServices', 'SATCI.Datepicker']).config(function ($authProvider, $urlRouterProvider, $locationProvider, $provide, $httpProvider, PathTemplates) {
+'angular-loading-bar', 'Alertify', 'SATCI.Citizen', 'SATCI.Home', 'SATCI.Institution', 'SATCI.Login', 'SATCI.Nav', 'SATCI.Shared', 'SATCI.Solicitude', 'SATCI.Theme', 'SATCI.RedirectWhenLoggedOutServices', 'SATCI.Datepicker']).config(function ($authProvider, $urlRouterProvider, $locationProvider, $provide, $httpProvider, PathTemplates) {
 
   // Push the new factory onto the $http interceptor array
   $httpProvider.interceptors.push('redirectWhenLoggedOut');
@@ -104,7 +106,7 @@ angular.module('SATCI', ['ngAnimate', 'ui.bootstrap', 'ui.router', 'satellizer',
   // console.log($locale.DATETIME_FORMATS);
 });
 
-},{"./app/citizen/CitizenModule":3,"./app/home/HomeModule":6,"./app/institution/InstitutionModule":8,"./app/login/LoginModule":11,"./app/nav/NavModule":12,"./app/services/RedirectWhenLoggedOut":13,"./app/shared/SharedModule":16,"./app/solicitudes/SolicitudeModule":21,"./app/ui/Datepicker":26,"./app/validation":27,"./libs/ng-alertify":28,"angular":40,"angular-animate":30,"angular-bootstrap-npm":31,"angular-loading-bar":33,"angular-resource":35,"angular-smart-table":37,"angular-ui-router":38,"satellizer":41}],2:[function(require,module,exports){
+},{"./app/citizen/CitizenModule":3,"./app/home/HomeModule":6,"./app/institution/InstitutionModule":8,"./app/login/LoginModule":11,"./app/nav/NavModule":12,"./app/services/RedirectWhenLoggedOut":13,"./app/shared/SharedModule":16,"./app/solicitudes/SolicitudeModule":21,"./app/theme/ThemeModule":27,"./app/ui/Datepicker":29,"./app/validation":30,"./libs/ng-alertify":31,"angular":43,"angular-animate":33,"angular-bootstrap-npm":34,"angular-loading-bar":36,"angular-resource":38,"angular-smart-table":40,"angular-ui-router":41,"satellizer":44}],2:[function(require,module,exports){
 /**
 * Citizens.controller Module
 *
@@ -732,7 +734,12 @@ angular.module('Solicitude.resources', ['ngResource', 'SATCI.Shared']).factory('
 */
 'use strict';
 
-angular.module('Solicitude.Assign', ['ui.router', 'ui.bootstrap', 'Alertify', 'SATCI.Shared', 'Solicitude.resources']).controller('AssignSolicitudeCtrl', function ($state, $scope, $stateParams, $uibModal, Alertify, Solicitudes) {});
+angular.module('Solicitude.Assign', ['ui.router', 'ui.bootstrap', 'Alertify', 'SATCI.Shared', 'Theme.resources', 'Solicitude.resources']).controller('AssignSolicitudeCtrl', function ($state, $scope, $stateParams, $uibModal, Themes, Alertify, Solicitudes) {
+
+  Themes.get(function (data) {
+    return $scope.themes = data.themes;
+  });
+});
 
 },{}],24:[function(require,module,exports){
 'use strict';
@@ -994,6 +1001,37 @@ angular.module('Solicitude.Show', ['ui.router', 'ui.bootstrap', 'Alertify', 'SAT
 });
 
 },{}],26:[function(require,module,exports){
+"use strict";
+
+},{}],27:[function(require,module,exports){
+'use strict';
+
+require('./ThemeController');
+
+require('./ThemeResources');
+
+/**
+* SATCI.Theme Module
+*
+* Description
+*/
+angular.module('SATCI.Theme', []);
+
+},{"./ThemeController":26,"./ThemeResources":28}],28:[function(require,module,exports){
+/**
+* Theme.Resources Module
+*
+* Description
+*/
+'use strict';
+
+angular.module('Theme.resources', ['ngResource', 'SATCI.Shared']).factory('Themes', function ($resource, ResourcesUrl) {
+  return $resource(ResourcesUrl.api + 'theme/:id', { id: '@_id' }, {
+    update: { method: 'PUT', params: { id: '@_id' } }
+  });
+});
+
+},{}],29:[function(require,module,exports){
 'use strict';
 
 angular.module('SATCI.Datepicker', []).controller('DatepickerCtrl', function ($scope) {
@@ -1067,7 +1105,7 @@ angular.module('SATCI.Datepicker', []).controller('DatepickerCtrl', function ($s
 	};
 });
 
-},{}],27:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 "use strict";
 
 function onlyLetters(e) {
@@ -1159,7 +1197,7 @@ function solicitudeNumberMask(input, e) {
 	if (key == 45 && input.length === 3) {
 		return true;
 	}
-	if (key >= 48 && key <= 57 && (input.length >= 0 && input.length <= 2) || input.length >= 4 && input.length <= 6) {
+	if (key >= 48 && key <= 57 && input.length >= 0 && input.length <= 2 || input.length >= 4 && input.length <= 6) {
 		return true;
 	}
 	return false;
@@ -1174,19 +1212,19 @@ function rifMask(input, e) {
  	74 = J, 106 = j, 77 = M, 109 = m, 80 = P, 112 = p
  	82 = R, 114 = r, 86 = V, 118 = v
  	*/
-	if ((key == 69 || key == 101 || (key == 71 || key == 103) || (key == 73 || key == 105) || (key == 74 || key == 106) || (key == 77 || key == 109) || (key == 80 || key == 112) || (key == 82 || key == 114) || (key == 86 || key == 118)) && input.length === 0) {
+	if ((key == 69 || key == 101 || key == 71 || key == 103 || key == 73 || key == 105 || key == 74 || key == 106 || key == 77 || key == 109 || key == 80 || key == 112 || key == 82 || key == 114 || key == 86 || key == 118) && input.length === 0) {
 		return true;
 	}
 	if (key == 45 && (input.length === 1 || input.length === 10)) {
 		return true;
 	}
-	if (key >= 48 && key <= 57 && (input.length >= 2 && input.length <= 9) || input.length === 11) {
+	if (key >= 48 && key <= 57 && input.length >= 2 && input.length <= 9 || input.length === 11) {
 		return true;
 	}
 	return false;
 }
 
-},{}],28:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 (function (global){
 /**
  ng-alertify@0.8.0
@@ -1570,7 +1608,7 @@ function rifMask(input, e) {
 				// check to ensure the alertify dialog element
 				// has been successfully created
 				var check = function check() {
-					if (elLog && elLog.scrollTop !== null && (elCover && elCover.scrollTop !== null)) return;else check();
+					if (elLog && elLog.scrollTop !== null && elCover && elCover.scrollTop !== null) return;else check();
 				};
 				// error catching
 				if (typeof message !== "string") throw new Error("message must be a string");
@@ -1937,7 +1975,7 @@ function rifMask(input, e) {
  */
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],29:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.7
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -5867,11 +5905,11 @@ angular.module('ngAnimate', [])
 
 })(window, window.angular);
 
-},{}],30:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 require('./angular-animate');
 module.exports = 'ngAnimate';
 
-},{"./angular-animate":29}],31:[function(require,module,exports){
+},{"./angular-animate":32}],34:[function(require,module,exports){
 /*
  * angular-ui-bootstrap
  * http://angular-ui.github.io/bootstrap/
@@ -14375,7 +14413,7 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
     "");
 }]);
 !angular.$$csp() && angular.element(document).find('head').prepend('<style type="text/css">.ng-animate.item:not(.left):not(.right){-webkit-transition:0s ease-in-out left;transition:0s ease-in-out left}</style>');if(typeof module!=='undefined')module.exports='ui.bootstrap';
-},{}],32:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 /*! 
  * angular-loading-bar v0.8.0
  * https://chieffancypants.github.io/angular-loading-bar
@@ -14706,11 +14744,11 @@ angular.module('cfp.loadingBar', [])
   });       // wtf javascript. srsly
 })();       //
 
-},{}],33:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 require('./build/loading-bar');
 module.exports = 'angular-loading-bar';
 
-},{"./build/loading-bar":32}],34:[function(require,module,exports){
+},{"./build/loading-bar":35}],37:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.7
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -15387,11 +15425,11 @@ angular.module('ngResource', ['ng']).
 
 })(window, window.angular);
 
-},{}],35:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 require('./angular-resource');
 module.exports = 'ngResource';
 
-},{"./angular-resource":34}],36:[function(require,module,exports){
+},{"./angular-resource":37}],39:[function(require,module,exports){
 /** 
 * @version 2.1.4
 * @license MIT
@@ -15908,10 +15946,10 @@ ng.module('smart-table')
   }]);
 
 })(angular);
-},{}],37:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 require('./dist/smart-table.js');
 module.exports = 'smart-table';
-},{"./dist/smart-table.js":36}],38:[function(require,module,exports){
+},{"./dist/smart-table.js":39}],41:[function(require,module,exports){
 /**
  * State-based routing for AngularJS
  * @version v0.2.15
@@ -20282,7 +20320,7 @@ angular.module('ui.router.state')
   .filter('isState', $IsStateFilter)
   .filter('includedByState', $IncludedByStateFilter);
 })(window, window.angular);
-},{}],39:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.7
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -49187,11 +49225,11 @@ $provide.value("$locale", {
 })(window, document);
 
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
-},{}],40:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":39}],41:[function(require,module,exports){
+},{"./angular":42}],44:[function(require,module,exports){
 /**
  * Satellizer 0.12.5
  * (c) 2014-2015 Sahat Yalkabov

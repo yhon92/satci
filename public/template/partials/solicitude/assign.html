@@ -3,8 +3,17 @@
     <div class="panel-body">
       <form class="form-horizontal" ng-submit="saveSolicitude()">
         <fieldset>
-        <legend>Asiganción</legend>
-
+          <legend>Asiganción</legend>
+          <div class="col-lg-6">
+            <p>Lista de Temas</p>
+            <select multiple size='10' class="form-control" name="parish" id="parish" ng-options="theme.name for theme in themes" ng-model="citizen.parish" ng-required="true">
+            </select>
+          </div>
+          <div class="col-lg-6">
+            <p>Temas Seleccionados</p>
+            <select multiple size='10' class="form-control" name="parish" id="parish" ng-options="theme.name for theme in themes" ng-model="citizen.parish" ng-required="true">
+            </select>
+          </div>
         </fieldset>
       </form>
     </div>
