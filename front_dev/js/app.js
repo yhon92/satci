@@ -2,7 +2,9 @@
 import 'angular';
 import 'angular-animate';
 import 'angular-resource';
+import 'angular-sanitize';
 import 'angular-ui-router';
+import 'ui-select';
 import 'angular-bootstrap-npm';
 import 'angular-loading-bar';
 import 'angular-smart-table';
@@ -28,6 +30,7 @@ import './app/ui/Datepicker';
 
 angular.module('SATCI', [
   'ngAnimate',
+  'ngSanitize',
   'ui.bootstrap',
   'ui.router',
   'satellizer',
@@ -55,6 +58,7 @@ angular.module('SATCI', [
   $locationProvider, 
   $provide,
   $httpProvider, 
+  uiSelectConfig,
   PathTemplates
   ) => {
 
@@ -73,6 +77,7 @@ angular.module('SATCI', [
 
   $locationProvider.html5Mode(true);
 
+  // uiSelectConfig.theme = 'selectize';
 })
 .run(($rootScope, $state, i18n_es, $templateCache) => {
   $templateCache.remove('template/smart-table/pagination.html');
