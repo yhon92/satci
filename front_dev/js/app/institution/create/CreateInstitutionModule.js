@@ -1,6 +1,6 @@
 angular.module('Institution.Create', ['Institution.resources'])
 .controller('CreateInstitutionCtrl', ($scope, $filter, Alertify, Institutions) => {
-/*
+
   $scope.institution = {
     identification: '',
     full_name: '',
@@ -11,7 +11,7 @@ angular.module('Institution.Create', ['Institution.resources'])
     agent_identification: '',
     agent_first_name: '',
     agent_last_name: ''
-  };*/
+  };
 
   $scope.saveInstitution = () => {
 
@@ -33,9 +33,9 @@ angular.module('Institution.Create', ['Institution.resources'])
         console.log(data)
         if (data.success) 
         {
-          $scope.full_name = data.institution.full_name;
-          $scope.identification = data.institution.identification;
-          $scope.applicant_id = data.institution.id;
+          $scope.solicitude.full_name = data.institution.full_name;
+          $scope.solicitude.identification = data.institution.identification;
+          $scope.solicitude.applicant_id = data.institution.id;
           Alertify.success('Institución registrada exitosamente');
           $scope.close();
         }

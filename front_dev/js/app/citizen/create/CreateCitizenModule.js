@@ -32,9 +32,9 @@ angular.module('Citizen.Create', ['Citizen.resources'])
     Citizens.save(dataCitizen).$promise.then(
       (data) => {
         if (data.success) {
-          $scope.full_name = data.citizen.full_name;
-          $scope.identification = data.citizen.identification;
-          $scope.applicant_id = data.citizen.id;
+          $scope.solicitude.full_name = data.citizen.full_name;
+          $scope.solicitude.identification = data.citizen.identification;
+          $scope.solicitude.applicant_id = data.citizen.id;
           Alertify.success('Persona registrada exitosamente');
           $scope.close();
         }

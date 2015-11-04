@@ -22,9 +22,14 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
   let search = null;
   let applicant_type = '';
 
-  $scope.full_name = null;
-  $scope.applicant_id = null;
-  $scope.identification = null;
+  $scope.solicitude = {
+    full_name: '',
+    applicant_id: '',
+    identification: '',
+    reception_date: '',
+    document_date: '',
+    topic: '',
+  }
 
   $scope.addApplicant = () =>{
     add = true;
@@ -55,7 +60,7 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
   };
 
   $scope.getApplicant = (type) => {
-    $scope.applicant_type = applicant_type = type;
+    $scope.solicitude.applicant_type = applicant_type = type;
     $scope.template = `${PathTemplates.partials}solicitude/applicant.html`;
   };
 
@@ -87,14 +92,16 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
   };
 
   $scope.saveSolicitude = () => {
+    console.log($scope.solicitude);
     let solicitude = {
-      reception_date: $filter('date')($scope.reception_date, 'yyyy-MM-dd'), 
-      applicant_type: $scope.applicant_type, 
-      applicant_id: $scope.applicant_id, 
-      document_date: $filter('date')($scope.document_date, 'yyyy-MM-dd'), 
-      topic: $scope.topic, 
+      reception_date: $filter('date')($scope.solicitude.reception_date, 'yyyy-MM-dd'), 
+      applicant_type: $scope.solicitude.applicant_type, 
+      applicant_id: $scope.solicitude.applicant_id, 
+      document_date: $filter('date')($scope.solicitude.document_date, 'yyyy-MM-dd'), 
+      topic: $scope.solicitude.topic, 
     }
 
+    console.log(solicitude);
     Solicitudes.save(solicitude).$promise.then(
       (data) => {
         if (data.success) {
@@ -121,9 +128,9 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
   }
 
   $scope.selectApplicant = (id, identification, full_name) => {
-    $scope.full_name = full_name;
-    $scope.applicant_id = id;
-    $scope.identification = identification;
+    $scope.solicitude.full_name = full_name;
+    $scope.solicitude.applicant_id = id;
+    $scope.solicitude.identification = identification;
   };
 
   $scope.$watch('applicant_type', () => {

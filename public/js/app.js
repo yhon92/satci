@@ -187,9 +187,9 @@ angular.module('Citizen.Create', ['Citizen.resources']).controller('CreateCitize
 
     Citizens.save(dataCitizen).$promise.then(function (data) {
       if (data.success) {
-        $scope.full_name = data.citizen.full_name;
-        $scope.identification = data.citizen.identification;
-        $scope.applicant_id = data.citizen.id;
+        $scope.solicitude.full_name = data.citizen.full_name;
+        $scope.solicitude.identification = data.citizen.identification;
+        $scope.solicitude.applicant_id = data.citizen.id;
         Alertify.success('Persona registrada exitosamente');
         $scope.close();
       }
@@ -266,18 +266,18 @@ angular.module('Institution.resources', ['ngResource', 'SATCI.Shared']).factory(
 'use strict';
 
 angular.module('Institution.Create', ['Institution.resources']).controller('CreateInstitutionCtrl', function ($scope, $filter, Alertify, Institutions) {
-  /*
-    $scope.institution = {
-      identification: '',
-      full_name: '',
-      address: '',
-      prefix_phone: '',
-      number_phone: '',
-      parish: '',
-      agent_identification: '',
-      agent_first_name: '',
-      agent_last_name: ''
-    };*/
+
+  $scope.institution = {
+    identification: '',
+    full_name: '',
+    address: '',
+    prefix_phone: '',
+    number_phone: '',
+    parish: '',
+    agent_identification: '',
+    agent_first_name: '',
+    agent_last_name: ''
+  };
 
   $scope.saveInstitution = function () {
 
@@ -297,9 +297,9 @@ angular.module('Institution.Create', ['Institution.resources']).controller('Crea
     Institutions.save(dataInstitution).$promise.then(function (data) {
       console.log(data);
       if (data.success) {
-        $scope.full_name = data.institution.full_name;
-        $scope.identification = data.institution.identification;
-        $scope.applicant_id = data.institution.id;
+        $scope.solicitude.full_name = data.institution.full_name;
+        $scope.solicitude.identification = data.institution.identification;
+        $scope.solicitude.applicant_id = data.institution.id;
         Alertify.success('Institución registrada exitosamente');
         $scope.close();
       }
@@ -767,9 +767,14 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
   var search = null;
   var applicant_type = '';
 
-  $scope.full_name = null;
-  $scope.applicant_id = null;
-  $scope.identification = null;
+  $scope.solicitude = {
+    full_name: '',
+    applicant_id: '',
+    identification: '',
+    reception_date: '',
+    document_date: '',
+    topic: ''
+  };
 
   $scope.addApplicant = function () {
     add = true;
@@ -800,7 +805,7 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
   };
 
   $scope.getApplicant = function (type) {
-    $scope.applicant_type = applicant_type = type;
+    $scope.solicitude.applicant_type = applicant_type = type;
     $scope.template = PathTemplates.partials + 'solicitude/applicant.html';
   };
 
@@ -832,14 +837,16 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
   };
 
   $scope.saveSolicitude = function () {
+    console.log($scope.solicitude);
     var solicitude = {
-      reception_date: $filter('date')($scope.reception_date, 'yyyy-MM-dd'),
-      applicant_type: $scope.applicant_type,
-      applicant_id: $scope.applicant_id,
-      document_date: $filter('date')($scope.document_date, 'yyyy-MM-dd'),
-      topic: $scope.topic
+      reception_date: $filter('date')($scope.solicitude.reception_date, 'yyyy-MM-dd'),
+      applicant_type: $scope.solicitude.applicant_type,
+      applicant_id: $scope.solicitude.applicant_id,
+      document_date: $filter('date')($scope.solicitude.document_date, 'yyyy-MM-dd'),
+      topic: $scope.solicitude.topic
     };
 
+    console.log(solicitude);
     Solicitudes.save(solicitude).$promise.then(function (data) {
       if (data.success) {
         Alertify.success('Solicitud registrada exitosamente');
@@ -861,9 +868,9 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
   };
 
   $scope.selectApplicant = function (id, identification, full_name) {
-    $scope.full_name = full_name;
-    $scope.applicant_id = id;
-    $scope.identification = identification;
+    $scope.solicitude.full_name = full_name;
+    $scope.solicitude.applicant_id = id;
+    $scope.solicitude.identification = identification;
   };
 
   $scope.$watch('applicant_type', function () {

@@ -15,7 +15,7 @@
 							<label class="col-lg-4 control-label" for="reception_date">Fecha de Recepción</label>
 							<div class="col-lg-8">
 								<p class="input-group">
-									<input class="form-control" type="text" id="reception_date" placeholder="Fecha de Recepción" onkeydown="return noKey(event);" name='reception_date' ng-model="reception_date" uib-datepicker-popup="dd-MM-yyyy" is-open="datepicker.reception_date" min-date="minDate" max-date="maxDate" picker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" current-text='Hoy' clear-text='Borrar' close-text="Cerrar">
+									<input class="form-control" type="text" id="reception_date" placeholder="Fecha de Recepción" onkeydown="return noKey(event);" name='reception_date' ng-model="solicitude.reception_date" uib-datepicker-popup="dd-MM-yyyy" is-open="datepicker.reception_date" min-date="minDate" max-date="maxDate" picker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" current-text='Hoy' clear-text='Borrar' close-text="Cerrar">
 									<span class="input-group-btn">
 										<button type="button" class="btn btn-default" ng-click="open($event, 'reception_date')"><i class="glyphicon glyphicon-calendar"></i></button>
 									</span>
@@ -27,36 +27,36 @@
 							<div class="col-lg-8">
 								<div class="radio">
 									<label>
-										<input type="radio" name="applicant_type" value='Citizen' ng-click='getApplicant("citizen")'>
+										<input type="radio" name="solicitude.applicant_type" value='Citizen' ng-click='getApplicant("citizen")'>
 										Natural
 									</label>
 								</div>
 								<div class="radio">
 									<label>
-										<input type="radio" name="applicant_type" value="Institution" ng-click='getApplicant("institution")'>
+										<input type="radio" name="solicitude.applicant_type" value="Institution" ng-click='getApplicant("institution")'>
 										Jurídica
 									</label>
 								</div>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-lg-4 control-label">{{applicant_type | indentification}}</label>
+							<label class="col-lg-4 control-label">{{solicitude.applicant_type | indentification}}</label>
 							<div class="col-lg-8">
-								<label class="form-label">{{identification}}</label>
-								<input type="hidden" name="applicant_id" value="{{applicant_id}}" ng-model='applicant_id'>
+								<label class="form-label">{{solicitude.identification}}</label>
+								<input type="hidden" name="applicant_id" value="{{solicitude.applicant_id}}" ng-model='solicitude.applicant_id'>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-lg-4 control-label">Solicitante</label>
 							<div class="col-lg-8">
-								<label class="form-label">{{full_name}}</label>
+								<label class="form-label">{{solicitude.full_name}}</label>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-lg-4 control-label" for="document_date">Fecha del Documento</label>
 							<div class="col-lg-8">
 								<p class="input-group">
-									<input class="form-control" type="text" id="document_date" placeholder="Fecha del Documento" onkeydown="return noKey(event);" name='document_date' ng-model="document_date" uib-datepicker-popup="dd-MM-yyyy" is-open="datepicker.document_date" min-date="minDate" max-date="maxDate" picker-options="dateOptions" ng-required="true" current-text='Hoy' clear-text='Borrar' close-text="Cerrar">
+									<input class="form-control" type="text" id="document_date" placeholder="Fecha del Documento" onkeydown="return noKey(event);" name='document_date' ng-model="solicitude.document_date" uib-datepicker-popup="dd-MM-yyyy" is-open="datepicker.document_date" min-date="minDate" max-date="maxDate" picker-options="dateOptions" ng-required="true" current-text='Hoy' clear-text='Borrar' close-text="Cerrar">
 									<span class="input-group-btn">
 										<button type="button" class="btn btn-default" ng-click="open($event, 'document_date')"><i class="glyphicon glyphicon-calendar"></i></button>
 									</span>
@@ -66,7 +66,7 @@
 						<div class="form-group">
 							<div class="col-lg-12">
 								<label class="col-lg-4 control-label" for="topic">Asunto</label>
-								<textarea class="form-control" id="topic" placeholder="Asunto" rows="3" ng-model='topic'></textarea>
+								<textarea class="form-control" id="topic" placeholder="Asunto" rows="3" ng-model="solicitude.topic"></textarea>
 							</div>
 						</div>
 						<div class="align-center">
