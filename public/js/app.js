@@ -837,16 +837,15 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
   };
 
   $scope.saveSolicitude = function () {
-    console.log($scope.solicitude);
+
     var solicitude = {
-      reception_date: $filter('date')($scope.solicitude.reception_date, 'yyyy-MM-dd'),
-      applicant_type: $scope.solicitude.applicant_type,
-      applicant_id: $scope.solicitude.applicant_id,
-      document_date: $filter('date')($scope.solicitude.document_date, 'yyyy-MM-dd'),
-      topic: $scope.solicitude.topic
+      /*reception_date: $filter('date')($scope.solicitude.reception_date, 'yyyy-MM-dd'), 
+      applicant_type: $scope.solicitude.applicant_type, 
+      applicant_id: $scope.solicitude.applicant_id, 
+      document_date: $filter('date')($scope.solicitude.document_date, 'yyyy-MM-dd'), 
+      topic: $scope.solicitude.topic, */
     };
 
-    console.log(solicitude);
     Solicitudes.save(solicitude).$promise.then(function (data) {
       if (data.success) {
         Alertify.success('Solicitud registrada exitosamente');
@@ -1217,7 +1216,7 @@ function solicitudeNumberMask(input, e) {
 	if (key == 45 && input.length === 3) {
 		return true;
 	}
-	if (key >= 48 && key <= 57 && (input.length >= 0 && input.length <= 2) || input.length >= 4 && input.length <= 6) {
+	if (key >= 48 && key <= 57 && input.length >= 0 && input.length <= 2 || input.length >= 4 && input.length <= 6) {
 		return true;
 	}
 	return false;
@@ -1232,13 +1231,13 @@ function rifMask(input, e) {
  	74 = J, 106 = j, 77 = M, 109 = m, 80 = P, 112 = p
  	82 = R, 114 = r, 86 = V, 118 = v
  	*/
-	if ((key == 69 || key == 101 || (key == 71 || key == 103) || (key == 73 || key == 105) || (key == 74 || key == 106) || (key == 77 || key == 109) || (key == 80 || key == 112) || (key == 82 || key == 114) || (key == 86 || key == 118)) && input.length === 0) {
+	if ((key == 69 || key == 101 || key == 71 || key == 103 || key == 73 || key == 105 || key == 74 || key == 106 || key == 77 || key == 109 || key == 80 || key == 112 || key == 82 || key == 114 || key == 86 || key == 118) && input.length === 0) {
 		return true;
 	}
 	if (key == 45 && (input.length === 1 || input.length === 10)) {
 		return true;
 	}
-	if (key >= 48 && key <= 57 && (input.length >= 2 && input.length <= 9) || input.length === 11) {
+	if (key >= 48 && key <= 57 && input.length >= 2 && input.length <= 9 || input.length === 11) {
 		return true;
 	}
 	return false;
@@ -1628,7 +1627,7 @@ function rifMask(input, e) {
 				// check to ensure the alertify dialog element
 				// has been successfully created
 				var check = function check() {
-					if (elLog && elLog.scrollTop !== null && (elCover && elCover.scrollTop !== null)) return;else check();
+					if (elLog && elLog.scrollTop !== null && elCover && elCover.scrollTop !== null) return;else check();
 				};
 				// error catching
 				if (typeof message !== "string") throw new Error("message must be a string");

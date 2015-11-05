@@ -92,7 +92,7 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
   };
 
   $scope.saveSolicitude = () => {
-    console.log($scope.solicitude);
+
     let solicitude = {
       reception_date: $filter('date')($scope.solicitude.reception_date, 'yyyy-MM-dd'), 
       applicant_type: $scope.solicitude.applicant_type, 
@@ -101,7 +101,6 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
       topic: $scope.solicitude.topic, 
     }
 
-    console.log(solicitude);
     Solicitudes.save(solicitude).$promise.then(
       (data) => {
         if (data.success) {
