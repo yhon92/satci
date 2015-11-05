@@ -780,19 +780,25 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
     add = true;
     search = false;
 
-    $scope.full_name = null;
-    $scope.applicant_id = null;
-    $scope.identification = null;
+    $scope.solicitude.full_name = null;
+    $scope.solicitude.applicant_id = null;
+    $scope.solicitude.identification = null;
 
     $scope.applicantTemplate = '' + PathTemplates.partials + applicant_type + '/create.html';
   };
 
   $scope.clear = function () {
-    $scope.identification = null;
-    $scope.full_name = null;
-    $scope.applicant_id = null;
+
+    $scope.solicitude = {
+      full_name: null,
+      applicant_id: null,
+      identification: null,
+      reception_date: null,
+      document_date: null,
+      topic: null
+    };
+
     $scope.template = null;
-    $scope.applicant_type = null;
     $scope.applicantTemplate = null;
   };
 
@@ -839,11 +845,11 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
   $scope.saveSolicitude = function () {
 
     var solicitude = {
-      /*reception_date: $filter('date')($scope.solicitude.reception_date, 'yyyy-MM-dd'), 
-      applicant_type: $scope.solicitude.applicant_type, 
-      applicant_id: $scope.solicitude.applicant_id, 
-      document_date: $filter('date')($scope.solicitude.document_date, 'yyyy-MM-dd'), 
-      topic: $scope.solicitude.topic, */
+      reception_date: $filter('date')($scope.solicitude.reception_date, 'yyyy-MM-dd'),
+      applicant_type: $scope.solicitude.applicant_type,
+      applicant_id: $scope.solicitude.applicant_id,
+      document_date: $filter('date')($scope.solicitude.document_date, 'yyyy-MM-dd'),
+      topic: $scope.solicitude.topic
     };
 
     Solicitudes.save(solicitude).$promise.then(function (data) {

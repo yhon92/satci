@@ -35,19 +35,25 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
     add = true;
     search = false;
 
-    $scope.full_name = null;
-    $scope.applicant_id = null;
-    $scope.identification = null;
+    $scope.solicitude.full_name = null;
+    $scope.solicitude.applicant_id = null;
+    $scope.solicitude.identification = null;
 
     $scope.applicantTemplate = `${PathTemplates.partials}${applicant_type}/create.html`;
   };
 
   $scope.clear = () =>{
-    $scope.identification = null;
-    $scope.full_name = null;
-    $scope.applicant_id = null;
+    
+    $scope.solicitude = {
+      full_name: null,
+      applicant_id: null,
+      identification: null,
+      reception_date: null,
+      document_date: null,
+      topic: null,
+    }
+
     $scope.template = null;
-    $scope.applicant_type = null;
     $scope.applicantTemplate = null;
   }
 
