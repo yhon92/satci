@@ -17,7 +17,7 @@ class InstrumentTableSeeder extends Seeder
 
 			Instrument::create([
 				'date'						=> $faker->dateTimeBetween($startDate = '-4 months', $endDate = 'now'),
-				'area_solicitude_id'	=> $faker->numberBetween($min = 1, $max = 50),
+				'theme_area_solicitude_id'	=> $faker->numberBetween($min = 1, $max = 50),
 				'observation'			=> $faker->realText($maxNbChars = 200),
 			]);
 
