@@ -15,8 +15,11 @@ class CreateThemesTable extends Migration {
 		Schema::create('themes', function(Blueprint $table)
 		{
 			$table->increments('id');
+			$table->integer('category_id')->unsigned();
 			$table->string('name')->unique();
 			$table->timestamps();
+
+			$table->foreign('category_id')->references('id')->on('categories');
 		});
 	}
 

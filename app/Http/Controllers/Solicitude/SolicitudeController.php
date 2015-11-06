@@ -36,7 +36,7 @@ class SolicitudeController extends Controller {
 	{
 		$solicitudes = $this->solicitudeRepo->getListSolicitudes();
 
-		Helpers::concatSolicitudesWithApplicants($solicitudes);
+		// Helpers::concatSolicitudesWithApplicants($solicitudes);
 
 		return response()->json([
 			'solicitudes' => $solicitudes

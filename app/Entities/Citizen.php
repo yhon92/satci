@@ -1,4 +1,5 @@
-<?php namespace SATCI\Entities;
+<?php 
+namespace SATCI\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,11 +13,18 @@ class Citizen extends Model {
 													'last_name', 
 													'address', 
 													'prefix_phone', 
-													'number_phone', 
-													'parish_id'];
+													'number_phone',
+                          'parish_id'];
+
+  // protected $hidden = ['parish_id'];
 
   public function solicitudes()
   {
     return $this->morphMany('SATCI\Entities\Solicitude', 'applicant');
+  }
+
+  public function parish()
+  {
+    return $this->belongsTo('SATCI\Entities\Parish');
   }
 }

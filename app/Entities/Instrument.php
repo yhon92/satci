@@ -1,4 +1,5 @@
-<?php namespace SATCI\Entities;
+<?php 
+namespace SATCI\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 

@@ -1,4 +1,5 @@
-<?php namespace SATCI\Repositories;
+<?php 
+namespace SATCI\Repositories;
 
 use SATCI\Entities\Solicitude;
 
@@ -18,7 +19,8 @@ class SolicitudeRepo extends BaseRepo
 
 	static public function getListSolicitudes()
 	{
-		return Solicitude::all();
+		return Solicitude::with('applicant.parish')
+		->get();
 	}
 
 	static public function getApplicant($type, $id){

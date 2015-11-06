@@ -1,4 +1,5 @@
-<?php namespace SATCI\Entities;
+<?php 
+namespace SATCI\Entities;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;

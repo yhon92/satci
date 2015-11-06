@@ -5,16 +5,16 @@ use Illuminate\Http\Request;
 
 // use SATCI\Http\Requests;
 use SATCI\Http\Controllers\Controller;
-use SATCI\Repositories\ThemeRepo;
+use SATCI\Repositories\CategoryRepo;
 
-class ThemeController extends Controller
+class CategoryController extends Controller
 {
-  protected $themeRepo;
+  protected $categoryRepo;
 
-  public function __construct (ThemeRepo $themeRepo)
+  public function __construct (CategoryRepo $categoryRepo)
   {
     // $this->middleware('jwt.auth');
-    $this->themeRepo = $themeRepo;
+    $this->categoryRepo = $categoryRepo;
   }
   /**
    * Display a listing of the resource.
@@ -23,9 +23,21 @@ class ThemeController extends Controller
    */
   public function index()
   {
-    $themes = $this->themeRepo->getListThemes();
+    $categories = $this->categoryRepo->getListCategories();
+
     return response()->json([
-      'themes' => $themes,
+      'categories' => $categories,
+      ], 200
+    );
+  }
+
+  public function listCategoriesWithThemes()
+  {
+    $categories = $this->categoryRepo->getListCategories();
+    
+    return response()->json([
+      'categories' => $categories,
+      'Saluda' => 'Hola \o',
       ], 200
     );
   }

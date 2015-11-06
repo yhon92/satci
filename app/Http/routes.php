@@ -40,6 +40,12 @@ Route::group(['prefix' => 'api', 'namespace' => 'Solicitude'], function ()
 
 Route::group(['prefix' => 'api'], function ()
 {
+	Route::get('category/list', 'CategoryController@listCategoriesWithThemes');
+	Route::resource('category', 'CategoryController');
+});
+
+Route::group(['prefix' => 'api'], function ()
+{
 	Route::resource('citizen', 'CitizenController');
 });
 

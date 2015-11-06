@@ -1,4 +1,5 @@
-<?php namespace SATCI\Repositories;
+<?php 
+namespace SATCI\Repositories;
 
 use SATCI\Entities\User;
 

@@ -1,4 +1,5 @@
-<?php namespace SATCI\Repositories;
+<?php 
+namespace SATCI\Repositories;
 
 abstract class BaseRepo {
 

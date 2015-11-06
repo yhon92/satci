@@ -1,4 +1,5 @@
-<?php namespace SATCI\Http\Controllers;
+<?php 
+namespace SATCI\Http\Controllers;
 
 class WelcomeController extends Controller {
 
@@ -18,7 +19,7 @@ class WelcomeController extends Controller {
 	 *
 	 * @return void
 	 */
-	public function __construct()
+	public function __construct ()
 	{
 		$this->middleware('guest');
 	}

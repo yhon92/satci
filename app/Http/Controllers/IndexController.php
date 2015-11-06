@@ -1,4 +1,5 @@
-<?php namespace SATCI\Http\Controllers;
+<?php 
+namespace SATCI\Http\Controllers;
 
 class IndexController extends Controller {
 

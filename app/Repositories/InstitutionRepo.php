@@ -1,4 +1,5 @@
-<?php namespace SATCI\Repositories;
+<?php 
+namespace SATCI\Repositories;
 
 use SATCI\Entities\Institution;
 
@@ -12,8 +13,8 @@ class InstitutionRepo extends BaseRepo
 
 	static public function getListInstitutions()
 	{
-		return Institution::
-		orderby('full_name', 'ASC')
+		return Institution::with('parish')
+		->orderby('full_name', 'ASC')
 		->get();
 			// ->paginate();
 	}

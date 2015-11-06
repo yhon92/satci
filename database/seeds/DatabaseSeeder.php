@@ -16,15 +16,16 @@ class DatabaseSeeder extends Seeder {
 
 		$this->call('UserTableSeeder');
 		$this->call('ParishTableSeeder');
+		$this->call('CategoryTableSeeder');
 		$this->call('DirectorTableSeeder');
 		$this->call('CitizenTableSeeder');
 		$this->call('InstitutionTableSeeder');
 		$this->call('ThemeTableSeeder');
 		$this->call('AreaTableSeeder');
 		$this->call('SolicitudeTableSeeder');
-		$this->call('ThemeAreaSolicitudeTableSeeder');
+		/*$this->call('ThemeAreaSolicitudeTableSeeder');
 		$this->call('InstrumentTableSeeder');
-		$this->call('AnswerTableSeeder');
+		$this->call('AnswerTableSeeder');*/
 	}
 
 }

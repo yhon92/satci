@@ -13,10 +13,11 @@ class ThemeTableSeeder extends Seeder
 
 		$faker = Faker::create('es_VE');
 
-		foreach (range(1, 12) as $index) {
+		foreach (range(1, 50) as $index) {
 
 			Theme::create([
-				'name'	=> 'Tema-'.$index,
+				'category_id'	=> $faker->numberBetween($min = 1, $max = 12),
+				'name'				=> 'Tema-'.$index,
 			]);
 
 
