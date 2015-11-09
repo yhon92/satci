@@ -53,7 +53,7 @@ class SolicitudeController extends Controller {
 
 			$solicitudes = $this->solicitudeRepo->getListByApplicant($type);
 
-			Helpers::concatApplicantsWithParish($solicitudes);
+			// Helpers::concatApplicantsWithParish($solicitudes);
 
 			return response()->json([
 				'solicitudes' => $solicitudes,

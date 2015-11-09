@@ -13,9 +13,8 @@ class ThemeRepo extends BaseRepo
 
   public function getListThemes()
   {
-    return Theme::get();
-      // orderby('first_name', 'ASC')
-      // ->paginate();
+    return \DB::select('SELECT t.id, t.category_id, t.name FROM themes t INNER JOIN categories c ON (c.id = t.category_id) ORDER BY c.name');
+    // return Theme::orderby('category_id', 'ASC')->get();
   }
 
   public function newTheme()

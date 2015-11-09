@@ -13,12 +13,22 @@ class CategoryTableSeeder extends Seeder
    */
   public function run()
   {
-    $faker = Faker::create('es_VE');
+    $categories = ['Peticiones', 
+                   'Comunidad', 
+                   'Deportivas', 
+                   'Educativas', 
+                   'Salud', 
+                   'Habitat',  
+                   'Denuncia',  
+                   'Correspondencia Interna',  
+                   'Reclamo',  
+                   'Aviso',  
+                   'Sugerencia'];
 
-    foreach (range(1, 12) as $index) {
+    foreach ($categories as $category) {
 
       Category::create([
-        'name'  => 'Categoria-'.$index,
+        'name'  => $category,
         ]);
 
     }

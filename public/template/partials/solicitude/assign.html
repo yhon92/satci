@@ -6,13 +6,14 @@
           <legend>Asignación</legend>
           <div>
             <!-- <p>Lista de Temas</p> -->
+            <!-- <ui-select multiple ng-model="selected.themes" theme="select2" style="width: 100%;"> -->
             <ui-select multiple ng-model="selected.themes">
               <ui-select-match placeholder="Seleccione tema...">{{$item.name}}</ui-select-match>
-              <ui-select-choices repeat="theme in themes | filter:$select.search">
+              <ui-select-choices group-by="someGroupFn" group-filter repeat="theme in themes | filter:$select.search">
                 {{ theme.name }}
               </ui-select-choices>
             </ui-select>
-      <button ng-click="mostrar()">Seleccionados</button>
+      <!-- <button ng-click="mostrar()">Seleccionados</button> -->
       </div>
       <!-- <div class="col-lg-6">
         <p>Temas Seleccionados</p> -->

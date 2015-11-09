@@ -63,3 +63,8 @@ Route::group(['prefix' => 'api'], function ()
 {
 	Route::resource('theme', 'ThemeController');
 });
+
+Route::group(['prefix' => 'api'], function ()
+{
+	Route::resource('category', 'CategoryController');
+});

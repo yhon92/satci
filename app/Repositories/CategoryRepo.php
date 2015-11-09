@@ -11,13 +11,16 @@ class CategoryRepo extends BaseRepo
     return new Category;
   }
 
+  public function all()
+  {
+    return Category::orderby('name', 'ASC')->get();
+  }
+
   public function getListCategories()
   {
     return Category::has('themes')
     ->with('themes')
     ->get();
-      // orderby('first_name', 'ASC')
-      // ->paginate();
   }
 
   public function newCategory()

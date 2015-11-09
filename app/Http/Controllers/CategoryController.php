@@ -23,7 +23,7 @@ class CategoryController extends Controller
    */
   public function index()
   {
-    $categories = $this->categoryRepo->getListCategories();
+    $categories = $this->categoryRepo->all();
 
     return response()->json([
       'categories' => $categories,
@@ -37,7 +37,6 @@ class CategoryController extends Controller
     
     return response()->json([
       'categories' => $categories,
-      'Saluda' => 'Hola \o',
       ], 200
     );
   }

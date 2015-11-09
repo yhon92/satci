@@ -23,6 +23,7 @@ import './app/login/LoginModule';
 import './app/nav/NavModule';
 import './app/shared/SharedModule'
 import './app/solicitudes/SolicitudeModule';
+import './app/category/CategoryModule';
 import './app/theme/ThemeModule';
 // import './app/';
 import './app/services/RedirectWhenLoggedOut';
@@ -46,6 +47,7 @@ angular.module('SATCI', [
   'SATCI.Nav',
   'SATCI.Shared',
   'SATCI.Solicitude',
+  'SATCI.Category',
   'SATCI.Theme',
 
 
