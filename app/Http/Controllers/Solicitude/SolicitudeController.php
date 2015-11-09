@@ -36,7 +36,7 @@ class SolicitudeController extends Controller {
 	{
 		$solicitudes = $this->solicitudeRepo->getListSolicitudes();
 
-		// Helpers::concatSolicitudesWithApplicants($solicitudes);
+		Helpers::concatApplicantsWithParish($solicitudes);
 
 		return response()->json([
 			'solicitudes' => $solicitudes
@@ -53,7 +53,7 @@ class SolicitudeController extends Controller {
 
 			$solicitudes = $this->solicitudeRepo->getListByApplicant($type);
 
-			Helpers::concatSolicitudesWithApplicants($solicitudes);
+			Helpers::concatApplicantsWithParish($solicitudes);
 
 			return response()->json([
 				'solicitudes' => $solicitudes,
@@ -103,9 +103,9 @@ class SolicitudeController extends Controller {
 	 */
 	public function show($id)
 	{
-		$solicitude = $this->solicitudeRepo->find($id);
+		$solicitude = $this->solicitudeRepo->getSolicitude($id);
 		
-		Helpers::concatSolicitudeWithApplicant($solicitude);
+		// Helpers::concatSolicitudeWithApplicant($solicitude);
 
 		$type = $solicitude->applicant_type;
 

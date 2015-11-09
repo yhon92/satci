@@ -11,16 +11,15 @@ class SolicitudeRepo extends BaseRepo
 		return new Solicitude;
 	}
 
-	/*static public function getSolicitude($id)
+	public function getSolicitude($id)
 	{
-		$solicitude = find($id);
-		return 
-	}*/
+		$solicitude = Solicitude::with('applicant.parish')->find($id);
+		return $solicitude;
+	}
 
 	static public function getListSolicitudes()
 	{
-		return Solicitude::with('applicant.parish')
-		->get();
+		return Solicitude::with('applicant.parish')->get();
 	}
 
 	static public function getApplicant($type, $id){
@@ -29,9 +28,8 @@ class SolicitudeRepo extends BaseRepo
 
 	static public function getListByApplicant($type)
 	{
-		return Solicitude::
-		// join('citizens', 'applicant_id' ,'=', 'citizens.id')
-		where('applicant_type' ,'=', $type)
+		return Solicitude::with('applicant')
+		->where('applicant_type' ,'=', $type)
 		->orderBy('solicitude_number', 'desc')
 		->get();
 	}

@@ -36,22 +36,23 @@ class Helpers
     return $type;
   }
 
-  static public function concatSolicitudesWithApplicants(&$solicitudes)
+  static public function concatApplicantsWithParish(&$solicitudes)
   {
     foreach ($solicitudes as $key => $value) 
     {
-      $type = $value->applicant_type;
-      $id   = $value->applicant_id;
+      $id = $value->applicant->parish_id;
+      
+      $parish = ParishRepo::get($id);
+      $value->applicant->parish = $parish;
 
-      $applicant = SolicitudeRepo::getApplicant($type, $id);
-      $value->applicant = $applicant;
-
-      unset($value['applicant_type'], $value['applicant_id']);
+      // exit($value->applicant);
+      // unset($value->applicant['parish_id']);
+      // unset($value['applicant_type'], $value['applicant_id']);
     }
     return $solicitudes;
   }
 
-  static public function concatSolicitudeWithApplicant(&$solicitude)
+/*  static public function concatSolicitudeWithApplicant(&$solicitude)
   {
     $type = $solicitude->applicant_type;
     $id   = $solicitude->applicant_id;
@@ -62,7 +63,7 @@ class Helpers
     unset($solicitude['applicant_id']);
 
     return $solicitude;
-  }
+  }*/
 
   static public function concatApplicantWithParish(&$applicant)
   {

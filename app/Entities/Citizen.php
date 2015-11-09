@@ -16,15 +16,16 @@ class Citizen extends Model {
 													'number_phone',
                           'parish_id'];
 
-  // protected $hidden = ['parish_id'];
+  protected $hidden = ['parish_id'];
+  
+  public function parish()
+  {
+    return $this->belongsTo('SATCI\Entities\Parish');
+  }
 
   public function solicitudes()
   {
     return $this->morphMany('SATCI\Entities\Solicitude', 'applicant');
   }
 
-  public function parish()
-  {
-    return $this->belongsTo('SATCI\Entities\Parish');
-  }
 }

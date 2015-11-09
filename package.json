@@ -19,7 +19,6 @@
     "gulp-util": "^3.0.6",
     "gulp-watch": "^4.3.5",
     "jshint-stylish": "^2.0.1",
-    "laravel-elixir": "*",
     "lodash": "^3.10.1",
     "nib": "*",
     "node-notifier": "^4.2.3",

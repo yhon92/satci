@@ -7,7 +7,7 @@ class Parish extends Model {
 
 	protected $table = 'parishes';
 
-	protected $fillable = ['name'];
+	protected $fillable = ['id', 'name'];
 
   protected $hidden = ['created_at', 'updated_at'];
   
