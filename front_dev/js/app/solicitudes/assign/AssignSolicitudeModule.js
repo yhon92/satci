@@ -38,8 +38,23 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
     };
   };
 
-  $scope.mostrar = () => {
-    console.log($scope.selected);
+  $scope.assignArea = (key, theme) => {
+    console.log('Key:'+key+', '+'Theme:'+theme);
+
+    let modalInstance = $uibModal.open({
+      templateUrl: `modalAssignArea-template`,
+      controller: ($scope, $uibModalInstance) => {
+        
+        $scope.ok = function () {
+          $uibModalInstance.close();
+        };
+
+        $scope.cancel = function () {
+          $uibModalInstance.dismiss();
+        };
+      },
+      // size: 'sm',
+    });
   }
 
 })

@@ -8,20 +8,29 @@
             <!-- <p>Lista de Temas</p> -->
             <!-- <ui-select multiple ng-model="selected.themes" theme="select2" style="width: 100%;"> -->
             <ui-select multiple ng-model="selected.themes">
-              <ui-select-match placeholder="Seleccione tema...">{{$item.name}}</ui-select-match>
+              <ui-select-match placeholder="Seleccione el tema...">{{$item.name}}</ui-select-match>
               <ui-select-choices group-by="someGroupFn" group-filter repeat="theme in themes | filter:$select.search">
                 {{ theme.name }}
               </ui-select-choices>
             </ui-select>
-      <!-- <button ng-click="mostrar()">Seleccionados</button> -->
-      </div>
-      <!-- <div class="col-lg-6">
-        <p>Temas Seleccionados</p> -->
-        <!-- <select multiple size='10' class="form-control" name="parish" id="parish" ng-options="theme.name for theme in themes" ng-model="citizen.parish" ng-required="true">
-        </select> -->
-      </div>
-    </fieldset>
-  </form>
-</div>
-</div>
+          </div>
+          <div>
+            <table>
+              <tr ng-repeat="(key, theme) in selected.themes">
+                <td style="min-width: 20px;">
+                  <span class="glyphicon glyphicon-time" ng-if="!theme.state"></span>
+                  <span class="glyphicon glyphicon-ok" ng-if="theme.state"></span>
+                </td>
+                <td style="min-width: 450px;">{{ theme.name }}</td>
+                <td><button class="btn btn-xs btn-success" ng-click="assignArea(key, theme.name)">Asignar Area</button></td>
+              </tr>
+            </table>
+          </div>
+          <div>
+            <!-- <button class="btn btn-primary btn-sm" ng-click="">Asignar Areas</button> -->
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  </div>
 </div>

@@ -797,10 +797,25 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
     };
   };
 
-  $scope.mostrar = function () {
-    console.log($scope.selected);
+  $scope.assignArea = function (key, theme) {
+    console.log('Key:' + key + ', ' + 'Theme:' + theme);
+
+    var modalInstance = $uibModal.open({
+      templateUrl: 'modalAssignArea-template',
+      controller: function controller($scope, $uibModalInstance) {
+
+        $scope.ok = function () {
+          $uibModalInstance.close();
+        };
+
+        $scope.cancel = function () {
+          $uibModalInstance.dismiss();
+        };
+      }
+    });
   };
 });
+// size: 'sm',
 
 },{}],27:[function(require,module,exports){
 'use strict';
@@ -1270,7 +1285,7 @@ function solicitudeNumberMask(input, e) {
 	if (key == 45 && input.length === 3) {
 		return true;
 	}
-	if (key >= 48 && key <= 57 && input.length >= 0 && input.length <= 2 || input.length >= 4 && input.length <= 6) {
+	if (key >= 48 && key <= 57 && (input.length >= 0 && input.length <= 2) || input.length >= 4 && input.length <= 6) {
 		return true;
 	}
 	return false;
@@ -1285,13 +1300,13 @@ function rifMask(input, e) {
  	74 = J, 106 = j, 77 = M, 109 = m, 80 = P, 112 = p
  	82 = R, 114 = r, 86 = V, 118 = v
  	*/
-	if ((key == 69 || key == 101 || key == 71 || key == 103 || key == 73 || key == 105 || key == 74 || key == 106 || key == 77 || key == 109 || key == 80 || key == 112 || key == 82 || key == 114 || key == 86 || key == 118) && input.length === 0) {
+	if ((key == 69 || key == 101 || (key == 71 || key == 103) || (key == 73 || key == 105) || (key == 74 || key == 106) || (key == 77 || key == 109) || (key == 80 || key == 112) || (key == 82 || key == 114) || (key == 86 || key == 118)) && input.length === 0) {
 		return true;
 	}
 	if (key == 45 && (input.length === 1 || input.length === 10)) {
 		return true;
 	}
-	if (key >= 48 && key <= 57 && input.length >= 2 && input.length <= 9 || input.length === 11) {
+	if (key >= 48 && key <= 57 && (input.length >= 2 && input.length <= 9) || input.length === 11) {
 		return true;
 	}
 	return false;
@@ -1681,7 +1696,7 @@ function rifMask(input, e) {
 				// check to ensure the alertify dialog element
 				// has been successfully created
 				var check = function check() {
-					if (elLog && elLog.scrollTop !== null && elCover && elCover.scrollTop !== null) return;else check();
+					if (elLog && elLog.scrollTop !== null && (elCover && elCover.scrollTop !== null)) return;else check();
 				};
 				// error catching
 				if (typeof message !== "string") throw new Error("message must be a string");

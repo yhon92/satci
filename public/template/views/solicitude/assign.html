@@ -3,3 +3,23 @@
 	<div ui-view='assign'></div>
 	<!-- <div ng-include="template"></div> -->
 </div>
+<script type="text/ng-template" id="modalAssignArea-template">
+  <section class="modal-header">
+    <button type="button" class="close" ng-click="cancel()">×</button>
+    <h4 class="modal-title">Asignar Áreas</h4>
+  </section>
+  <section class="modal-body form-horizontal">
+    <div>
+      <ui-select multiple ng-model="selected.themes">
+        <ui-select-match placeholder="Seleccione las áreas...">{{$item.name}}</ui-select-match>
+        <ui-select-choices group-by="someGroupFn" group-filter repeat="theme in themes | filter:$select.search">
+          {{ theme.name }}
+        </ui-select-choices>
+      </ui-select>
+    </div>
+  </section>
+  <section class="modal-footer">
+    <button class="btn btn-sm btn-link" type="button" ng-click="cancel()">Cancelar</button>
+    <button class="btn btn-sm btn-primary" type="button" ng-click="ok()">Aceptar</button>
+  </section>
+</script>
