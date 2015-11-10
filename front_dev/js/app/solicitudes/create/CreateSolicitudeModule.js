@@ -222,16 +222,14 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
     var afterTomorrow = new Date();
     afterTomorrow.setDate(tomorrow.getDate() + 2);
     $scope.events =
-    [
-    {
+    [{
       date: tomorrow,
       status: 'full'
     },
     {
       date: afterTomorrow,
       status: 'partially'
-    }
-    ];
+    }];
 
     $scope.getDayClass = (date, mode) => {
       if (mode === 'day') {
