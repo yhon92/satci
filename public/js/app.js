@@ -49,6 +49,8 @@ require('./app/category/CategoryModule');
 
 require('./app/theme/ThemeModule');
 
+require('./app/area/AreaModule');
+
 // import './app/';
 
 require('./app/services/RedirectWhenLoggedOut');
@@ -57,7 +59,7 @@ require('./app/ui/Datepicker');
 
 angular.module('SATCI', ['ngAnimate', 'ngSanitize', 'ui.bootstrap', 'ui.router', 'satellizer', 'smart-table',
 // 'angularMoment',
-'angular-loading-bar', 'Alertify', 'SATCI.Citizen', 'SATCI.Home', 'SATCI.Institution', 'SATCI.Login', 'SATCI.Nav', 'SATCI.Shared', 'SATCI.Solicitude', 'SATCI.Category', 'SATCI.Theme', 'SATCI.RedirectWhenLoggedOutServices', 'SATCI.Datepicker']).config(function ($authProvider, $urlRouterProvider, $locationProvider, $provide, $httpProvider, uiSelectConfig, PathTemplates) {
+'angular-loading-bar', 'Alertify', 'SATCI.Citizen', 'SATCI.Home', 'SATCI.Institution', 'SATCI.Login', 'SATCI.Nav', 'SATCI.Shared', 'SATCI.Solicitude', 'SATCI.Category', 'SATCI.Theme', 'SATCI.Area', 'SATCI.RedirectWhenLoggedOutServices', 'SATCI.Datepicker']).config(function ($authProvider, $urlRouterProvider, $locationProvider, $provide, $httpProvider, uiSelectConfig, PathTemplates) {
 
   // Push the new factory onto the $http interceptor array
   $httpProvider.interceptors.push('redirectWhenLoggedOut');
@@ -115,10 +117,41 @@ angular.module('SATCI', ['ngAnimate', 'ngSanitize', 'ui.bootstrap', 'ui.router',
   // console.log($locale.DATETIME_FORMATS);
 });
 
-},{"./app/category/CategoryModule":3,"./app/citizen/CitizenModule":6,"./app/home/HomeModule":9,"./app/institution/InstitutionModule":11,"./app/login/LoginModule":14,"./app/nav/NavModule":15,"./app/services/RedirectWhenLoggedOut":16,"./app/shared/SharedModule":19,"./app/solicitudes/SolicitudeModule":24,"./app/theme/ThemeModule":30,"./app/ui/Datepicker":32,"./app/validation":33,"./libs/ng-alertify":34,"angular":48,"angular-animate":36,"angular-bootstrap-npm":37,"angular-loading-bar":39,"angular-resource":41,"angular-sanitize":43,"angular-smart-table":45,"angular-ui-router":46,"satellizer":49,"ui-select":50}],2:[function(require,module,exports){
+},{"./app/area/AreaModule":3,"./app/category/CategoryModule":6,"./app/citizen/CitizenModule":9,"./app/home/HomeModule":12,"./app/institution/InstitutionModule":14,"./app/login/LoginModule":17,"./app/nav/NavModule":18,"./app/services/RedirectWhenLoggedOut":19,"./app/shared/SharedModule":22,"./app/solicitudes/SolicitudeModule":27,"./app/theme/ThemeModule":33,"./app/ui/Datepicker":35,"./app/validation":36,"./libs/ng-alertify":37,"angular":51,"angular-animate":39,"angular-bootstrap-npm":40,"angular-loading-bar":42,"angular-resource":44,"angular-sanitize":46,"angular-smart-table":48,"angular-ui-router":49,"satellizer":52,"ui-select":53}],2:[function(require,module,exports){
 "use strict";
 
 },{}],3:[function(require,module,exports){
+'use strict';
+
+require('./AreaController');
+
+require('./AreaResources');
+
+/**
+* SATCI.Area Module
+*
+* Description
+*/
+angular.module('SATCI.Area', []);
+
+},{"./AreaController":2,"./AreaResources":4}],4:[function(require,module,exports){
+/**
+* Area.Resources Module
+*
+* Description
+*/
+'use strict';
+
+angular.module('Area.resources', ['ngResource', 'SATCI.Shared']).factory('Areas', function ($resource, ResourcesUrl) {
+  return $resource(ResourcesUrl.api + 'area/:id', { id: '@_id' }, {
+    update: { method: 'PUT', params: { id: '@_id' } }
+  });
+});
+
+},{}],5:[function(require,module,exports){
+"use strict";
+
+},{}],6:[function(require,module,exports){
 'use strict';
 
 require('./CategoryController');
@@ -132,7 +165,7 @@ require('./CategoryResources');
 */
 angular.module('SATCI.Category', []);
 
-},{"./CategoryController":2,"./CategoryResources":4}],4:[function(require,module,exports){
+},{"./CategoryController":5,"./CategoryResources":7}],7:[function(require,module,exports){
 /**
 * Category.Resources Module
 *
@@ -146,7 +179,7 @@ angular.module('Category.resources', ['ngResource', 'SATCI.Shared']).factory('Ca
   });
 });
 
-},{}],5:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /**
 * Citizens.controller Module
 *
@@ -156,7 +189,7 @@ angular.module('Category.resources', ['ngResource', 'SATCI.Shared']).factory('Ca
 
 angular.module('Citizen.controller', []);
 
-},{}],6:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 require('./CitizenController');
@@ -172,7 +205,7 @@ require('./create/CreateCitizenModule');
 */
 angular.module('SATCI.Citizen', ['Citizen.Create', 'Citizen.controller']);
 
-},{"./CitizenController":5,"./CitizenResources":7,"./create/CreateCitizenModule":8}],7:[function(require,module,exports){
+},{"./CitizenController":8,"./CitizenResources":10,"./create/CreateCitizenModule":11}],10:[function(require,module,exports){
 /**
 * Citizens.resources Module
 *
@@ -186,7 +219,7 @@ angular.module('Citizen.resources', ['ngResource', 'SATCI.Shared']).factory('Cit
   });
 });
 
-},{}],8:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /**
 * Citizens.Create Module
 *
@@ -241,7 +274,7 @@ angular.module('Citizen.Create', ['Citizen.resources']).controller('CreateCitize
   };
 });
 
-},{}],9:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 /**
 * SATCI.Home Module
 *
@@ -256,7 +289,7 @@ angular.module('SATCI.Home', ['ui.router', 'SATCI.Shared']).config(function ($st
   });
 });
 
-},{}],10:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /**
 * Institution.controller Module
 *
@@ -266,7 +299,7 @@ angular.module('SATCI.Home', ['ui.router', 'SATCI.Shared']).config(function ($st
 
 angular.module('Institution.controller', []);
 
-},{}],11:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 
 require('./InstitutionController');
@@ -282,7 +315,7 @@ require('./create/CreateInstitutionModule');
 */
 angular.module('SATCI.Institution', ['Institution.Create', 'Institution.controller']);
 
-},{"./InstitutionController":10,"./InstitutionResources":12,"./create/CreateInstitutionModule":13}],12:[function(require,module,exports){
+},{"./InstitutionController":13,"./InstitutionResources":15,"./create/CreateInstitutionModule":16}],15:[function(require,module,exports){
 /**
 * Institution.resources Module
 *
@@ -296,7 +329,7 @@ angular.module('Institution.resources', ['ngResource', 'SATCI.Shared']).factory(
   });
 });
 
-},{}],13:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 angular.module('Institution.Create', ['Institution.resources']).controller('CreateInstitutionCtrl', function ($scope, $filter, Alertify, Institutions) {
@@ -351,7 +384,7 @@ angular.module('Institution.Create', ['Institution.resources']).controller('Crea
   };
 });
 
-},{}],14:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
 angular.module('SATCI.Login', ['ui.router', 'SATCI.Shared']).config(function ($stateProvider, PathTemplates) {
@@ -407,7 +440,7 @@ angular.module('SATCI.Login', ['ui.router', 'SATCI.Shared']).config(function ($s
   }, 600);
 });
 
-},{}],15:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 'use strict';
 
 angular.module('SATCI.Nav', []).controller('NavCtrl', function ($auth, $state, $scope, $rootScope, $location) {
@@ -450,7 +483,7 @@ angular.module('SATCI.Nav', []).controller('NavCtrl', function ($auth, $state, $
   };
 });
 
-},{}],16:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 'use strict';
 
 angular.module('SATCI.RedirectWhenLoggedOutServices', []).factory('redirectWhenLoggedOut', function ($q, $injector, $rootScope) {
@@ -482,7 +515,7 @@ angular.module('SATCI.RedirectWhenLoggedOutServices', []).factory('redirectWhenL
   };
 });
 
-},{}],17:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 /**
 * Shared.directives Module
 *
@@ -508,7 +541,7 @@ angular.module('Shared.directives', []).directive('filteredInput', function ($fi
   };
 });
 
-},{}],18:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 'use strict';
 
 angular.module('Shared.filters', []).filter('filterPattern', function () {
@@ -570,7 +603,7 @@ angular.module('Shared.filters', []).filter('filterPattern', function () {
   };
 });
 
-},{}],19:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 'use strict';
 
 require('./SharedDirectives');
@@ -594,7 +627,7 @@ angular.module('SATCI.Shared', ['Shared.directives', 'Shared.filters', 'Shared.r
 // api:    'http://localhost/satci/public/api/',
 // api:    '/api/',
 
-},{"./SharedDirectives":17,"./SharedFilters":18,"./SharedResources":20,"./SharedServices":21}],20:[function(require,module,exports){
+},{"./SharedDirectives":20,"./SharedFilters":21,"./SharedResources":23,"./SharedServices":24}],23:[function(require,module,exports){
 /**
 * Shared.resources Module
 *
@@ -608,7 +641,7 @@ angular.module('Shared.resources', ['ngResource']).factory('Parishes', function 
   });
 });
 
-},{}],21:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 /**
 * Shared.services Module
 *
@@ -649,7 +682,7 @@ angular.module('Shared.services', []).factory('paginateService', ['$q', '$filter
   };
 }]);
 
-},{}],22:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 'use strict';
 
 angular.module('Solicitude.controller', []).controller('SolicitudeCtrl', function ($scope, $http, SolicitudesList) {
@@ -683,7 +716,7 @@ angular.module('Solicitude.controller', []).controller('SolicitudeCtrl', functio
   });
 });
 
-},{}],23:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 /**
 * Solcitude.directives Module
 *
@@ -703,7 +736,7 @@ angular.module('Solicitude.directives', ['SATCI.Shared']).directive('solicitudeL
   };
 });
 
-},{}],24:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 'use strict';
 
 require('./SolicitudeController');
@@ -753,7 +786,7 @@ angular.module('SATCI.Solicitude', ['ui.router', 'SATCI.Shared', 'Solicitude.con
   });
 });
 
-},{"./SolicitudeController":22,"./SolicitudeDirectives":23,"./SolicitudeResources":25,"./assign/AssignSolicitudeModule":26,"./create/CreateSolicitudeModule":27,"./show/ShowSolicitudeModule":28}],25:[function(require,module,exports){
+},{"./SolicitudeController":25,"./SolicitudeDirectives":26,"./SolicitudeResources":28,"./assign/AssignSolicitudeModule":29,"./create/CreateSolicitudeModule":30,"./show/ShowSolicitudeModule":31}],28:[function(require,module,exports){
 'use strict';
 
 angular.module('Solicitude.resources', ['ngResource', 'SATCI.Shared']).factory('Solicitudes', function ($resource, ResourcesUrl) {
@@ -766,7 +799,7 @@ angular.module('Solicitude.resources', ['ngResource', 'SATCI.Shared']).factory('
   };
 });
 
-},{}],26:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 /**
 * Solicitude.Assign Module
 *
@@ -774,51 +807,71 @@ angular.module('Solicitude.resources', ['ngResource', 'SATCI.Shared']).factory('
 */
 'use strict';
 
-angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', 'Alertify', 'SATCI.Shared', 'Theme.resources', 'Category.resources', 'Solicitude.resources']).controller('AssignSolicitudeCtrl', function ($state, $scope, $stateParams, $uibModal, Themes, Categories, Alertify, Solicitudes) {
-
-  var categories = '';
-
-  Categories.get(function (data) {
-    categories = data.categories;
-    Themes.get(function (data) {
-      // console.log(data.themes)
-      $scope.themes = data.themes;
-    });
-    // console.log(categories)
-  });
+angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', 'Alertify', 'SATCI.Shared', 'Solicitude.resources', 'Theme.resources', 'Category.resources', 'Area.resources']).controller('AssignSolicitudeCtrl', function ($state, $scope, $stateParams, $uibModal, Alertify, Solicitudes, Themes, Categories, Areas) {
 
   $scope.selected = {};
   $scope.selected.themes;
 
+  var _categories = '';
+
+  Categories.get(function (data) {
+    _categories = data.categories;
+
+    Themes.get(function (data) {
+      $scope.themes = data.themes;
+    });
+  });
+
   $scope.someGroupFn = function (theme) {
-    for (var i = categories.length - 1; i >= 0; i--) {
-      if (theme.category_id == categories[i].id) {
-        return categories[i].name;
+    for (var i = _categories.length - 1; i >= 0; i--) {
+      if (theme.category_id == _categories[i].id) {
+        return _categories[i].name;
       }
     };
   };
 
-  $scope.assignArea = function (key, theme) {
-    console.log('Key:' + key + ', ' + 'Theme:' + theme);
+  var _areas = '';
+
+  Areas.get(function (data) {
+    return _areas = data.areas;
+  });
+
+  $scope.assignArea = function (key, _themeName) {
+    // console.log('Key:'+key+', '+'Theme:'+theme);
 
     var modalInstance = $uibModal.open({
       templateUrl: 'modalAssignArea-template',
-      controller: function controller($scope, $uibModalInstance) {
+      controller: function controller($scope, $uibModalInstance, areas, themeName) {
+        $scope.areas = areas;
+        $scope.themeName = themeName;
+        $scope.selected = {};
+        $scope.selected.areas;
 
         $scope.ok = function () {
-          $uibModalInstance.close('hola');
+          if ($scope.selected.areas) {
+            $uibModalInstance.close($scope.selected.areas);
+          }
         };
 
         $scope.cancel = function () {
           $uibModalInstance.dismiss();
         };
+      },
+      // size: 'sm',
+      resolve: {
+        areas: function areas() {
+          return _areas;
+        },
+        themeName: function themeName() {
+          return _themeName;
+        }
       }
     });
 
-    // size: 'sm',
     modalInstance.result.then(function (selectedAreas) {
       $scope.selected.themes[key].areas = selectedAreas;
       $scope.selected.themes[key].state = true;
+      console.log($scope.selected.themes[key]);
     }, function () {
       console.info('Modal dismissed at: ' + new Date());
     });
@@ -828,7 +881,7 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
   };
 });
 
-},{}],27:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 'use strict';
 
 angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'Solicitude.resources']).controller('CreateSolicitudeCtrl', function ($state, $scope, $filter, $controller, $q, $timeout, Alertify, Citizens, Institutions, Parishes, Solicitudes, paginateService, PathTemplates) {
@@ -1060,7 +1113,7 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
   };
 });
 
-},{}],28:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 /**
 * Solicitude.Assign Module
 *
@@ -1078,12 +1131,12 @@ angular.module('Solicitude.Show', ['ui.router', 'ui.bootstrap', 'Alertify', 'SAT
   }, function (error) {});
 
   $scope.showApplicant = function (type, _applicant) {
-    console.log(type);
+    // console.log(type);
     var modalInstance = $uibModal.open({
       templateUrl: 'modalShow' + type + '-template',
       controller: function controller($scope, $uibModalInstance, applicant) {
         $scope.applicant = applicant;
-        console.log(applicant);
+        // console.log(applicant);
 
         $scope.close = function () {
           $uibModalInstance.close();
@@ -1099,10 +1152,10 @@ angular.module('Solicitude.Show', ['ui.router', 'ui.bootstrap', 'Alertify', 'SAT
   };
 });
 
-},{}],29:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 "use strict";
 
-},{}],30:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 'use strict';
 
 require('./ThemeController');
@@ -1116,7 +1169,7 @@ require('./ThemeResources');
 */
 angular.module('SATCI.Theme', []);
 
-},{"./ThemeController":29,"./ThemeResources":31}],31:[function(require,module,exports){
+},{"./ThemeController":32,"./ThemeResources":34}],34:[function(require,module,exports){
 /**
 * Theme.Resources Module
 *
@@ -1130,7 +1183,7 @@ angular.module('Theme.resources', ['ngResource', 'SATCI.Shared']).factory('Theme
   });
 });
 
-},{}],32:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 'use strict';
 
 angular.module('SATCI.Datepicker', []).controller('DatepickerCtrl', function ($scope) {
@@ -1204,7 +1257,7 @@ angular.module('SATCI.Datepicker', []).controller('DatepickerCtrl', function ($s
 	};
 });
 
-},{}],33:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 "use strict";
 
 function onlyLetters(e) {
@@ -1296,7 +1349,7 @@ function solicitudeNumberMask(input, e) {
 	if (key == 45 && input.length === 3) {
 		return true;
 	}
-	if (key >= 48 && key <= 57 && input.length >= 0 && input.length <= 2 || input.length >= 4 && input.length <= 6) {
+	if (key >= 48 && key <= 57 && (input.length >= 0 && input.length <= 2) || input.length >= 4 && input.length <= 6) {
 		return true;
 	}
 	return false;
@@ -1311,19 +1364,19 @@ function rifMask(input, e) {
  	74 = J, 106 = j, 77 = M, 109 = m, 80 = P, 112 = p
  	82 = R, 114 = r, 86 = V, 118 = v
  	*/
-	if ((key == 69 || key == 101 || key == 71 || key == 103 || key == 73 || key == 105 || key == 74 || key == 106 || key == 77 || key == 109 || key == 80 || key == 112 || key == 82 || key == 114 || key == 86 || key == 118) && input.length === 0) {
+	if ((key == 69 || key == 101 || (key == 71 || key == 103) || (key == 73 || key == 105) || (key == 74 || key == 106) || (key == 77 || key == 109) || (key == 80 || key == 112) || (key == 82 || key == 114) || (key == 86 || key == 118)) && input.length === 0) {
 		return true;
 	}
 	if (key == 45 && (input.length === 1 || input.length === 10)) {
 		return true;
 	}
-	if (key >= 48 && key <= 57 && input.length >= 2 && input.length <= 9 || input.length === 11) {
+	if (key >= 48 && key <= 57 && (input.length >= 2 && input.length <= 9) || input.length === 11) {
 		return true;
 	}
 	return false;
 }
 
-},{}],34:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 (function (global){
 /**
  ng-alertify@0.8.0
@@ -1707,7 +1760,7 @@ function rifMask(input, e) {
 				// check to ensure the alertify dialog element
 				// has been successfully created
 				var check = function check() {
-					if (elLog && elLog.scrollTop !== null && elCover && elCover.scrollTop !== null) return;else check();
+					if (elLog && elLog.scrollTop !== null && (elCover && elCover.scrollTop !== null)) return;else check();
 				};
 				// error catching
 				if (typeof message !== "string") throw new Error("message must be a string");
@@ -2074,7 +2127,7 @@ function rifMask(input, e) {
  */
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],35:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.7
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -6004,11 +6057,11 @@ angular.module('ngAnimate', [])
 
 })(window, window.angular);
 
-},{}],36:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 require('./angular-animate');
 module.exports = 'ngAnimate';
 
-},{"./angular-animate":35}],37:[function(require,module,exports){
+},{"./angular-animate":38}],40:[function(require,module,exports){
 /*
  * angular-ui-bootstrap
  * http://angular-ui.github.io/bootstrap/
@@ -14512,7 +14565,7 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
     "");
 }]);
 !angular.$$csp() && angular.element(document).find('head').prepend('<style type="text/css">.ng-animate.item:not(.left):not(.right){-webkit-transition:0s ease-in-out left;transition:0s ease-in-out left}</style>');if(typeof module!=='undefined')module.exports='ui.bootstrap';
-},{}],38:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 /*! 
  * angular-loading-bar v0.8.0
  * https://chieffancypants.github.io/angular-loading-bar
@@ -14843,11 +14896,11 @@ angular.module('cfp.loadingBar', [])
   });       // wtf javascript. srsly
 })();       //
 
-},{}],39:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 require('./build/loading-bar');
 module.exports = 'angular-loading-bar';
 
-},{"./build/loading-bar":38}],40:[function(require,module,exports){
+},{"./build/loading-bar":41}],43:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.7
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -15524,11 +15577,11 @@ angular.module('ngResource', ['ng']).
 
 })(window, window.angular);
 
-},{}],41:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 require('./angular-resource');
 module.exports = 'ngResource';
 
-},{"./angular-resource":40}],42:[function(require,module,exports){
+},{"./angular-resource":43}],45:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.7
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -16213,11 +16266,11 @@ angular.module('ngSanitize').filter('linky', ['$sanitize', function($sanitize) {
 
 })(window, window.angular);
 
-},{}],43:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 require('./angular-sanitize');
 module.exports = 'ngSanitize';
 
-},{"./angular-sanitize":42}],44:[function(require,module,exports){
+},{"./angular-sanitize":45}],47:[function(require,module,exports){
 /** 
 * @version 2.1.4
 * @license MIT
@@ -16734,10 +16787,10 @@ ng.module('smart-table')
   }]);
 
 })(angular);
-},{}],45:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 require('./dist/smart-table.js');
 module.exports = 'smart-table';
-},{"./dist/smart-table.js":44}],46:[function(require,module,exports){
+},{"./dist/smart-table.js":47}],49:[function(require,module,exports){
 /**
  * State-based routing for AngularJS
  * @version v0.2.15
@@ -21108,7 +21161,7 @@ angular.module('ui.router.state')
   .filter('isState', $IsStateFilter)
   .filter('includedByState', $IncludedByStateFilter);
 })(window, window.angular);
-},{}],47:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.7
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -50013,18 +50066,18 @@ $provide.value("$locale", {
 })(window, document);
 
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
-},{}],48:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":47}],49:[function(require,module,exports){
+},{"./angular":50}],52:[function(require,module,exports){
 /**
  * Satellizer 0.12.5
  * (c) 2014-2015 Sahat Yalkabov
  * License: MIT
  */
 !function(e,t,n){"use strict";t.module("satellizer",[]).constant("SatellizerConfig",{httpInterceptor:!0,withCredentials:!0,tokenRoot:null,cordova:!1,baseUrl:"/",loginUrl:"/auth/login",signupUrl:"/auth/signup",unlinkUrl:"/auth/unlink/",tokenName:"token",tokenPrefix:"satellizer",authHeader:"Authorization",authToken:"Bearer",storageType:"localStorage",providers:{facebook:{name:"facebook",url:"/auth/facebook",authorizationEndpoint:"https://www.facebook.com/v2.3/dialog/oauth",redirectUri:(e.location.origin||e.location.protocol+"//"+e.location.host)+"/",requiredUrlParams:["display","scope"],scope:["email"],scopeDelimiter:",",display:"popup",type:"2.0",popupOptions:{width:580,height:400}},google:{name:"google",url:"/auth/google",authorizationEndpoint:"https://accounts.google.com/o/oauth2/auth",redirectUri:e.location.origin||e.location.protocol+"//"+e.location.host,requiredUrlParams:["scope"],optionalUrlParams:["display"],scope:["profile","email"],scopePrefix:"openid",scopeDelimiter:" ",display:"popup",type:"2.0",popupOptions:{width:452,height:633}},github:{name:"github",url:"/auth/github",authorizationEndpoint:"https://github.com/login/oauth/authorize",redirectUri:e.location.origin||e.location.protocol+"//"+e.location.host,optionalUrlParams:["scope"],scope:["user:email"],scopeDelimiter:" ",type:"2.0",popupOptions:{width:1020,height:618}},instagram:{name:"instagram",url:"/auth/instagram",redirectUri:e.location.origin||e.location.protocol+"//"+e.location.host,requiredUrlParams:["scope"],scope:["basic"],scopeDelimiter:"+",authorizationEndpoint:"https://api.instagram.com/oauth/authorize"},linkedin:{name:"linkedin",url:"/auth/linkedin",authorizationEndpoint:"https://www.linkedin.com/uas/oauth2/authorization",redirectUri:e.location.origin||e.location.protocol+"//"+e.location.host,requiredUrlParams:["state"],scope:["r_emailaddress"],scopeDelimiter:" ",state:"STATE",type:"2.0",popupOptions:{width:527,height:582}},twitter:{name:"twitter",url:"/auth/twitter",authorizationEndpoint:"https://api.twitter.com/oauth/authenticate",redirectUri:e.location.origin||e.location.protocol+"//"+e.location.host,type:"1.0",popupOptions:{width:495,height:645}},twitch:{name:"twitch",url:"/auth/twitch",authorizationEndpoint:"https://api.twitch.tv/kraken/oauth2/authorize",redirectUri:e.location.origin||e.location.protocol+"//"+e.location.host,requiredUrlParams:["scope"],scope:["user_read"],scopeDelimiter:" ",display:"popup",type:"2.0",popupOptions:{width:500,height:560}},live:{name:"live",url:"/auth/live",authorizationEndpoint:"https://login.live.com/oauth20_authorize.srf",redirectUri:e.location.origin||e.location.protocol+"//"+e.location.host,requiredUrlParams:["display","scope"],scope:["wl.emails"],scopeDelimiter:" ",display:"popup",type:"2.0",popupOptions:{width:500,height:560}},yahoo:{name:"yahoo",url:"/auth/yahoo",authorizationEndpoint:"https://api.login.yahoo.com/oauth2/request_auth",redirectUri:e.location.origin||e.location.protocol+"//"+e.location.host,scope:[],scopeDelimiter:",",type:"2.0",popupOptions:{width:559,height:519}}}}).provider("$auth",["SatellizerConfig",function(e){Object.defineProperties(this,{httpInterceptor:{get:function(){return e.httpInterceptor},set:function(t){e.httpInterceptor=t}},baseUrl:{get:function(){return e.baseUrl},set:function(t){e.baseUrl=t}},loginUrl:{get:function(){return e.loginUrl},set:function(t){e.loginUrl=t}},signupUrl:{get:function(){return e.signupUrl},set:function(t){e.signupUrl=t}},tokenRoot:{get:function(){return e.tokenRoot},set:function(t){e.tokenRoot=t}},tokenName:{get:function(){return e.tokenName},set:function(t){e.tokenName=t}},tokenPrefix:{get:function(){return e.tokenPrefix},set:function(t){e.tokenPrefix=t}},unlinkUrl:{get:function(){return e.unlinkUrl},set:function(t){e.unlinkUrl=t}},authHeader:{get:function(){return e.authHeader},set:function(t){e.authHeader=t}},authToken:{get:function(){return e.authToken},set:function(t){e.authToken=t}},withCredentials:{get:function(){return e.withCredentials},set:function(t){e.withCredentials=t}},cordova:{get:function(){return e.cordova},set:function(t){e.cordova=t}},storageType:{get:function(){return e.storageType},set:function(t){e.storageType=t}}}),t.forEach(Object.keys(e.providers),function(n){this[n]=function(o){return t.extend(e.providers[n],o)}},this);var n=function(n){e.providers[n.name]=e.providers[n.name]||{},t.extend(e.providers[n.name],n)};this.oauth1=function(t){n(t),e.providers[t.name].type="1.0"},this.oauth2=function(t){n(t),e.providers[t.name].type="2.0"},this.$get=["$q","SatellizerShared","SatellizerLocal","SatellizerOauth",function(e,t,n,o){var r={};return r.login=function(e,t){return n.login(e,t)},r.signup=function(e,t){return n.signup(e,t)},r.logout=function(){return t.logout()},r.authenticate=function(e,t){return o.authenticate(e,t)},r.link=function(e,t){return o.authenticate(e,t)},r.unlink=function(e,t){return o.unlink(e,t)},r.isAuthenticated=function(){return t.isAuthenticated()},r.getToken=function(){return t.getToken()},r.setToken=function(e){t.setToken({access_token:e})},r.removeToken=function(){return t.removeToken()},r.getPayload=function(){return t.getPayload()},r.setStorageType=function(e){return t.setStorageType(e)},r}]}]).factory("SatellizerShared",["$q","$window","SatellizerConfig","SatellizerStorage",function(n,o,r,i){var a={},u=r.tokenPrefix?[r.tokenPrefix,r.tokenName].join("_"):r.tokenName;return a.getToken=function(){return i.get(u)},a.getPayload=function(){var t=i.get(u);if(t&&3===t.split(".").length){var n=t.split(".")[1],o=n.replace(/-/g,"+").replace(/_/g,"/");return JSON.parse(decodeURIComponent(escape(e.atob(o))))}},a.setToken=function(e){var n,o=e&&e.access_token;if(o&&(t.isObject(o)&&t.isObject(o.data)?e=o:t.isString(o)&&(n=o)),!n&&e){var a=r.tokenRoot&&r.tokenRoot.split(".").reduce(function(e,t){return e[t]},e.data);n=a?a[r.tokenName]:e.data[r.tokenName]}if(!n){var l=r.tokenRoot?r.tokenRoot+"."+r.tokenName:r.tokenName;throw new Error('Expecting a token named "'+l+'" but instead got: '+JSON.stringify(e.data))}i.set(u,n)},a.removeToken=function(){i.remove(u)},a.isAuthenticated=function(){var e=i.get(u);if(e){if(3===e.split(".").length){var t=e.split(".")[1],n=t.replace(/-/g,"+").replace(/_/g,"/"),r=JSON.parse(o.atob(n)).exp;if(r){var a=Math.round((new Date).getTime()/1e3)>=r;return a?(i.remove(u),!1):!0}return!0}return!0}return!1},a.logout=function(){return i.remove(u),n.when()},a.setStorageType=function(e){r.storageType=e},a}]).factory("SatellizerOauth",["$q","$http","SatellizerConfig","SatellizerUtils","SatellizerShared","SatellizerOauth1","SatellizerOauth2",function(e,t,n,o,r,i,a){var u={};return u.authenticate=function(t,o){var u="1.0"===n.providers[t].type?new i:new a,l=e.defer();return u.open(n.providers[t],o||{}).then(function(e){r.setToken(e,!1),l.resolve(e)})["catch"](function(e){l.reject(e)}),l.promise},u.unlink=function(e,r){return r=r||{},r.url=n.baseUrl?o.joinUrl(n.baseUrl,n.unlinkUrl):n.unlinkUrl,r.data={provider:e}||r.data,r.method=r.method||"POST",t(r)},u}]).factory("SatellizerLocal",["$http","SatellizerUtils","SatellizerShared","SatellizerConfig",function(e,t,n,o){var r={};return r.login=function(r,i){return i=i||{},i.url=o.baseUrl?t.joinUrl(o.baseUrl,o.loginUrl):o.loginUrl,i.data=r||i.data,i.method=i.method||"POST",e(i).then(function(e){return n.setToken(e),e})},r.signup=function(n,r){return r=r||{},r.url=o.baseUrl?t.joinUrl(o.baseUrl,o.signupUrl):o.signupUrl,r.data=n||r.data,r.method=r.method||"POST",e(r)},r}]).factory("SatellizerOauth2",["$q","$http","$window","SatellizerPopup","SatellizerUtils","SatellizerConfig","SatellizerStorage",function(e,n,o,r,i,a,u){return function(){var o={},l={defaultUrlParams:["response_type","client_id","redirect_uri"],responseType:"code",responseParams:{code:"code",clientId:"clientId",redirectUri:"redirectUri"}};return o.open=function(n,p){l=i.merge(n,l);var c,s,h=l.name+"_state";return t.isFunction(l.state)?u.set(h,l.state()):t.isString(l.state)&&u.set(h,l.state),c=[l.authorizationEndpoint,o.buildQueryString()].join("?"),s=a.cordova?r.open(c,l.name,l.popupOptions,l.redirectUri).eventListener(l.redirectUri):r.open(c,l.name,l.popupOptions,l.redirectUri).pollPopup(),s.then(function(t){return"token"===l.responseType?t:t.state&&t.state!==u.get(h)?e.reject('OAuth "state" mismatch'):o.exchangeForToken(t,p)})},o.exchangeForToken=function(e,o){var r=t.extend({},o);t.forEach(l.responseParams,function(t,n){switch(n){case"code":r[t]=e.code;break;case"clientId":r[t]=l.clientId;break;case"redirectUri":r[t]=l.redirectUri;break;default:r[t]=e[n]}}),e.state&&(r.state=e.state);var u=a.baseUrl?i.joinUrl(a.baseUrl,l.url):l.url;return n.post(u,r,{withCredentials:a.withCredentials})},o.buildQueryString=function(){var e=[],n=["defaultUrlParams","requiredUrlParams","optionalUrlParams"];return t.forEach(n,function(n){t.forEach(l[n],function(n){var o=i.camelCase(n),r=t.isFunction(l[n])?l[n]():l[o];if("state"===n){var a=l.name+"_state";r=encodeURIComponent(u.get(a))}"scope"===n&&Array.isArray(r)&&(r=r.join(l.scopeDelimiter),l.scopePrefix&&(r=[l.scopePrefix,r].join(l.scopeDelimiter))),e.push([n,r])})}),e.map(function(e){return e.join("=")}).join("&")},o}}]).factory("SatellizerOauth1",["$q","$http","SatellizerPopup","SatellizerConfig","SatellizerUtils",function(e,n,o,r,i){return function(){var e={},a={url:null,name:null,popupOptions:null,redirectUri:null,authorizationEndpoint:null};return e.open=function(u,l){t.extend(a,u);var p,c=r.baseUrl?i.joinUrl(r.baseUrl,a.url):a.url;return r.cordova||(p=o.open("",a.name,a.popupOptions,a.redirectUri)),n.post(c,a).then(function(t){r.cordova?p=o.open([a.authorizationEndpoint,e.buildQueryString(t.data)].join("?"),a.name,a.popupOptions,a.redirectUri):p.popupWindow.location=[a.authorizationEndpoint,e.buildQueryString(t.data)].join("?");var n=r.cordova?p.eventListener(a.redirectUri):p.pollPopup();return n.then(function(t){return e.exchangeForToken(t,l)})})},e.exchangeForToken=function(e,o){var u=t.extend({},o,e),l=r.baseUrl?i.joinUrl(r.baseUrl,a.url):a.url;return n.post(l,u,{withCredentials:r.withCredentials})},e.buildQueryString=function(e){var n=[];return t.forEach(e,function(e,t){n.push(encodeURIComponent(t)+"="+encodeURIComponent(e))}),n.join("&")},e}}]).factory("SatellizerPopup",["$q","$interval","$window","SatellizerConfig","SatellizerUtils",function(o,r,i,a,u){var l={};return l.url="",l.popupWindow=null,l.open=function(t,n,o){l.url=t;var r=l.stringifyOptions(l.prepareOptions(o)),i=a.cordova?"_blank":n;return l.popupWindow=e.open(t,i,r),e.popup=l.popupWindow,l.popupWindow&&l.popupWindow.focus&&l.popupWindow.focus(),l},l.eventListener=function(e){var n=o.defer();return l.popupWindow.addEventListener("loadstart",function(o){if(0===o.url.indexOf(e)){var r=document.createElement("a");if(r.href=o.url,r.search||r.hash){var i=r.search.substring(1).replace(/\/$/,""),a=r.hash.substring(1).replace(/\/$/,""),p=u.parseQueryString(a),c=u.parseQueryString(i);t.extend(c,p),c.error||n.resolve(c),l.popupWindow.close()}}}),l.popupWindow.addEventListener("loaderror",function(){n.reject("Authorization Failed")}),n.promise},l.pollPopup=function(){var e=o.defer(),i=r(function(){try{var o=document.location.host,a=l.popupWindow.location.host;if(a===o&&(l.popupWindow.location.search||l.popupWindow.location.hash)){var p=l.popupWindow.location.search.substring(1).replace(/\/$/,""),c=l.popupWindow.location.hash.substring(1).replace(/[\/$]/,""),s=u.parseQueryString(c),h=u.parseQueryString(p);t.extend(h,s),h.error||e.resolve(h),l.popupWindow.close(),r.cancel(i)}}catch(d){}(!l.popupWindow||l.popupWindow.closed||l.popupWindow.closed===n)&&r.cancel(i)},50);return e.promise},l.prepareOptions=function(e){e=e||{};var n=e.width||500,o=e.height||500;return t.extend({width:n,height:o,left:i.screenX+(i.outerWidth-n)/2,top:i.screenY+(i.outerHeight-o)/2.5},e)},l.stringifyOptions=function(e){var n=[];return t.forEach(e,function(e,t){n.push(t+"="+e)}),n.join(",")},l}]).service("SatellizerUtils",function(){this.camelCase=function(e){return e.replace(/([\:\-\_]+(.))/g,function(e,t,n,o){return o?n.toUpperCase():n})},this.parseQueryString=function(e){var n,o,r={};return t.forEach((e||"").split("&"),function(e){e&&(o=e.split("="),n=decodeURIComponent(o[0]),r[n]=t.isDefined(o[1])?decodeURIComponent(o[1]):!0)}),r},this.joinUrl=function(e,t){if(/^(?:[a-z]+:)?\/\//i.test(t))return t;var n=[e,t].join("/"),o=function(e){return e.replace(/[\/]+/g,"/").replace(/\/\?/g,"?").replace(/\/\#/g,"#").replace(/\:\//g,"://")};return o(n)},this.merge=function(e,t){var n={};for(var o in e)e.hasOwnProperty(o)&&(o in t&&"object"==typeof e[o]&&null!==o?n[o]=this.merge(e[o],t[o]):n[o]=e[o]);for(o in t)if(t.hasOwnProperty(o)){if(o in n)continue;n[o]=t[o]}return n}}).factory("SatellizerStorage",["$window","SatellizerConfig",function(e,t){var o=function(){try{var n=t.storageType in e&&null!==e[t.storageType];if(n){var o=Math.random().toString(36).substring(7);e[t.storageType].setItem(o,""),e[t.storageType].removeItem(o)}return n}catch(r){return!1}}();return o||console.warn("Satellizer Warning: "+t.storageType+" is not available."),{get:function(r){return o?e[t.storageType].getItem(r):n},set:function(r,i){return o?e[t.storageType].setItem(r,i):n},remove:function(r){return o?e[t.storageType].removeItem(r):n}}}]).factory("SatellizerInterceptor",["$q","SatellizerConfig","SatellizerStorage","SatellizerShared",function(e,t,n,o){return{request:function(e){if(e.skipAuthorization)return e;if(o.isAuthenticated()&&t.httpInterceptor){var r=t.tokenPrefix?t.tokenPrefix+"_"+t.tokenName:t.tokenName,i=n.get(r);t.authHeader&&t.authToken&&(i=t.authToken+" "+i),e.headers[t.authHeader]=i}return e},responseError:function(t){return e.reject(t)}}}]).config(["$httpProvider",function(e){e.interceptors.push("SatellizerInterceptor")}])}(window,window.angular);
-},{}],50:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 /*!
  * ui-select
  * http://github.com/angular-ui/ui-select

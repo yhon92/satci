@@ -9,7 +9,7 @@
             <!-- <ui-select multiple ng-model="selected.themes" theme="select2" style="width: 100%;"> -->
             <ui-select multiple ng-model="selected.themes">
               <ui-select-match placeholder="Seleccione el tema...">{{$item.name}}</ui-select-match>
-              <ui-select-choices group-by="someGroupFn" group-filter repeat="theme in themes | filter:$select.search">
+              <ui-select-choices group-by="someGroupFn" repeat="theme in themes | filter:$select.search">
                 {{ theme.name }}
               </ui-select-choices>
             </ui-select>
@@ -17,12 +17,12 @@
           <div>
             <table>
               <tr ng-repeat="(key, theme) in selected.themes">
-                <td style="min-width: 20px;">
-                  <span class="glyphicon glyphicon-time" ng-if="!theme.state"></span>
-                  <span class="glyphicon glyphicon-ok" ng-if="theme.state"></span>
+                <td style="width: 4%;">
+                  <span class="glyphicon glyphicon-time text-danger" ng-if="!theme.state"></span>
+                  <span class="glyphicon glyphicon-ok text-success" ng-if="theme.state"></span>
                 </td>
-                <td style="min-width: 485px;">{{ theme.name }}</td>
-                <td>
+                <td style="width: 85%;">{{ theme.name }}</td>
+                <td style="width: 10%;">
                   <button class="btn btn-xs btn-success" ng-if="!theme.state" ng-click="assignArea(key, theme.name)">Asignar Area</button>
                   <button class="btn btn-xs btn-warning" ng-if="theme.state" ng-click="assignArea(key, theme.name)">Editar Area</button>
                 </td>
@@ -30,7 +30,7 @@
             </table>
           </div>
           <div>
-            <button class="btn btn-primary btn-sm" ng-click="mostrar()">VER</button>
+            <!-- <button class="btn btn-primary btn-sm" ng-click="mostrar()">VER</button> -->
           </div>
         </fieldset>
       </form>

@@ -26,6 +26,8 @@ import './app/shared/SharedModule'
 import './app/solicitudes/SolicitudeModule';
 import './app/category/CategoryModule';
 import './app/theme/ThemeModule';
+import './app/area/AreaModule';
+
 // import './app/';
 import './app/services/RedirectWhenLoggedOut';
 import './app/ui/Datepicker';
@@ -50,6 +52,7 @@ angular.module('SATCI', [
   'SATCI.Solicitude',
   'SATCI.Category',
   'SATCI.Theme',
+  'SATCI.Area',
 
 
   'SATCI.RedirectWhenLoggedOutServices',

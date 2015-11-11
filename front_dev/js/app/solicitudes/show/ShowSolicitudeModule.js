@@ -22,12 +22,12 @@ angular.module('Solicitude.Show', ['ui.router', 'ui.bootstrap', 'Alertify', 'SAT
   });
 
   $scope.showApplicant = (type, applicant) => {
-    console.log(type);
+    // console.log(type);
     let modalInstance = $uibModal.open({
       templateUrl: `modalShow${type}-template`,
       controller: ($scope, $uibModalInstance, applicant) => {
         $scope.applicant = applicant;
-        console.log(applicant);
+        // console.log(applicant);
 
         $scope.close = function () {
           $uibModalInstance.close();

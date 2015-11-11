@@ -68,3 +68,8 @@ Route::group(['prefix' => 'api'], function ()
 {
 	Route::resource('category', 'CategoryController');
 });
+
+Route::group(['prefix' => 'api'], function ()
+{
+	Route::resource('area', 'AreaController');
+});
