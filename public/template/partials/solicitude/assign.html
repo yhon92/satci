@@ -21,13 +21,16 @@
                   <span class="glyphicon glyphicon-time" ng-if="!theme.state"></span>
                   <span class="glyphicon glyphicon-ok" ng-if="theme.state"></span>
                 </td>
-                <td style="min-width: 450px;">{{ theme.name }}</td>
-                <td><button class="btn btn-xs btn-success" ng-click="assignArea(key, theme.name)">Asignar Area</button></td>
+                <td style="min-width: 485px;">{{ theme.name }}</td>
+                <td>
+                  <button class="btn btn-xs btn-success" ng-if="!theme.state" ng-click="assignArea(key, theme.name)">Asignar Area</button>
+                  <button class="btn btn-xs btn-warning" ng-if="theme.state" ng-click="assignArea(key, theme.name)">Editar Area</button>
+                </td>
               </tr>
             </table>
           </div>
           <div>
-            <!-- <button class="btn btn-primary btn-sm" ng-click="">Asignar Areas</button> -->
+            <button class="btn btn-primary btn-sm" ng-click="mostrar()">VER</button>
           </div>
         </fieldset>
       </form>

@@ -9,6 +9,7 @@ import 'angular-bootstrap-npm';
 import 'angular-loading-bar';
 import 'angular-smart-table';
 // import 'angular-moment';
+// import 'ng-fx';
 import 'satellizer';
 
 import './libs/ng-alertify';

@@ -46,7 +46,7 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
       controller: ($scope, $uibModalInstance) => {
         
         $scope.ok = function () {
-          $uibModalInstance.close();
+          $uibModalInstance.close('hola');
         };
 
         $scope.cancel = function () {
@@ -55,6 +55,15 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
       },
       // size: 'sm',
     });
-  }
 
+    modalInstance.result.then((selectedAreas) => {
+      $scope.selected.themes[key].areas = selectedAreas;
+      $scope.selected.themes[key].state = true;
+    }, () => {
+      console.info('Modal dismissed at: ' + new Date());
+    });
+  }
+  $scope.mostrar = () => {
+    console.log($scope.selected.themes)
+  }
 })
