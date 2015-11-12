@@ -836,14 +836,14 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
     return _areas = data.areas;
   });
 
-  $scope.assignArea = function (key, _themeName) {
+  $scope.assignArea = function (key, _theme) {
     // console.log('Key:'+key+', '+'Theme:'+theme);
 
     var modalInstance = $uibModal.open({
       templateUrl: 'modalAssignArea-template',
-      controller: function controller($scope, $uibModalInstance, areas, themeName) {
+      controller: function controller($scope, $uibModalInstance, areas, theme) {
         $scope.areas = areas;
-        $scope.themeName = themeName;
+        $scope.theme = theme;
         $scope.selected = {};
         $scope.selected.areas;
 
@@ -862,8 +862,8 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
         areas: function areas() {
           return _areas;
         },
-        themeName: function themeName() {
-          return _themeName;
+        theme: function theme() {
+          return _theme;
         }
       }
     });
@@ -871,11 +871,50 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
     modalInstance.result.then(function (selectedAreas) {
       $scope.selected.themes[key].areas = selectedAreas;
       $scope.selected.themes[key].state = true;
-      console.log($scope.selected.themes[key]);
-    }, function () {
-      console.info('Modal dismissed at: ' + new Date());
+      // console.log($scope.selected.themes[key]);
     });
   };
+
+  $scope.editArea = function (key, _theme2) {
+    // console.log('Key:'+key+', '+'Theme:'+themeName);
+
+    var modalInstance = $uibModal.open({
+      templateUrl: 'modalAssignArea-template',
+      controller: function controller($scope, $uibModalInstance, areas, theme) {
+        $scope.areas = areas;
+        $scope.theme = theme;
+        $scope.selected = {};
+        $scope.selected.areas = theme.areas;
+        // console.log($scope.selected.areas)
+
+        $scope.ok = function () {
+          if ($scope.selected.areas.length) {
+            $uibModalInstance.close($scope.selected.areas);
+          }
+        };
+
+        $scope.cancel = function () {
+          $uibModalInstance.dismiss();
+        };
+      },
+      // size: 'sm',
+      resolve: {
+        areas: function areas() {
+          return _areas;
+        },
+        theme: function theme() {
+          return _theme2;
+        }
+      }
+    });
+
+    modalInstance.result.then(function (selectedAreas) {
+      $scope.selected.themes[key].areas = selectedAreas;
+      $scope.selected.themes[key].state = true;
+      // console.log($scope.selected.themes[key]);
+    });
+  };
+
   $scope.mostrar = function () {
     console.log($scope.selected.themes);
   };

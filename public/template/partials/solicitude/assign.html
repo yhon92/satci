@@ -23,8 +23,8 @@
                 </td>
                 <td style="width: 85%;">{{ theme.name }}</td>
                 <td style="width: 10%;">
-                  <button class="btn btn-xs btn-success" ng-if="!theme.state" ng-click="assignArea(key, theme.name)">Asignar Area</button>
-                  <button class="btn btn-xs btn-warning" ng-if="theme.state" ng-click="assignArea(key, theme.name)">Editar Area</button>
+                  <button class="btn btn-xs btn-success" ng-if="!theme.state" ng-click="assignArea(key, theme)">Asignar Area</button>
+                  <button class="btn btn-xs btn-warning" ng-if="theme.state" ng-click="editArea(key, theme)">Editar Area</button>
                 </td>
               </tr>
             </table>
