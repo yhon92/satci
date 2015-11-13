@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAreasMeansTable extends Migration
+class CreateAreaMeansTable extends Migration
 {
   /**
    * Run the migrations.
@@ -12,12 +12,12 @@ class CreateAreasMeansTable extends Migration
    */
   public function up()
   {
-    Schema::create('areas_means', function (Blueprint $table) {
+    Schema::create('area_means', function (Blueprint $table) {
       $table->increments('id');
       $table->integer('area_id');
       $table->integer('means_id');
 
-      $table->timestamps();
+      // $table->timestamps();
 
       $table->foreign('area_id')->references('id')->on('areas');
       $table->foreign('means_id')->references('id')->on('means');
@@ -32,6 +32,6 @@ class CreateAreasMeansTable extends Migration
    */
   public function down()
   {
-    Schema::drop('areas_means');
+    Schema::drop('area_means');
   }
 }

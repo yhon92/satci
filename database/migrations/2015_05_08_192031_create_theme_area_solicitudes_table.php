@@ -23,7 +23,7 @@ class CreateThemeAreaSolicitudesTable extends Migration
 
       $table->foreign('solicitude_id')->references('id')->on('solicitudes');
       $table->foreign('theme_id')->references('id')->on('themes');
-      $table->foreign('area_means_id')->references('id')->on('areas_means');
+      $table->foreign('area_means_id')->references('id')->on('area_means');
 
     });
   }

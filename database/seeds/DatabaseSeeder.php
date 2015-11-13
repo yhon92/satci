@@ -21,7 +21,9 @@ class DatabaseSeeder extends Seeder {
 		$this->call('CitizenTableSeeder');
 		$this->call('InstitutionTableSeeder');
 		$this->call('ThemeTableSeeder');
+		$this->call('MeansTableSeeder');
 		$this->call('AreaTableSeeder');
+		$this->call('AreaMeansTableSeeder');
 		$this->call('SolicitudeTableSeeder');
 		/*$this->call('ThemeAreaSolicitudeTableSeeder');
 		$this->call('InstrumentTableSeeder');

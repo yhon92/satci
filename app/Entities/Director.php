@@ -16,4 +16,10 @@ class Director extends Model {
 													'email', 
 													'resolution'];
 
+  protected $hidden = ['pivot', 'created_at', 'updated_at'];
+
+  public function areas()
+  {
+    return $this->hasMay('SATCI\Entities\Area');
+  }
 }

@@ -18,7 +18,7 @@ class ThemeAreaSolicitudeTableSeeder extends Seeder
 			ThemeAreaSolicitude::create([
 				'solicitude_id'	=> $faker->numberBetween($min = 1, $max = 100),
 				'theme_id'		=> $faker->numberBetween($min = 1, $max = 12),
-				'area_id'		=> $faker->numberBetween($min = 1, $max = 10),
+				'area_means_id'		=> $faker->numberBetween($min = 1, $max = 10),
 			]);
 
 

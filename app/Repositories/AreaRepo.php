@@ -13,14 +13,14 @@ class AreaRepo extends BaseRepo
 
   public function all()
   {
-    return Area::orderby('name', 'ASC')->get();
+    return Area::orderby('name', 'ASC')->with('director', 'means')->get();
   }
 
-  public function getListCategories()
+  public function getListArea()
   {
-    return Area::has('themes')
+    return Area::/*has('themes')
     ->with('themes')
-    ->get();
+    ->*/get();
   }
 
   public function newArea()
