@@ -22,10 +22,14 @@
     <div>
     <table>
       <tr ng-repeat="(key, area) in selected.areas">
-        <td style="min-width: 20px;">
+        <td style="min-width: 20px;" class="align-top">
           <span class="glyphicon glyphicon-pushpin text-info"></span>
         </td>
-        <td style="min-width: 485px;">{{ area.name }}</td>
+        <td style="min-width: 485px;">{{ area.name }}
+          <div ng-if="area.means.length > 1" ng-repeat="resource in area.means track by $index">
+            <label ng-if="$index >= 1"><input type="checkbox" value="1" ng-model="area.meansSelected" ng-true-value="{{resource.id}}" ng-false-value="1">{{resource.name}}</label>
+          </div>
+        </td>
       </tr>
     </table>
   </div>

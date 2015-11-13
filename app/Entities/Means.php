@@ -9,7 +9,7 @@ class Means extends Model
   
   protected $fillable = ['name'];
   
-  protected $hidden = ['pivot', 'created_at', 'updated_at'];
+  protected $hidden = [/*'pivot',*/ 'created_at', 'updated_at'];
 
   public function areas()
   {
