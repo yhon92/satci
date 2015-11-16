@@ -14,13 +14,15 @@ class CreateAreaMeansTable extends Migration
   {
     Schema::create('area_means', function (Blueprint $table) {
       $table->increments('id');
-      $table->integer('area_id');
-      $table->integer('means_id');
+      
+      $table->integer('area_id')->unsigned()->index();
+      $table->foreign('area_id')->references('id')->on('areas');
+
+      $table->integer('means_id')->unsigned()->index();
+      $table->foreign('means_id')->references('id')->on('means');
 
       // $table->timestamps();
 
-      $table->foreign('area_id')->references('id')->on('areas');
-      $table->foreign('means_id')->references('id')->on('means');
 
     });
   }
