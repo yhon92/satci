@@ -8,34 +8,71 @@
     <button type="button" class="close" ng-click="cancel()">×</button>
     <h4 class="modal-title">Asignar Áreas</h4>
     <p><strong>Tema: </strong><em class="text-success">{{ theme.name }}</em></p>
-
   </section>
   <section class="modal-body form-horizontal">
     <div>
       <ui-select multiple ng-model="selected.areas">
-        <ui-select-match placeholder="Seleccione las áreas...">{{$item.name}}</ui-select-match>
+        <ui-select-match placeholder="Seleccione las áreas...">{{ $item.name }}</ui-select-match>
         <ui-select-choices repeat="area in areas | filter:$select.search">
           {{ area.name }}
         </ui-select-choices>
       </ui-select>
     </div>
     <div>
-    <table>
-      <tr ng-repeat="(key, area) in selected.areas">
-        <td style="min-width: 20px;" class="align-top">
-          <span class="glyphicon glyphicon-pushpin text-info"></span>
-        </td>
-        <td style="min-width: 485px;">{{ area.name }}
-          <div ng-if="area.means.length > 1" ng-repeat="resource in area.means track by $index">
-            <label ng-if="$index >= 1"><input type="checkbox" value="1" ng-model="area.meansSelected" ng-true-value="{{resource.id}}" ng-false-value="1">{{resource.name}}</label>
-          </div>
-        </td>
-      </tr>
-    </table>
-  </div>
+      <table>
+        <tr ng-repeat="(key, area) in selected.areas">
+          <td style="min-width: 20px;" class="align-top">
+            <span class="glyphicon glyphicon-pushpin text-info"></span>
+          </td>
+          <td style="min-width: 485px;">{{ area.name }}
+            <div ng-if="area.means.length > 1" ng-repeat="resource in area.means track by $index">
+              <label ng-if="$index >= 1"><input type="checkbox" value="1" ng-model="area.meansSelected" ng-true-value="{{ resource.id }}" ng-false-value="1">{{ resource.name }}</label>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
   </section>
   <section class="modal-footer">
     <button class="btn btn-sm btn-link" type="button" ng-click="cancel()">Cancelar</button>
     <button class="btn btn-sm btn-primary" type="button" ng-click="ok()">Aceptar</button>
+  </section>
+</script>
+<script type="text/ng-template" id="modalPreviewAssign-template">
+  <section class="modal-header">
+    <button type="button" class="close" ng-click="cancel()">×</button>
+    <h4 class="modal-title">Visualización de Asignacies</h4>
+  </section>
+  <section class="modal-body form-horizontal">
+    <article class="panel panel-success" ng-if="assigned.length">
+      <div class="panel-heading">
+        <h3 class="panel-title">Completas</h3>
+      </div>
+      <div class="panel-body">
+        <div ng-repeat="theme in assigned">
+          <h6>{{ theme.name }}</h6>
+          <ul>
+            <li ng-repeat="area in theme.areas">
+              {{ area.name }}
+              <strong ng-if="area.meansSelected != 1 && area.meansSelected != undefined">({{ means(area.meansSelected, area.means) }})</strong>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <article class="panel panel-danger" ng-if="unassigned.length">
+      <div class="panel-heading">
+        <h3 class="panel-title">Sin completar</h3>
+      </div>
+      <div class="panel-body">
+        <div ng-repeat="theme in unassigned">
+          <h6>{{ theme.name }}</h6>
+        </div>
+      </div>
+    </article>
+  </section>
+  <section class="modal-footer">
+    <button class="btn btn-sm btn-warning" type="button" ng-click="close()">Cerrar</button>
   </section>
 </script>

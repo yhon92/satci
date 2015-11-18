@@ -29,8 +29,9 @@
               </tr>
             </table>
           </div>
-          <div>
-            <!-- <button class="btn btn-primary btn-sm" ng-click="mostrar()">VER</button> -->
+          <div ng-if="selected.themes.length" class="text-center">
+            <button class="btn btn-info btn-sm" ng-class="disablePreview()" ng-click="preview()">Visualizar</button>
+            <button class="btn btn-primary btn-sm" ng-class="disableFinalize()" ng-click="finalize()">Finalizar</button>
           </div>
         </fieldset>
       </form>

@@ -871,7 +871,7 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
     modalInstance.result.then(function (selectedAreas) {
       $scope.selected.themes[key].areas = selectedAreas;
       $scope.selected.themes[key].state = true;
-      console.log($scope.selected.themes[key]);
+      // console.log($scope.selected.themes[key]);
     });
   };
 
@@ -911,11 +911,77 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
     modalInstance.result.then(function (selectedAreas) {
       $scope.selected.themes[key].areas = selectedAreas;
       $scope.selected.themes[key].state = true;
-      console.log($scope.selected.themes[key]);
+      // console.log($scope.selected.themes[key]);
     });
   };
 
-  $scope.mostrar = function () {
+  $scope.disablePreview = function () {
+    var themes = $scope.selected.themes;
+
+    for (var i = 0; i < themes.length; i++) {
+      if (themes[i].state === true) return '';
+    }
+
+    return 'disabled';
+  };
+
+  $scope.disableFinalize = function () {
+    var themes = $scope.selected.themes;
+
+    for (var i = 0; i < themes.length; i++) {
+      if (!themes[i].state) return 'disabled';
+    }
+  };
+
+  $scope.preview = function () {
+
+    var modalInstance = $uibModal.open({
+      templateUrl: 'modalPreviewAssign-template',
+      controller: function controller($scope, $uibModalInstance, themes) {
+
+        $scope.unassigned = [];
+        $scope.assigned = [];
+
+        for (var i = 0; i < themes.length; i++) {
+          if (themes[i].state) {
+            $scope.assigned.push(themes[i]);
+          } else {
+            $scope.unassigned.push(themes[i]);
+          }
+        };
+
+        $scope.means = function (id, means) {
+          for (var i = means.length - 1; i >= 0; i--) {
+            if (means[i].id === id) {
+              return means[i].name;
+            };
+          };
+        };
+
+        $scope.close = function () {
+          $uibModalInstance.close();
+        };
+
+        $scope.cancel = function () {
+          $uibModalInstance.dismiss();
+        };
+      },
+      // size: 'sm',
+      resolve: {
+        themes: function themes() {
+          return $scope.selected.themes;
+        }
+      }
+    });
+
+    modalInstance.result.then(function (selectedAreas) {
+      $scope.selected.themes[key].areas = selectedAreas;
+      $scope.selected.themes[key].state = true;
+      // console.log($scope.selected.themes[key]);
+    });
+  };
+
+  $scope.finalize = function () {
     console.log($scope.selected.themes);
   };
 });

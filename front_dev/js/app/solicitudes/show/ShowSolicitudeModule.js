@@ -29,7 +29,7 @@ angular.module('Solicitude.Show', ['ui.router', 'ui.bootstrap', 'Alertify', 'SAT
         $scope.applicant = applicant;
         // console.log(applicant);
 
-        $scope.close = function () {
+        $scope.close = () => {
           $uibModalInstance.close();
         };
       },
