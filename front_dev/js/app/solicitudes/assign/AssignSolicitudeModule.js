@@ -187,11 +187,11 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
       }
     });
 
-    modalInstance.result.then((selectedAreas) => {
+    /*modalInstance.result.then((selectedAreas) => {
       $scope.selected.themes[key].areas = selectedAreas;
       $scope.selected.themes[key].state = true;
       // console.log($scope.selected.themes[key]);
-    });
+    });*/
   };
 
   $scope.finalize = () => {

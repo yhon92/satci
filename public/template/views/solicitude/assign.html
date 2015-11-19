@@ -20,7 +20,7 @@
     </div>
     <div>
       <table>
-        <tr ng-repeat="(key, area) in selected.areas">
+        <tr ng-repeat="area in selected.areas">
           <td style="min-width: 20px;" class="align-top">
             <span class="glyphicon glyphicon-pushpin text-info"></span>
           </td>
@@ -53,8 +53,9 @@
           <h6>{{ theme.name }}</h6>
           <ul>
             <li ng-repeat="area in theme.areas">
-              {{ area.name }}
-              <strong ng-if="area.meansSelected != 1 && area.meansSelected != undefined">({{ means(area.meansSelected, area.means) }})</strong>
+              <!-- <span>{{ area.name }}<strong ng-if="area.meansSelected != 1 && area.meansSelected != undefined">({{ means(area.meansSelected, area.means) }})</strong></span> -->
+              <span uib-tooltip="{{area.director.full_name}}">{{ area.name }}<strong ng-if="area.meansSelected != 1 && area.meansSelected != undefined">({{ means(area.meansSelected, area.means) }})</strong></span>
+              <!-- <span uib-popover="{{area.director.full_name}}" popover-trigger="mouseenter">{{ area.name }}<strong ng-if="area.meansSelected != 1 && area.meansSelected != undefined">({{ means(area.meansSelected, area.means) }})</strong></span> -->
             </li>
           </ul>
         </div>
