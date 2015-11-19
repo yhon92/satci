@@ -50,7 +50,7 @@
       </div>
       <div class="panel-body">
         <div ng-repeat="theme in assigned">
-          <h6>{{ theme.name }}</h6>
+          <h6>- {{ theme.name }}</h6>
           <ul>
             <li ng-repeat="area in theme.areas">
               <!-- <span>{{ area.name }}<strong ng-if="area.meansSelected != 1 && area.meansSelected != undefined">({{ means(area.meansSelected, area.means) }})</strong></span> -->
@@ -68,7 +68,7 @@
       </div>
       <div class="panel-body">
         <div ng-repeat="theme in unassigned">
-          <h6>{{ theme.name }}</h6>
+          <h6>- {{ theme.name }}</h6>
         </div>
       </div>
     </article>
