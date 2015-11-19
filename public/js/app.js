@@ -793,6 +793,10 @@ angular.module('Solicitude.resources', ['ngResource', 'SATCI.Shared']).factory('
   return $resource(ResourcesUrl.api + 'solicitude/:id', { id: '@_id' }, {
     update: { method: 'PUT', params: { id: '@_id' } }
   });
+}).factory('SolicitudesAssign', function ($resource, ResourcesUrl) {
+  return $resource(ResourcesUrl.api + 'solicitude/assign/:id', { id: '@_id' }, {
+    update: { method: 'PUT', params: { id: '@_id' } }
+  });
 }).factory('SolicitudesList', function ($http, ResourcesUrl) {
   return function (applicant) {
     return $http.get(ResourcesUrl.api + 'solicitude/list/' + applicant);
@@ -807,7 +811,7 @@ angular.module('Solicitude.resources', ['ngResource', 'SATCI.Shared']).factory('
 */
 'use strict';
 
-angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', 'Alertify', 'SATCI.Shared', 'Solicitude.resources', 'Theme.resources', 'Category.resources', 'Area.resources']).controller('AssignSolicitudeCtrl', function ($state, $scope, $stateParams, $uibModal, Alertify, Solicitudes, Themes, Categories, Areas) {
+angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', 'Alertify', 'SATCI.Shared', 'Solicitude.resources', 'Theme.resources', 'Category.resources', 'Area.resources']).controller('AssignSolicitudeCtrl', function ($state, $scope, $stateParams, $uibModal, Alertify, Solicitudes, SolicitudesAssign, Themes, Categories, Areas) {
 
   $scope.selected = {};
   $scope.selected.themes;
@@ -982,7 +986,29 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
   };
 
   $scope.finalize = function () {
-    console.log($scope.selected.themes);
+    var data = {
+      solicitude: $stateParams.id,
+      themes: $scope.selected.themes
+    };
+
+    SolicitudesAssign.save(data).$promise.then(function (data) {
+      if (data.success) {
+        Alertify.success('¡Las asignación se completaron de forma exitosa!');
+        $state.transitionTo('solicitude', {
+          reload: true, inherit: false, notify: false
+        });
+      }
+    }, function (fails) {
+      if (fails.status != 500) {
+        angular.forEach(fails.data, function (values, key) {
+          angular.forEach(values, function (value) {
+            Alertify.error(value);
+          });
+        });
+      } else {
+        console.log(fails);
+      };
+    });
   };
 });
 
@@ -1454,7 +1480,7 @@ function solicitudeNumberMask(input, e) {
 	if (key == 45 && input.length === 3) {
 		return true;
 	}
-	if (key >= 48 && key <= 57 && input.length >= 0 && input.length <= 2 || input.length >= 4 && input.length <= 6) {
+	if (key >= 48 && key <= 57 && (input.length >= 0 && input.length <= 2) || input.length >= 4 && input.length <= 6) {
 		return true;
 	}
 	return false;
@@ -1469,13 +1495,13 @@ function rifMask(input, e) {
  	74 = J, 106 = j, 77 = M, 109 = m, 80 = P, 112 = p
  	82 = R, 114 = r, 86 = V, 118 = v
  	*/
-	if ((key == 69 || key == 101 || key == 71 || key == 103 || key == 73 || key == 105 || key == 74 || key == 106 || key == 77 || key == 109 || key == 80 || key == 112 || key == 82 || key == 114 || key == 86 || key == 118) && input.length === 0) {
+	if ((key == 69 || key == 101 || (key == 71 || key == 103) || (key == 73 || key == 105) || (key == 74 || key == 106) || (key == 77 || key == 109) || (key == 80 || key == 112) || (key == 82 || key == 114) || (key == 86 || key == 118)) && input.length === 0) {
 		return true;
 	}
 	if (key == 45 && (input.length === 1 || input.length === 10)) {
 		return true;
 	}
-	if (key >= 48 && key <= 57 && input.length >= 2 && input.length <= 9 || input.length === 11) {
+	if (key >= 48 && key <= 57 && (input.length >= 2 && input.length <= 9) || input.length === 11) {
 		return true;
 	}
 	return false;
@@ -1865,7 +1891,7 @@ function rifMask(input, e) {
 				// check to ensure the alertify dialog element
 				// has been successfully created
 				var check = function check() {
-					if (elLog && elLog.scrollTop !== null && elCover && elCover.scrollTop !== null) return;else check();
+					if (elLog && elLog.scrollTop !== null && (elCover && elCover.scrollTop !== null)) return;else check();
 				};
 				// error catching
 				if (typeof message !== "string") throw new Error("message must be a string");

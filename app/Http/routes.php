@@ -34,8 +34,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function ()
 
 Route::group(['prefix' => 'api', 'namespace' => 'Solicitude'], function ()
 {
-	Route::resource('solicitude', 'SolicitudeController');
 	Route::get('solicitude/list/{applicant}', 'SolicitudeController@listByApplicant');
+	Route::resource('solicitude', 'SolicitudeController');
+	Route::resource('solicitude/assign', 'AssignController');
 });
 
 Route::group(['prefix' => 'api'], function ()

@@ -3,11 +3,11 @@ namespace SATCI\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Means extends Model
+class AreaMeans extends Model
 {
   protected $table = 'area_means';
   
-  protected $fillable = ['id'];
+  // protected $fillable = ['id'];
   
   // protected $hidden = ['created_at', 'updated_at'];
 

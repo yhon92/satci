@@ -1,24 +1,22 @@
 <?php 
 namespace SATCI\Http\Controllers\Solicitude;
 
-// use SATCI\Repositories\CitizenRepo;
+use Illuminate\Http\Request;
+// use Illuminate\Routing\Route;
+
 use SATCI\Repositories\SolicitudeRepo;
 use SATCI\Http\Requests\CreateSolicitudeRequest;
 use SATCI\Http\Controllers\Controller;
 use SATCI\Utils\Helpers;
-
-use Illuminate\Http\Request;
-use Illuminate\Routing\Route;
 
 class SolicitudeController extends Controller {
 
 	protected $solicitudeRepo;
 	// protected $citizenRepo;
 
-	public function __construct(SolicitudeRepo $solicitudeRepo/*, CitizenRepo $citizenRepo*/)
+	public function __construct(SolicitudeRepo $solicitudeRepo)
 	{
 		// $this->middleware('jwt.auth');
-		// $this->citizenRepo = $citizenRepo;
 		$this->solicitudeRepo = $solicitudeRepo;
 		// $this->beforeFilter('@findSolicitude', ['only' => ['show', 'edit', 'update', 'destroy']]);
 	}
@@ -75,9 +73,9 @@ class SolicitudeController extends Controller {
 	 */
 	public function store(CreateSolicitudeRequest $request)
 	{
-		$lastSolicitude = $this->solicitudeRepo->lastSolicitude();
+		$last_solicitude = $this->solicitudeRepo->lastSolicitude();
 
-		$solicitude_number = Helpers::getSolicitudeNumber($lastSolicitude);
+		$solicitude_number = Helpers::getSolicitudeNumber($last_solicitude);
 
 		$request['solicitude_number'] = $solicitude_number;
 

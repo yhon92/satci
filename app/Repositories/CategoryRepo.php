@@ -19,8 +19,8 @@ class CategoryRepo extends BaseRepo
   public function getListCategories()
   {
     return Category::has('themes')
-    ->with('themes')
-    ->get();
+                  ->with('themes')
+                  ->get();
   }
 
   public function newCategory()

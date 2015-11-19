@@ -11,6 +11,7 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
   $uibModal,
   Alertify,
   Solicitudes,
+  SolicitudesAssign,
   Themes,
   Categories,
   Areas,
@@ -195,6 +196,33 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
   };
 
   $scope.finalize = () => {
-    console.log($scope.selected.themes)
+    let data = {
+      solicitude: $stateParams.id,
+      themes: $scope.selected.themes,
+    }
+
+    SolicitudesAssign.save(data).$promise.then(
+      (data) => {
+        if (data.success) {
+          Alertify.success('¡Las asignación se completaron de forma exitosa!');
+          $state.transitionTo('solicitude', { 
+            reload: true, inherit: false, notify: false 
+          });
+        }
+      },
+      (fails) => {
+        if (fails.status != 500) 
+        {
+          angular.forEach(fails.data, (values, key) => {
+            angular.forEach(values, (value) => {
+              Alertify.error(value)
+            })
+          })
+        }
+        else
+        {
+          console.log(fails);
+        };
+      });
   };
 })
