@@ -200,10 +200,11 @@ return [
 		'View'      => 'Illuminate\Support\Facades\View',
 
 		/* Aliase Vendor */
-		'Form' 			 => 'Collective\Html\FormFacade',
-    'Html' 			 => 'Collective\Html\HtmlFacade',
+		'Uuid' 			 => 'Webpatser\Uuid\Uuid',
     'JWTAuth' 	 => 'Tymon\JWTAuth\Facades\JWTAuth',
     'JWTFactory' => 'Tymon\JWTAuth\Facades\JWTFactory',
+		'Form' 			 => 'Collective\Html\FormFacade',
+    'Html' 			 => 'Collective\Html\HtmlFacade',
     'Debugbar' 	 => 'Barryvdh\Debugbar\Facade',
 
 	],

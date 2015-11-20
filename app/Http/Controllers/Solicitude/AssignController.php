@@ -6,14 +6,14 @@ use Illuminate\Http\Request;
 // use SATCI\Http\Requests;
 use SATCI\Http\Controllers\Controller;
 use SATCI\Repositories\AreaMeansRepo;
-use SATCI\Repositories\AreaThemeSolicitudeRepo;
+use SATCI\Repositories\AssignSolicitudeRepo;
 
 class AssignController extends Controller
 {
   protected $areaMeansRepo;
   protected $assignRepo;
 
-  public function __construct (AreaMeansRepo $areaMeansRepo, AreaThemeSolicitudeRepo $assignRepo)
+  public function __construct (AreaMeansRepo $areaMeansRepo, AssignSolicitudeRepo $assignRepo)
   {
     $this->areaMeansRepo = $areaMeansRepo;
     $this->assignRepo = $assignRepo;
@@ -71,11 +71,14 @@ class AssignController extends Controller
         {
           $area_means_id = $this->areaMeansRepo->getID($area['id'], $default_means);
         }
-
-        $data = ['solicitude_id'  => $solicitude_id,
+        $uuid = \Uuid::generate(5, 'SATCI', \Uuid::generate());
+        // dd($uuid);
+        $data = ['id' => $uuid->string,
+                  'solicitude_id'  => $solicitude_id,
                   'theme_id'      => $theme_id,
                   'area_means_id' => $area_means_id
                 ];
+        // dd($data);
         $ok = $this->assignRepo->newAssign($data);
 
         array_push($ready, $ok);

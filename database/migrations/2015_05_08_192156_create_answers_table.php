@@ -12,7 +12,7 @@ class CreateAnswersTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('answers', function(Blueprint $table)
+		/*Schema::create('answers', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->integer('instrument_id')->unsigned();
@@ -22,7 +22,7 @@ class CreateAnswersTable extends Migration {
 			$table->timestamps();
 
 			$table->foreign('instrument_id')->references('id')->on('instruments');
-		});
+		});*/
 	}
 
 	/**
@@ -32,7 +32,7 @@ class CreateAnswersTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('answers');
+		// Schema::drop('answers');
 	}
 
 }
