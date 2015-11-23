@@ -204,10 +204,14 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
     SolicitudesAssign.save(data).$promise.then(
       (data) => {
         if (data.success) {
-          Alertify.success('¡Las asignación se completaron de forma exitosa!');
+          Alertify.success('¡La asignación se realizó de forma exitosa!');
           $state.transitionTo('solicitude', { 
             reload: true, inherit: false, notify: false 
           });
+        }
+        if (data.error) {
+          Alertify.error('¡No se pudo guardar la asignación!');
+          $state.reload();
         }
       },
       (fails) => {

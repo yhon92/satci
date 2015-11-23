@@ -44,4 +44,9 @@ class SolicitudeRepo extends BaseRepo
 		$solicitude = \DB::table('solicitudes')->count();
 		return $solicitude;
 	}
+
+	static public function updateStatus($id, $data)
+	{
+		return Solicitude::where('id', $id)->update(['status' => $data]);
+	}
 }

@@ -2,21 +2,30 @@
 namespace SATCI\Http\Controllers\Solicitude;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
+use DB;
 
 // use SATCI\Http\Requests;
 use SATCI\Http\Controllers\Controller;
 use SATCI\Repositories\AreaMeansRepo;
 use SATCI\Repositories\AssignSolicitudeRepo;
+use SATCI\Repositories\SolicitudeRepo;
 
 class AssignController extends Controller
 {
   protected $areaMeansRepo;
   protected $assignRepo;
+  protected $solicitudeRepo;
 
-  public function __construct (AreaMeansRepo $areaMeansRepo, AssignSolicitudeRepo $assignRepo)
+  public function __construct (
+      AreaMeansRepo $areaMeansRepo, 
+      AssignSolicitudeRepo $assignRepo,
+      SolicitudeRepo $solicitudeRepo
+    )
   {
     $this->areaMeansRepo = $areaMeansRepo;
     $this->assignRepo = $assignRepo;
+    $this->solicitudeRepo = $solicitudeRepo;
   }
   /**
    * Display a listing of the resource.
@@ -54,11 +63,17 @@ class AssignController extends Controller
     
     $default_means = 1;
 
-    $ready = array();
+    // $ready = array();
 
+    // $i = 0;
+    DB::beginTransaction();
     foreach ($themes as $theme) 
     {
-      $theme_id = $theme['id'];
+      // $i++;
+      // if ($i <= 1)
+        $theme_id = $theme['id'];
+      /*if ($i > 1)
+        $theme_id = 1000;*/
       $areas = $theme['areas'];
 
       foreach ($areas as $key => $area) 
@@ -74,18 +89,40 @@ class AssignController extends Controller
         $uuid = \Uuid::generate(5, 'SATCI', \Uuid::generate());
         // dd($uuid);
         $data = ['id' => $uuid->string,
-                  'solicitude_id'  => $solicitude_id,
+                  'solicitude_id' => $solicitude_id,
                   'theme_id'      => $theme_id,
                   'area_means_id' => $area_means_id
                 ];
-        // dd($data);
-        $ok = $this->assignRepo->newAssign($data);
+        try 
+        {
+          $this->assignRepo->newAssign($data);
+        }
+        catch (QueryException $e)
+        {
+          DB::rollBack();
 
-        array_push($ready, $ok);
+          \Log::info($e->errorInfo[2]);
+
+          return response()->json(['error' => true], 200);
+        }
       }
     }
+    try 
+    {
+      $this->solicitudeRepo->updateStatus($solicitude_id, 'Asignado');
+    }
+    catch (QueryException $e)
+    {
+      DB::rollBack();
+
+      \Log::info($e->errorInfo[2]);
+
+      return response()->json(['error' => true], 200);
+    }
+
+    DB::commit();
     
-    dd($ready);
+    return response()->json(['success' => true], 200);
   }
 
   /**
