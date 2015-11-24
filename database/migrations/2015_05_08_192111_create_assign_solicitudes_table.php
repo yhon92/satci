@@ -28,6 +28,8 @@ class CreateAssignSolicitudesTable extends Migration
       $table->foreign('theme_id')->references('id')->on('themes');
       $table->foreign('area_means_id')->references('id')->on('area_means');
 
+      $table->enum('status', ['Enviado', 'Leído', 'Aceptado', 'Rechazado', 'Atendido'])->default('Enviado');
+
     });
   }
 

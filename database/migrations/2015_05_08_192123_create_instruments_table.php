@@ -18,7 +18,6 @@ class CreateInstrumentsTable extends Migration {
 			$table->date('date');
 			$table->uuid('assign_solicitude_id');
 			$table->text('observation');
-			$table->enum('status', ['Recibido', 'Aprobador', 'Rechazado', 'Atendido'])->default('Recibido');
 			$table->timestamps();
 
 			$table->foreign('assign_solicitude_id')->references('id')->on('assign_solicitudes');

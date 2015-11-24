@@ -23,8 +23,10 @@
             <td>{{ row.topic | limitTo:140 }}</td>
             <td>{{ row.status }}</td>
             <td>
-              <a ui-sref="solicitudeAssign({id: row.id})" class="btn btn-xs btn-success glyphicon glyphicon-ok"></a>
-              <a ui-sref="solicitudeEdit({id: row.id})" class="btn btn-xs btn-warning glyphicon glyphicon-edit"></a>
+              <div ng-if="row.status == 'Recibido'">
+                <a ui-sref="solicitudeEdit({id: row.id})" uib-tooltip="Editar" class="btn btn-xs btn-warning glyphicon glyphicon-edit"></a>
+                <a ui-sref="solicitudeAssign({id: row.id})" uib-tooltip="Asignar" class="btn btn-xs btn-success glyphicon glyphicon-ok"></a>
+              </div>
             </td>
           </tr>
         </tbody>

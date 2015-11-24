@@ -109,7 +109,7 @@ class AssignController extends Controller
     }
     try 
     {
-      $this->solicitudeRepo->updateStatus($solicitude_id, 'Asignado');
+      $this->solicitudeRepo->updateStatus($solicitude_id, 'Procesando');
     }
     catch (QueryException $e)
     {
