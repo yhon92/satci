@@ -1025,12 +1025,12 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
   $controller('CreateInstitutionCtrl', { $scope: $scope });
   // $controller('DatepickerCtrl', {$scope : $scope});
 
-  var add = null;
-  var search = null;
-  var applicant_type = '';
+  var _add = null;
+  var _search = null;
 
   $scope.solicitude = {
     full_name: '',
+    applicant_type: '',
     applicant_id: '',
     identification: '',
     reception_date: '',
@@ -1039,20 +1039,21 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
   };
 
   $scope.addApplicant = function () {
-    add = true;
-    search = false;
+    _add = true;
+    _search = false;
 
     $scope.solicitude.full_name = null;
     $scope.solicitude.applicant_id = null;
     $scope.solicitude.identification = null;
 
-    $scope.applicantTemplate = '' + PathTemplates.partials + applicant_type + '/create.html';
+    $scope.applicantTemplate = '' + PathTemplates.partials + $scope.solicitude.applicant_type + '/create.html';
   };
 
   $scope.clear = function () {
 
     $scope.solicitude = {
       full_name: null,
+      applicant_type: null,
       applicant_id: null,
       identification: null,
       reception_date: null,
@@ -1065,15 +1066,15 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
   };
 
   $scope.close = function () {
-    add = null;
-    search = null;
+    _add = null;
+    _search = null;
     $scope.template = '';
     $scope.applicant = false;
     $scope.applicantTemplate = '';
   };
 
   $scope.getApplicant = function (type) {
-    $scope.solicitude.applicant_type = applicant_type = type;
+    $scope.solicitude.applicant_type = type;
     $scope.template = PathTemplates.partials + 'solicitude/applicant.html';
   };
 
@@ -1082,17 +1083,19 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
   });
 
   $scope.searchApplicant = function () {
-    search = true;
-    add = false;
+    $scope.applicantTemplate = null;
+
+    _search = true;
+    _add = false;
     var dataUploaded = $q.defer();
 
-    if (applicant_type === 'citizen') {
+    if ($scope.solicitude.applicant_type === 'citizen') {
       Citizens.get(function (data) {
         $scope.applicants = data.citizens;
         dataUploaded.resolve();
       });
     }
-    if (applicant_type === 'institution') {
+    if ($scope.solicitude.applicant_type === 'institution') {
       Institutions.get(function (data) {
         $scope.applicants = data.institutions;
         dataUploaded.resolve();
@@ -1105,7 +1108,9 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
   };
 
   $scope.saveSolicitude = function () {
-
+    if (!$scope.solicitude.reception_date) {
+      $scope.solicitude.reception_date = new Date();
+    }
     var solicitude = {
       reception_date: $filter('date')($scope.solicitude.reception_date, 'yyyy-MM-dd'),
       applicant_type: $scope.solicitude.applicant_type,
@@ -1113,7 +1118,7 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
       document_date: $filter('date')($scope.solicitude.document_date, 'yyyy-MM-dd'),
       topic: $scope.solicitude.topic
     };
-
+    console.log(solicitude);
     Solicitudes.save(solicitude).$promise.then(function (data) {
       if (data.success) {
         Alertify.success('Solicitud registrada exitosamente');
@@ -1140,13 +1145,14 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
     $scope.solicitude.identification = identification;
   };
 
-  $scope.$watch('applicant_type', function () {
-    if (add) {
+  $scope.$watch('solicitude.applicant_type', function () {
+    console.log($scope.solicitude.applicant_type);
+
+    if (_add) {
       $scope.addApplicant();
     }
-    if (search) {
-      $scope.applicantTemplate = '';
-      // $scope.searchApplicant();
+    if (_search) {
+      $scope.searchApplicant();
     }
   });
 

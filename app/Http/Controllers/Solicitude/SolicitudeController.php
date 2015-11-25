@@ -85,6 +85,10 @@ class SolicitudeController extends Controller {
 
 		$request['applicant_type'] = $type;
 
+		$uuid = \Uuid::generate(5, 'SATCI', \Uuid::generate());
+		
+		$request['id'] = $uuid->string;
+
 		$solicitude = $this->solicitudeRepo->newSolicitude($request->all());
 
 		return response()->json([

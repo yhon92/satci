@@ -18,12 +18,12 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
   $controller('CreateInstitutionCtrl', {$scope : $scope});
   // $controller('DatepickerCtrl', {$scope : $scope});
 
-  let add = null;
-  let search = null;
-  let applicant_type = '';
+  let _add = null;
+  let _search = null;
 
   $scope.solicitude = {
     full_name: '',
+    applicant_type: '',
     applicant_id: '',
     identification: '',
     reception_date: '',
@@ -32,20 +32,21 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
   }
 
   $scope.addApplicant = () =>{
-    add = true;
-    search = false;
+    _add = true;
+    _search = false;
 
     $scope.solicitude.full_name = null;
     $scope.solicitude.applicant_id = null;
     $scope.solicitude.identification = null;
 
-    $scope.applicantTemplate = `${PathTemplates.partials}${applicant_type}/create.html`;
+    $scope.applicantTemplate = `${PathTemplates.partials}${$scope.solicitude.applicant_type}/create.html`;
   };
 
   $scope.clear = () =>{
     
     $scope.solicitude = {
       full_name: null,
+      applicant_type: null,
       applicant_id: null,
       identification: null,
       reception_date: null,
@@ -58,15 +59,15 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
   }
 
   $scope.close = () => {
-    add = null;
-    search = null
+    _add = null;
+    _search = null;
     $scope.template = '';
     $scope.applicant = false;
     $scope.applicantTemplate = '';
   };
 
   $scope.getApplicant = (type) => {
-    $scope.solicitude.applicant_type = applicant_type = type;
+    $scope.solicitude.applicant_type = type;
     $scope.template = `${PathTemplates.partials}solicitude/applicant.html`;
   };
 
@@ -75,17 +76,19 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
   })
 
   $scope.searchApplicant = () => {
-    search = true;
-    add = false;
+    $scope.applicantTemplate = null;
+
+    _search = true;
+    _add = false;
     let dataUploaded = $q.defer();
 
-    if (applicant_type === 'citizen') {
+    if ($scope.solicitude.applicant_type === 'citizen') {
       Citizens.get((data) => {
         $scope.applicants = data.citizens;
         dataUploaded.resolve();
       });
     }
-    if (applicant_type === 'institution') {
+    if ($scope.solicitude.applicant_type === 'institution') {
       Institutions.get((data) => {
         $scope.applicants = data.institutions;
         dataUploaded.resolve();
@@ -98,7 +101,9 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
   };
 
   $scope.saveSolicitude = () => {
-
+    if (!$scope.solicitude.reception_date) {
+      $scope.solicitude.reception_date = new Date();
+    }
     let solicitude = {
       reception_date: $filter('date')($scope.solicitude.reception_date, 'yyyy-MM-dd'), 
       applicant_type: $scope.solicitude.applicant_type, 
@@ -106,7 +111,7 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
       document_date: $filter('date')($scope.solicitude.document_date, 'yyyy-MM-dd'), 
       topic: $scope.solicitude.topic, 
     }
-
+    console.log(solicitude);
     Solicitudes.save(solicitude).$promise.then(
       (data) => {
         if (data.success) {
@@ -138,14 +143,15 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
     $scope.solicitude.identification = identification;
   };
 
-  $scope.$watch('applicant_type', () => {
-    if (add) {
+  $scope.$watch('solicitude.applicant_type', () => {
+    console.log($scope.solicitude.applicant_type)
+
+    if (_add) {
       $scope.addApplicant();
     }
-    if (search) {
-      $scope.applicantTemplate = '';
-        // $scope.searchApplicant();
-      }
+    if (_search) {
+      $scope.searchApplicant();
+    }
     });
 
   $scope.displayed = [];

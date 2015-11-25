@@ -14,7 +14,8 @@ class CreateSolicitudesTable extends Migration {
 	{
 		Schema::create('solicitudes', function(Blueprint $table)
 		{
-			$table->increments('id');
+			// $table->increments('id');
+			$table->uuid('id')->unique();
 			$table->string('solicitude_number')->unique();
 			$table->date('reception_date');
 			$table->enum('applicant_type', ['SATCI\Entities\Citizen', 'SATCI\Entities\Institution']);

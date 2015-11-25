@@ -7,7 +7,8 @@ class Solicitude extends Model {
 
 	protected $table = 'solicitudes';
 
-	protected $fillable = ['solicitude_number', 
+	protected $fillable = ['id',
+													'solicitude_number', 
 													'reception_date', 
 													'applicant_type', 
 													'applicant_id', 

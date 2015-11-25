@@ -15,7 +15,7 @@ class CreateAssignSolicitudesTable extends Migration
     Schema::create('assign_solicitudes', function(Blueprint $table)
     {
       $table->uuid('id')->unique();
-      $table->integer('solicitude_id')->unsigned();
+      $table->uuid('solicitude_id');
       $table->integer('theme_id')->unsigned();
       $table->integer('area_means_id')->unsigned();
 
