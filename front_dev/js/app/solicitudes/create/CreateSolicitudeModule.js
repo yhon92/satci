@@ -111,7 +111,6 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
       document_date: $filter('date')($scope.solicitude.document_date, 'yyyy-MM-dd'), 
       topic: $scope.solicitude.topic, 
     }
-    console.log(solicitude);
     Solicitudes.save(solicitude).$promise.then(
       (data) => {
         if (data.success) {
@@ -144,8 +143,6 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
   };
 
   $scope.$watch('solicitude.applicant_type', () => {
-    console.log($scope.solicitude.applicant_type)
-
     if (_add) {
       $scope.addApplicant();
     }

@@ -3,6 +3,7 @@ import './SolicitudeDirectives';
 import './SolicitudeResources';
 import './assign/AssignSolicitudeModule';
 import './create/CreateSolicitudeModule';
+import './edit/EditSolicitudeModule';
 import './show/ShowSolicitudeModule';
 
 angular.module('SATCI.Solicitude', [
@@ -13,6 +14,7 @@ angular.module('SATCI.Solicitude', [
   'Solicitude.resources', 
   'Solicitude.Assign',
   'Solicitude.Create',
+  'Solicitude.Edit',
   'Solicitude.Show'])
 
 .config(($authProvider, $stateProvider, PathTemplates) => {
@@ -30,7 +32,7 @@ angular.module('SATCI.Solicitude', [
   .state('solicitudeEdit', {
     url: '/solicitude/edit/:id',
     templateUrl: `${PathTemplates.views}solicitude/edit.html`,
-    controller: 'SolicitudeCtrl'
+    controller: 'EditSolicitudeCtrl'
   })
   .state('solicitudeAssign', {
     url: '/solicitude/assign/:id',
