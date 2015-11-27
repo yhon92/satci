@@ -104,6 +104,7 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
     if (!$scope.solicitude.reception_date) {
       $scope.solicitude.reception_date = new Date();
     }
+
     let solicitude = {
       reception_date: $filter('date')($scope.solicitude.reception_date, 'yyyy-MM-dd'), 
       applicant_type: $scope.solicitude.applicant_type, 
@@ -111,8 +112,9 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
       document_date: $filter('date')($scope.solicitude.document_date, 'yyyy-MM-dd'), 
       topic: $scope.solicitude.topic, 
     }
-    Solicitudes.save(solicitude).$promise.then(
-      (data) => {
+
+    Solicitudes.save(solicitude).$promise
+      .then( (data) => {
         if (data.success) {
           Alertify.success('Solicitud registrada exitosamente');
           $state.transitionTo('solicitude', { 
@@ -121,19 +123,16 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
         }
       }, 
       (fails) => {
-        if (fails.status != 500) 
-        {
+        if (fails.status != 500) {
           angular.forEach(fails.data, (values, key) => {
             angular.forEach(values, (value) => {
               Alertify.error(value)
             })
           })
-        }
-        else
-        {
+        }else {
           console.log(fails);
         };
-      })
+      });
   }
 
   $scope.selectApplicant = (id, identification, full_name) => {
@@ -195,7 +194,7 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
 
     $scope.toggleMin = () => {
       // $scope.minDate = $scope.minDate ? null : new Date();
-      var date = new Date();
+      let date = new Date();
       $scope.minDate = date.getFullYear() + '-01-02'
     };
     $scope.toggleMin();
@@ -220,9 +219,9 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
     $scope.formats = ['dd-MMMM-yyyy', 'dd/MM/yyyy', 'dd.MM.yyyy', 'shortDate'];
     $scope.format = $scope.formats[0];
 
-    var tomorrow = new Date();
+    let tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
-    var afterTomorrow = new Date();
+    let afterTomorrow = new Date();
     afterTomorrow.setDate(tomorrow.getDate() + 2);
     $scope.events =
     [{
@@ -236,10 +235,10 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
 
     $scope.getDayClass = (date, mode) => {
       if (mode === 'day') {
-        var dayToCheck = new Date(date).setHours(0,0,0,0);
+        let dayToCheck = new Date(date).setHours(0,0,0,0);
 
-        for (var i=0;i<$scope.events.length;i++){
-          var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
+        for (let i=0;i<$scope.events.length;i++){
+          let currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
 
           if (dayToCheck === currentDay) {
             return $scope.events[i].status;

@@ -18,6 +18,7 @@ angular.module('Solicitude.controller',[])
   SolicitudesList('Citizen').then( (response) => {
     $scope.citizens = response.data.solicitudes;
     $scope.citizens.type = 'Personas';
+    $scope.citizens.status = 'Recibido';
   }, (error) => {
     console.log(error);
   });
@@ -25,6 +26,7 @@ angular.module('Solicitude.controller',[])
   SolicitudesList('Institution').then( (response) => {
     $scope.institutions = response.data.solicitudes;
     $scope.institutions.type = 'Instituciones';
+    $scope.institutions.status = 'Recibido';
   }, (error) => {
     console.log(error);
   });

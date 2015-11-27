@@ -10,12 +10,21 @@
             <th style="min-width: 64px;">Identificacíon</th>
             <th style="min-width: 165px;">Nombre</th>
             <th style="width: 520px;">Asunto</th>
-            <th>Estado</th>
+            <!-- <th>Estado</th> -->
+            <th>
+              <select type="role" class="form-control" name="status" id="status" ng-model="applicant.status" ng-required="true">
+                  <option value="Recibido">Recibido</option>
+                  <option value="Procesando">Procesando</option>
+                  <option value="Rechazado">Rechazado</option>
+                  <option value="Atendido">Atendido</option>
+                  <option value="Anulado">Anulado</option>
+                </select>
+            </th>
             <th style="width: 60px;"></th>
           </tr>
         </thead>
         <tbody>
-        <tr class="pointer" ng-repeat="row in applicant">
+        <tr class="pointer" ng-repeat="row in applicant | filter:applicant.status ">
             <td><a ui-sref="solicitudeShow({id: row.id})">{{ row.solicitude_number }}</a></td>
             <td>{{ row.reception_date | date:'dd-MM-yyyy' }}</td>
             <td>{{ row.applicant.identification }}</td>

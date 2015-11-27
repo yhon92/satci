@@ -47,7 +47,6 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
   });
 
   $scope.assignArea = (key, theme) => {
-    // console.log('Key:'+key+', '+'Theme:'+theme);
 
     let modalInstance = $uibModal.open({
       templateUrl: `modalAssignArea-template`,
@@ -82,12 +81,10 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
     modalInstance.result.then((selectedAreas) => {
       $scope.selected.themes[key].areas = selectedAreas;
       $scope.selected.themes[key].state = true;
-      // console.log($scope.selected.themes[key]);
     });
   }
 
   $scope.editArea = (key, theme) => {
-    // console.log('Key:'+key+', '+'Theme:'+themeName);
 
     let modalInstance = $uibModal.open({
       templateUrl: `modalAssignArea-template`,
@@ -96,7 +93,6 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
         $scope.theme = theme;
         $scope.selected = {};
         $scope.selected.areas = theme.areas;
-        // console.log($scope.selected.areas)
 
         $scope.ok = () => {
           if ($scope.selected.areas.length)
@@ -123,7 +119,6 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
     modalInstance.result.then((selectedAreas) => {
       $scope.selected.themes[key].areas = selectedAreas;
       $scope.selected.themes[key].state = true;
-      // console.log($scope.selected.themes[key]);
     });
   }
 
@@ -188,11 +183,6 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
       }
     });
 
-    /*modalInstance.result.then((selectedAreas) => {
-      $scope.selected.themes[key].areas = selectedAreas;
-      $scope.selected.themes[key].state = true;
-      // console.log($scope.selected.themes[key]);
-    });*/
   };
 
   $scope.finalize = () => {
@@ -201,12 +191,12 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
       themes: $scope.selected.themes,
     }
 
-    SolicitudesAssign.save(data).$promise.then(
-      (data) => {
+    SolicitudesAssign.save(data).$promise
+      .then( (data) => {
         if (data.success) {
           Alertify.success('¡La asignación se realizó de forma exitosa!');
           $state.transitionTo('solicitude', { 
-            reload: true, inherit: false, notify: false 
+            reload: true, notify: false 
           });
         }
         if (data.error) {
@@ -215,16 +205,13 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
         }
       },
       (fails) => {
-        if (fails.status != 500) 
-        {
+        if (fails.status != 500) {
           angular.forEach(fails.data, (values, key) => {
             angular.forEach(values, (value) => {
               Alertify.error(value)
             })
           })
-        }
-        else
-        {
+        }else {
           console.log(fails);
         };
       });

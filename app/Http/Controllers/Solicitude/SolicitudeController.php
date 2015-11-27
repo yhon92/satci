@@ -2,10 +2,12 @@
 namespace SATCI\Http\Controllers\Solicitude;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 // use Illuminate\Routing\Route;
 
 use SATCI\Repositories\SolicitudeRepo;
 use SATCI\Http\Requests\CreateSolicitudeRequest;
+use SATCI\Http\Requests\EditSolicitudeRequest;
 use SATCI\Http\Controllers\Controller;
 use SATCI\Utils\Helpers;
 
@@ -140,9 +142,19 @@ class SolicitudeController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($id, EditSolicitudeRequest $request)
 	{
-		//
+		try 
+    {
+      $this->solicitudeRepo->update($id, $request->all());
+    }
+    catch (QueryException $e)
+    {
+      \Log::info($e->errorInfo[2]);
+      return response()->json(['error' => true], 200);
+    }
+
+		return response()->json(['success' => true]);
 	}
 
 	/**

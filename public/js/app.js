@@ -704,6 +704,7 @@ angular.module('Solicitude.controller', []).controller('SolicitudeCtrl', functio
   SolicitudesList('Citizen').then(function (response) {
     $scope.citizens = response.data.solicitudes;
     $scope.citizens.type = 'Personas';
+    $scope.citizens.status = 'Recibido';
   }, function (error) {
     console.log(error);
   });
@@ -711,6 +712,7 @@ angular.module('Solicitude.controller', []).controller('SolicitudeCtrl', functio
   SolicitudesList('Institution').then(function (response) {
     $scope.institutions = response.data.solicitudes;
     $scope.institutions.type = 'Instituciones';
+    $scope.institutions.status = 'Recibido';
   }, function (error) {
     console.log(error);
   });
@@ -843,7 +845,6 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
   });
 
   $scope.assignArea = function (key, _theme) {
-    // console.log('Key:'+key+', '+'Theme:'+theme);
 
     var modalInstance = $uibModal.open({
       templateUrl: 'modalAssignArea-template',
@@ -877,12 +878,10 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
     modalInstance.result.then(function (selectedAreas) {
       $scope.selected.themes[key].areas = selectedAreas;
       $scope.selected.themes[key].state = true;
-      // console.log($scope.selected.themes[key]);
     });
   };
 
   $scope.editArea = function (key, _theme2) {
-    // console.log('Key:'+key+', '+'Theme:'+themeName);
 
     var modalInstance = $uibModal.open({
       templateUrl: 'modalAssignArea-template',
@@ -891,7 +890,6 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
         $scope.theme = theme;
         $scope.selected = {};
         $scope.selected.areas = theme.areas;
-        // console.log($scope.selected.areas)
 
         $scope.ok = function () {
           if ($scope.selected.areas.length) {
@@ -917,7 +915,6 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
     modalInstance.result.then(function (selectedAreas) {
       $scope.selected.themes[key].areas = selectedAreas;
       $scope.selected.themes[key].state = true;
-      // console.log($scope.selected.themes[key]);
     });
   };
 
@@ -979,12 +976,6 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
         }
       }
     });
-
-    /*modalInstance.result.then((selectedAreas) => {
-      $scope.selected.themes[key].areas = selectedAreas;
-      $scope.selected.themes[key].state = true;
-      // console.log($scope.selected.themes[key]);
-    });*/
   };
 
   $scope.finalize = function () {
@@ -997,7 +988,7 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
       if (data.success) {
         Alertify.success('¡La asignación se realizó de forma exitosa!');
         $state.transitionTo('solicitude', {
-          reload: true, inherit: false, notify: false
+          reload: true, notify: false
         });
       }
       if (data.error) {
@@ -1113,6 +1104,7 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
     if (!$scope.solicitude.reception_date) {
       $scope.solicitude.reception_date = new Date();
     }
+
     var solicitude = {
       reception_date: $filter('date')($scope.solicitude.reception_date, 'yyyy-MM-dd'),
       applicant_type: $scope.solicitude.applicant_type,
@@ -1120,6 +1112,7 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
       document_date: $filter('date')($scope.solicitude.document_date, 'yyyy-MM-dd'),
       topic: $scope.solicitude.topic
     };
+
     Solicitudes.save(solicitude).$promise.then(function (data) {
       if (data.success) {
         Alertify.success('Solicitud registrada exitosamente');
@@ -1261,13 +1254,149 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
 */
 'use strict';
 
-angular.module('Solicitude.Edit', ['ui.router', 'Alertify', 'SATCI.Shared', 'Solicitude.resources']).controller('EditSolicitudeCtrl', function ($state, $scope, $stateParams,
-// $uibModal,
-Alertify, Solicitudes) {
+angular.module('Solicitude.Edit', ['ui.router', 'Alertify', 'SATCI.Shared', 'Solicitude.resources']).controller('EditSolicitudeCtrl', function ($state, $scope, $stateParams, $filter, $uibModal, Alertify, Solicitudes) {
 
-  Solicitudes.get({ id: $stateParams.id }).$promise.then(function (response) {
-    $scope.solicitude = response.solicitude;
-  }, function (error) {});
+  Solicitudes.get({ id: $stateParams.id }).$promise.then(function (data) {
+    var solicitude = data.solicitude;
+
+    if (solicitude.status != 'Recibido') {
+      Alertify.alert('No es permitido editar la solicitud <strong class="text-danger">No. ' + solicitude.solicitude_number + '</strong>' + ' por estar en estado <strong class="text-danger">' + solicitude.status + '</strong>');
+      $state.transitionTo('solicitude', {
+        reload: true, notify: false
+      });
+    } else {
+      $scope.solicitude = solicitude;
+    }
+  }, function (fails) {});
+
+  $scope.showApplicant = function (type, _applicant) {
+    var modalInstance = $uibModal.open({
+      templateUrl: 'modalShow' + type + '-template',
+      controller: function controller($scope, $uibModalInstance, applicant) {
+        $scope.applicant = applicant;
+
+        $scope.close = function () {
+          $uibModalInstance.close();
+        };
+      },
+      size: 'sm',
+      resolve: {
+        applicant: function applicant() {
+          return _applicant;
+        }
+      }
+    });
+  };
+
+  $scope.saveSolicitude = function () {
+    var solicitude = {
+      document_date: $filter('date')($scope.solicitude.document_date, 'yyyy-MM-dd'),
+      topic: $scope.solicitude.topic,
+      status: $scope.solicitude.status
+    };
+    console.log(solicitude);
+    Solicitudes.update({ id: $stateParams.id }, solicitude).$promise.then(function (data) {
+      if (data.success) {
+        Alertify.success('Solicitud modificada exitosamente');
+        $state.transitionTo('solicitude', {
+          reload: true, inherit: false, notify: false
+        });
+      }
+    }, function (fails) {
+      if (fails.status != 500) {
+        angular.forEach(fails.data, function (values, key) {
+          angular.forEach(values, function (value) {
+            Alertify.error(value);
+          });
+        });
+      } else {
+        console.log(fails);
+      };
+    });
+  };
+
+  $scope.cancel = function () {
+    $state.transitionTo('solicitude', {
+      reload: true, notify: false
+    });
+  };
+
+  /******************************************************Datepicker******************************************************/
+  $scope.datepicker = {
+    document_date: null
+  };
+
+  // document_date: $scope.solicitude.document_date,
+  $scope.clear = function () {
+    $scope.datepicker = {
+      document_date: null
+    };
+  };
+
+  $scope.today = function () {
+    $scope.solicitude.document_date = new Date();
+  };
+  // $scope.today();
+
+  // Disable weekend selection
+  $scope.disabled = function (date, mode) {
+    return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+  };
+
+  $scope.toggleMin = function () {
+    // $scope.minDate = $scope.minDate ? null : new Date();
+    var date = new Date();
+    $scope.minDate = date.getFullYear() + '-01-02';
+  };
+  $scope.toggleMin();
+
+  $scope.toggleMax = function () {
+    $scope.maxDate = $scope.maxDate ? null : new Date();
+  };
+  $scope.toggleMax();
+
+  $scope.open = function ($event, value) {
+    $event.preventDefault();
+    $event.stopPropagation();
+
+    $scope.datepicker[value] = !$scope.datepicker[value];
+  };
+
+  $scope.dateOptions = {
+    formatYear: 'yy',
+    startingDay: 1
+  };
+
+  $scope.formats = ['dd-MMMM-yyyy', 'dd/MM/yyyy', 'dd.MM.yyyy', 'shortDate'];
+  $scope.format = $scope.formats[0];
+
+  var tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  var afterTomorrow = new Date();
+  afterTomorrow.setDate(tomorrow.getDate() + 2);
+  $scope.events = [{
+    date: tomorrow,
+    status: 'full'
+  }, {
+    date: afterTomorrow,
+    status: 'partially'
+  }];
+
+  $scope.getDayClass = function (date, mode) {
+    if (mode === 'day') {
+      var dayToCheck = new Date(date).setHours(0, 0, 0, 0);
+
+      for (var i = 0; i < $scope.events.length; i++) {
+        var currentDay = new Date($scope.events[i].date).setHours(0, 0, 0, 0);
+
+        if (dayToCheck === currentDay) {
+          return $scope.events[i].status;
+        }
+      }
+    }
+
+    return '';
+  };
 });
 
 },{}],32:[function(require,module,exports){
@@ -1283,17 +1412,15 @@ angular.module('Solicitude.Show', ['ui.router', 'ui.bootstrap', 'Alertify', 'SAT
   /*  let solicitude = Solicitudes.get({id: $stateParams.id});
     // console.log(solicitude);*/
 
-  Solicitudes.get({ id: $stateParams.id }).$promise.then(function (response) {
-    $scope.solicitude = response.solicitude;
-  }, function (error) {});
+  Solicitudes.get({ id: $stateParams.id }).$promise.then(function (data) {
+    $scope.solicitude = data.solicitude;
+  }, function (fails) {});
 
   $scope.showApplicant = function (type, _applicant) {
-    // console.log(type);
     var modalInstance = $uibModal.open({
       templateUrl: 'modalShow' + type + '-template',
       controller: function controller($scope, $uibModalInstance, applicant) {
         $scope.applicant = applicant;
-        // console.log(applicant);
 
         $scope.close = function () {
           $uibModalInstance.close();

@@ -11,6 +11,16 @@ class SolicitudeRepo extends BaseRepo
 		return new Solicitude;
 	}
 
+	static public function newSolicitude($data)
+	{
+		return Solicitude::create($data);
+	}
+
+	static public function update($id, $data)
+	{
+		return Solicitude::where('id', $id)->update($data);
+	}
+
 	public function getSolicitude($id)
 	{
 		$solicitude = Solicitude::with('applicant.parish')->find($id);
@@ -32,11 +42,6 @@ class SolicitudeRepo extends BaseRepo
 		->where('applicant_type' ,'=', $type)
 		->orderBy('solicitude_number', 'desc')
 		->get();
-	}
-
-	static public function newSolicitude($data)
-	{
-		return Solicitude::create($data);
 	}
 
 	static public function lastSolicitude()
