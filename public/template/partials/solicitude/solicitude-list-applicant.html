@@ -5,14 +5,19 @@
       <table class="table table-hover">
         <thead>
           <tr>
-            <th style="min-width: 80px;">Nº Solicitud</th>
+            <!-- <th style="min-width: 80px;">Nº Solicitud</th> -->
+            <th style="min-width: 80px;"><input class="form-control" type="text" placeholder="Nº Solicitud" ng-model="filter.solicitude_number"></th>
             <th style="min-width: 80px;">Recepción</th>
-            <th style="min-width: 64px;">Identificacíon</th>
-            <th style="min-width: 165px;">Nombre</th>
-            <th style="width: 520px;">Asunto</th>
+            <!-- <th style="min-width: 64px;">Identificacíon</th> -->
+            <th style="min-width: 64px;"><input class="form-control" type="text" placeholder="Identificacíon" ng-model="filter.identification"></th>
+            <!-- <th style="min-width: 165px;">Nombre</th> -->
+            <th style="min-width: 165px;"><input class="form-control" type="text" placeholder="Nombre" ng-model="filter.full_name"></th>
+            <!-- <th style="width: 520px;">Asunto</th> -->
+            <th style="width: 520px;"><input class="form-control" type="text" placeholder="Asunto" ng-model="filter.topic"></th>
             <!-- <th>Estado</th> -->
             <th>
-              <select type="role" class="form-control" name="status" id="status" ng-model="applicant.status" ng-required="true">
+              <select type="role" class="form-control" name="status" id="status" ng-model="filter.status">
+                  <option value="">Todo</option>
                   <option value="Recibido">Recibido</option>
                   <option value="Procesando">Procesando</option>
                   <option value="Rechazado">Rechazado</option>
@@ -24,7 +29,10 @@
           </tr>
         </thead>
         <tbody>
-        <tr class="pointer" ng-repeat="row in applicant | filter:applicant.status ">
+        <tr class="pointer" ng-repeat="row in applicant | 
+          filter:{ solicitude_number : filter.solicitude_number } |
+          filter:{ topic : filter.topic } |
+          filter:{ status : filter.status } ">
             <td><a ui-sref="solicitudeShow({id: row.id})">{{ row.solicitude_number }}</a></td>
             <td>{{ row.reception_date | date:'dd-MM-yyyy' }}</td>
             <td>{{ row.applicant.identification }}</td>
