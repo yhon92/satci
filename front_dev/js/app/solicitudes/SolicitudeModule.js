@@ -52,8 +52,18 @@ angular.module('SATCI.Solicitude', [
   })
   .state('solicitudeShow', {
     url: '/solicitude/show/:id',
-    templateUrl: `${PathTemplates.views}solicitude/show.html`,
-    controller: 'ShowSolicitudeCtrl'
+    views: {
+      '': {
+        templateUrl: `${PathTemplates.views}solicitude/show.html`,
+      },
+      'show@solicitudeShow': {
+        templateUrl: `${PathTemplates.partials}solicitude/show.html`,
+        controller: 'ShowSolicitudeCtrl'
+      },
+      'assign@solicitudeShow': {
+        controller: 'ShowAssignSolicitudeCtrl'
+      }
+    }
   })
 
 })

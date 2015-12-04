@@ -20,4 +20,9 @@ class AssignSolicitudeRepo extends BaseRepo
   {
     return AssignSolicitude::create($data);
   }
+
+  static public function listBySolicitude($id)
+  {
+    return AssignSolicitude::where('solicitude_id', '=', $id)->get();
+  }
 }

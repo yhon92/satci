@@ -217,3 +217,20 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
       });
   };
 })
+.controller('ShowAssignSolicitudeCtrl', (
+  $state,
+  $scope,
+  $stateParams,
+  $uibModal,
+  Alertify,
+  SolicitudesAssign) => {
+  
+  SolicitudesAssign.get().$promise
+  .then(
+    (data) => {
+      debugger
+    }, 
+    (fails) => {
+
+    });
+})

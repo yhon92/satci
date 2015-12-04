@@ -23,4 +23,9 @@ class Solicitude extends Model {
 		return $this->morphTo();
 	}
 
+	public function assigned()
+	{
+		return $this->hasMay('SATCI\Entities\AssignSolicitude');
+	}
+
 }

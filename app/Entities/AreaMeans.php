@@ -15,4 +15,9 @@ class AreaMeans extends Model
   {
     return $this->belongsToMany('SATCI\Entities\Area');
   }
+
+  public function solicitude()
+  {
+    return $this->belongsTo('SATCI\Entities\Solicitude');
+  }
 }

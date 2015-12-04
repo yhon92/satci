@@ -34,7 +34,7 @@ class AssignController extends Controller
    */
   public function index()
   {
-    //
+    return 'Hola';
   }
 
   /**
@@ -168,5 +168,10 @@ class AssignController extends Controller
   public function destroy($id)
   {
     //
+  }
+
+  public function listBySolicitude($id)
+  {
+    return $this->assignRepo->listBySolicitude($id);
   }
 }
