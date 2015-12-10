@@ -1006,7 +1006,7 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
 }).controller('ShowAssignSolicitudeCtrl', function ($state, $scope, $stateParams, $uibModal, Alertify, SolicitudesAssign) {
 
   SolicitudesAssign.get().$promise.then(function (data) {
-    debugger;
+    console.log(data);
   }, function (fails) {});
 });
 

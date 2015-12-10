@@ -228,7 +228,7 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
   SolicitudesAssign.get().$promise
   .then(
     (data) => {
-      debugger
+      console.log(data)
     }, 
     (fails) => {
 

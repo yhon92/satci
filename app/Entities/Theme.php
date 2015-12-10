@@ -11,9 +11,14 @@ class Theme extends Model {
 
   protected $hidden = ['created_at', 'updated_at'];
 
-  public function category ()
+  public function category()
   {
     return $this->belongsTo('SATCI\Entities\Category');
+  }
+
+  public function assign_solicitude()
+  {
+    return $this->hasMany('SATCI\Entities\AssignSolicitude');
   }
 
 }

@@ -23,6 +23,7 @@ class AssignSolicitudeRepo extends BaseRepo
 
   static public function listBySolicitude($id)
   {
-    return AssignSolicitude::where('solicitude_id', '=', $id)->get();
+    return AssignSolicitude::with('theme.category', 'area_means.area')
+    ->where('solicitude_id', '=', $id)->get();
   }
 }

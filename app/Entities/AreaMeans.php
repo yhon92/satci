@@ -11,13 +11,18 @@ class AreaMeans extends Model
   
   // protected $hidden = ['created_at', 'updated_at'];
 
-  public function areas()
+  public function area()
   {
-    return $this->belongsToMany('SATCI\Entities\Area');
+    return $this->hasMany('SATCI\Entities\Area');
+  }
+
+  public function means()
+  {
+    return $this->hayMany('SATCI\Entities\Means');
   }
 
   public function solicitude()
   {
-    return $this->belongsTo('SATCI\Entities\Solicitude');
+    return $this->hasMany('SATCI\Entities\AssignSolicitude');
   }
 }
