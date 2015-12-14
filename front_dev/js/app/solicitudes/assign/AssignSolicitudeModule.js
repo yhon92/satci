@@ -151,7 +151,7 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
         $scope.unassigned = [];
         $scope.assigned = [];
 
-        for (var i = 0; i < themes.length; i++) {
+        for (let i = 0; i < themes.length; i++) {
           if (themes[i].state) {
             $scope.assigned.push(themes[i]);
           } else {
@@ -160,7 +160,7 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
         };
 
         $scope.means = (id, means) => {
-          for (var i = means.length - 1; i >= 0; i--) {
+          for (let i = means.length - 1; i >= 0; i--) {
             if (means[i].id === id ) {
               return means[i].name;
             };
@@ -224,15 +224,21 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
   $uibModal,
   Alertify,
   SolicitudesAssignList) => {
+  
+  $scope.assigned = false;
+  $scope.notAssigned = false;
 
-  $scope.assigned = null;
   
   SolicitudesAssignList($stateParams.id).then( (response) => {
-    $scope.assigned = response.data;
+    if (response.data.length > 0) {
+      $scope.assigned = response.data;
+    }else{
+      $scope.notAssigned = true;
+    };
     console.log(response.data)
   }, 
   (error) => {
     console.log(error.data)
-
   });
+
 })
