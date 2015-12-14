@@ -55,17 +55,11 @@ class SolicitudeController extends Controller {
 
 			// Helpers::concatApplicantsWithParish($solicitudes);
 
-			return response()->json([
-				'solicitudes' => $solicitudes,
-				], 200
-			);
+			return response()->json($solicitudes, 200);
 		}
 		else
 		{
-			return response()->json([
-				'error' => 'Solicitante Inválido'
-				], 200
-			);
+			return response()->json('Solicitante Inválido', 404);
 		}
 	}
 	/**

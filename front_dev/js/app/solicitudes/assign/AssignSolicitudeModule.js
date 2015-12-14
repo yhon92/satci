@@ -223,14 +223,16 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
   $stateParams,
   $uibModal,
   Alertify,
-  SolicitudesAssign) => {
-  
-  SolicitudesAssign.get().$promise
-  .then(
-    (data) => {
-      console.log(data)
-    }, 
-    (fails) => {
+  SolicitudesAssignList) => {
 
-    });
+  $scope.assigned = null;
+  
+  SolicitudesAssignList($stateParams.id).then( (response) => {
+    $scope.assigned = response.data;
+    console.log(response.data)
+  }, 
+  (error) => {
+    console.log(error.data)
+
+  });
 })

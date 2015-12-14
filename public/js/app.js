@@ -690,14 +690,14 @@ angular.module('Solicitude.controller', []).controller('SolicitudeCtrl', functio
   $scope.institutions = '';
 
   SolicitudesList('Citizen').then(function (response) {
-    $scope.citizens = response.data.solicitudes;
+    $scope.citizens = response.data;
     $scope.citizens.type = 'Personas';
   }, function (error) {
     console.log(error);
   });
 
   SolicitudesList('Institution').then(function (response) {
-    $scope.institutions = response.data.solicitudes;
+    $scope.institutions = response.data;
     $scope.institutions.type = 'Instituciones';
   }, function (error) {
     console.log(error);
@@ -793,13 +793,17 @@ angular.module('Solicitude.resources', ['ngResource', 'SATCI.Shared']).factory('
   return $resource(ResourcesUrl.api + 'solicitude/:id', { id: '@_id' }, {
     update: { method: 'PUT', params: { id: '@_id' } }
   });
+}).factory('SolicitudesList', function ($http, ResourcesUrl) {
+  return function (applicant) {
+    return $http.get(ResourcesUrl.api + 'solicitude/list/' + applicant);
+  };
 }).factory('SolicitudesAssign', function ($resource, ResourcesUrl) {
   return $resource(ResourcesUrl.api + 'solicitude/assign/:id', { id: '@_id' }, {
     update: { method: 'PUT', params: { id: '@_id' } }
   });
-}).factory('SolicitudesList', function ($http, ResourcesUrl) {
-  return function (applicant) {
-    return $http.get(ResourcesUrl.api + 'solicitude/list/' + applicant);
+}).factory('SolicitudesAssignList', function ($http, ResourcesUrl) {
+  return function (solicitude) {
+    return $http.get(ResourcesUrl.api + 'solicitude/assign/list/' + solicitude);
   };
 });
 
@@ -1003,11 +1007,16 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
       };
     });
   };
-}).controller('ShowAssignSolicitudeCtrl', function ($state, $scope, $stateParams, $uibModal, Alertify, SolicitudesAssign) {
+}).controller('ShowAssignSolicitudeCtrl', function ($state, $scope, $stateParams, $uibModal, Alertify, SolicitudesAssignList) {
 
-  SolicitudesAssign.get().$promise.then(function (data) {
-    console.log(data);
-  }, function (fails) {});
+  $scope.assigned = null;
+
+  SolicitudesAssignList($stateParams.id).then(function (response) {
+    $scope.assigned = response.data;
+    console.log(response.data);
+  }, function (error) {
+    console.log(error.data);
+  });
 });
 
 },{}],30:[function(require,module,exports){
@@ -1634,7 +1643,7 @@ function solicitudeNumberMask(input, e) {
 	if (key == 45 && input.length === 3) {
 		return true;
 	}
-	if (key >= 48 && key <= 57 && (input.length >= 0 && input.length <= 2) || input.length >= 4 && input.length <= 6) {
+	if (key >= 48 && key <= 57 && input.length >= 0 && input.length <= 2 || input.length >= 4 && input.length <= 6) {
 		return true;
 	}
 	return false;
@@ -1649,13 +1658,13 @@ function rifMask(input, e) {
  	74 = J, 106 = j, 77 = M, 109 = m, 80 = P, 112 = p
  	82 = R, 114 = r, 86 = V, 118 = v
  	*/
-	if ((key == 69 || key == 101 || (key == 71 || key == 103) || (key == 73 || key == 105) || (key == 74 || key == 106) || (key == 77 || key == 109) || (key == 80 || key == 112) || (key == 82 || key == 114) || (key == 86 || key == 118)) && input.length === 0) {
+	if ((key == 69 || key == 101 || key == 71 || key == 103 || key == 73 || key == 105 || key == 74 || key == 106 || key == 77 || key == 109 || key == 80 || key == 112 || key == 82 || key == 114 || key == 86 || key == 118) && input.length === 0) {
 		return true;
 	}
 	if (key == 45 && (input.length === 1 || input.length === 10)) {
 		return true;
 	}
-	if (key >= 48 && key <= 57 && (input.length >= 2 && input.length <= 9) || input.length === 11) {
+	if (key >= 48 && key <= 57 && input.length >= 2 && input.length <= 9 || input.length === 11) {
 		return true;
 	}
 	return false;
@@ -2045,7 +2054,7 @@ function rifMask(input, e) {
 				// check to ensure the alertify dialog element
 				// has been successfully created
 				var check = function check() {
-					if (elLog && elLog.scrollTop !== null && (elCover && elCover.scrollTop !== null)) return;else check();
+					if (elLog && elLog.scrollTop !== null && elCover && elCover.scrollTop !== null) return;else check();
 				};
 				// error catching
 				if (typeof message !== "string") throw new Error("message must be a string");

@@ -10,22 +10,26 @@ use SATCI\Http\Controllers\Controller;
 use SATCI\Repositories\AreaMeansRepo;
 use SATCI\Repositories\AssignSolicitudeRepo;
 use SATCI\Repositories\SolicitudeRepo;
+use SATCI\Repositories\ThemeRepo;
 
 class AssignController extends Controller
 {
   protected $areaMeansRepo;
   protected $assignRepo;
   protected $solicitudeRepo;
+  protected $themeRepo;
 
   public function __construct (
       AreaMeansRepo $areaMeansRepo, 
       AssignSolicitudeRepo $assignRepo,
-      SolicitudeRepo $solicitudeRepo
+      SolicitudeRepo $solicitudeRepo,
+      ThemeRepo $themeRepo
     )
   {
     $this->areaMeansRepo = $areaMeansRepo;
     $this->assignRepo = $assignRepo;
     $this->solicitudeRepo = $solicitudeRepo;
+    $this->themeRepo = $themeRepo;
   }
   /**
    * Display a listing of the resource.
@@ -172,6 +176,8 @@ class AssignController extends Controller
 
   public function listBySolicitude($id)
   {
-    return $this->assignRepo->listBySolicitude($id);
+    $assigned = $this->themeRepo->themeBySolicitude($id);
+
+    return response()->json($assigned, 200);
   }
 }

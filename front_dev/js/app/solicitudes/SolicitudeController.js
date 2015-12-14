@@ -4,14 +4,14 @@ angular.module('Solicitude.controller',[])
   $scope.institutions = '';
 
   SolicitudesList('Citizen').then( (response) => {
-    $scope.citizens = response.data.solicitudes;
+    $scope.citizens = response.data;
     $scope.citizens.type = 'Personas';
   }, (error) => {
     console.log(error);
   });
 
   SolicitudesList('Institution').then( (response) => {
-    $scope.institutions = response.data.solicitudes;
+    $scope.institutions = response.data;
     $scope.institutions.type = 'Instituciones';
   }, (error) => {
     console.log(error);
