@@ -235,10 +235,26 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
     }else{
       $scope.notAssigned = true;
     };
-    console.log(response.data)
   }, 
   (error) => {
     console.log(error.data)
   });
 
+  $scope.statusSelect = (status) => {
+    if (status === 'Enviado') {
+      return 'label-default';
+    }
+    if (status === 'Leído') {
+      return 'label-warning';
+    }
+    if (status === 'Aceptado') {
+      return 'label-primary';
+    }
+    if (status === 'Rechazado') {
+      return 'label-danger';
+    }
+    if (status === 'Atendido') {
+      return 'label-success';
+    }
+  };
 })

@@ -2,18 +2,20 @@
 	<div ui-view='show'></div>
 	<div ui-view='assign'>
   <section class="col-md-6" ng-show="assigned">
-      <article class="panel panel-success" ng-repeat="theme in assigned">
+      <article class="panel panel-default" ng-repeat="theme in assigned">
         <div class="panel-heading">
           <h3 class="panel-title">{{ theme.name }}</h3>
         </div>
         <div class="panel-body">
           <div ng-repeat="assign in theme.assign_solicitude">
             <!-- <h6>- {{ assign.area_means.area.name }}</h6> -->
-            <ul>
-              <li>
+            <ul class="padding-none">
+              <li class="list-none">
+                <span class="buttom-status" ng-class="statusSelect(assign.status)" uib-tooltip="{{assign.status}}"></span>
+                <!-- <span uib-tooltip="{{assign.area_means.area.director.full_name}}"> -->
                 <span uib-tooltip="{{assign.area_means.area.director.full_name}}">
                   {{ assign.area_means.area.name }}
-                  <strong>
+                  <strong  ng-if="assign.area_means.means.id != 1">
                     ({{ assign.area_means.means.name }})
                   </strong>
                 </span>

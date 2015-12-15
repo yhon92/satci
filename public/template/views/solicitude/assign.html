@@ -53,9 +53,7 @@
           <h6>- {{ theme.name }}</h6>
           <ul>
             <li ng-repeat="area in theme.areas">
-              <!-- <span>{{ area.name }}<strong ng-if="area.meansSelected != 1 && area.meansSelected != undefined">({{ means(area.meansSelected, area.means) }})</strong></span> -->
               <span uib-tooltip="{{area.director.full_name}}">{{ area.name }}<strong ng-if="area.meansSelected != 1 && area.meansSelected != undefined">({{ means(area.meansSelected, area.means) }})</strong></span>
-              <!-- <span uib-popover="{{area.director.full_name}}" popover-trigger="mouseenter">{{ area.name }}<strong ng-if="area.meansSelected != 1 && area.meansSelected != undefined">({{ means(area.meansSelected, area.means) }})</strong></span> -->
             </li>
           </ul>
         </div>
