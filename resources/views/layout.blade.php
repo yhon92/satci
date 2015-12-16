@@ -25,7 +25,7 @@
 		<nav class="navbar navbar-default navbar-fixed-top" role="navigation" ng-controller="NavCtrl">
 			<div class="container-fluid">
 				<div class="navbar-header">
-					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<button type="button" class="navbar-toggle collapsed" ng-show="authenticated" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed">
 						<span class="sr-only">Toggle Navigation</span>
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
@@ -36,36 +36,40 @@
 						<span>SATCI</span>
 					</a>
 				</div>
-				<div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1" ng-if="authenticated">
+				<div class="navbar-collapse collapse" uib-collapse="navCollapsed" ng-if="authenticated">
 					<ul class="nav navbar-nav">
 						<li ng-class="navActive('home')"><a ui-sref="home">Inicio</a></li>
 						<li ng-class="navActive('solicitude')"><a ui-sref="solicitude">Solicitud</a></li>
-						<li ng-class="navActive('develotment')"><a ui-sref="develotment">En desarrollo</a></li>
-
+						<li ng-class="navActive('applicant')">
+							<li class="dropdown" uib-dropdown>
+								<a class="dropdown-toggle" role="button" uib-dropdown-toggle>
+									Solicitante
+									<span class="caret"></span>
+								</a>
+								<ul class="uib-dropdown-menu" role="menu" aria-labelledby="simple-dropdown">
+									<li role="menuitem"><a ui-sref="applicant/citizen">Natural</a></li>
+									<li role="menuitem"><a ui-sref="applicant/insitution">Jurídico</a></li>
+								</ul>
+							</li>
+						</li>
 					</ul>
 
 					<ul class="nav navbar-nav navbar-right" ng-if="authenticated">
 						<li class="dropdown" uib-dropdown>
-							<a href="#" class="dropdown-toggle" role="button" uib-dropdown-toggle>
+							<a class="dropdown-toggle" role="button" uib-dropdown-toggle>
 								{{ currentUser.first_name +' '+currentUser.last_name }}
-								<span class="caret"></span></a>
-								<ul class="uib-dropdown-menu" role="menu" aria-labelledby="simple-dropdown">
-									<li role="menuitem"><a ng-click="logout()">Cerra Sesión</a></li>
-								</ul>
-							</li>
-						</ul>
-					</div>
+								<span class="caret"></span>
+							</a>
+							<ul class="uib-dropdown-menu" role="menu" aria-labelledby="simple-dropdown">
+								<li role="menuitem"><a ng-click="logout()">Cerra Sesión</a></li>
+							</ul>
+						</li>
+					</ul>
 				</div>
-			</nav>
+			</div>
+		</nav>
 			<div class="container-fluid">
 				<div class="row">
-					<%-- <div class="col-sm-3 col-md-2 sidebar" ng-controller="SidebarCtrl" ng-if="authenticated">
-						<ul class="nav nav-sidebar">
-							<li ng-class="navActive('home')"><a ui-sref="home">Inicio</a></li>
-							<li ng-class="navActive('solicitude')"><a ui-sref="solicitude">Solicitud</a></li>
-							<li ng-class="navActive('dev')"><a ui-sref="develotment">En desarrollo</a></li>
-						</ul>				
-					</div> --%>
 					<section ui-view></section>
 				</div>
 			</div>
