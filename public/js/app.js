@@ -203,7 +203,17 @@ require('./create/CreateCitizenModule');
 *
 * Description
 */
-angular.module('SATCI.Citizen', ['Citizen.Create', 'Citizen.controller']);
+angular.module('SATCI.Citizen', ['ui.router', 'Citizen.Create', 'Citizen.controller']).config(function ($authProvider, $stateProvider, PathTemplates) {
+  $stateProvider.state('citizen', {
+    url: '/applicant/citizen',
+    templateUrl: PathTemplates.views + 'citizen/index.html',
+    controller: 'SolicitudeCtrl'
+  }).state('citizenCreate', {
+    url: '/applicant/citizen/create',
+    templateUrl: PathTemplates.views + 'citizen/index.html',
+    controller: 'SolicitudeCtrl'
+  });
+});
 
 },{"./CitizenController":8,"./CitizenResources":10,"./create/CreateCitizenModule":11}],10:[function(require,module,exports){
 /**
@@ -313,7 +323,17 @@ require('./create/CreateInstitutionModule');
 *
 * Description
 */
-angular.module('SATCI.Institution', ['Institution.Create', 'Institution.controller']);
+angular.module('SATCI.Institution', ['ui.router', 'Institution.Create', 'Institution.controller']).config(function ($authProvider, $stateProvider, PathTemplates) {
+  $stateProvider.state('institution', {
+    url: '/applicant/institution',
+    templateUrl: PathTemplates.views + 'institution/index.html',
+    controller: 'SolicitudeCtrl'
+  }).state('institutionCreate', {
+    url: '/applicant/institution/create',
+    templateUrl: PathTemplates.views + 'institution/index.html',
+    controller: 'SolicitudeCtrl'
+  });
+});
 
 },{"./InstitutionController":13,"./InstitutionResources":15,"./create/CreateInstitutionModule":16}],15:[function(require,module,exports){
 /**

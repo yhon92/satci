@@ -40,17 +40,39 @@
 					<ul class="nav navbar-nav">
 						<li ng-class="navActive('home')"><a ui-sref="home">Inicio</a></li>
 						<li ng-class="navActive('solicitude')"><a ui-sref="solicitude">Solicitud</a></li>
-						<li ng-class="navActive('applicant')">
-							<li class="dropdown" uib-dropdown>
-								<a class="dropdown-toggle" role="button" uib-dropdown-toggle>
-									Solicitante
-									<span class="caret"></span>
-								</a>
-								<ul class="uib-dropdown-menu" role="menu" aria-labelledby="simple-dropdown">
-									<li role="menuitem"><a ui-sref="applicant/citizen">Natural</a></li>
-									<li role="menuitem"><a ui-sref="applicant/insitution">Jurídico</a></li>
-								</ul>
-							</li>
+						<li ng-class="navActive('applicant')" class="dropdown" uib-dropdown>
+							<a class="dropdown-toggle" role="button" uib-dropdown-toggle>
+								Solicitante
+								<span class="caret"></span>
+							</a>
+							<ul class="uib-dropdown-menu" role="menu" aria-labelledby="simple-dropdown">
+								<li role="menuitem"><a ui-sref="citizen">Natural</a></li>
+								<li role="menuitem"><a ui-sref="institution">Jurídico</a></li>
+							</ul>
+						</li>
+						<li ng-class="navActive('config')" class="dropdown" uib-dropdown>
+							<a class="dropdown-toggle" role="button" uib-dropdown-toggle>
+								Configuración
+								<span class="caret"></span>
+							</a>
+							<ul class="uib-dropdown-menu" role="menu" aria-labelledby="simple-dropdown">
+								<li role="menuitem"><a ui-sref="citizen">Categorías</a></li>
+								<li role="menuitem"><a ui-sref="institution">Temas</a></li>
+								<li class="divider"></li>
+								<li role="menuitem"><a ui-sref="institution">Areas</a></li>
+								<li role="menuitem"><a ui-sref="institution">Recursos</a></li>
+								<li role="menuitem"><a ui-sref="institution">Directores</a></li>
+							</ul>
+						</li>
+						<li ng-class="navActive('security')" class="dropdown" uib-dropdown>
+							<a class="dropdown-toggle" role="button" uib-dropdown-toggle>
+								Seguridad
+								<span class="caret"></span>
+							</a>
+							<ul class="uib-dropdown-menu" role="menu" aria-labelledby="simple-dropdown">
+								<li role="menuitem"><a ui-sref="citizen">Usuarios</a></li>
+								<li role="menuitem"><a ui-sref="institution">Permisos</a></li>
+							</ul>
 						</li>
 					</ul>
 
