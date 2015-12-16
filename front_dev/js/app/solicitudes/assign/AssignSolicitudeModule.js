@@ -227,7 +227,7 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
   
   $scope.assigned = false;
   $scope.notAssigned = false;
-
+  $scope.isCollapsed = [];
   
   SolicitudesAssignList($stateParams.id).then( (response) => {
     if (response.data.length > 0) {
@@ -257,4 +257,15 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
       return 'label-success';
     }
   };
+
+  $scope.disable = (status) =>{
+    if(status == 'Atendido' || status == 'Rechazado')
+      return 'display-none';
+  }
+
+  $scope.saveUpdate = (keyTheme, keyAssign, id) => {
+    console.log(id)
+    $scope.isCollapsed[keyTheme][keyAssign] = true;
+  }
+
 })

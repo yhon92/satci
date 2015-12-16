@@ -2,12 +2,12 @@
 	<div ui-view='show'></div>
 	<div ui-view='assign'>
   <section class="col-md-6" ng-show="assigned">
-      <article class="panel panel-default" ng-repeat="theme in assigned">
+      <article class="panel panel-default" ng-repeat="(keyTheme, theme) in assigned">
         <div class="panel-heading">
           <h3 class="panel-title">{{ theme.name }}</h3>
         </div>
         <div class="panel-body">
-          <div ng-repeat="assign in theme.assign_solicitude">
+          <div ng-repeat="(keyAssign, assign) in theme.assign_solicitude">
             <!-- <h6>- {{ assign.area_means.area.name }}</h6> -->
             <ul class="padding-none">
               <li class="list-none">
@@ -19,6 +19,23 @@
                     ({{ assign.area_means.means.name }})
                   </strong>
                 </span>
+                <div class="float-right" ng-class="disable(assign.status)">
+                  <a class="btn btn-xs btn-warning glyphicon glyphicon-refresh" uib-tooltip="Act. Estado" ng-init="isCollapsed[keyTheme][keyAssign] = true" ng-click="isCollapsed[keyTheme][keyAssign] = !isCollapsed[keyTheme][keyAssign]"></a>
+                </div>
+                <div uib-collapse="isCollapsed[keyTheme][keyAssign]">
+                  <div class="well well-sm">
+                    <label for="select" class="control-label" ><strong>Estado:</strong></label>
+                    <select class="align-middle" name="status" id="status" ng-model="assign.status" ng-required="true" style="width: 120px;">
+                      <option value="Enviado">Enviado</option>
+                      <!-- <option value="Leído">Leído</option> -->
+                      <option value="Aceptado">Aceptado</option>
+                      <option value="Rechazado">Rechazado</option>
+                      <option value="Atendido">Atendido</option>
+                    </select>
+                    <button class="btn btn-primary btn-xs" ng-click="saveUpdate(keyTheme, keyAssign, assign.id)">Actualizar</button>
+
+                  </div>
+                </div>
               </li>
             </ul>
           </div>
