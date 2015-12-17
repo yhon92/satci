@@ -25,14 +25,14 @@
                 <div uib-collapse="isCollapsed[keyTheme][keyAssign]">
                   <div class="well well-sm">
                     <label for="select" class="control-label" ><strong>Estado:</strong></label>
-                    <select class="align-middle" name="status" id="status" ng-model="assign.status" ng-required="true" style="width: 120px;">
+                    <select class="align-middle" name="status" id="status" ng-init="newStatus = assign.status" ng-model="newStatus" ng-required="true" style="width: 120px;">
                       <option value="Enviado">Enviado</option>
                       <!-- <option value="Leído">Leído</option> -->
                       <option value="Aceptado">Aceptado</option>
                       <option value="Rechazado">Rechazado</option>
                       <option value="Atendido">Atendido</option>
                     </select>
-                    <button class="btn btn-primary btn-xs" ng-click="saveUpdate(keyTheme, keyAssign, assign.id)">Actualizar</button>
+                    <button class="btn btn-primary btn-xs" ng-click="saveUpdate(keyTheme, keyAssign, newStatus, assign.id)">Actualizar</button>
 
                   </div>
                 </div>

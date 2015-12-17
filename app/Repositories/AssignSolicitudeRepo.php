@@ -21,10 +21,14 @@ class AssignSolicitudeRepo extends BaseRepo
     return AssignSolicitude::create($data);
   }
 
-  static public function listBySolicitude($id)
+  static public function update($id, $data)
   {
-    return AssignSolicitude::with('theme.category', 'area_means.area', 'area_means.means')
-    ->where('solicitude_id', '=', $id)
+    return AssignSolicitude::where('id', $id)->update($data);
+  }
+
+  static public function listAssign($solicitude_id)
+  {
+    return AssignSolicitude::where('solicitude_id', '=', $solicitude_id)
     ->get();
   }
 }

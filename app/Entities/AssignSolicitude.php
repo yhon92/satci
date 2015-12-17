@@ -7,7 +7,7 @@ class AssignSolicitude extends Model {
 
 	protected $table = 'assign_solicitudes';
 
-  protected $fillable = ['id', 'solicitude_id', 'theme_id', 'area_means_id'];
+  protected $fillable = ['id', 'solicitude_id', 'theme_id', 'area_means_id', 'status'];
 
 	protected $hidden = ['solicitude_id', 'theme_id', 'area_means_id'];
 

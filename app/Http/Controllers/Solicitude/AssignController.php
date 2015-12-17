@@ -11,6 +11,7 @@ use SATCI\Repositories\AreaMeansRepo;
 use SATCI\Repositories\AssignSolicitudeRepo;
 use SATCI\Repositories\SolicitudeRepo;
 use SATCI\Repositories\ThemeRepo;
+use SATCI\Http\Requests\EditAssignSolicitudeRequest;
 
 class AssignController extends Controller
 {
@@ -20,8 +21,8 @@ class AssignController extends Controller
   protected $themeRepo;
 
   public function __construct (
-      AreaMeansRepo $areaMeansRepo, 
       AssignSolicitudeRepo $assignRepo,
+      AreaMeansRepo $areaMeansRepo, 
       SolicitudeRepo $solicitudeRepo,
       ThemeRepo $themeRepo
     )
@@ -67,17 +68,11 @@ class AssignController extends Controller
     
     $default_means = 1;
 
-    // $ready = array();
-
-    // $i = 0;
     DB::beginTransaction();
     foreach ($themes as $theme) 
     {
-      // $i++;
-      // if ($i <= 1)
-        $theme_id = $theme['id'];
-      /*if ($i > 1)
-        $theme_id = 1000;*/
+      $theme_id = $theme['id'];
+
       $areas = $theme['areas'];
 
       foreach ($areas as $key => $area) 
@@ -91,7 +86,7 @@ class AssignController extends Controller
           $area_means_id = $this->areaMeansRepo->getID($area['id'], $default_means);
         }
         $uuid = \Uuid::generate(5, 'SATCI', \Uuid::generate());
-        // dd($uuid);
+
         $data = ['id' => $uuid->string,
                   'solicitude_id' => $solicitude_id,
                   'theme_id'      => $theme_id,
@@ -158,9 +153,44 @@ class AssignController extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function update(Request $request, $id)
+  // public function update($id, EditAssignSolicitudeRequest $request)
+  public function update($id, Request $request)
   {
-    //
+    $data = $request->all();
+    
+    try
+    {
+      $this->assignRepo->update($id, $data['update']);
+    }
+    catch (QueryException $e)
+    {
+      \Log::info($e->errorInfo[2]);
+      return response()->json(['error' => true], 200);
+    }
+
+    $assigned = $this->assignRepo->listAssign($data['solicitude_id']);
+
+    $update_status = true;
+
+    foreach ($assigned as $key => $value) {
+      if ($value['status'] != 'Atendido' && $value['status'] != 'Rechazado')
+        $update_status = false;
+    }
+
+    if ($update_status) {
+      try 
+      {
+        $this->solicitudeRepo->updateStatus($data['solicitude_id'], 'Finalizado');
+      }
+      catch (QueryException $e)
+      {
+        \Log::info($e->errorInfo[2]);
+
+        return response()->json(['error' => true], 200);
+      }
+    }
+
+    return response()->json(['success' => true]);
   }
 
   /**

@@ -223,11 +223,13 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
   $stateParams,
   $uibModal,
   Alertify,
+  SolicitudesAssign,
   SolicitudesAssignList) => {
   
   $scope.assigned = false;
   $scope.notAssigned = false;
   $scope.isCollapsed = [];
+  $scope.newStatus = [];
   
   SolicitudesAssignList($stateParams.id).then( (response) => {
     if (response.data.length > 0) {
@@ -263,9 +265,36 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
       return 'display-none';
   }
 
-  $scope.saveUpdate = (keyTheme, keyAssign, id) => {
-    console.log(id)
-    $scope.isCollapsed[keyTheme][keyAssign] = true;
+  $scope.saveUpdate = (keyTheme, keyAssign, newStatus, id) => {
+    if ($scope.assigned[keyTheme].assign_solicitude[keyAssign].status == newStatus) {
+      $scope.isCollapsed[keyTheme][keyAssign] = true;
+    }else {
+      let assign = {
+        update: {status: newStatus},
+        solicitude_id: $stateParams.id
+      };
+
+      SolicitudesAssign.update({ id:id }, assign).$promise
+      .then( (data) => {
+        if (data.success) {
+          $scope.assigned[keyTheme].assign_solicitude[keyAssign].status = newStatus;
+          Alertify.success("¡Estado Actualizado!")
+          $scope.isCollapsed[keyTheme][keyAssign] = true;
+        };
+      }, 
+      (fails) => {
+        if (fails.status != 500) {
+          angular.forEach(fails.data, (values, key) => {
+            angular.forEach(values, (value) => {
+              Alertify.error(value)
+            })
+          })
+          $scope.isCollapsed[keyTheme][keyAssign] = true;
+        }else {
+          console.log(fails);
+        };
+      });
+    }
   }
 
 })

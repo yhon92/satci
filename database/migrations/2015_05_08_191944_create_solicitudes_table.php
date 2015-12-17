@@ -23,7 +23,7 @@ class CreateSolicitudesTable extends Migration {
 			$table->date('document_date');
 			$table->text('topic');
 
-			$table->enum('status', ['Recibido', 'Procesando', 'Rechazado', 'Atendido', 'Anulado'])->default('Recibido');
+			$table->enum('status', ['Recibido', 'Procesando', 'Rechazado', 'Finalizado', 'Anulado'])->default('Recibido');
 
 			$table->timestamps();
 		});

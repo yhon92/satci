@@ -1027,11 +1027,12 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
       };
     });
   };
-}).controller('ShowAssignSolicitudeCtrl', function ($state, $scope, $stateParams, $uibModal, Alertify, SolicitudesAssignList) {
+}).controller('ShowAssignSolicitudeCtrl', function ($state, $scope, $stateParams, $uibModal, Alertify, SolicitudesAssign, SolicitudesAssignList) {
 
   $scope.assigned = false;
   $scope.notAssigned = false;
   $scope.isCollapsed = [];
+  $scope.newStatus = [];
 
   SolicitudesAssignList($stateParams.id).then(function (response) {
     if (response.data.length > 0) {
@@ -1065,9 +1066,34 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
     if (status == 'Atendido' || status == 'Rechazado') return 'display-none';
   };
 
-  $scope.saveUpdate = function (keyTheme, keyAssign, id) {
-    console.log(id);
-    $scope.isCollapsed[keyTheme][keyAssign] = true;
+  $scope.saveUpdate = function (keyTheme, keyAssign, newStatus, id) {
+    if ($scope.assigned[keyTheme].assign_solicitude[keyAssign].status == newStatus) {
+      $scope.isCollapsed[keyTheme][keyAssign] = true;
+    } else {
+      var assign = {
+        update: { status: newStatus },
+        solicitude_id: $stateParams.id
+      };
+
+      SolicitudesAssign.update({ id: id }, assign).$promise.then(function (data) {
+        if (data.success) {
+          $scope.assigned[keyTheme].assign_solicitude[keyAssign].status = newStatus;
+          Alertify.success("¡Estado Actualizado!");
+          $scope.isCollapsed[keyTheme][keyAssign] = true;
+        };
+      }, function (fails) {
+        if (fails.status != 500) {
+          angular.forEach(fails.data, function (values, key) {
+            angular.forEach(values, function (value) {
+              Alertify.error(value);
+            });
+          });
+          $scope.isCollapsed[keyTheme][keyAssign] = true;
+        } else {
+          console.log(fails);
+        };
+      });
+    }
   };
 });
 
