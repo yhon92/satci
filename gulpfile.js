@@ -66,7 +66,7 @@ gulp.task('jshint', function() {
 gulp.task('js', function(){
   return browserify({
     entries: paths.src.js, //punto de entrada js
-    transform: [ babelify ] //transformaciones
+    transform: [ ['babelify', { "presets": ["es2015"] } ] ] //transformaciones
   })
   .bundle()
   .on('error', function(error){

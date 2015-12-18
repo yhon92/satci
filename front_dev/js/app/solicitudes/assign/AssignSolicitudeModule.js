@@ -14,7 +14,7 @@ angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', '
   SolicitudesAssign,
   Themes,
   Categories,
-  Areas,
+  Areas
   ) => {
 
   $scope.selected = {};

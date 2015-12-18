@@ -1,5 +1,4 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-/*** Import Dependencies for AngularJS ***/
 'use strict';
 
 require('angular');
@@ -20,16 +19,11 @@ require('angular-loading-bar');
 
 require('angular-smart-table');
 
-// import 'angular-moment';
-// import 'ng-fx';
-
 require('satellizer');
 
 require('./libs/ng-alertify');
 
 require('./app/validation');
-
-/*** Import Modules of SATCI ***/
 
 require('./app/citizen/CitizenModule');
 
@@ -51,11 +45,14 @@ require('./app/theme/ThemeModule');
 
 require('./app/area/AreaModule');
 
-// import './app/';
-
 require('./app/services/RedirectWhenLoggedOut');
 
 require('./app/ui/Datepicker');
+
+// import './app/';
+
+/*** Import Modules of SATCI ***/
+/*** Import Dependencies for AngularJS ***/
 
 angular.module('SATCI', ['ngAnimate', 'ngSanitize', 'ui.bootstrap', 'ui.router', 'satellizer', 'smart-table',
 // 'angularMoment',
@@ -116,6 +113,8 @@ angular.module('SATCI', ['ngAnimate', 'ngSanitize', 'ui.bootstrap', 'ui.router',
   $locale.DATETIME_FORMATS.SHORTMONTH = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
   // console.log($locale.DATETIME_FORMATS);
 });
+// import 'angular-moment';
+// import 'ng-fx';
 
 },{"./app/area/AreaModule":3,"./app/category/CategoryModule":6,"./app/citizen/CitizenModule":9,"./app/home/HomeModule":12,"./app/institution/InstitutionModule":14,"./app/login/LoginModule":17,"./app/nav/NavModule":18,"./app/services/RedirectWhenLoggedOut":19,"./app/shared/SharedModule":22,"./app/solicitudes/SolicitudeModule":27,"./app/theme/ThemeModule":34,"./app/ui/Datepicker":36,"./app/validation":37,"./libs/ng-alertify":38,"angular":52,"angular-animate":40,"angular-bootstrap-npm":41,"angular-loading-bar":43,"angular-resource":45,"angular-sanitize":47,"angular-smart-table":49,"angular-ui-router":50,"satellizer":53,"ui-select":54}],2:[function(require,module,exports){
 "use strict";
@@ -135,13 +134,13 @@ require('./AreaResources');
 angular.module('SATCI.Area', []);
 
 },{"./AreaController":2,"./AreaResources":4}],4:[function(require,module,exports){
+'use strict';
+
 /**
 * Area.Resources Module
 *
 * Description
 */
-'use strict';
-
 angular.module('Area.resources', ['ngResource', 'SATCI.Shared']).factory('Areas', function ($resource, ResourcesUrl) {
   return $resource(ResourcesUrl.api + 'area/:id', { id: '@_id' }, {
     update: { method: 'PUT', params: { id: '@_id' } }
@@ -166,13 +165,13 @@ require('./CategoryResources');
 angular.module('SATCI.Category', []);
 
 },{"./CategoryController":5,"./CategoryResources":7}],7:[function(require,module,exports){
+'use strict';
+
 /**
 * Category.Resources Module
 *
 * Description
 */
-'use strict';
-
 angular.module('Category.resources', ['ngResource', 'SATCI.Shared']).factory('Categories', function ($resource, ResourcesUrl) {
   return $resource(ResourcesUrl.api + 'category/:id', { id: '@_id' }, {
     update: { method: 'PUT', params: { id: '@_id' } }
@@ -180,13 +179,13 @@ angular.module('Category.resources', ['ngResource', 'SATCI.Shared']).factory('Ca
 });
 
 },{}],8:[function(require,module,exports){
+'use strict';
+
 /**
 * Citizens.controller Module
 *
 * Description
 */
-'use strict';
-
 angular.module('Citizen.controller', []);
 
 },{}],9:[function(require,module,exports){
@@ -216,13 +215,13 @@ angular.module('SATCI.Citizen', ['ui.router', 'Citizen.Create', 'Citizen.control
 });
 
 },{"./CitizenController":8,"./CitizenResources":10,"./create/CreateCitizenModule":11}],10:[function(require,module,exports){
+'use strict';
+
 /**
 * Citizens.resources Module
 *
 * Description
 */
-'use strict';
-
 angular.module('Citizen.resources', ['ngResource', 'SATCI.Shared']).factory('Citizens', function ($resource, ResourcesUrl) {
   return $resource(ResourcesUrl.api + 'citizen/:id', { id: '@_id' }, {
     update: { method: 'PUT', params: { id: '@_id' } }
@@ -230,13 +229,13 @@ angular.module('Citizen.resources', ['ngResource', 'SATCI.Shared']).factory('Cit
 });
 
 },{}],11:[function(require,module,exports){
+'use strict';
+
 /**
 * Citizens.Create Module
 *
 * Description
 */
-'use strict';
-
 angular.module('Citizen.Create', ['Citizen.resources']).controller('CreateCitizenCtrl', function ($scope, $filter, Alertify, Citizens) {
 
   $scope.citizen = {
@@ -285,13 +284,13 @@ angular.module('Citizen.Create', ['Citizen.resources']).controller('CreateCitize
 });
 
 },{}],12:[function(require,module,exports){
+'use strict';
+
 /**
 * SATCI.Home Module
 *
 * Description
 */
-'use strict';
-
 angular.module('SATCI.Home', ['ui.router', 'SATCI.Shared']).config(function ($stateProvider, PathTemplates) {
   $stateProvider.state('home', {
     url: '/home',
@@ -300,13 +299,13 @@ angular.module('SATCI.Home', ['ui.router', 'SATCI.Shared']).config(function ($st
 });
 
 },{}],13:[function(require,module,exports){
+'use strict';
+
 /**
 * Institution.controller Module
 *
 * Description
 */
-'use strict';
-
 angular.module('Institution.controller', []);
 
 },{}],14:[function(require,module,exports){
@@ -336,13 +335,13 @@ angular.module('SATCI.Institution', ['ui.router', 'Institution.Create', 'Institu
 });
 
 },{"./InstitutionController":13,"./InstitutionResources":15,"./create/CreateInstitutionModule":16}],15:[function(require,module,exports){
+'use strict';
+
 /**
 * Institution.resources Module
 *
 * Description
 */
-'use strict';
-
 angular.module('Institution.resources', ['ngResource', 'SATCI.Shared']).factory('Institutions', function ($resource, ResourcesUrl) {
   return $resource(ResourcesUrl.api + 'institution/:id', { id: '@_id' }, {
     update: { method: 'PUT', params: { id: '@_id' } }
@@ -536,13 +535,13 @@ angular.module('SATCI.RedirectWhenLoggedOutServices', []).factory('redirectWhenL
 });
 
 },{}],20:[function(require,module,exports){
+'use strict';
+
 /**
 * Shared.directives Module
 *
 * Description
 */
-'use strict';
-
 angular.module('Shared.directives', []).directive('filteredInput', function ($filter) {
   var dirLink = function dirLink(s, e, a, c) {
     s.$watch(a.ngModel, function (v) {
@@ -644,17 +643,15 @@ angular.module('SATCI.Shared', ['Shared.directives', 'Shared.filters', 'Shared.r
 // var resourceUrl = 'http://localhost/satci/public/api/';
 // var resourceUrl = 'http://192.168.1.26/satci/public/api/';
 // var resourceUrl = 'http://192.168.0.103/satci/public/api/';
-// api:    'http://localhost/satci/public/api/',
-// api:    '/api/',
 
 },{"./SharedDirectives":20,"./SharedFilters":21,"./SharedResources":23,"./SharedServices":24}],23:[function(require,module,exports){
+'use strict';
+
 /**
 * Shared.resources Module
 *
 * Description
 */
-'use strict';
-
 angular.module('Shared.resources', ['ngResource']).factory('Parishes', function ($resource, ResourcesUrl) {
   return $resource(ResourcesUrl.api + 'parish/:id', { id: '@_id' }, {
     update: { method: 'PUT', params: { id: '@_id' } }
@@ -662,13 +659,13 @@ angular.module('Shared.resources', ['ngResource']).factory('Parishes', function 
 });
 
 },{}],24:[function(require,module,exports){
+'use strict';
+
 /**
 * Shared.services Module
 *
 * Description
 */
-'use strict';
-
 angular.module('Shared.services', []).factory('paginateService', ['$q', '$filter', '$timeout', function ($q, $filter, $timeout) {
 
   function getPage(data, start, number, params) {
@@ -725,13 +722,13 @@ angular.module('Solicitude.controller', []).controller('SolicitudeCtrl', functio
 });
 
 },{}],26:[function(require,module,exports){
+'use strict';
+
 /**
 * Solcitude.directives Module
 *
 * Description
 */
-'use strict';
-
 angular.module('Solicitude.directives', ['SATCI.Shared']).directive('solicitudeList', function (PathTemplates) {
   return {
     restrict: 'E',
@@ -828,13 +825,13 @@ angular.module('Solicitude.resources', ['ngResource', 'SATCI.Shared']).factory('
 });
 
 },{}],29:[function(require,module,exports){
+'use strict';
+
 /**
 * Solicitude.Assign Module
 *
 * Description
 */
-'use strict';
-
 angular.module('Solicitude.Assign', ['ui.router', 'ui.select', 'ui.bootstrap', 'Alertify', 'SATCI.Shared', 'Solicitude.resources', 'Theme.resources', 'Category.resources', 'Area.resources']).controller('AssignSolicitudeCtrl', function ($state, $scope, $stateParams, $uibModal, Alertify, Solicitudes, SolicitudesAssign, Themes, Categories, Areas) {
 
   $scope.selected = {};
@@ -1335,13 +1332,13 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
 });
 
 },{}],31:[function(require,module,exports){
+'use strict';
+
 /**
 * Solicitude.Edit Module
 *
 * Description
 */
-'use strict';
-
 angular.module('Solicitude.Edit', ['ui.router', 'Alertify', 'SATCI.Shared', 'Solicitude.resources']).controller('EditSolicitudeCtrl', function ($state, $scope, $stateParams, $filter, $uibModal, Alertify, Solicitudes) {
 
   Solicitudes.get({ id: $stateParams.id }).$promise.then(function (data) {
@@ -1488,13 +1485,13 @@ angular.module('Solicitude.Edit', ['ui.router', 'Alertify', 'SATCI.Shared', 'Sol
 });
 
 },{}],32:[function(require,module,exports){
+'use strict';
+
 /**
 * Solicitude.Assign Module
 *
 * Description
 */
-'use strict';
-
 angular.module('Solicitude.Show', ['ui.router', 'ui.bootstrap', 'Alertify', 'SATCI.Shared', 'Solicitude.resources']).controller('ShowSolicitudeCtrl', function ($state, $scope, $stateParams, $uibModal, Alertify, Solicitudes) {
   $scope.solicitude = '';
   /*  let solicitude = Solicitudes.get({id: $stateParams.id});
@@ -1542,13 +1539,13 @@ require('./ThemeResources');
 angular.module('SATCI.Theme', []);
 
 },{"./ThemeController":33,"./ThemeResources":35}],35:[function(require,module,exports){
+'use strict';
+
 /**
 * Theme.Resources Module
 *
 * Description
 */
-'use strict';
-
 angular.module('Theme.resources', ['ngResource', 'SATCI.Shared']).factory('Themes', function ($resource, ResourcesUrl) {
   return $resource(ResourcesUrl.api + 'theme/:id', { id: '@_id' }, {
     update: { method: 'PUT', params: { id: '@_id' } }
@@ -1721,7 +1718,7 @@ function solicitudeNumberMask(input, e) {
 	if (key == 45 && input.length === 3) {
 		return true;
 	}
-	if (key >= 48 && key <= 57 && (input.length >= 0 && input.length <= 2) || input.length >= 4 && input.length <= 6) {
+	if (key >= 48 && key <= 57 && input.length >= 0 && input.length <= 2 || input.length >= 4 && input.length <= 6) {
 		return true;
 	}
 	return false;
@@ -1736,13 +1733,13 @@ function rifMask(input, e) {
  	74 = J, 106 = j, 77 = M, 109 = m, 80 = P, 112 = p
  	82 = R, 114 = r, 86 = V, 118 = v
  	*/
-	if ((key == 69 || key == 101 || (key == 71 || key == 103) || (key == 73 || key == 105) || (key == 74 || key == 106) || (key == 77 || key == 109) || (key == 80 || key == 112) || (key == 82 || key == 114) || (key == 86 || key == 118)) && input.length === 0) {
+	if ((key == 69 || key == 101 || key == 71 || key == 103 || key == 73 || key == 105 || key == 74 || key == 106 || key == 77 || key == 109 || key == 80 || key == 112 || key == 82 || key == 114 || key == 86 || key == 118) && input.length === 0) {
 		return true;
 	}
 	if (key == 45 && (input.length === 1 || input.length === 10)) {
 		return true;
 	}
-	if (key >= 48 && key <= 57 && (input.length >= 2 && input.length <= 9) || input.length === 11) {
+	if (key >= 48 && key <= 57 && input.length >= 2 && input.length <= 9 || input.length === 11) {
 		return true;
 	}
 	return false;
@@ -1750,6 +1747,10 @@ function rifMask(input, e) {
 
 },{}],38:[function(require,module,exports){
 (function (global){
+"use strict";
+
+function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
+
 /**
  ng-alertify@0.8.0
  AngularJS wrapper around alertify popup library
@@ -1757,8 +1758,17 @@ function rifMask(input, e) {
  https://github.com/kensho/ng-alertify
 */
 
-"use strict";
-
+/**
+ * alertify
+ * An unobtrusive customizable JavaScript notification system
+ *
+ * @author Fabien Doiron <fabien.doiron@gmail.com>
+ * @copyright Fabien Doiron 2013
+ * @license MIT <http://opensource.org/licenses/mit-license.php>
+ * @link http://fabien-d.github.com/alertify.js/
+ * @module alertify
+ * @version 0.3.11
+ */
 (function (global, undefined) {
 	"use strict";
 
@@ -2132,7 +2142,7 @@ function rifMask(input, e) {
 				// check to ensure the alertify dialog element
 				// has been successfully created
 				var check = function check() {
-					if (elLog && elLog.scrollTop !== null && (elCover && elCover.scrollTop !== null)) return;else check();
+					if (elLog && elLog.scrollTop !== null && elCover && elCover.scrollTop !== null) return;else check();
 				};
 				// error catching
 				if (typeof message !== "string") throw new Error("message must be a string");
@@ -2297,7 +2307,7 @@ function rifMask(input, e) {
 			set: function set(args) {
 				var k;
 				// error catching
-				if (typeof args !== "object" && args instanceof Array) throw new Error("args must be an object");
+				if ((typeof args === "undefined" ? "undefined" : _typeof(args)) !== "object" && args instanceof Array) throw new Error("args must be an object");
 				// set parameters
 				for (k in args) {
 					if (args.hasOwnProperty(k)) {
@@ -2486,22 +2496,11 @@ function rifMask(input, e) {
 		return alertifyProxy;
 	}]);
 })(window.angular, window.alertify);
-/**
- * alertify
- * An unobtrusive customizable JavaScript notification system
- *
- * @author Fabien Doiron <fabien.doiron@gmail.com>
- * @copyright Fabien Doiron 2013
- * @license MIT <http://opensource.org/licenses/mit-license.php>
- * @link http://fabien-d.github.com/alertify.js/
- * @module alertify
- * @version 0.3.11
- */
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],39:[function(require,module,exports){
 /**
- * @license AngularJS v1.4.7
+ * @license AngularJS v1.4.8
  * (c) 2010-2015 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -3124,6 +3123,8 @@ var ANIMATE_TIMER_KEY = '$$animateCss';
  *
  * * `event` - The DOM event (e.g. enter, leave, move). When used, a generated CSS class of `ng-EVENT` and `ng-EVENT-active` will be applied
  * to the element during the animation. Multiple events can be provided when spaces are used as a separator. (Note that this will not perform any DOM operation.)
+ * * `structural` - Indicates that the `ng-` prefix will be added to the event class. Setting to `false` or omitting will turn `ng-EVENT` and
+ * `ng-EVENT-active` in `EVENT` and `EVENT-active`. Unused if `event` is omitted.
  * * `easing` - The CSS easing value that will be applied to the transition or keyframe animation (or both).
  * * `transitionStyle` - The raw CSS transition style that will be used (e.g. `1s linear all`).
  * * `keyframeStyle` - The raw CSS keyframe animation style that will be used (e.g. `1s my_animation linear`).
@@ -4635,14 +4636,17 @@ var $$AnimateQueueProvider = ['$animateProvider', function($animateProvider) {
       return mergeAnimationOptions(element, options, {});
     }
 
-    function findCallbacks(element, event) {
+    function findCallbacks(parent, element, event) {
       var targetNode = getDomNode(element);
+      var targetParentNode = getDomNode(parent);
 
       var matches = [];
       var entries = callbackRegistry[event];
       if (entries) {
         forEach(entries, function(entry) {
           if (entry.node.contains(targetNode)) {
+            matches.push(entry.callback);
+          } else if (event === 'leave' && entry.node.contains(targetParentNode)) {
             matches.push(entry.callback);
           }
         });
@@ -4969,7 +4973,7 @@ var $$AnimateQueueProvider = ['$animateProvider', function($animateProvider) {
 
       function notifyProgress(runner, event, phase, data) {
         runInNextPostDigestOrNow(function() {
-          var callbacks = findCallbacks(element, event);
+          var callbacks = findCallbacks(parent, element, event);
           if (callbacks.length) {
             // do not optimize this call here to RAF because
             // we don't know how heavy the callback code here will
@@ -5960,7 +5964,7 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
  *       jQuery(element).fadeOut(1000, doneFn);
  *     }
  *   }
- * }]
+ * }]);
  * ```
  *
  * The nice thing about JS-based animations is that we can inject other services and make use of advanced animation libraries such as
@@ -5991,7 +5995,7 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
  *       // do some cool animation and call the doneFn
  *     }
  *   }
- * }]
+ * }]);
  * ```
  *
  * ## CSS + JS Animations Together
@@ -6013,7 +6017,7 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
  *       jQuery(element).slideIn(1000, doneFn);
  *     }
  *   }
- * }]
+ * }]);
  * ```
  *
  * ```css
@@ -6033,16 +6037,15 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
  * ```js
  * myModule.animation('.slide', ['$animateCss', function($animateCss) {
  *   return {
- *     enter: function(element, doneFn) {
+ *     enter: function(element) {
 *        // this will trigger `.slide.ng-enter` and `.slide.ng-enter-active`.
- *       var runner = $animateCss(element, {
+ *       return $animateCss(element, {
  *         event: 'enter',
  *         structural: true
- *       }).start();
-*        runner.done(doneFn);
+ *       });
  *     }
  *   }
- * }]
+ * }]);
  * ```
  *
  * The nice thing here is that we can save bandwidth by sticking to our CSS-based animation code and we don't need to rely on a 3rd-party animation framework.
@@ -6054,19 +6057,17 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
  * ```js
  * myModule.animation('.slide', ['$animateCss', function($animateCss) {
  *   return {
- *     enter: function(element, doneFn) {
- *       var runner = $animateCss(element, {
+ *     enter: function(element) {
+ *       return $animateCss(element, {
  *         event: 'enter',
  *         structural: true,
  *         addClass: 'maroon-setting',
  *         from: { height:0 },
  *         to: { height: 200 }
- *       }).start();
- *
- *       runner.done(doneFn);
+ *       });
  *     }
  *   }
- * }]
+ * }]);
  * ```
  *
  * Now we can fill in the rest via our transition CSS code:
@@ -15274,7 +15275,7 @@ module.exports = 'angular-loading-bar';
 
 },{"./build/loading-bar":42}],44:[function(require,module,exports){
 /**
- * @license AngularJS v1.4.7
+ * @license AngularJS v1.4.8
  * (c) 2010-2015 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -15848,8 +15849,17 @@ angular.module('ngResource', ['ng']).
               undefined;
 
             forEach(action, function(value, key) {
-              if (key != 'params' && key != 'isArray' && key != 'interceptor') {
-                httpConfig[key] = copy(value);
+              switch (key) {
+                default:
+                  httpConfig[key] = copy(value);
+                  break;
+                case 'params':
+                case 'isArray':
+                case 'interceptor':
+                  break;
+                case 'timeout':
+                  httpConfig[key] = value;
+                  break;
               }
             });
 
@@ -15955,7 +15965,7 @@ module.exports = 'ngResource';
 
 },{"./angular-resource":44}],46:[function(require,module,exports){
 /**
- * @license AngularJS v1.4.7
+ * @license AngularJS v1.4.8
  * (c) 2010-2015 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -16644,7 +16654,7 @@ module.exports = 'ngSanitize';
 
 },{"./angular-sanitize":46}],48:[function(require,module,exports){
 /** 
-* @version 2.1.4
+* @version 2.1.6
 * @license MIT
 */
 (function (ng, undefined){
@@ -16735,8 +16745,15 @@ ng.module('smart-table')
       safeGetter = $parse($attrs.stSafeSrc);
       $scope.$watch(function () {
         var safeSrc = safeGetter($scope);
+        return safeSrc && safeSrc.length ? safeSrc[0] : undefined;
+      }, function (newValue, oldValue) {
+        if (newValue !== oldValue) {
+          updateSafeCopy();
+        }
+      });
+      $scope.$watch(function () {
+        var safeSrc = safeGetter($scope);
         return safeSrc ? safeSrc.length : 0;
-
       }, function (newValue, oldValue) {
         if (newValue !== safeCopy.length) {
           updateSafeCopy();
@@ -16968,77 +16985,81 @@ ng.module('smart-table')
   }]);
 
 ng.module('smart-table')
-  .directive('stSort', ['stConfig', '$parse', '$timeout', function (stConfig, $parse, $timeout) {
-    return {
-      restrict: 'A',
-      require: '^stTable',
-      link: function (scope, element, attr, ctrl) {
+	.directive('stSort', ['stConfig', '$parse', '$timeout', function (stConfig, $parse, $timeout) {
+		return {
+			restrict: 'A',
+			require: '^stTable',
+			link: function (scope, element, attr, ctrl) {
 
-        var predicate = attr.stSort;
-        var getter = $parse(predicate);
-        var index = 0;
-        var classAscent = attr.stClassAscent || stConfig.sort.ascentClass;
-        var classDescent = attr.stClassDescent || stConfig.sort.descentClass;
-        var stateClasses = [classAscent, classDescent];
-        var sortDefault;
-        var skipNatural = attr.stSkipNatural !== undefined ? attr.stSkipNatural : stConfig.sort.skipNatural;
-        var promise = null;
-        var throttle = attr.stDelay || stConfig.sort.delay;
+				var predicate = attr.stSort;
+				var getter = $parse(predicate);
+				var index = 0;
+				var classAscent = attr.stClassAscent || stConfig.sort.ascentClass;
+				var classDescent = attr.stClassDescent || stConfig.sort.descentClass;
+				var stateClasses = [classAscent, classDescent];
+				var sortDefault;
+				var skipNatural = attr.stSkipNatural !== undefined ? attr.stSkipNatural : stConfig.sort.skipNatural;
+				var promise = null;
+				var throttle = attr.stDelay || stConfig.sort.delay;
 
-        if (attr.stSortDefault) {
-          sortDefault = scope.$eval(attr.stSortDefault) !== undefined ? scope.$eval(attr.stSortDefault) : attr.stSortDefault;
-        }
+				if (attr.stSortDefault) {
+					sortDefault = scope.$eval(attr.stSortDefault) !== undefined ? scope.$eval(attr.stSortDefault) : attr.stSortDefault;
+				}
 
-        //view --> table state
-        function sort () {
-          index++;
-          var func;
-          predicate = ng.isFunction(getter(scope)) ? getter(scope) : attr.stSort;
-          if (index % 3 === 0 && !!skipNatural !== true) {
-            //manual reset
-            index = 0;
-            ctrl.tableState().sort = {};
-            ctrl.tableState().pagination.start = 0;
-            func = ctrl.pipe.bind(ctrl);
-          } else {
-            func = ctrl.sortBy.bind(ctrl, predicate, index % 2 === 0);
-          }
-          if (promise !== null) {
-            $timeout.cancel(promise);
-          }
-          promise = $timeout(func, throttle);
-        }
+				//view --> table state
+				function sort () {
+					index++;
+					var func;
+					predicate = ng.isFunction(getter(scope)) || ng.isArray(getter(scope)) ? getter(scope) : attr.stSort;
+					if (index % 3 === 0 && !!skipNatural !== true) {
+						//manual reset
+						index = 0;
+						ctrl.tableState().sort = {};
+						ctrl.tableState().pagination.start = 0;
+						func = ctrl.pipe.bind(ctrl);
+					} else {
+						func = ctrl.sortBy.bind(ctrl, predicate, index % 2 === 0);
+					}
+					if (promise !== null) {
+						$timeout.cancel(promise);
+					}
+					if (throttle < 0) {
+						func();
+					} else {
+						promise = $timeout(func, throttle);
+					}
+				}
 
-        element.bind('click', function sortClick () {
-          if (predicate) {
-            sort();
-          }
-        });
+				element.bind('click', function sortClick () {
+					if (predicate) {
+						scope.$apply(sort);
+					}
+				});
 
-        if (sortDefault) {
-          index = sortDefault === 'reverse' ? 1 : 0;
-          sort();
-        }
+				if (sortDefault) {
+					index = sortDefault === 'reverse' ? 1 : 0;
+					sort();
+				}
 
-        //table state --> view
-        scope.$watch(function () {
-          return ctrl.tableState().sort;
-        }, function (newValue) {
-          if (newValue.predicate !== predicate) {
-            index = 0;
-            element
-              .removeClass(classAscent)
-              .removeClass(classDescent);
-          } else {
-            index = newValue.reverse === true ? 2 : 1;
-            element
-              .removeClass(stateClasses[index % 2])
-              .addClass(stateClasses[index - 1]);
-          }
-        }, true);
-      }
-    };
-  }]);
+				//table state --> view
+				scope.$watch(function () {
+					return ctrl.tableState().sort;
+				}, function (newValue) {
+					if (newValue.predicate !== predicate) {
+						index = 0;
+						element
+							.removeClass(classAscent)
+							.removeClass(classDescent);
+					} else {
+						index = newValue.reverse === true ? 2 : 1;
+						element
+							.removeClass(stateClasses[index % 2])
+							.addClass(stateClasses[index - 1]);
+					}
+				}, true);
+			}
+		};
+	}]);
 
 ng.module('smart-table')
   .directive('stPagination', ['stConfig', function (stConfig) {
@@ -21535,7 +21556,7 @@ angular.module('ui.router.state')
 })(window, window.angular);
 },{}],51:[function(require,module,exports){
 /**
- * @license AngularJS v1.4.7
+ * @license AngularJS v1.4.8
  * (c) 2010-2015 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -21593,7 +21614,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message += '\nhttp://errors.angularjs.org/1.4.7/' +
+    message += '\nhttp://errors.angularjs.org/1.4.8/' +
       (module ? module + '/' : '') + code;
 
     for (i = SKIP_INDEXES, paramPrefix = '?'; i < templateArgs.length; i++, paramPrefix = '&') {
@@ -21803,20 +21824,24 @@ msie = document.documentMode;
  *                   String ...)
  */
 function isArrayLike(obj) {
-  if (obj == null || isWindow(obj)) {
-    return false;
-  }
+
+  // `null`, `undefined` and `window` are not array-like
+  if (obj == null || isWindow(obj)) return false;
+
+  // arrays, strings and jQuery/jqLite objects are array like
+  // * jqLite is either the jQuery or jqLite constructor function
+  // * we have to check the existance of jqLite first as this method is called
+  //   via the forEach method when constructing the jqLite object in the first place
+  if (isArray(obj) || isString(obj) || (jqLite && obj instanceof jqLite)) return true;
 
   // Support: iOS 8.2 (not reproducible in simulator)
   // "length" in obj used to prevent JIT error (gh-11508)
   var length = "length" in Object(obj) && obj.length;
 
-  if (obj.nodeType === NODE_TYPE_ELEMENT && length) {
-    return true;
-  }
-
-  return isString(obj) || isArray(obj) || length === 0 ||
-         typeof length === 'number' && length > 0 && (length - 1) in obj;
+  // NodeList objects (with `item` method) and
+  // other objects with suitable length characteristics are array-like
+  return isNumber(length) &&
+    (length >= 0 && (length - 1) in obj || typeof obj.item == 'function');
 }
 
 /**
@@ -21961,6 +21986,10 @@ function baseExtend(dst, objs, deep) {
           dst[key] = new Date(src.valueOf());
         } else if (isRegExp(src)) {
           dst[key] = new RegExp(src);
+        } else if (src.nodeName) {
+          dst[key] = src.cloneNode(true);
+        } else if (isElement(src)) {
+          dst[key] = src.clone();
         } else {
           if (!isObject(dst[key])) dst[key] = isArray(src) ? [] : {};
           baseExtend(dst[key], [src], true);
@@ -22076,7 +22105,7 @@ identity.$inject = [];
 function valueFn(value) {return function() {return value;};}
 
 function hasCustomToString(obj) {
-  return isFunction(obj.toString) && obj.toString !== Object.prototype.toString;
+  return isFunction(obj.toString) && obj.toString !== toString;
 }
 
 
@@ -22275,9 +22304,9 @@ function isPromiseLike(obj) {
 }
 
 
-var TYPED_ARRAY_REGEXP = /^\[object (Uint8(Clamped)?)|(Uint16)|(Uint32)|(Int8)|(Int16)|(Int32)|(Float(32)|(64))Array\]$/;
+var TYPED_ARRAY_REGEXP = /^\[object (?:Uint8|Uint8Clamped|Uint16|Uint32|Int8|Int16|Int32|Float32|Float64)Array\]$/;
 function isTypedArray(value) {
-  return TYPED_ARRAY_REGEXP.test(toString.call(value));
+  return value && isNumber(value.length) && TYPED_ARRAY_REGEXP.test(toString.call(value));
 }
 
 
@@ -22399,100 +22428,111 @@ function arrayRemove(array, value) {
  </file>
  </example>
  */
-function copy(source, destination, stackSource, stackDest) {
-  if (isWindow(source) || isScope(source)) {
-    throw ngMinErr('cpws',
-      "Can't copy! Making copies of Window or Scope instances is not supported.");
-  }
-  if (isTypedArray(destination)) {
-    throw ngMinErr('cpta',
-      "Can't copy! TypedArray destination cannot be mutated.");
-  }
+function copy(source, destination) {
+  var stackSource = [];
+  var stackDest = [];
 
-  if (!destination) {
-    destination = source;
-    if (isObject(source)) {
-      var index;
-      if (stackSource && (index = stackSource.indexOf(source)) !== -1) {
-        return stackDest[index];
-      }
-
-      // TypedArray, Date and RegExp have specific copy functionality and must be
-      // pushed onto the stack before returning.
-      // Array and other objects create the base object and recurse to copy child
-      // objects. The array/object will be pushed onto the stack when recursed.
-      if (isArray(source)) {
-        return copy(source, [], stackSource, stackDest);
-      } else if (isTypedArray(source)) {
-        destination = new source.constructor(source);
-      } else if (isDate(source)) {
-        destination = new Date(source.getTime());
-      } else if (isRegExp(source)) {
-        destination = new RegExp(source.source, source.toString().match(/[^\/]*$/)[0]);
-        destination.lastIndex = source.lastIndex;
-      } else if (isFunction(source.cloneNode)) {
-          destination = source.cloneNode(true);
-      } else {
-        var emptyObject = Object.create(getPrototypeOf(source));
-        return copy(source, emptyObject, stackSource, stackDest);
-      }
-
-      if (stackDest) {
-        stackSource.push(source);
-        stackDest.push(destination);
-      }
+  if (destination) {
+    if (isTypedArray(destination)) {
+      throw ngMinErr('cpta', "Can't copy! TypedArray destination cannot be mutated.");
     }
-  } else {
-    if (source === destination) throw ngMinErr('cpi',
-      "Can't copy! Source and destination are identical.");
-
-    stackSource = stackSource || [];
-    stackDest = stackDest || [];
-
-    if (isObject(source)) {
-      stackSource.push(source);
-      stackDest.push(destination);
+    if (source === destination) {
+      throw ngMinErr('cpi', "Can't copy! Source and destination are identical.");
     }
 
+    // Empty the destination object
+    if (isArray(destination)) {
+      destination.length = 0;
+    } else {
+      forEach(destination, function(value, key) {
+        if (key !== '$$hashKey') {
+          delete destination[key];
+        }
+      });
+    }
+
+    stackSource.push(source);
+    stackDest.push(destination);
+    return copyRecurse(source, destination);
+  }
+
+  return copyElement(source);
+
+  function copyRecurse(source, destination) {
+    var h = destination.$$hashKey;
     var result, key;
     if (isArray(source)) {
-      destination.length = 0;
-      for (var i = 0; i < source.length; i++) {
-        destination.push(copy(source[i], null, stackSource, stackDest));
+      for (var i = 0, ii = source.length; i < ii; i++) {
+        destination.push(copyElement(source[i]));
+      }
+    } else if (isBlankObject(source)) {
+      // createMap() fast path --- Safe to avoid hasOwnProperty check because prototype chain is empty
+      for (key in source) {
+        destination[key] = copyElement(source[key]);
+      }
+    } else if (source && typeof source.hasOwnProperty === 'function') {
+      // Slow path, which must rely on hasOwnProperty
+      for (key in source) {
+        if (source.hasOwnProperty(key)) {
+          destination[key] = copyElement(source[key]);
+        }
       }
     } else {
-      var h = destination.$$hashKey;
-      if (isArray(destination)) {
-        destination.length = 0;
-      } else {
-        forEach(destination, function(value, key) {
-          delete destination[key];
-        });
-      }
-      if (isBlankObject(source)) {
-        // createMap() fast path --- Safe to avoid hasOwnProperty check because prototype chain is empty
-        for (key in source) {
-          destination[key] = copy(source[key], null, stackSource, stackDest);
-        }
-      } else if (source && typeof source.hasOwnProperty === 'function') {
-        // Slow path, which must rely on hasOwnProperty
-        for (key in source) {
-          if (source.hasOwnProperty(key)) {
-            destination[key] = copy(source[key], null, stackSource, stackDest);
-          }
-        }
-      } else {
-        // Slowest path --- hasOwnProperty can't be called as a method
-        for (key in source) {
-          if (hasOwnProperty.call(source, key)) {
-            destination[key] = copy(source[key], null, stackSource, stackDest);
-          }
+      // Slowest path --- hasOwnProperty can't be called as a method
+      for (key in source) {
+        if (hasOwnProperty.call(source, key)) {
+          destination[key] = copyElement(source[key]);
         }
       }
-      setHashKey(destination,h);
     }
+    setHashKey(destination, h);
+    return destination;
   }
-  return destination;
+
+  function copyElement(source) {
+    // Simple values
+    if (!isObject(source)) {
+      return source;
+    }
+
+    // Already copied values
+    var index = stackSource.indexOf(source);
+    if (index !== -1) {
+      return stackDest[index];
+    }
+
+    if (isWindow(source) || isScope(source)) {
+      throw ngMinErr('cpws',
+        "Can't copy! Making copies of Window or Scope instances is not supported.");
+    }
+
+    var needsRecurse = false;
+    var destination;
+
+    if (isArray(source)) {
+      destination = [];
+      needsRecurse = true;
+    } else if (isTypedArray(source)) {
+      destination = new source.constructor(source);
+    } else if (isDate(source)) {
+      destination = new Date(source.getTime());
+    } else if (isRegExp(source)) {
+      destination = new RegExp(source.source, source.toString().match(/[^\/]*$/)[0]);
+      destination.lastIndex = source.lastIndex;
+    } else if (isFunction(source.cloneNode)) {
+        destination = source.cloneNode(true);
+    } else {
+      destination = Object.create(getPrototypeOf(source));
+      needsRecurse = true;
+    }
+
+    stackSource.push(source);
+    stackDest.push(destination);
+
+    return needsRecurse
+      ? copyRecurse(source, destination)
+      : destination;
+  }
 }
 
 /**
@@ -23616,7 +23656,7 @@ function setupModuleLoader(window) {
            * @param {string} name constant name
            * @param {*} object Constant value.
            * @description
-           * Because the constant are fixed, they get applied before other provide methods.
+           * Because the constants are fixed, they get applied before other provide methods.
            * See {@link auto.$provide#constant $provide.constant()}.
            */
           constant: invokeLater('$provide', 'constant', 'unshift'),
@@ -23915,11 +23955,11 @@ function toDebugString(obj) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.4.7',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.4.8',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 4,
-  dot: 7,
-  codeName: 'dark-luminescence'
+  dot: 8,
+  codeName: 'ice-manipulation'
 };
 
 
@@ -24301,6 +24341,14 @@ function jqLiteParseHTML(html, context) {
   return [];
 }
 
+
+// IE9-11 has no method "contains" in SVG element and in Node.prototype. Bug #10259.
+var jqLiteContains = Node.prototype.contains || function(arg) {
+  // jshint bitwise: false
+  return !!(this.compareDocumentPosition(arg) & 16);
+  // jshint bitwise: true
+};
+
 /////////////////////////////////////////////
 function JQLite(element) {
   if (element instanceof JQLite) {
@@ -24359,17 +24407,23 @@ function jqLiteOff(element, type, fn, unsupported) {
       delete events[type];
     }
   } else {
-    forEach(type.split(' '), function(type) {
-      if (isDefined(fn)) {
-        var listenerFns = events[type];
-        arrayRemove(listenerFns || [], fn);
-        if (listenerFns && listenerFns.length > 0) {
-          return;
-        }
-      }
 
-      removeEventListenerFn(element, type, handle);
-      delete events[type];
+    var removeHandler = function(type) {
+      var listenerFns = events[type];
+      if (isDefined(fn)) {
+        arrayRemove(listenerFns || [], fn);
+      }
+      if (!(isDefined(fn) && listenerFns && listenerFns.length > 0)) {
+        removeEventListenerFn(element, type, handle);
+        delete events[type];
+      }
+    };
+
+    forEach(type.split(' '), function(type) {
+      removeHandler(type);
+      if (MOUSE_EVENT_MAP[type]) {
+        removeHandler(MOUSE_EVENT_MAP[type]);
+      }
     });
   }
 }
@@ -24824,6 +24878,9 @@ function createEventHandler(element, events) {
       return event.immediatePropagationStopped === true;
     };
 
+    // Some events have special handlers that wrap the real handler
+    var handlerWrapper = eventFns.specialHandlerWrapper || defaultHandlerWrapper;
+
     // Copy event handlers in case event handlers array is modified during execution.
     if ((eventFnsLength > 1)) {
       eventFns = shallowCopy(eventFns);
@@ -24831,7 +24888,7 @@ function createEventHandler(element, events) {
 
     for (var i = 0; i < eventFnsLength; i++) {
       if (!event.isImmediatePropagationStopped()) {
-        eventFns[i].call(element, event);
+        handlerWrapper(element, event, eventFns[i]);
       }
     }
   };
@@ -24840,6 +24897,22 @@ function createEventHandler(element, events) {
   //       events on `element`
   eventHandler.elem = element;
   return eventHandler;
+}
+
+function defaultHandlerWrapper(element, event, handler) {
+  handler.call(element, event);
+}
+
+function specialMouseHandlerWrapper(target, event, handler) {
+  // Refer to jQuery's implementation of mouseenter & mouseleave
+  // Read about mouseenter and mouseleave:
+  // http://www.quirksmode.org/js/events_mouse.html#link8
+  var related = event.relatedTarget;
+  // For mousenter/leave call the handler if related is outside the target.
+  // NB: No relatedTarget if the mouse left/entered the browser window
+  if (!related || (related !== target && !jqLiteContains.call(target, related))) {
+    handler.call(target, event);
+  }
 }
 
 //////////////////////////////////////////
@@ -24870,35 +24943,28 @@ forEach({
     var types = type.indexOf(' ') >= 0 ? type.split(' ') : [type];
     var i = types.length;
 
-    while (i--) {
-      type = types[i];
+    var addHandler = function(type, specialHandlerWrapper, noEventListener) {
       var eventFns = events[type];
 
       if (!eventFns) {
-        events[type] = [];
-
-        if (type === 'mouseenter' || type === 'mouseleave') {
-          // Refer to jQuery's implementation of mouseenter & mouseleave
-          // Read about mouseenter and mouseleave:
-          // http://www.quirksmode.org/js/events_mouse.html#link8
-
-          jqLiteOn(element, MOUSE_EVENT_MAP[type], function(event) {
-            var target = this, related = event.relatedTarget;
-            // For mousenter/leave call the handler if related is outside the target.
-            // NB: No relatedTarget if the mouse left/entered the browser window
-            if (!related || (related !== target && !target.contains(related))) {
-              handle(event, type);
-            }
-          });
-
-        } else {
-          if (type !== '$destroy') {
-            addEventListenerFn(element, type, handle);
-          }
+        eventFns = events[type] = [];
+        eventFns.specialHandlerWrapper = specialHandlerWrapper;
+        if (type !== '$destroy' && !noEventListener) {
+          addEventListenerFn(element, type, handle);
         }
-        eventFns = events[type];
       }
+
       eventFns.push(fn);
+    };
+
+    while (i--) {
+      type = types[i];
+      if (MOUSE_EVENT_MAP[type]) {
+        addHandler(MOUSE_EVENT_MAP[type], specialMouseHandlerWrapper);
+        addHandler(type, undefined, true);
+      } else {
+        addHandler(type);
+      }
     }
   },
 
@@ -26079,7 +26145,7 @@ function $AnchorScrollProvider() {
    * When called, it scrolls to the element related to the specified `hash` or (if omitted) to the
    * current value of {@link ng.$location#hash $location.hash()}, according to the rules specified
    * in the
-   * [HTML5 spec](http://dev.w3.org/html5/spec/Overview.html#the-indicated-part-of-the-document).
+   * [HTML5 spec](http://www.w3.org/html/wg/drafts/html/master/browsers.html#the-indicated-part-of-the-document).
    *
    * It also watches the {@link ng.$location#hash $location.hash()} and automatically scrolls to
    * match any anchor whenever it changes. This can be disabled by calling
@@ -26594,7 +26660,7 @@ var $AnimateProvider = ['$provide', function($provide) {
      * when an animation is detected (and animations are enabled), $animate will do the heavy lifting
      * to ensure that animation runs with the triggered DOM operation.
      *
-     * By default $animate doesn't trigger an animations. This is because the `ngAnimate` module isn't
+     * By default $animate doesn't trigger any animations. This is because the `ngAnimate` module isn't
      * included and only when it is active then the animation hooks that `$animate` triggers will be
      * functional. Once active then all structural `ng-` directives will trigger animations as they perform
      * their DOM-related operations (enter, leave and move). Other directives such as `ngClass`,
@@ -27446,9 +27512,9 @@ function $CacheFactoryProvider() {
 
       var size = 0,
           stats = extend({}, options, {id: cacheId}),
-          data = {},
+          data = createMap(),
           capacity = (options && options.capacity) || Number.MAX_VALUE,
-          lruHash = {},
+          lruHash = createMap(),
           freshEnd = null,
           staleEnd = null;
 
@@ -27576,6 +27642,8 @@ function $CacheFactoryProvider() {
             delete lruHash[key];
           }
 
+          if (!(key in data)) return;
+
           delete data[key];
           size--;
         },
@@ -27590,9 +27658,9 @@ function $CacheFactoryProvider() {
          * Clears the cache object of any entries.
          */
         removeAll: function() {
-          data = {};
+          data = createMap();
           size = 0;
-          lruHash = {};
+          lruHash = createMap();
           freshEnd = staleEnd = null;
         },
 
@@ -28993,6 +29061,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
               return template.replace(/\{\{/g, startSymbol).replace(/}}/g, endSymbol);
         },
         NG_ATTR_BINDING = /^ngAttr[A-Z]/;
+    var MULTI_ELEMENT_DIR_RE = /^(.+)Start$/;
 
     compile.$$addBindingInfo = debugInfoEnabled ? function $$addBindingInfo($element, binding) {
       var bindings = $element.data('$binding') || [];
@@ -29044,6 +29113,14 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
       var namespace = null;
       return function publicLinkFn(scope, cloneConnectFn, options) {
         assertArg(scope, 'scope');
+
+        if (previousCompileContext && previousCompileContext.needsNewScope) {
+          // A parent directive did a replace and a directive on this element asked
+          // for transclusion, which caused us to lose a layer of element on which
+          // we could hold the new transclusion scope, so we will create it manually
+          // here.
+          scope = scope.$parent.$new();
+        }
 
         options = options || {};
         var parentBoundTranscludeFn = options.parentBoundTranscludeFn,
@@ -29190,11 +29267,6 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
             if (nodeLinkFn.scope) {
               childScope = scope.$new();
               compile.$$addScopeInfo(jqLite(node), childScope);
-              var destroyBindings = nodeLinkFn.$$destroyBindings;
-              if (destroyBindings) {
-                nodeLinkFn.$$destroyBindings = null;
-                childScope.$on('$destroyed', destroyBindings);
-              }
             } else {
               childScope = scope;
             }
@@ -29213,8 +29285,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
               childBoundTranscludeFn = null;
             }
 
-            nodeLinkFn(childLinkFn, childScope, node, $rootElement, childBoundTranscludeFn,
-                       nodeLinkFn);
+            nodeLinkFn(childLinkFn, childScope, node, $rootElement, childBoundTranscludeFn);
 
           } else if (childLinkFn) {
             childLinkFn(scope, node.childNodes, undefined, parentBoundTranscludeFn);
@@ -29283,13 +29354,11 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
                 });
             }
 
-            var directiveNName = ngAttrName.replace(/(Start|End)$/, '');
-            if (directiveIsMultiElement(directiveNName)) {
-              if (ngAttrName === directiveNName + 'Start') {
-                attrStartName = name;
-                attrEndName = name.substr(0, name.length - 5) + 'end';
-                name = name.substr(0, name.length - 6);
-              }
+            var multiElementMatch = ngAttrName.match(MULTI_ELEMENT_DIR_RE);
+            if (multiElementMatch && directiveIsMultiElement(multiElementMatch[1])) {
+              attrStartName = name;
+              attrEndName = name.substr(0, name.length - 5) + 'end';
+              name = name.substr(0, name.length - 6);
             }
 
             nName = directiveNormalize(name.toLowerCase());
@@ -29528,7 +29597,8 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
           } else {
             $template = jqLite(jqLiteClone(compileNode)).contents();
             $compileNode.empty(); // clear contents
-            childTranscludeFn = compile($template, transcludeFn);
+            childTranscludeFn = compile($template, transcludeFn, undefined,
+                undefined, { needsNewScope: directive.$$isolateScope || directive.$$newScope});
           }
         }
 
@@ -29570,8 +29640,11 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
             var templateDirectives = collectDirectives(compileNode, [], newTemplateAttrs);
             var unprocessedDirectives = directives.splice(i + 1, directives.length - (i + 1));
 
-            if (newIsolateScopeDirective) {
-              markDirectivesAsIsolate(templateDirectives);
+            if (newIsolateScopeDirective || newScopeDirective) {
+              // The original directive caused the current element to be replaced but this element
+              // also needs to have a new scope, so we need to tell the template directives
+              // that they would need to get their scope from further up, if they require transclusion
+              markDirectiveScope(templateDirectives, newIsolateScopeDirective, newScopeDirective);
             }
             directives = directives.concat(templateDirectives).concat(unprocessedDirectives);
             mergeTemplateAttributes(templateAttrs, newTemplateAttrs);
@@ -29724,10 +29797,9 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
         return elementControllers;
       }
 
-      function nodeLinkFn(childLinkFn, scope, linkNode, $rootElement, boundTranscludeFn,
-                          thisLinkFn) {
-        var i, ii, linkFn, controller, isolateScope, elementControllers, transcludeFn, $element,
-            attrs;
+      function nodeLinkFn(childLinkFn, scope, linkNode, $rootElement, boundTranscludeFn) {
+        var linkFn, isolateScope, controllerScope, elementControllers, transcludeFn, $element,
+            attrs, removeScopeBindingWatches, removeControllerBindingWatches;
 
         if (compileNode === linkNode) {
           attrs = templateAttrs;
@@ -29737,8 +29809,11 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
           attrs = new Attributes($element, templateAttrs);
         }
 
+        controllerScope = scope;
         if (newIsolateScopeDirective) {
           isolateScope = scope.$new(true);
+        } else if (newScopeDirective) {
+          controllerScope = scope.$parent;
         }
 
         if (boundTranscludeFn) {
@@ -29759,42 +29834,34 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
           compile.$$addScopeClass($element, true);
           isolateScope.$$isolateBindings =
               newIsolateScopeDirective.$$isolateBindings;
-          initializeDirectiveBindings(scope, attrs, isolateScope,
-                                      isolateScope.$$isolateBindings,
-                                      newIsolateScopeDirective, isolateScope);
-        }
-        if (elementControllers) {
-          // Initialize bindToController bindings for new/isolate scopes
-          var scopeDirective = newIsolateScopeDirective || newScopeDirective;
-          var bindings;
-          var controllerForBindings;
-          if (scopeDirective && elementControllers[scopeDirective.name]) {
-            bindings = scopeDirective.$$bindings.bindToController;
-            controller = elementControllers[scopeDirective.name];
-
-            if (controller && controller.identifier && bindings) {
-              controllerForBindings = controller;
-              thisLinkFn.$$destroyBindings =
-                  initializeDirectiveBindings(scope, attrs, controller.instance,
-                                              bindings, scopeDirective);
-            }
+          removeScopeBindingWatches = initializeDirectiveBindings(scope, attrs, isolateScope,
+                                        isolateScope.$$isolateBindings,
+                                        newIsolateScopeDirective);
+          if (removeScopeBindingWatches) {
+            isolateScope.$on('$destroy', removeScopeBindingWatches);
           }
-          for (i in elementControllers) {
-            controller = elementControllers[i];
-            var controllerResult = controller();
+        }
 
-            if (controllerResult !== controller.instance) {
-              // If the controller constructor has a return value, overwrite the instance
-              // from setupControllers and update the element data
-              controller.instance = controllerResult;
-              $element.data('$' + i + 'Controller', controllerResult);
-              if (controller === controllerForBindings) {
-                // Remove and re-install bindToController bindings
-                thisLinkFn.$$destroyBindings();
-                thisLinkFn.$$destroyBindings =
-                  initializeDirectiveBindings(scope, attrs, controllerResult, bindings, scopeDirective);
-              }
-            }
+        // Initialize bindToController bindings
+        for (var name in elementControllers) {
+          var controllerDirective = controllerDirectives[name];
+          var controller = elementControllers[name];
+          var bindings = controllerDirective.$$bindings.bindToController;
+
+          if (controller.identifier && bindings) {
+            removeControllerBindingWatches =
+              initializeDirectiveBindings(controllerScope, attrs, controller.instance, bindings, controllerDirective);
+          }
+
+          var controllerResult = controller();
+          if (controllerResult !== controller.instance) {
+            // If the controller constructor has a return value, overwrite the instance
+            // from setupControllers
+            controller.instance = controllerResult;
+            $element.data('$' + controllerDirective.name + 'Controller', controllerResult);
+            removeControllerBindingWatches && removeControllerBindingWatches();
+            removeControllerBindingWatches =
+              initializeDirectiveBindings(controllerScope, attrs, controller.instance, bindings, controllerDirective);
           }
         }
 
@@ -29854,10 +29921,15 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
       }
     }
 
-    function markDirectivesAsIsolate(directives) {
-      // mark all directives as needing isolate scope.
+    // Depending upon the context in which a directive finds itself it might need to have a new isolated
+    // or child scope created. For instance:
+    // * if the directive has been pulled into a template because another directive with a higher priority
+    // asked for element transclusion
+    // * if the directive itself asks for transclusion but it is at the root of a template and the original
+    // element was replaced. See https://github.com/angular/angular.js/issues/12936
+    function markDirectiveScope(directives, isolateScope, newScope) {
       for (var j = 0, jj = directives.length; j < jj; j++) {
-        directives[j] = inherit(directives[j], {$$isolateScope: true});
+        directives[j] = inherit(directives[j], {$$isolateScope: isolateScope, $$newScope: newScope});
       }
     }
 
@@ -30004,7 +30076,9 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
             var templateDirectives = collectDirectives(compileNode, [], tempTemplateAttrs);
 
             if (isObject(origAsyncDirective.scope)) {
-              markDirectivesAsIsolate(templateDirectives);
+              // the original directive that caused the template to be loaded async required
+              // an isolate scope
+              markDirectiveScope(templateDirectives, true);
             }
             directives = templateDirectives.concat(directives);
             mergeTemplateAttributes(tAttrs, tempTemplateAttrs);
@@ -30053,7 +30127,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
               childBoundTranscludeFn = boundTranscludeFn;
             }
             afterTemplateNodeLinkFn(afterTemplateChildLinkFn, scope, linkNode, $rootElement,
-              childBoundTranscludeFn, afterTemplateNodeLinkFn);
+              childBoundTranscludeFn);
           }
           linkQueue = null;
         });
@@ -30070,8 +30144,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
           if (afterTemplateNodeLinkFn.transcludeOnThisElement) {
             childBoundTranscludeFn = createBoundTranscludeFn(scope, afterTemplateNodeLinkFn.transclude, boundTranscludeFn);
           }
-          afterTemplateNodeLinkFn(afterTemplateChildLinkFn, scope, node, rootElement, childBoundTranscludeFn,
-                                  afterTemplateNodeLinkFn);
+          afterTemplateNodeLinkFn(afterTemplateChildLinkFn, scope, node, rootElement, childBoundTranscludeFn);
         }
       };
     }
@@ -30283,7 +30356,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
         // Copy over user data (that includes Angular's $scope etc.). Don't copy private
         // data here because there's no public interface in jQuery to do that and copying over
         // event listeners (which is the main use of private data) wouldn't work anyway.
-        jqLite(newNode).data(jqLite(firstElementToRemove).data());
+        jqLite.data(newNode, jqLite.data(firstElementToRemove));
 
         // Remove data of the replaced element. We cannot just call .remove()
         // on the element it since that would deallocate scope that is needed
@@ -30331,9 +30404,8 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
 
     // Set up $watches for isolate scope and controller bindings. This process
     // only occurs for isolate scopes and new scopes with controllerAs.
-    function initializeDirectiveBindings(scope, attrs, destination, bindings,
-                                         directive, newScope) {
-      var onNewScopeDestroyed;
+    function initializeDirectiveBindings(scope, attrs, destination, bindings, directive) {
+      var removeWatchCollection = [];
       forEach(bindings, function(definition, scopeName) {
         var attrName = definition.attrName,
         optional = definition.optional,
@@ -30395,14 +30467,13 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
               return lastValue = parentValue;
             };
             parentValueWatch.$stateful = true;
-            var unwatch;
+            var removeWatch;
             if (definition.collection) {
-              unwatch = scope.$watchCollection(attrs[attrName], parentValueWatch);
+              removeWatch = scope.$watchCollection(attrs[attrName], parentValueWatch);
             } else {
-              unwatch = scope.$watch($parse(attrs[attrName], parentValueWatch), null, parentGet.literal);
+              removeWatch = scope.$watch($parse(attrs[attrName], parentValueWatch), null, parentGet.literal);
             }
-            onNewScopeDestroyed = (onNewScopeDestroyed || []);
-            onNewScopeDestroyed.push(unwatch);
+            removeWatchCollection.push(removeWatch);
             break;
 
           case '&':
@@ -30418,16 +30489,12 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
             break;
         }
       });
-      var destroyBindings = onNewScopeDestroyed ? function destroyBindings() {
-        for (var i = 0, ii = onNewScopeDestroyed.length; i < ii; ++i) {
-          onNewScopeDestroyed[i]();
+
+      return removeWatchCollection.length && function removeWatches() {
+        for (var i = 0, ii = removeWatchCollection.length; i < ii; ++i) {
+          removeWatchCollection[i]();
         }
-      } : noop;
-      if (newScope && destroyBindings !== noop) {
-        newScope.$on('$destroy', destroyBindings);
-        return noop;
-      }
-      return destroyBindings;
+      };
     }
   }];
 }
@@ -31152,9 +31219,9 @@ function $HttpProvider() {
    * Configure `$http` service to return promises without the shorthand methods `success` and `error`.
    * This should be used to make sure that applications work without these methods.
    *
-   * Defaults to false. If no value is specified, returns the current configured value.
+   * Defaults to true. If no value is specified, returns the current configured value.
    *
-   * @param {boolean=} value If true, `$http` will return a normal promise without the `success` and `error` methods.
+   * @param {boolean=} value If true, `$http` will return a promise with the deprecated legacy `success` and `error` methods.
    *
    * @returns {boolean|Object} If a value is specified, returns the $httpProvider for chaining.
    *    otherwise, returns the current configured value.
@@ -31806,11 +31873,8 @@ function $HttpProvider() {
       function transformResponse(response) {
         // make a copy since the response must be cacheable
         var resp = extend({}, response);
-        if (!response.data) {
-          resp.data = response.data;
-        } else {
-          resp.data = transformData(response.data, response.headers, response.status, config.transformResponse);
-        }
+        resp.data = transformData(response.data, response.headers, response.status,
+                                  config.transformResponse);
         return (isSuccess(response.status))
           ? resp
           : $q.reject(resp);
@@ -33444,9 +33508,9 @@ var locationPrototype = {
    * @description
    * This method is getter / setter.
    *
-   * Return hash fragment when called without any parameter.
+   * Returns the hash fragment when called without any parameters.
    *
-   * Change hash fragment when called with parameter and return `$location`.
+   * Changes the hash fragment when called with a parameter and returns `$location`.
    *
    *
    * ```js
@@ -33467,8 +33531,8 @@ var locationPrototype = {
    * @name $location#replace
    *
    * @description
-   * If called, all changes to $location during current `$digest` will be replacing current history
-   * record, instead of adding new one.
+   * If called, all changes to $location during the current `$digest` will replace the current history
+   * record, instead of adding a new one.
    */
   replace: function() {
     this.$$replace = true;
@@ -33788,7 +33852,7 @@ function $LocationProvider() {
         var oldUrl = $location.absUrl();
         var oldState = $location.$$state;
         var defaultPrevented;
-
+        newUrl = trimEmptyHash(newUrl);
         $location.$$parse(newUrl);
         $location.$$state = newState;
 
@@ -35929,13 +35993,14 @@ function $ParseProvider() {
     function addInterceptor(parsedExpression, interceptorFn) {
       if (!interceptorFn) return parsedExpression;
       var watchDelegate = parsedExpression.$$watchDelegate;
+      var useInputs = false;
 
       var regularWatch =
           watchDelegate !== oneTimeLiteralWatchDelegate &&
           watchDelegate !== oneTimeWatchDelegate;
 
       var fn = regularWatch ? function regularInterceptedExpression(scope, locals, assign, inputs) {
-        var value = parsedExpression(scope, locals, assign, inputs);
+        var value = useInputs && inputs ? inputs[0] : parsedExpression(scope, locals, assign, inputs);
         return interceptorFn(value, scope, locals);
       } : function oneTimeInterceptedExpression(scope, locals, assign, inputs) {
         var value = parsedExpression(scope, locals, assign, inputs);
@@ -35953,6 +36018,7 @@ function $ParseProvider() {
         // If there is an interceptor, but no watchDelegate then treat the interceptor like
         // we treat filters - it is assumed to be a pure function unless flagged with $stateful
         fn.$$watchDelegate = inputsWatchDelegate;
+        useInputs = !parsedExpression.inputs;
         fn.inputs = parsedExpression.inputs ? parsedExpression.inputs : [parsedExpression];
       }
 
@@ -36013,6 +36079,8 @@ function $ParseProvider() {
  * ```
  *
  * Note: progress/notify callbacks are not currently supported via the ES6-style interface.
+ *
+ * Note: unlike ES6 behaviour, an exception thrown in the constructor function will NOT implicitly reject the promise.
  *
  * However, the more traditional CommonJS-style usage is still available, and documented below.
  *
@@ -36598,15 +36666,15 @@ function $$RAFProvider() { //rAF
  *     exposed as $$____ properties
  *
  * Loop operations are optimized by using while(count--) { ... }
- *   - this means that in order to keep the same order of execution as addition we have to add
+ *   - This means that in order to keep the same order of execution as addition we have to add
  *     items to the array at the beginning (unshift) instead of at the end (push)
  *
  * Child scopes are created and removed often
- *   - Using an array would be slow since inserts in middle are expensive so we use linked list
+ *   - Using an array would be slow since inserts in the middle are expensive; so we use linked lists
  *
- * There are few watches then a lot of observers. This is why you don't want the observer to be
- * implemented in the same way as watch. Watch requires return of initialization function which
- * are expensive to construct.
+ * There are fewer watches than observers. This is why you don't want the observer to be implemented
+ * in the same way as watch. Watch requires return of the initialization function which is expensive
+ * to construct.
  */
 
 
@@ -36648,7 +36716,7 @@ function $$RAFProvider() { //rAF
  * Every application has a single root {@link ng.$rootScope.Scope scope}.
  * All other scopes are descendant scopes of the root scope. Scopes provide separation
  * between the model and the view, via a mechanism for watching the model for changes.
- * They also provide an event emission/broadcast and subscription facility. See the
+ * They also provide event emission/broadcast and subscription facility. See the
  * {@link guide/scope developer guide on scopes}.
  */
 function $RootScopeProvider() {
@@ -36683,6 +36751,29 @@ function $RootScopeProvider() {
 
     function destroyChildScope($event) {
         $event.currentScope.$$destroyed = true;
+    }
+
+    function cleanUpScope($scope) {
+
+      if (msie === 9) {
+        // There is a memory leak in IE9 if all child scopes are not disconnected
+        // completely when a scope is destroyed. So this code will recurse up through
+        // all this scopes children
+        //
+        // See issue https://github.com/angular/angular.js/issues/10706
+        $scope.$$childHead && cleanUpScope($scope.$$childHead);
+        $scope.$$nextSibling && cleanUpScope($scope.$$nextSibling);
+      }
+
+      // The code below works around IE9 and V8's memory leaks
+      //
+      // See:
+      // - https://code.google.com/p/v8/issues/detail?id=2073#c26
+      // - https://github.com/angular/angular.js/issues/6794#issuecomment-38648909
+      // - https://github.com/angular/angular.js/issues/1313#issuecomment-10378451
+
+      $scope.$parent = $scope.$$nextSibling = $scope.$$prevSibling = $scope.$$childHead =
+          $scope.$$childTail = $scope.$root = $scope.$$watchers = null;
     }
 
     /**
@@ -37481,16 +37572,9 @@ function $RootScopeProvider() {
         this.$on = this.$watch = this.$watchGroup = function() { return noop; };
         this.$$listeners = {};
 
-        // All of the code below is bogus code that works around V8's memory leak via optimized code
-        // and inline caches.
-        //
-        // see:
-        // - https://code.google.com/p/v8/issues/detail?id=2073#c26
-        // - https://github.com/angular/angular.js/issues/6794#issuecomment-38648909
-        // - https://github.com/angular/angular.js/issues/1313#issuecomment-10378451
-
-        this.$parent = this.$$nextSibling = this.$$prevSibling = this.$$childHead =
-            this.$$childTail = this.$root = this.$$watchers = null;
+        // Disconnect the next sibling to prevent `cleanUpScope` destroying those too
+        this.$$nextSibling = null;
+        cleanUpScope(this);
       },
 
       /**
@@ -38486,7 +38570,7 @@ function $SceDelegateProvider() {
  * By default, Angular only loads templates from the same domain and protocol as the application
  * document.  This is done by calling {@link ng.$sce#getTrustedResourceUrl
  * $sce.getTrustedResourceUrl} on the template URL.  To load templates from other domains and/or
- * protocols, you may either either {@link ng.$sceDelegateProvider#resourceUrlWhitelist whitelist
+ * protocols, you may either {@link ng.$sceDelegateProvider#resourceUrlWhitelist whitelist
  * them} or {@link ng.$sce#trustAsResourceUrl wrap it} into a trusted value.
  *
  * *Please note*:
@@ -40737,7 +40821,7 @@ function limitToFilter() {
     if (!isArray(input) && !isString(input)) return input;
 
     begin = (!begin || isNaN(begin)) ? 0 : toInt(begin);
-    begin = (begin < 0 && begin >= -input.length) ? input.length + begin : begin;
+    begin = (begin < 0) ? Math.max(0, input.length + begin) : begin;
 
     if (limit >= 0) {
       return input.slice(begin, begin + limit);
@@ -42097,7 +42181,8 @@ var ngFormDirective = formDirectiveFactory(true);
 
 // Regex code is obtained from SO: https://stackoverflow.com/questions/3143070/javascript-regex-iso-datetime#answer-3143231
 var ISO_DATE_REGEXP = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/;
-var URL_REGEXP = /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/;
+// See valid URLs in RFC3987 (http://tools.ietf.org/html/rfc3987)
+var URL_REGEXP = /^[A-Za-z][A-Za-z\d.+-]*:\/*(?:\w+(?::\w+)?@)?[^\s/]+(?::\d+)?(?:\/[\w#!:.?+=&%@\-/]*)?$/;
 var EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
 var NUMBER_REGEXP = /^\s*(\-|\+)?(\d+|(\d*(\.\d*)))([eE][+-]?\d+)?\s*$/;
 var DATE_REGEXP = /^(\d{4})-(\d{2})-(\d{2})$/;
@@ -45663,7 +45748,13 @@ var ngIfDirective = ['$animate', function($animate) {
  * @param {string} ngInclude|src angular expression evaluating to URL. If the source is a string constant,
  *                 make sure you wrap it in **single** quotes, e.g. `src="'myPartialTemplate.html'"`.
  * @param {string=} onload Expression to evaluate when a new partial is loaded.
- *
+ *                  <div class="alert alert-warning">
+ *                  **Note:** When using onload on SVG elements in IE11, the browser will try to call
+ *                  a function with the name on the window element, which will usually throw a
+ *                  "function is undefined" error. To fix this, you can instead use `data-onload` or a
+ *                  different form that {@link guide/directive#normalization matches} `onload`.
+ *                  </div>
+   *
  * @param {string=} autoscroll Whether `ngInclude` should call {@link ng.$anchorScroll
  *                  $anchorScroll} to scroll the viewport after the content is loaded.
  *
@@ -47256,12 +47347,13 @@ var DEFAULT_REGEXP = /(\s+|^)default(\s+|$)/;
           </label><br />
         </form>
         <pre>user.name = <span ng-bind="user.name"></span></pre>
+        <pre>user.data = <span ng-bind="user.data"></span></pre>
       </div>
     </file>
     <file name="app.js">
       angular.module('optionsExample', [])
         .controller('ExampleController', ['$scope', function($scope) {
-          $scope.user = { name: 'say', data: '' };
+          $scope.user = { name: 'John', data: '' };
 
           $scope.cancel = function(e) {
             if (e.keyCode == 27) {
@@ -47276,20 +47368,20 @@ var DEFAULT_REGEXP = /(\s+|^)default(\s+|$)/;
       var other = element(by.model('user.data'));
 
       it('should allow custom events', function() {
-        input.sendKeys(' hello');
+        input.sendKeys(' Doe');
         input.click();
-        expect(model.getText()).toEqual('say');
+        expect(model.getText()).toEqual('John');
         other.click();
-        expect(model.getText()).toEqual('say hello');
+        expect(model.getText()).toEqual('John Doe');
       });
 
       it('should $rollbackViewValue when model changes', function() {
-        input.sendKeys(' hello');
-        expect(input.getAttribute('value')).toEqual('say hello');
+        input.sendKeys(' Doe');
+        expect(input.getAttribute('value')).toEqual('John Doe');
         input.sendKeys(protractor.Key.ESCAPE);
-        expect(input.getAttribute('value')).toEqual('say');
+        expect(input.getAttribute('value')).toEqual('John');
         other.click();
-        expect(model.getText()).toEqual('say');
+        expect(model.getText()).toEqual('John');
       });
     </file>
   </example>
@@ -47315,7 +47407,7 @@ var DEFAULT_REGEXP = /(\s+|^)default(\s+|$)/;
     <file name="app.js">
       angular.module('optionsExample', [])
         .controller('ExampleController', ['$scope', function($scope) {
-          $scope.user = { name: 'say' };
+          $scope.user = { name: 'Igor' };
         }]);
     </file>
   </example>
@@ -47548,19 +47640,27 @@ var ngOptionsMinErr = minErr('ngOptions');
  *
  * ## Complex Models (objects or collections)
  *
- * **Note:** By default, `ngModel` watches the model by reference, not value. This is important when
- * binding any input directive to a model that is an object or a collection.
+ * By default, `ngModel` watches the model by reference, not value. This is important to know when
+ * binding the select to a model that is an object or a collection.
  *
- * Since this is a common situation for `ngOptions` the directive additionally watches the model using
- * `$watchCollection` when the select has the `multiple` attribute or when there is a `track by` clause in
- * the options expression. This allows ngOptions to trigger a re-rendering of the options even if the actual
- * object/collection has not changed identity but only a property on the object or an item in the collection
- * changes.
+ * One issue occurs if you want to preselect an option. For example, if you set
+ * the model to an object that is equal to an object in your collection, `ngOptions` won't be able to set the selection,
+ * because the objects are not identical. So by default, you should always reference the item in your collection
+ * for preselections, e.g.: `$scope.selected = $scope.collection[3]`.
+ *
+ * Another solution is to use a `track by` clause, because then `ngOptions` will track the identity
+ * of the item not by reference, but by the result of the `track by` expression. For example, if your
+ * collection items have an id property, you would `track by item.id`.
+ *
+ * A different issue with objects or collections is that ngModel won't detect if an object property or
+ * a collection item changes. For that reason, `ngOptions` additionally watches the model using
+ * `$watchCollection`, when the expression contains a `track by` clause or the the select has the `multiple` attribute.
+ * This allows ngOptions to trigger a re-rendering of the options even if the actual object/collection
+ * has not changed identity, but only a property on the object or an item in the collection changes.
  *
  * Note that `$watchCollection` does a shallow comparison of the properties of the object (or the items in the collection
- * if the model is an array). This means that changing a property deeper inside the object/collection that the
- * first level will not trigger a re-rendering.
- *
+ * if the model is an array). This means that changing a property deeper than the first level inside the
+ * object/collection will not trigger a re-rendering.
  *
  * ## `select` **`as`**
  *
@@ -47573,17 +47673,13 @@ var ngOptionsMinErr = minErr('ngOptions');
  * ### `select` **`as`** and **`track by`**
  *
  * <div class="alert alert-warning">
- * Do not use `select` **`as`** and **`track by`** in the same expression. They are not designed to work together.
+ * Be careful when using `select` **`as`** and **`track by`** in the same expression.
  * </div>
  *
- * Consider the following example:
- *
- * ```html
- * <select ng-options="item.subItem as item.label for item in values track by item.id" ng-model="selected"></select>
- * ```
+ * Given this array of items on the $scope:
  *
  * ```js
- * $scope.values = [{
+ * $scope.items = [{
  *   id: 1,
  *   label: 'aLabel',
  *   subItem: { name: 'aSubItem' }
@@ -47592,20 +47688,33 @@ var ngOptionsMinErr = minErr('ngOptions');
  *   label: 'bLabel',
  *   subItem: { name: 'bSubItem' }
  * }];
- *
- * $scope.selected = { name: 'aSubItem' };
  * ```
  *
- * With the purpose of preserving the selection, the **`track by`** expression is always applied to the element
- * of the data source (to `item` in this example). To calculate whether an element is selected, we do the
- * following:
+ * This will work:
  *
- * 1. Apply **`track by`** to the elements in the array. In the example: `[1, 2]`
- * 2. Apply **`track by`** to the already selected value in `ngModel`.
- *    In the example: this is not possible as **`track by`** refers to `item.id`, but the selected
- *    value from `ngModel` is `{name: 'aSubItem'}`, so the **`track by`** expression is applied to
- *    a wrong object, the selected element can't be found, `<select>` is always reset to the "not
- *    selected" option.
+ * ```html
+ * <select ng-options="item as item.label for item in items track by item.id" ng-model="selected"></select>
+ * ```
+ * ```js
+ * $scope.selected = $scope.items[0];
+ * ```
+ *
+ * but this will not work:
+ *
+ * ```html
+ * <select ng-options="item.subItem as item.label for item in items track by item.id" ng-model="selected"></select>
+ * ```
+ * ```js
+ * $scope.selected = $scope.items[0].subItem;
+ * ```
+ *
+ * In both examples, the **`track by`** expression is applied successfully to each `item` in the
+ * `items` array. Because the selected option has been set programmatically in the controller, the
+ * **`track by`** expression is also applied to the `ngModel` value. In the first example, the
+ * `ngModel` value is `items[0]` and the **`track by`** expression evaluates to `items[0].id` with
+ * no issue. In the second example, the `ngModel` value is `items[0].subItem` and the **`track by`**
+ * expression evaluates to `items[0].subItem.id` (which is undefined). As a result, the model value
+ * is not matched against any `<option>` and the `<select>` appears as having no selected value.
  *
  *
  * @param {string} ngModel Assignable angular expression to data-bind to.
@@ -47907,11 +48016,8 @@ var ngOptionsDirective = ['$compile', '$parse', function($compile, $parse) {
   var optionTemplate = document.createElement('option'),
       optGroupTemplate = document.createElement('optgroup');
 
-  return {
-    restrict: 'A',
-    terminal: true,
-    require: ['select', '?ngModel'],
-    link: function(scope, selectElement, attr, ctrls) {
+
+    function ngOptionsPostLink(scope, selectElement, attr, ctrls) {
 
       // if ngModel is not defined, we don't need to do anything
       var ngModelCtrl = ctrls[1];
@@ -47965,7 +48071,6 @@ var ngOptionsDirective = ['$compile', '$parse', function($compile, $parse) {
       var removeUnknownOption = function() {
         unknownOption.remove();
       };
-
 
       // Update the controller methods for multiple selectable options
       if (!multiple) {
@@ -48141,13 +48246,15 @@ var ngOptionsDirective = ['$compile', '$parse', function($compile, $parse) {
         var emptyOption_ = emptyOption && emptyOption[0];
         var unknownOption_ = unknownOption && unknownOption[0];
 
+        // We cannot rely on the extracted empty option being the same as the compiled empty option,
+        // because the compiled empty option might have been replaced by a comment because
+        // it had an "element" transclusion directive on it (such as ngIf)
         if (emptyOption_ || unknownOption_) {
           while (current &&
                 (current === emptyOption_ ||
                 current === unknownOption_ ||
-                emptyOption_ && emptyOption_.nodeType === NODE_TYPE_COMMENT)) {
-            // Empty options might have directives that transclude
-            // and insert comments (e.g. ngIf)
+                current.nodeType === NODE_TYPE_COMMENT ||
+                current.value === '')) {
             current = current.nextSibling;
           }
         }
@@ -48244,7 +48351,20 @@ var ngOptionsDirective = ['$compile', '$parse', function($compile, $parse) {
         }
 
       }
+  }
 
+  return {
+    restrict: 'A',
+    terminal: true,
+    require: ['select', '?ngModel'],
+    link: {
+      pre: function ngOptionsPreLink(scope, selectElement, attr, ctrls) {
+        // Deactivate the SelectController.register method to prevent
+        // option directives from accidentally registering themselves
+        // (and unwanted $destroy handlers etc.)
+        ctrls[0].registerOption = noop;
+      },
+      post: ngOptionsPostLink
     }
   };
 }];
@@ -48531,7 +48651,7 @@ var ngPluralizeDirective = ['$locale', '$interpolate', '$log', function($locale,
  * Version 1.4 removed the alphabetic sorting. We now rely on the order returned by the browser
  * when running `for key in myObj`. It seems that browsers generally follow the strategy of providing
  * keys in the order in which they were defined, although there are exceptions when keys are deleted
- * and reinstated. See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/delete#Cross-browser_issues
+ * and reinstated. See the [MDN page on `delete` for more info](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/delete#Cross-browser_notes).
  *
  * If this is not desired, the recommended workaround is to convert your object into an array
  * that is sorted into the order that you prefer before providing it to `ngRepeat`.  You could
@@ -48541,15 +48661,21 @@ var ngPluralizeDirective = ['$locale', '$interpolate', '$log', function($locale,
  *
  * # Tracking and Duplicates
  *
- * When the contents of the collection change, `ngRepeat` makes the corresponding changes to the DOM:
+ * `ngRepeat` uses {@link $rootScope.Scope#$watchCollection $watchCollection} to detect changes in
+ * the collection. When a change happens, ngRepeat then makes the corresponding changes to the DOM:
  *
  * * When an item is added, a new instance of the template is added to the DOM.
  * * When an item is removed, its template instance is removed from the DOM.
  * * When items are reordered, their respective templates are reordered in the DOM.
  *
- * By default, `ngRepeat` does not allow duplicate items in arrays. This is because when
- * there are duplicates, it is not possible to maintain a one-to-one mapping between collection
- * items and DOM elements.
+ * To minimize creation of DOM elements, `ngRepeat` uses a function
+ * to "keep track" of all items in the collection and their corresponding DOM elements.
+ * For example, if an item is added to the collection, ngRepeat will know that all other items
+ * already have DOM elements, and will not re-render them.
+ *
+ * The default tracking function (which tracks items by their identity) does not allow
+ * duplicate items in arrays. This is because when there are duplicates, it is not possible
+ * to maintain a one-to-one mapping between collection items and DOM elements.
  *
  * If you do need to repeat duplicate items, you can substitute the default tracking behavior
  * with your own using the `track by` expression.
@@ -48562,7 +48688,7 @@ var ngPluralizeDirective = ['$locale', '$interpolate', '$log', function($locale,
  *    </div>
  * ```
  *
- * You may use arbitrary expressions in `track by`, including references to custom functions
+ * You may also use arbitrary expressions in `track by`, including references to custom functions
  * on the scope:
  * ```html
  *    <div ng-repeat="n in [42, 42, 43, 43] track by myTrackingFunction(n)">
@@ -48570,10 +48696,14 @@ var ngPluralizeDirective = ['$locale', '$interpolate', '$log', function($locale,
  *    </div>
  * ```
  *
- * If you are working with objects that have an identifier property, you can track
+ * <div class="alert alert-success">
+ * If you are working with objects that have an identifier property, you should track
  * by the identifier instead of the whole object. Should you reload your data later, `ngRepeat`
  * will not have to rebuild the DOM elements for items it has already rendered, even if the
- * JavaScript objects in the collection have been substituted for new ones:
+ * JavaScript objects in the collection have been substituted for new ones. For large collections,
+ * this signifincantly improves rendering performance. If you don't have a unique identifier,
+ * `track by $index` can also provide a performance boost.
+ * </div>
  * ```html
  *    <div ng-repeat="model in collection track by model.id">
  *      {{model.name}}
@@ -49731,6 +49861,15 @@ var scriptDirective = ['$templateCache', function($templateCache) {
 
 var noopNgModelController = { $setViewValue: noop, $render: noop };
 
+function chromeHack(optionElement) {
+  // Workaround for https://code.google.com/p/chromium/issues/detail?id=381459
+  // Adding an <option selected="selected"> element to a <select required="required"> should
+  // automatically select the new element
+  if (optionElement[0].hasAttribute('selected')) {
+    optionElement[0].selected = true;
+  }
+}
+
 /**
  * @ngdoc type
  * @name  select.SelectController
@@ -49806,6 +49945,8 @@ var SelectController =
     }
     var count = optionsMap.get(value) || 0;
     optionsMap.put(value, count + 1);
+    self.ngModelCtrl.$render();
+    chromeHack(element);
   };
 
   // Tell the select control that an option, with the given value, has been removed
@@ -49826,6 +49967,39 @@ var SelectController =
   // Check whether the select control has an option matching the given value
   self.hasOption = function(value) {
     return !!optionsMap.get(value);
+  };
+
+
+  self.registerOption = function(optionScope, optionElement, optionAttrs, interpolateValueFn, interpolateTextFn) {
+
+    if (interpolateValueFn) {
+      // The value attribute is interpolated
+      var oldVal;
+      optionAttrs.$observe('value', function valueAttributeObserveAction(newVal) {
+        if (isDefined(oldVal)) {
+          self.removeOption(oldVal);
+        }
+        oldVal = newVal;
+        self.addOption(newVal, optionElement);
+      });
+    } else if (interpolateTextFn) {
+      // The text content is interpolated
+      optionScope.$watch(interpolateTextFn, function interpolateWatchAction(newVal, oldVal) {
+        optionAttrs.$set('value', newVal);
+        if (oldVal !== newVal) {
+          self.removeOption(oldVal);
+        }
+        self.addOption(newVal, optionElement);
+      });
+    } else {
+      // The value attribute is static
+      self.addOption(optionAttrs.value, optionElement);
+    }
+
+    optionElement.on('$destroy', function() {
+      self.removeOption(optionAttrs.value);
+      self.ngModelCtrl.$render();
+    });
   };
 }];
 
@@ -49872,6 +50046,8 @@ var SelectController =
  *
  * @param {string} ngModel Assignable angular expression to data-bind to.
  * @param {string=} name Property name of the form under which the control is published.
+ * @param {string=} multiple Allows multiple options to be selected. The selected values will be
+ *     bound to the model as an array.
  * @param {string=} required Sets `required` validation error key if the value is not entered.
  * @param {string=} ngRequired Adds required attribute and required validation constraint to
  * the element when the ngRequired expression evaluates to true. Use ngRequired instead of required
@@ -50037,7 +50213,13 @@ var selectDirective = function() {
     restrict: 'E',
     require: ['select', '?ngModel'],
     controller: SelectController,
-    link: function(scope, element, attr, ctrls) {
+    priority: 1,
+    link: {
+      pre: selectPreLink
+    }
+  };
+
+  function selectPreLink(scope, element, attr, ctrls) {
 
       // if ngModel is not defined, we don't need to do anything
       var ngModelCtrl = ctrls[1];
@@ -50107,7 +50289,6 @@ var selectDirective = function() {
 
       }
     }
-  };
 };
 
 
@@ -50115,16 +50296,6 @@ var selectDirective = function() {
 // of dynamically created (and destroyed) option elements to their containing select
 // directive via its controller.
 var optionDirective = ['$interpolate', function($interpolate) {
-
-  function chromeHack(optionElement) {
-    // Workaround for https://code.google.com/p/chromium/issues/detail?id=381459
-    // Adding an <option selected="selected"> element to a <select required="required"> should
-    // automatically select the new element
-    if (optionElement[0].hasAttribute('selected')) {
-      optionElement[0].selected = true;
-    }
-  }
-
   return {
     restrict: 'E',
     priority: 100,
@@ -50132,12 +50303,12 @@ var optionDirective = ['$interpolate', function($interpolate) {
 
       if (isDefined(attr.value)) {
         // If the value attribute is defined, check if it contains an interpolation
-        var valueInterpolated = $interpolate(attr.value, true);
+        var interpolateValueFn = $interpolate(attr.value, true);
       } else {
         // If the value attribute is not defined then we fall back to the
         // text content of the option element, which may be interpolated
-        var interpolateFn = $interpolate(element.text(), true);
-        if (!interpolateFn) {
+        var interpolateTextFn = $interpolate(element.text(), true);
+        if (!interpolateTextFn) {
           attr.$set('value', element.text());
         }
       }
@@ -50151,44 +50322,8 @@ var optionDirective = ['$interpolate', function($interpolate) {
             selectCtrl = parent.data(selectCtrlName) ||
               parent.parent().data(selectCtrlName); // in case we are in optgroup
 
-        function addOption(optionValue) {
-          selectCtrl.addOption(optionValue, element);
-          selectCtrl.ngModelCtrl.$render();
-          chromeHack(element);
-        }
-
-        // Only update trigger option updates if this is an option within a `select`
-        // that also has `ngModel` attached
-        if (selectCtrl && selectCtrl.ngModelCtrl) {
-
-          if (valueInterpolated) {
-            // The value attribute is interpolated
-            var oldVal;
-            attr.$observe('value', function valueAttributeObserveAction(newVal) {
-              if (isDefined(oldVal)) {
-                selectCtrl.removeOption(oldVal);
-              }
-              oldVal = newVal;
-              addOption(newVal);
-            });
-          } else if (interpolateFn) {
-            // The text content is interpolated
-            scope.$watch(interpolateFn, function interpolateWatchAction(newVal, oldVal) {
-              attr.$set('value', newVal);
-              if (oldVal !== newVal) {
-                selectCtrl.removeOption(oldVal);
-              }
-              addOption(newVal);
-            });
-          } else {
-            // The value attribute is static
-            addOption(attr.value);
-          }
-
-          element.on('$destroy', function() {
-            selectCtrl.removeOption(attr.value);
-            selectCtrl.ngModelCtrl.$render();
-          });
+        if (selectCtrl) {
+          selectCtrl.registerOption(scope, element, attr, interpolateValueFn, interpolateTextFn);
         }
       };
     }
@@ -50444,11 +50579,929 @@ module.exports = angular;
 
 },{"./angular":51}],53:[function(require,module,exports){
 /**
- * Satellizer 0.12.5
- * (c) 2014-2015 Sahat Yalkabov
+ * Satellizer 0.13.2
+ * (c) 2015 Sahat Yalkabov
  * License: MIT
  */
-!function(e,t,n){"use strict";t.module("satellizer",[]).constant("SatellizerConfig",{httpInterceptor:!0,withCredentials:!0,tokenRoot:null,cordova:!1,baseUrl:"/",loginUrl:"/auth/login",signupUrl:"/auth/signup",unlinkUrl:"/auth/unlink/",tokenName:"token",tokenPrefix:"satellizer",authHeader:"Authorization",authToken:"Bearer",storageType:"localStorage",providers:{facebook:{name:"facebook",url:"/auth/facebook",authorizationEndpoint:"https://www.facebook.com/v2.3/dialog/oauth",redirectUri:(e.location.origin||e.location.protocol+"//"+e.location.host)+"/",requiredUrlParams:["display","scope"],scope:["email"],scopeDelimiter:",",display:"popup",type:"2.0",popupOptions:{width:580,height:400}},google:{name:"google",url:"/auth/google",authorizationEndpoint:"https://accounts.google.com/o/oauth2/auth",redirectUri:e.location.origin||e.location.protocol+"//"+e.location.host,requiredUrlParams:["scope"],optionalUrlParams:["display"],scope:["profile","email"],scopePrefix:"openid",scopeDelimiter:" ",display:"popup",type:"2.0",popupOptions:{width:452,height:633}},github:{name:"github",url:"/auth/github",authorizationEndpoint:"https://github.com/login/oauth/authorize",redirectUri:e.location.origin||e.location.protocol+"//"+e.location.host,optionalUrlParams:["scope"],scope:["user:email"],scopeDelimiter:" ",type:"2.0",popupOptions:{width:1020,height:618}},instagram:{name:"instagram",url:"/auth/instagram",redirectUri:e.location.origin||e.location.protocol+"//"+e.location.host,requiredUrlParams:["scope"],scope:["basic"],scopeDelimiter:"+",authorizationEndpoint:"https://api.instagram.com/oauth/authorize"},linkedin:{name:"linkedin",url:"/auth/linkedin",authorizationEndpoint:"https://www.linkedin.com/uas/oauth2/authorization",redirectUri:e.location.origin||e.location.protocol+"//"+e.location.host,requiredUrlParams:["state"],scope:["r_emailaddress"],scopeDelimiter:" ",state:"STATE",type:"2.0",popupOptions:{width:527,height:582}},twitter:{name:"twitter",url:"/auth/twitter",authorizationEndpoint:"https://api.twitter.com/oauth/authenticate",redirectUri:e.location.origin||e.location.protocol+"//"+e.location.host,type:"1.0",popupOptions:{width:495,height:645}},twitch:{name:"twitch",url:"/auth/twitch",authorizationEndpoint:"https://api.twitch.tv/kraken/oauth2/authorize",redirectUri:e.location.origin||e.location.protocol+"//"+e.location.host,requiredUrlParams:["scope"],scope:["user_read"],scopeDelimiter:" ",display:"popup",type:"2.0",popupOptions:{width:500,height:560}},live:{name:"live",url:"/auth/live",authorizationEndpoint:"https://login.live.com/oauth20_authorize.srf",redirectUri:e.location.origin||e.location.protocol+"//"+e.location.host,requiredUrlParams:["display","scope"],scope:["wl.emails"],scopeDelimiter:" ",display:"popup",type:"2.0",popupOptions:{width:500,height:560}},yahoo:{name:"yahoo",url:"/auth/yahoo",authorizationEndpoint:"https://api.login.yahoo.com/oauth2/request_auth",redirectUri:e.location.origin||e.location.protocol+"//"+e.location.host,scope:[],scopeDelimiter:",",type:"2.0",popupOptions:{width:559,height:519}}}}).provider("$auth",["SatellizerConfig",function(e){Object.defineProperties(this,{httpInterceptor:{get:function(){return e.httpInterceptor},set:function(t){e.httpInterceptor=t}},baseUrl:{get:function(){return e.baseUrl},set:function(t){e.baseUrl=t}},loginUrl:{get:function(){return e.loginUrl},set:function(t){e.loginUrl=t}},signupUrl:{get:function(){return e.signupUrl},set:function(t){e.signupUrl=t}},tokenRoot:{get:function(){return e.tokenRoot},set:function(t){e.tokenRoot=t}},tokenName:{get:function(){return e.tokenName},set:function(t){e.tokenName=t}},tokenPrefix:{get:function(){return e.tokenPrefix},set:function(t){e.tokenPrefix=t}},unlinkUrl:{get:function(){return e.unlinkUrl},set:function(t){e.unlinkUrl=t}},authHeader:{get:function(){return e.authHeader},set:function(t){e.authHeader=t}},authToken:{get:function(){return e.authToken},set:function(t){e.authToken=t}},withCredentials:{get:function(){return e.withCredentials},set:function(t){e.withCredentials=t}},cordova:{get:function(){return e.cordova},set:function(t){e.cordova=t}},storageType:{get:function(){return e.storageType},set:function(t){e.storageType=t}}}),t.forEach(Object.keys(e.providers),function(n){this[n]=function(o){return t.extend(e.providers[n],o)}},this);var n=function(n){e.providers[n.name]=e.providers[n.name]||{},t.extend(e.providers[n.name],n)};this.oauth1=function(t){n(t),e.providers[t.name].type="1.0"},this.oauth2=function(t){n(t),e.providers[t.name].type="2.0"},this.$get=["$q","SatellizerShared","SatellizerLocal","SatellizerOauth",function(e,t,n,o){var r={};return r.login=function(e,t){return n.login(e,t)},r.signup=function(e,t){return n.signup(e,t)},r.logout=function(){return t.logout()},r.authenticate=function(e,t){return o.authenticate(e,t)},r.link=function(e,t){return o.authenticate(e,t)},r.unlink=function(e,t){return o.unlink(e,t)},r.isAuthenticated=function(){return t.isAuthenticated()},r.getToken=function(){return t.getToken()},r.setToken=function(e){t.setToken({access_token:e})},r.removeToken=function(){return t.removeToken()},r.getPayload=function(){return t.getPayload()},r.setStorageType=function(e){return t.setStorageType(e)},r}]}]).factory("SatellizerShared",["$q","$window","SatellizerConfig","SatellizerStorage",function(n,o,r,i){var a={},u=r.tokenPrefix?[r.tokenPrefix,r.tokenName].join("_"):r.tokenName;return a.getToken=function(){return i.get(u)},a.getPayload=function(){var t=i.get(u);if(t&&3===t.split(".").length){var n=t.split(".")[1],o=n.replace(/-/g,"+").replace(/_/g,"/");return JSON.parse(decodeURIComponent(escape(e.atob(o))))}},a.setToken=function(e){var n,o=e&&e.access_token;if(o&&(t.isObject(o)&&t.isObject(o.data)?e=o:t.isString(o)&&(n=o)),!n&&e){var a=r.tokenRoot&&r.tokenRoot.split(".").reduce(function(e,t){return e[t]},e.data);n=a?a[r.tokenName]:e.data[r.tokenName]}if(!n){var l=r.tokenRoot?r.tokenRoot+"."+r.tokenName:r.tokenName;throw new Error('Expecting a token named "'+l+'" but instead got: '+JSON.stringify(e.data))}i.set(u,n)},a.removeToken=function(){i.remove(u)},a.isAuthenticated=function(){var e=i.get(u);if(e){if(3===e.split(".").length){var t=e.split(".")[1],n=t.replace(/-/g,"+").replace(/_/g,"/"),r=JSON.parse(o.atob(n)).exp;if(r){var a=Math.round((new Date).getTime()/1e3)>=r;return a?(i.remove(u),!1):!0}return!0}return!0}return!1},a.logout=function(){return i.remove(u),n.when()},a.setStorageType=function(e){r.storageType=e},a}]).factory("SatellizerOauth",["$q","$http","SatellizerConfig","SatellizerUtils","SatellizerShared","SatellizerOauth1","SatellizerOauth2",function(e,t,n,o,r,i,a){var u={};return u.authenticate=function(t,o){var u="1.0"===n.providers[t].type?new i:new a,l=e.defer();return u.open(n.providers[t],o||{}).then(function(e){r.setToken(e,!1),l.resolve(e)})["catch"](function(e){l.reject(e)}),l.promise},u.unlink=function(e,r){return r=r||{},r.url=n.baseUrl?o.joinUrl(n.baseUrl,n.unlinkUrl):n.unlinkUrl,r.data={provider:e}||r.data,r.method=r.method||"POST",t(r)},u}]).factory("SatellizerLocal",["$http","SatellizerUtils","SatellizerShared","SatellizerConfig",function(e,t,n,o){var r={};return r.login=function(r,i){return i=i||{},i.url=o.baseUrl?t.joinUrl(o.baseUrl,o.loginUrl):o.loginUrl,i.data=r||i.data,i.method=i.method||"POST",e(i).then(function(e){return n.setToken(e),e})},r.signup=function(n,r){return r=r||{},r.url=o.baseUrl?t.joinUrl(o.baseUrl,o.signupUrl):o.signupUrl,r.data=n||r.data,r.method=r.method||"POST",e(r)},r}]).factory("SatellizerOauth2",["$q","$http","$window","SatellizerPopup","SatellizerUtils","SatellizerConfig","SatellizerStorage",function(e,n,o,r,i,a,u){return function(){var o={},l={defaultUrlParams:["response_type","client_id","redirect_uri"],responseType:"code",responseParams:{code:"code",clientId:"clientId",redirectUri:"redirectUri"}};return o.open=function(n,p){l=i.merge(n,l);var c,s,h=l.name+"_state";return t.isFunction(l.state)?u.set(h,l.state()):t.isString(l.state)&&u.set(h,l.state),c=[l.authorizationEndpoint,o.buildQueryString()].join("?"),s=a.cordova?r.open(c,l.name,l.popupOptions,l.redirectUri).eventListener(l.redirectUri):r.open(c,l.name,l.popupOptions,l.redirectUri).pollPopup(),s.then(function(t){return"token"===l.responseType?t:t.state&&t.state!==u.get(h)?e.reject('OAuth "state" mismatch'):o.exchangeForToken(t,p)})},o.exchangeForToken=function(e,o){var r=t.extend({},o);t.forEach(l.responseParams,function(t,n){switch(n){case"code":r[t]=e.code;break;case"clientId":r[t]=l.clientId;break;case"redirectUri":r[t]=l.redirectUri;break;default:r[t]=e[n]}}),e.state&&(r.state=e.state);var u=a.baseUrl?i.joinUrl(a.baseUrl,l.url):l.url;return n.post(u,r,{withCredentials:a.withCredentials})},o.buildQueryString=function(){var e=[],n=["defaultUrlParams","requiredUrlParams","optionalUrlParams"];return t.forEach(n,function(n){t.forEach(l[n],function(n){var o=i.camelCase(n),r=t.isFunction(l[n])?l[n]():l[o];if("state"===n){var a=l.name+"_state";r=encodeURIComponent(u.get(a))}"scope"===n&&Array.isArray(r)&&(r=r.join(l.scopeDelimiter),l.scopePrefix&&(r=[l.scopePrefix,r].join(l.scopeDelimiter))),e.push([n,r])})}),e.map(function(e){return e.join("=")}).join("&")},o}}]).factory("SatellizerOauth1",["$q","$http","SatellizerPopup","SatellizerConfig","SatellizerUtils",function(e,n,o,r,i){return function(){var e={},a={url:null,name:null,popupOptions:null,redirectUri:null,authorizationEndpoint:null};return e.open=function(u,l){t.extend(a,u);var p,c=r.baseUrl?i.joinUrl(r.baseUrl,a.url):a.url;return r.cordova||(p=o.open("",a.name,a.popupOptions,a.redirectUri)),n.post(c,a).then(function(t){r.cordova?p=o.open([a.authorizationEndpoint,e.buildQueryString(t.data)].join("?"),a.name,a.popupOptions,a.redirectUri):p.popupWindow.location=[a.authorizationEndpoint,e.buildQueryString(t.data)].join("?");var n=r.cordova?p.eventListener(a.redirectUri):p.pollPopup();return n.then(function(t){return e.exchangeForToken(t,l)})})},e.exchangeForToken=function(e,o){var u=t.extend({},o,e),l=r.baseUrl?i.joinUrl(r.baseUrl,a.url):a.url;return n.post(l,u,{withCredentials:r.withCredentials})},e.buildQueryString=function(e){var n=[];return t.forEach(e,function(e,t){n.push(encodeURIComponent(t)+"="+encodeURIComponent(e))}),n.join("&")},e}}]).factory("SatellizerPopup",["$q","$interval","$window","SatellizerConfig","SatellizerUtils",function(o,r,i,a,u){var l={};return l.url="",l.popupWindow=null,l.open=function(t,n,o){l.url=t;var r=l.stringifyOptions(l.prepareOptions(o)),i=a.cordova?"_blank":n;return l.popupWindow=e.open(t,i,r),e.popup=l.popupWindow,l.popupWindow&&l.popupWindow.focus&&l.popupWindow.focus(),l},l.eventListener=function(e){var n=o.defer();return l.popupWindow.addEventListener("loadstart",function(o){if(0===o.url.indexOf(e)){var r=document.createElement("a");if(r.href=o.url,r.search||r.hash){var i=r.search.substring(1).replace(/\/$/,""),a=r.hash.substring(1).replace(/\/$/,""),p=u.parseQueryString(a),c=u.parseQueryString(i);t.extend(c,p),c.error||n.resolve(c),l.popupWindow.close()}}}),l.popupWindow.addEventListener("loaderror",function(){n.reject("Authorization Failed")}),n.promise},l.pollPopup=function(){var e=o.defer(),i=r(function(){try{var o=document.location.host,a=l.popupWindow.location.host;if(a===o&&(l.popupWindow.location.search||l.popupWindow.location.hash)){var p=l.popupWindow.location.search.substring(1).replace(/\/$/,""),c=l.popupWindow.location.hash.substring(1).replace(/[\/$]/,""),s=u.parseQueryString(c),h=u.parseQueryString(p);t.extend(h,s),h.error||e.resolve(h),l.popupWindow.close(),r.cancel(i)}}catch(d){}(!l.popupWindow||l.popupWindow.closed||l.popupWindow.closed===n)&&r.cancel(i)},50);return e.promise},l.prepareOptions=function(e){e=e||{};var n=e.width||500,o=e.height||500;return t.extend({width:n,height:o,left:i.screenX+(i.outerWidth-n)/2,top:i.screenY+(i.outerHeight-o)/2.5},e)},l.stringifyOptions=function(e){var n=[];return t.forEach(e,function(e,t){n.push(t+"="+e)}),n.join(",")},l}]).service("SatellizerUtils",function(){this.camelCase=function(e){return e.replace(/([\:\-\_]+(.))/g,function(e,t,n,o){return o?n.toUpperCase():n})},this.parseQueryString=function(e){var n,o,r={};return t.forEach((e||"").split("&"),function(e){e&&(o=e.split("="),n=decodeURIComponent(o[0]),r[n]=t.isDefined(o[1])?decodeURIComponent(o[1]):!0)}),r},this.joinUrl=function(e,t){if(/^(?:[a-z]+:)?\/\//i.test(t))return t;var n=[e,t].join("/"),o=function(e){return e.replace(/[\/]+/g,"/").replace(/\/\?/g,"?").replace(/\/\#/g,"#").replace(/\:\//g,"://")};return o(n)},this.merge=function(e,t){var n={};for(var o in e)e.hasOwnProperty(o)&&(o in t&&"object"==typeof e[o]&&null!==o?n[o]=this.merge(e[o],t[o]):n[o]=e[o]);for(o in t)if(t.hasOwnProperty(o)){if(o in n)continue;n[o]=t[o]}return n}}).factory("SatellizerStorage",["$window","SatellizerConfig",function(e,t){var o=function(){try{var n=t.storageType in e&&null!==e[t.storageType];if(n){var o=Math.random().toString(36).substring(7);e[t.storageType].setItem(o,""),e[t.storageType].removeItem(o)}return n}catch(r){return!1}}();return o||console.warn("Satellizer Warning: "+t.storageType+" is not available."),{get:function(r){return o?e[t.storageType].getItem(r):n},set:function(r,i){return o?e[t.storageType].setItem(r,i):n},remove:function(r){return o?e[t.storageType].removeItem(r):n}}}]).factory("SatellizerInterceptor",["$q","SatellizerConfig","SatellizerStorage","SatellizerShared",function(e,t,n,o){return{request:function(e){if(e.skipAuthorization)return e;if(o.isAuthenticated()&&t.httpInterceptor){var r=t.tokenPrefix?t.tokenPrefix+"_"+t.tokenName:t.tokenName,i=n.get(r);t.authHeader&&t.authToken&&(i=t.authToken+" "+i),e.headers[t.authHeader]=i}return e},responseError:function(t){return e.reject(t)}}}]).config(["$httpProvider",function(e){e.interceptors.push("SatellizerInterceptor")}])}(window,window.angular);
+
+// CommonJS package manager support.
+if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.exports === exports) {
+  module.exports = 'satellizer';
+}
+
+(function(window, angular, undefined) {
+  'use strict';
+
+  if (!window.location.origin) {
+    window.location.origin = window.location.protocol + '//' + window.location.host;
+  }
+
+  angular.module('satellizer', [])
+    .constant('SatellizerConfig', {
+      httpInterceptor: function() { return true; },
+      withCredentials: false,
+      tokenRoot: null,
+      cordova: false,
+      baseUrl: '/',
+      loginUrl: '/auth/login',
+      signupUrl: '/auth/signup',
+      unlinkUrl: '/auth/unlink/',
+      tokenName: 'token',
+      tokenPrefix: 'satellizer',
+      authHeader: 'Authorization',
+      authToken: 'Bearer',
+      storageType: 'localStorage',
+      providers: {
+        facebook: {
+          name: 'facebook',
+          url: '/auth/facebook',
+          authorizationEndpoint: 'https://www.facebook.com/v2.5/dialog/oauth',
+          redirectUri: window.location.origin + '/',
+          requiredUrlParams: ['display', 'scope'],
+          scope: ['email'],
+          scopeDelimiter: ',',
+          display: 'popup',
+          type: '2.0',
+          popupOptions: { width: 580, height: 400 }
+        },
+        google: {
+          name: 'google',
+          url: '/auth/google',
+          authorizationEndpoint: 'https://accounts.google.com/o/oauth2/auth',
+          redirectUri: window.location.origin,
+          requiredUrlParams: ['scope'],
+          optionalUrlParams: ['display'],
+          scope: ['profile', 'email'],
+          scopePrefix: 'openid',
+          scopeDelimiter: ' ',
+          display: 'popup',
+          type: '2.0',
+          popupOptions: { width: 452, height: 633 }
+        },
+        github: {
+          name: 'github',
+          url: '/auth/github',
+          authorizationEndpoint: 'https://github.com/login/oauth/authorize',
+          redirectUri: window.location.origin,
+          optionalUrlParams: ['scope'],
+          scope: ['user:email'],
+          scopeDelimiter: ' ',
+          type: '2.0',
+          popupOptions: { width: 1020, height: 618 }
+        },
+        instagram: {
+          name: 'instagram',
+          url: '/auth/instagram',
+          authorizationEndpoint: 'https://api.instagram.com/oauth/authorize',
+          redirectUri: window.location.origin,
+          requiredUrlParams: ['scope'],
+          scope: ['basic'],
+          scopeDelimiter: '+',
+          type: '2.0'
+        },
+        linkedin: {
+          name: 'linkedin',
+          url: '/auth/linkedin',
+          authorizationEndpoint: 'https://www.linkedin.com/uas/oauth2/authorization',
+          redirectUri: window.location.origin,
+          requiredUrlParams: ['state'],
+          scope: ['r_emailaddress'],
+          scopeDelimiter: ' ',
+          state: 'STATE',
+          type: '2.0',
+          popupOptions: { width: 527, height: 582 }
+        },
+        twitter: {
+          name: 'twitter',
+          url: '/auth/twitter',
+          authorizationEndpoint: 'https://api.twitter.com/oauth/authenticate',
+          redirectUri: window.location.origin,
+          type: '1.0',
+          popupOptions: { width: 495, height: 645 }
+        },
+        twitch: {
+          name: 'twitch',
+          url: '/auth/twitch',
+          authorizationEndpoint: 'https://api.twitch.tv/kraken/oauth2/authorize',
+          redirectUri: window.location.origin,
+          requiredUrlParams: ['scope'],
+          scope: ['user_read'],
+          scopeDelimiter: ' ',
+          display: 'popup',
+          type: '2.0',
+          popupOptions: { width: 500, height: 560 }
+        },
+        live: {
+          name: 'live',
+          url: '/auth/live',
+          authorizationEndpoint: 'https://login.live.com/oauth20_authorize.srf',
+          redirectUri: window.location.origin,
+          requiredUrlParams: ['display', 'scope'],
+          scope: ['wl.emails'],
+          scopeDelimiter: ' ',
+          display: 'popup',
+          type: '2.0',
+          popupOptions: { width: 500, height: 560 }
+        },
+        yahoo: {
+          name: 'yahoo',
+          url: '/auth/yahoo',
+          authorizationEndpoint: 'https://api.login.yahoo.com/oauth2/request_auth',
+          redirectUri: window.location.origin,
+          scope: [],
+          scopeDelimiter: ',',
+          type: '2.0',
+          popupOptions: { width: 559, height: 519 }
+        },
+        bitbucket: {
+          name: 'bitbucket',
+          url: '/auth/bitbucket',
+          authorizationEndpoint: 'https://bitbucket.org/site/oauth2/authorize',
+          redirectUri: window.location.origin + '/',
+          requiredUrlParams: ['scope'],
+          scope: ['email'],
+          scopeDelimiter: ',',
+          type: '2.0',
+          popupOptions: { width: 1028, height: 529 }
+        }
+      }
+    })
+    .provider('$auth', ['SatellizerConfig', function(config) {
+      Object.defineProperties(this, {
+        httpInterceptor: {
+          get: function() { return config.httpInterceptor; },
+          set: function(value) {
+            if (typeof value === 'function') {
+              config.httpInterceptor = value;
+            } else {
+              config.httpInterceptor = function() {
+                return value;
+              };
+            }
+          }
+        },
+        baseUrl: {
+          get: function() { return config.baseUrl; },
+          set: function(value) { config.baseUrl = value; }
+        },
+        loginUrl: {
+          get: function() { return config.loginUrl; },
+          set: function(value) { config.loginUrl = value; }
+        },
+        signupUrl: {
+          get: function() { return config.signupUrl; },
+          set: function(value) { config.signupUrl = value; }
+        },
+        tokenRoot: {
+          get: function() { return config.tokenRoot; },
+          set: function(value) { config.tokenRoot = value; }
+        },
+        tokenName: {
+          get: function() { return config.tokenName; },
+          set: function(value) { config.tokenName = value; }
+        },
+        tokenPrefix: {
+          get: function() { return config.tokenPrefix; },
+          set: function(value) { config.tokenPrefix = value; }
+        },
+        unlinkUrl: {
+          get: function() { return config.unlinkUrl; },
+          set: function(value) { config.unlinkUrl = value; }
+        },
+        authHeader: {
+          get: function() { return config.authHeader; },
+          set: function(value) { config.authHeader = value; }
+        },
+        authToken: {
+          get: function() { return config.authToken; },
+          set: function(value) { config.authToken = value; }
+        },
+        withCredentials: {
+          get: function() { return config.withCredentials; },
+          set: function(value) { config.withCredentials = value; }
+        },
+        cordova: {
+          get: function() { return config.cordova; },
+          set: function(value) { config.cordova = value; }
+        },
+        storageType: {
+          get: function() { return config.storageType; },
+          set: function(value) { config.storageType = value; }
+        }
+      });
+
+      angular.forEach(Object.keys(config.providers), function(provider) {
+        this[provider] = function(params) {
+          return angular.extend(config.providers[provider], params);
+        };
+      }, this);
+
+      var oauth = function(params) {
+        config.providers[params.name] = config.providers[params.name] || {};
+        angular.extend(config.providers[params.name], params);
+      };
+
+      this.oauth1 = function(params) {
+        oauth(params);
+        config.providers[params.name].type = '1.0';
+      };
+
+      this.oauth2 = function(params) {
+        oauth(params);
+        config.providers[params.name].type = '2.0';
+      };
+
+      this.$get = [
+        '$q',
+        'SatellizerShared',
+        'SatellizerLocal',
+        'SatellizerOauth',
+        function($q, shared, local, oauth) {
+          var $auth = {};
+
+          $auth.login = function(user, opts) {
+            return local.login(user, opts);
+          };
+
+          $auth.signup = function(user, options) {
+            return local.signup(user, options);
+          };
+
+          $auth.logout = function() {
+            return shared.logout();
+          };
+
+          $auth.authenticate = function(name, userData) {
+            return oauth.authenticate(name, userData);
+          };
+
+          $auth.link = function(name, userData) {
+            return oauth.authenticate(name, userData);
+          };
+
+          $auth.unlink = function(provider, opts) {
+            return oauth.unlink(provider, opts);
+          };
+
+          $auth.isAuthenticated = function() {
+            return shared.isAuthenticated();
+          };
+
+          $auth.getToken = function() {
+            return shared.getToken();
+          };
+
+          $auth.setToken = function(token) {
+            shared.setToken({ access_token: token });
+          };
+
+          $auth.removeToken = function() {
+            return shared.removeToken();
+          };
+
+          $auth.getPayload = function() {
+            return shared.getPayload();
+          };
+
+          $auth.setStorageType = function(type) {
+            return shared.setStorageType(type);
+          };
+
+          return $auth;
+        }];
+    }])
+    .factory('SatellizerShared', [
+      '$q',
+      '$window',
+      '$log',
+      'SatellizerConfig',
+      'SatellizerStorage',
+      function($q, $window, $log, config, storage) {
+        var Shared = {};
+
+        var tokenName = config.tokenPrefix ? [config.tokenPrefix, config.tokenName].join('_') : config.tokenName;
+
+        Shared.getToken = function() {
+          return storage.get(tokenName);
+        };
+
+        Shared.getPayload = function() {
+          var token = storage.get(tokenName);
+
+          if (token && token.split('.').length === 3) {
+            try {
+              var base64Url = token.split('.')[1];
+              var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+              return JSON.parse(decodeURIComponent(escape(window.atob(base64))));
+            } catch(e) {
+              return undefined;
+            }
+          }
+        };
+
+        Shared.setToken = function(response) {
+          if (!response) {
+            return $log.warn('Can\'t set token without passing a value');
+          }
+
+          var accessToken = response && response.access_token;
+          var token;
+
+          if (accessToken) {
+            if (angular.isObject(accessToken) && angular.isObject(accessToken.data)) {
+              response = accessToken;
+            } else if (angular.isString(accessToken)) {
+              token = accessToken;
+            }
+          }
+
+          if (!token && response) {
+            var tokenRootData = config.tokenRoot && config.tokenRoot.split('.').reduce(function(o, x) { return o[x]; }, response.data);
+            token = tokenRootData ? tokenRootData[config.tokenName] : response.data[config.tokenName];
+          }
+
+          if (!token) {
+            var tokenPath = config.tokenRoot ? config.tokenRoot + '.' + config.tokenName : config.tokenName;
+            return $log.warn('Expecting a token named "' + tokenPath);
+          }
+
+          storage.set(tokenName, token);
+        };
+
+        Shared.removeToken = function() {
+          storage.remove(tokenName);
+        };
+
+        /**
+         * @returns {boolean}
+         */
+        Shared.isAuthenticated = function() {
+          var token = storage.get(tokenName);
+
+          // A token is present
+          if (token) {
+            // Token with a valid JWT format XXX.YYY.ZZZ
+            if (token.split('.').length === 3) {
+              // Could be a valid JWT or an access token with the same format
+              try {
+                var base64Url = token.split('.')[1];
+                var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                var exp = JSON.parse($window.atob(base64)).exp;
+                // JWT with an optonal expiration claims
+                if (exp) {
+                  var isExpired = Math.round(new Date().getTime() / 1000) >= exp;
+                  if (isExpired) {
+                    // FAIL: Expired token
+                    storage.remove(tokenName);
+                    return false;
+                  } else {
+                    // PASS: Non-expired token
+                    return true;
+                  }
+                }
+              } catch(e) {
+                // PASS: Non-JWT token that looks like JWT
+                return true;
+              }
+            }
+            // PASS: All other tokens
+            return true;
+          }
+          // FAIL: No token at all
+          return false;
+        };
+
+        Shared.logout = function() {
+          storage.remove(tokenName);
+          return $q.when();
+        };
+
+        Shared.setStorageType = function(type) {
+          config.storageType = type;
+        };
+
+        return Shared;
+      }])
+    .factory('SatellizerOauth', [
+      '$q',
+      '$http',
+      'SatellizerConfig',
+      'SatellizerUtils',
+      'SatellizerShared',
+      'SatellizerOauth1',
+      'SatellizerOauth2',
+      function($q, $http, config, utils, shared, Oauth1, Oauth2) {
+        var Oauth = {};
+
+        Oauth.authenticate = function(name, userData) {
+          var provider = config.providers[name].type === '1.0' ? new Oauth1() : new Oauth2();
+          var deferred = $q.defer();
+
+          provider.open(config.providers[name], userData || {})
+            .then(function(response) {
+              // This is for a scenario when someone wishes to opt out from
+              // Satellizer's magic by doing authorization code exchange and
+              // saving a token manually.
+              if (config.providers[name].url) {
+                shared.setToken(response, false);
+              }
+              deferred.resolve(response);
+            })
+            .catch(function(error) {
+              deferred.reject(error);
+            });
+
+          return deferred.promise;
+        };
+
+        Oauth.unlink = function(provider, opts) {
+            opts = opts || {};
+            opts.url = opts.url ? opts.url : utils.joinUrl(config.baseUrl, config.unlinkUrl);
+            opts.data = { provider: provider } || opts.data;
+            opts.method = opts.method || 'POST';
+
+            return $http(opts);
+        };
+
+        return Oauth;
+      }])
+    .factory('SatellizerLocal', [
+      '$http',
+      'SatellizerUtils',
+      'SatellizerShared',
+      'SatellizerConfig',
+      function($http, utils, shared, config) {
+        var Local = {};
+
+        Local.login = function(user, opts) {
+          opts = opts || {};
+          opts.url = opts.url ? opts.url : utils.joinUrl(config.baseUrl, config.loginUrl);
+          opts.data = user || opts.data;
+          opts.method = opts.method || 'POST';
+
+          return $http(opts).then(function(response) {
+            shared.setToken(response);
+            return response;
+          });
+        };
+
+        Local.signup = function(user, opts) {
+          opts = opts || {};
+          opts.url = opts.url ? opts.url : utils.joinUrl(config.baseUrl, config.signupUrl);
+          opts.data = user || opts.data;
+          opts.method = opts.method || 'POST';
+
+          return $http(opts);
+        };
+
+        return Local;
+      }])
+    .factory('SatellizerOauth2', [
+      '$q',
+      '$http',
+      '$window',
+      'SatellizerPopup',
+      'SatellizerUtils',
+      'SatellizerConfig',
+      'SatellizerStorage',
+      function($q, $http, $window, popup, utils, config, storage) {
+        return function() {
+          var Oauth2 = {};
+
+          var defaults = {
+            defaultUrlParams: ['response_type', 'client_id', 'redirect_uri'],
+            responseType: 'code',
+            responseParams: {
+              code: 'code',
+              clientId: 'clientId',
+              redirectUri: 'redirectUri'
+            }
+          };
+
+          Oauth2.open = function(options, userData) {
+            defaults = utils.merge(options, defaults);
+
+            var url;
+            var openPopup;
+            var stateName = defaults.name + '_state';
+
+            if (angular.isFunction(defaults.state)) {
+              storage.set(stateName, defaults.state());
+            } else if (angular.isString(defaults.state)) {
+              storage.set(stateName, defaults.state);
+            }
+
+            url = [defaults.authorizationEndpoint, Oauth2.buildQueryString()].join('?');
+
+            if (config.cordova) {
+              openPopup = popup.open(url, defaults.name, defaults.popupOptions, defaults.redirectUri).eventListener(defaults.redirectUri);
+            } else {
+              openPopup = popup.open(url, defaults.name, defaults.popupOptions, defaults.redirectUri).pollPopup();
+            }
+
+            return openPopup
+              .then(function(oauthData) {
+                // When no server URL provided, return popup params as-is.
+                // This is for a scenario when someone wishes to opt out from
+                // Satellizer's magic by doing authorization code exchange and
+                // saving a token manually.
+                if (defaults.responseType === 'token' || !defaults.url) {
+                  return oauthData;
+                }
+
+                if (oauthData.state && oauthData.state !== storage.get(stateName)) {
+                  return $q.reject('OAuth "state" mismatch');
+                }
+
+                return Oauth2.exchangeForToken(oauthData, userData);
+              });
+          };
+
+          Oauth2.exchangeForToken = function(oauthData, userData) {
+            var data = angular.extend({}, userData);
+
+            angular.forEach(defaults.responseParams, function(value, key) {
+              switch (key) {
+                case 'code':
+                  data[value] = oauthData.code;
+                  break;
+                case 'clientId':
+                  data[value] = defaults.clientId;
+                  break;
+                case 'redirectUri':
+                  data[value] = defaults.redirectUri;
+                  break;
+                default:
+                  data[value] = oauthData[key]
+              }
+            });
+
+            if (oauthData.state) {
+              data.state = oauthData.state;
+            }
+
+            var exchangeForTokenUrl = config.baseUrl ? utils.joinUrl(config.baseUrl, defaults.url) : defaults.url;
+
+            return $http.post(exchangeForTokenUrl, data, { withCredentials: config.withCredentials });
+          };
+
+          Oauth2.buildQueryString = function() {
+            var keyValuePairs = [];
+            var urlParams = ['defaultUrlParams', 'requiredUrlParams', 'optionalUrlParams'];
+
+            angular.forEach(urlParams, function(params) {
+
+              angular.forEach(defaults[params], function(paramName) {
+                var camelizedName = utils.camelCase(paramName);
+                var paramValue = angular.isFunction(defaults[paramName]) ? defaults[paramName]() : defaults[camelizedName];
+
+                if (paramName === 'state') {
+                  var stateName = defaults.name + '_state';
+                  paramValue = encodeURIComponent(storage.get(stateName));
+                }
+
+                if (paramName === 'scope' && Array.isArray(paramValue)) {
+                  paramValue = paramValue.join(defaults.scopeDelimiter);
+
+                  if (defaults.scopePrefix) {
+                    paramValue = [defaults.scopePrefix, paramValue].join(defaults.scopeDelimiter);
+                  }
+                }
+
+                keyValuePairs.push([paramName, paramValue]);
+              });
+            });
+
+            return keyValuePairs.map(function(pair) {
+              return pair.join('=');
+            }).join('&');
+          };
+
+          return Oauth2;
+        };
+      }])
+    .factory('SatellizerOauth1', [
+      '$q',
+      '$http',
+      'SatellizerPopup',
+      'SatellizerConfig',
+      'SatellizerUtils',
+      function($q, $http, popup, config, utils) {
+        return function() {
+          var Oauth1 = {};
+
+          var defaults = {
+            url: null,
+            name: null,
+            popupOptions: null,
+            redirectUri: null,
+            authorizationEndpoint: null
+          };
+
+          Oauth1.open = function(options, userData) {
+            angular.extend(defaults, options);
+            var popupWindow;
+            var serverUrl = config.baseUrl ? utils.joinUrl(config.baseUrl, defaults.url) : defaults.url;
+
+            if (!config.cordova) {
+              popupWindow = popup.open('', defaults.name, defaults.popupOptions, defaults.redirectUri);
+            }
+
+            return $http.post(serverUrl, defaults)
+              .then(function(response) {
+                if (config.cordova) {
+                  popupWindow = popup.open([defaults.authorizationEndpoint, Oauth1.buildQueryString(response.data)].join('?'), defaults.name, defaults.popupOptions, defaults.redirectUri);
+                } else {
+                  popupWindow.popupWindow.location = [defaults.authorizationEndpoint, Oauth1.buildQueryString(response.data)].join('?');
+                }
+
+                var popupListener = config.cordova ? popupWindow.eventListener(defaults.redirectUri) : popupWindow.pollPopup();
+
+                return popupListener
+                  .then(function(response) {
+                    return Oauth1.exchangeForToken(response, userData);
+                  });
+              });
+
+          };
+
+          Oauth1.exchangeForToken = function(oauthData, userData) {
+            var data = angular.extend({}, userData, oauthData);
+            var exchangeForTokenUrl = config.baseUrl ? utils.joinUrl(config.baseUrl, defaults.url) : defaults.url;
+            return $http.post(exchangeForTokenUrl, data, { withCredentials: config.withCredentials });
+          };
+
+          Oauth1.buildQueryString = function(obj) {
+            var str = [];
+
+            angular.forEach(obj, function(value, key) {
+              str.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
+            });
+
+            return str.join('&');
+          };
+
+          return Oauth1;
+        };
+      }])
+    .factory('SatellizerPopup', [
+      '$q',
+      '$interval',
+      '$window',
+      'SatellizerConfig',
+      'SatellizerUtils',
+      function($q, $interval, $window, config, utils) {
+        var Popup = {};
+
+        Popup.url = '';
+        Popup.popupWindow = null;
+
+        Popup.open = function(url, name, options) {
+          Popup.url = url;
+
+          var stringifiedOptions = Popup.stringifyOptions(Popup.prepareOptions(options));
+          var UA = $window.navigator.userAgent;
+          var windowName = (config.cordova || UA.indexOf('CriOS') > -1) ? '_blank' : name;
+
+          Popup.popupWindow = $window.open(url, windowName, stringifiedOptions);
+
+          $window.popup = Popup.popupWindow;
+
+          if (Popup.popupWindow && Popup.popupWindow.focus) {
+            Popup.popupWindow.focus();
+          }
+
+          return Popup;
+        };
+
+        Popup.eventListener = function(redirectUri) {
+          var deferred = $q.defer();
+
+          Popup.popupWindow.addEventListener('loadstart', function(event) {
+            if (event.url.indexOf(redirectUri) !== 0) {
+              return;
+            }
+
+            var parser = document.createElement('a');
+            parser.href = event.url;
+
+            if (parser.search || parser.hash) {
+              var queryParams = parser.search.substring(1).replace(/\/$/, '');
+              var hashParams = parser.hash.substring(1).replace(/\/$/, '');
+              var hash = utils.parseQueryString(hashParams);
+              var qs = utils.parseQueryString(queryParams);
+
+              angular.extend(qs, hash);
+
+              if (!qs.error) {
+                deferred.resolve(qs);
+              }
+
+              Popup.popupWindow.close();
+            }
+          });
+
+          Popup.popupWindow.addEventListener('loaderror', function() {
+            deferred.reject('Authorization Failed');
+          });
+
+          return deferred.promise;
+        };
+
+        Popup.pollPopup = function() {
+          var deferred = $q.defer();
+
+          var polling = $interval(function() {
+            try {
+              var documentOrigin = document.location.host;
+              var popupWindowOrigin = Popup.popupWindow.location.host;
+
+              if (popupWindowOrigin === documentOrigin && (Popup.popupWindow.location.search || Popup.popupWindow.location.hash)) {
+                var queryParams = Popup.popupWindow.location.search.substring(1).replace(/\/$/, '');
+                var hashParams = Popup.popupWindow.location.hash.substring(1).replace(/[\/$]/, '');
+                var hash = utils.parseQueryString(hashParams);
+                var qs = utils.parseQueryString(queryParams);
+
+                angular.extend(qs, hash);
+
+                if (qs.error) {
+                  deferred.reject(qs);
+                } else {
+                  deferred.resolve(qs);
+                }
+
+                $interval.cancel(polling);
+
+                Popup.popupWindow.close();
+              }
+            } catch (error) {
+              // Ignore DOMException: Blocked a frame with origin from accessing a cross-origin frame.
+            }
+
+            if (!Popup.popupWindow || Popup.popupWindow.closed || Popup.popupWindow.closed === undefined) {
+              $interval.cancel(polling);
+            }
+          }, 50);
+
+          return deferred.promise;
+        };
+
+        Popup.prepareOptions = function(options) {
+          options = options || {};
+          var width = options.width || 500;
+          var height = options.height || 500;
+
+          return angular.extend({
+            width: width,
+            height: height,
+            left: $window.screenX + (($window.outerWidth - width) / 2),
+            top: $window.screenY + (($window.outerHeight - height) / 2.5)
+          }, options);
+        };
+
+        Popup.stringifyOptions = function(options) {
+          var parts = [];
+          angular.forEach(options, function(value, key) {
+            parts.push(key + '=' + value);
+          });
+          return parts.join(',');
+        };
+
+        return Popup;
+      }])
+    .service('SatellizerUtils', function() {
+      this.camelCase = function(name) {
+        return name.replace(/([\:\-\_]+(.))/g, function(_, separator, letter, offset) {
+          return offset ? letter.toUpperCase() : letter;
+        });
+      };
+
+      this.parseQueryString = function(keyValue) {
+        var obj = {}, key, value;
+        angular.forEach((keyValue || '').split('&'), function(keyValue) {
+          if (keyValue) {
+            value = keyValue.split('=');
+            key = decodeURIComponent(value[0]);
+            obj[key] = angular.isDefined(value[1]) ? decodeURIComponent(value[1]) : true;
+          }
+        });
+        return obj;
+      };
+
+      this.joinUrl = function(baseUrl, url) {
+        if (/^(?:[a-z]+:)?\/\//i.test(url)) {
+          return url;
+        }
+
+        var joined = [baseUrl, url].join('/');
+
+        var normalize = function(str) {
+          return str
+            .replace(/[\/]+/g, '/')
+            .replace(/\/\?/g, '?')
+            .replace(/\/\#/g, '#')
+            .replace(/\:\//g, '://');
+        };
+
+        return normalize(joined);
+      };
+
+      this.merge = function(obj1, obj2) {
+        var result = {};
+        for (var i in obj1) {
+          if (obj1.hasOwnProperty(i)) {
+            if ((i in obj2) && (typeof obj1[i] === 'object') && (i !== null)) {
+              result[i] = this.merge(obj1[i], obj2[i]);
+            } else {
+              result[i] = obj1[i];
+            }
+          }
+        }
+        for (i in obj2) {
+          if (obj2.hasOwnProperty(i)) {
+            if (i in result) {
+              continue;
+            }
+            result[i] = obj2[i];
+          }
+
+        }
+        return result;
+      }
+    })
+    .factory('SatellizerStorage', ['$window', '$log', 'SatellizerConfig', function($window, $log, config) {
+
+      var store = {};
+
+      var isStorageAvailable = (function() {
+        try {
+          var supported = config.storageType in $window && $window[config.storageType] !== null;
+
+          if (supported) {
+            var key = Math.random().toString(36).substring(7);
+            $window[config.storageType].setItem(key, '');
+            $window[config.storageType].removeItem(key);
+          }
+
+          return supported;
+        } catch (e) {
+          return false;
+        }
+      })();
+
+      if (!isStorageAvailable) {
+        $log.warn(config.storageType + ' is not available.');
+      }
+
+      return {
+        get: function(key) {
+          return isStorageAvailable ? $window[config.storageType].getItem(key) : store[key];
+        },
+        set: function(key, value) {
+          return isStorageAvailable ? $window[config.storageType].setItem(key, value) : store[key] = value;
+        },
+        remove: function(key) {
+          return isStorageAvailable ? $window[config.storageType].removeItem(key): delete store[key];
+        }
+      };
+
+    }])
+    .factory('SatellizerInterceptor', [
+      '$q',
+      'SatellizerConfig',
+      'SatellizerStorage',
+      'SatellizerShared',
+      function($q, config, storage, shared) {
+        return {
+          request: function(request) {
+            if (request.skipAuthorization) {
+              return request;
+            }
+
+            if (shared.isAuthenticated() && config.httpInterceptor(request)) {
+              var tokenName = config.tokenPrefix ? config.tokenPrefix + '_' + config.tokenName : config.tokenName;
+              var token = storage.get(tokenName);
+
+              if (config.authHeader && config.authToken) {
+                token = config.authToken + ' ' + token;
+              }
+
+              request.headers[config.authHeader] = token;
+            }
+
+            return request;
+          },
+          responseError: function(response) {
+            return $q.reject(response);
+          }
+        };
+      }])
+    .config(['$httpProvider', function($httpProvider) {
+      $httpProvider.interceptors.push('SatellizerInterceptor');
+    }]);
+
+})(window, window.angular);
+
 },{}],54:[function(require,module,exports){
 /*!
  * ui-select
