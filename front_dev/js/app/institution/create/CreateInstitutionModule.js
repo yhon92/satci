@@ -1,5 +1,5 @@
-angular.module('Institution.Create', ['Institution.resources'])
-.controller('CreateInstitutionCtrl', ($scope, $filter, Alertify, Institutions) => {
+angular.module('Institution.Create', ['SATCI.Shared', 'Institution.resources'])
+.controller('CreateInstitutionCtrl', ($scope, $filter, Alertify, Institutions, Parishes) => {
 
   $scope.institution = {
     identification: '',
@@ -11,6 +11,12 @@ angular.module('Institution.Create', ['Institution.resources'])
     agent_identification: '',
     agent_first_name: '',
     agent_last_name: ''
+  };
+
+  if ( !$scope.parishes ) {
+    Parishes.get((data) => {
+      $scope.parishes = data.parishes;
+    })
   };
 
   $scope.saveInstitution = () => {

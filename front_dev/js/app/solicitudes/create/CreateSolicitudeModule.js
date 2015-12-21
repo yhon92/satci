@@ -71,9 +71,9 @@ angular.module('Solicitude.Create', ['ui.router', 'Alertify', 'SATCI.Shared', 'S
     $scope.template = `${PathTemplates.partials}solicitude/applicant.html`;
   };
 
-  $scope.parishes = Parishes.get((data) => {
-    return $scope.parishes = data.parishes;
-  })
+  Parishes.get((data) => {
+    $scope.parishes = data.parishes;
+  });
 
   $scope.searchApplicant = () => {
     $scope.applicantTemplate = null;

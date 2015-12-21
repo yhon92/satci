@@ -1,0 +1,51 @@
+<div class="panel panel-default">
+  <div class="panel-heading">Lista de solicitantes <strong>{{ applicant.type }}</strong></div>
+  <div class="panel-body">
+    <div class="table-responsive table-medium">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th style="width: 100px;"><input class="form-control" type="text" placeholder="Identificacíon" ng-model="filter.identification"></th>
+            <th style="min-width: 165px;"><input class="form-control" type="text" placeholder="Nombre" ng-model="filter.full_name"></th>
+            <th style="min-width: 165px;"><input class="form-control" type="text" placeholder="Dirección" ng-model="filter.address"></th>
+            <th style="min-width: 64px;">Teléfono</th>
+            <th>
+              <select type="role" class="form-control" name="parish" id="parish" ng-model="filter.parish">
+                  <option value="">Todo</option>
+                  <option value="1">Coronel Mariano Peraza</option>
+                  <option value="2">Cuara</option>
+                  <option value="3">Diego de Lozada</option>
+                  <option value="4">José Bernardo Dorante</option>
+                  <option value="5">Juan Bautista Rodríguez</option>
+                  <option value="6">Paraíso de San José</option>
+                  <option value="7">San Miguel</option>
+                  <option value="8">Tintorero</option>
+                </select>
+            </th>
+            <th style="width: 60px;"></th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr class="pointer" ng-repeat="(key, row) in applicant | 
+          filter:{ identification : filter.identification } |
+          filter:{ full_name : filter.full_name } |
+          filter:{ address : filter.address } |
+          filter:{ topic : filter.topic } |
+          filter:{ parish: {id: filter.parish} }">
+            <td>{{ row.identification }}</td>
+            <td>{{ row.full_name}}</td>
+            <td>{{ row.address | limitTo:140 }}</td>
+            <td>{{ row.prefix_phone }}-{{ row.number_phone }}</td>
+            <td>{{ row.parish.name }}</td>
+            <td>
+              <div>
+                <a ui-sref="{{ edit }}({id: row.id})" uib-tooltip="Editar" class="btn btn-xs btn-warning glyphicon glyphicon-pencil"></a>
+                <a ng-clik="remove(row.id)" uib-tooltip="Eliminar" class="btn btn-xs btn-danger glyphicon glyphicon-trash"></a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -3,8 +3,8 @@
 *
 * Description
 */
-angular.module('Citizen.Create', ['Citizen.resources'])
-.controller('CreateCitizenCtrl', ($scope, $filter, Alertify, Citizens) => {
+angular.module('Citizen.Create', ['SATCI.Shared', 'Citizen.resources'])
+.controller('CreateCitizenCtrl', ($scope, $filter, Alertify, Citizens, Parishes) => {
 
   $scope.citizen = {
     identification: '',
@@ -14,6 +14,12 @@ angular.module('Citizen.Create', ['Citizen.resources'])
     prefix_phone: '',
     number_phone: '',
     parish: ''
+  };
+
+  if ( !$scope.parishes ) {
+    Parishes.get((data) => {
+      $scope.parishes = data.parishes;
+    })
   };
 
   $scope.saveCitizen = () =>{

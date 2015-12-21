@@ -9,25 +9,25 @@ class DirectorTableSeeder extends Seeder
 	public function run()
 	{
 		Director::create([
-			'identification' => '19828960',
-			'full_name' 	 	 => 'Yoenny David Gil Quintero',
-			'first_name' 	 	 => 'Yoenny David',
-			'last_name' 	 	 => 'Gil Quintero',
-			'prefix_phone' 	 => '0414',
-			'number_phone' 	 => '5707936',
-			'email' 				 => 'yoennygil@gmail.com',
-			'resolution' 		 => 'A-2015-01',
+			'identification' => '20321791',
+			'full_name' 	 	 => 'Ysabela Nazaret Rodriguez Rizalez',
+			'first_name' 	 	 => 'Ysabela Nazaret',
+			'last_name' 	 	 => 'Rodriguez Rizalez',
+			'prefix_phone' 	 => '0424',
+			'number_phone' 	 => '5836356',
+			'email' 				 => 'ysa_nrr@yahoo.es',
+			'resolution' 		 => 'A-2015-07',
 			]);
-
+		
 		Director::create([
-			'identification' => '16736321',
-			'full_name' 	 	 => 'Kareng Yudibeth Hernández Valera',
-			'first_name' 	 	 => 'Kareng Yudibeth',
-			'last_name' 	 	 => 'Hernández Valera',
+			'identification' => '11589328',
+			'full_name' 	 	 => 'Graciela Dayanna Lara Hernandez',
+			'first_name' 	 	 => 'Graciela Dayanna',
+			'last_name' 	 	 => 'Lara Hernandez',
 			'prefix_phone' 	 => '0414',
-			'number_phone' 	 => '3389361',
-			'email' 				 => 'karenghernandez06@gmail.com',
-			'resolution' 		 => 'A-2015-02',
+			'number_phone' 	 => '5538232',
+			'email' 				 => 'larademgraciela@hotmail.com',
+			'resolution' 		 => 'A-2015-10',
 			]);
 
 		Director::create([
@@ -53,6 +53,28 @@ class DirectorTableSeeder extends Seeder
 			]);
 
 		Director::create([
+			'identification' => '19828960',
+			'full_name' 	 	 => 'Yoenny David Gil Quintero',
+			'first_name' 	 	 => 'Yoenny David',
+			'last_name' 	 	 => 'Gil Quintero',
+			'prefix_phone' 	 => '0414',
+			'number_phone' 	 => '5707936',
+			'email' 				 => 'yoennygil@gmail.com',
+			'resolution' 		 => 'A-2015-01',
+			]);
+
+		Director::create([
+			'identification' => '16736321',
+			'full_name' 	 	 => 'Kareng Yudibeth Hernández Valera',
+			'first_name' 	 	 => 'Kareng Yudibeth',
+			'last_name' 	 	 => 'Hernández Valera',
+			'prefix_phone' 	 => '0414',
+			'number_phone' 	 => '3389361',
+			'email' 				 => 'karenghernandez06@gmail.com',
+			'resolution' 		 => 'A-2015-02',
+			]);
+
+		Director::create([
 			'identification' => '5749003',
 			'full_name' 	 	 => 'Nieves Dacil Hernández Lorenzo',
 			'first_name' 	 	 => 'Nieves Dacil',
@@ -74,16 +96,6 @@ class DirectorTableSeeder extends Seeder
 			'resolution' 		 => 'A-2015-06',
 			]);
 
-		Director::create([
-			'identification' => '20321791',
-			'full_name' 	 	 => 'Ysabela Nazaret Rodriguez Rizalez',
-			'first_name' 	 	 => 'Ysabela Nazaret',
-			'last_name' 	 	 => 'Rodriguez Rizalez',
-			'prefix_phone' 	 => '0424',
-			'number_phone' 	 => '5836356',
-			'email' 				 => 'ysa_nrr@yahoo.es',
-			'resolution' 		 => 'A-2015-07',
-			]);
 
 		Director::create([
 			'identification' => '13922761',
@@ -105,17 +117,6 @@ class DirectorTableSeeder extends Seeder
 			'number_phone' 	 => '5411732',
 			'email' 				 => 'ruben_vargas@hotmail.com',
 			'resolution' 		 => 'A-2015-09',
-			]);
-
-		Director::create([
-			'identification' => '11589328',
-			'full_name' 	 	 => 'Graciela Dayanna Lara Hernandez',
-			'first_name' 	 	 => 'Graciela Dayanna',
-			'last_name' 	 	 => 'Lara Hernandez',
-			'prefix_phone' 	 => '0414',
-			'number_phone' 	 => '5538232',
-			'email' 				 => 'larademgraciela@hotmail.com',
-			'resolution' 		 => 'A-2015-10',
 			]);
 	}
 }

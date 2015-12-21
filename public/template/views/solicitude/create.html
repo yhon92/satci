@@ -1,5 +1,5 @@
 <div class="col-md-12 aling-center" ui-view>
-	<div class="col-md-5">
+	<div class="col-md-4 col-md-offset-2">
 		<div class="panel panel-default">
 			<div class="panel-body">
 				<form class="form-horizontal" ng-submit="saveSolicitude()">
@@ -23,8 +23,8 @@
 							</div>
 						</div> -->
 						<div class="form-group">
-							<label class="col-lg-3 control-label"><strong>Razon Social:</strong></label>
-							<div class="col-lg-9">
+							<label class="col-lg-4 control-label"><strong>Razon Social:</strong></label>
+							<div class="col-lg-8">
 								<div class="radio">
 									<label>
 										<input type="radio" name="solicitude.applicant_type" value='Citizen' ng-click='getApplicant("citizen")'>
@@ -40,21 +40,21 @@
 							</div>
 						</div>
 						<div class="form-group" ng-show="solicitude.applicant_id">
-							<label class="col-lg-3 control-label"><strong>{{solicitude.applicant_type | indentification}}:</strong></label>
-							<div class="col-lg-9">
+							<label class="col-lg-4 control-label"><strong>{{solicitude.applicant_type | indentification}}:</strong></label>
+							<div class="col-lg-8">
 								<label class="form-label">{{solicitude.identification}}</label>
 								<input type="hidden" name="applicant_id" value="{{solicitude.applicant_id}}" ng-model='solicitude.applicant_id'>
 							</div>
 						</div>
 						<div class="form-group" ng-show="solicitude.applicant_id">
-							<label class="col-lg-3 control-label"><strong>Solicitante:</strong></label>
-							<div class="col-lg-9">
+							<label class="col-lg-4 control-label"><strong>Solicitante:</strong></label>
+							<div class="col-lg-8">
 								<label class="form-label">{{solicitude.full_name}}</label>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-lg-3 control-label" for="document_date"><strong>F. Documento:</strong></label>
-							<div class="col-lg-6">
+							<label class="col-lg-4 control-label" for="document_date"><strong>F. Documento:</strong></label>
+							<div class="col-lg-8">
 								<p class="input-group">
 									<input class="form-control" type="text" id="document_date" placeholder="Fecha del Documento" onkeydown="return noKey(event);" name='document_date' ng-model="solicitude.document_date" uib-datepicker-popup="dd-MM-yyyy" is-open="datepicker.document_date" min-date="minDate" max-date="maxDate" picker-options="dateOptions" ng-required="true" current-text='Hoy' clear-text='Borrar' close-text="Cerrar">
 									<span class="input-group-btn">
@@ -64,7 +64,7 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-lg-3 control-label" for="topic"><strong>Asunto:</strong></label>
+							<label class="col-lg-4 control-label" for="topic"><strong>Asunto:</strong></label>
 							<div class="col-lg-12">
 								<textarea class="form-control" id="topic" placeholder="Asunto" rows="6" ng-model="solicitude.topic"></textarea>
 							</div>

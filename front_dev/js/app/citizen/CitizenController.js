@@ -3,4 +3,17 @@
 *
 * Description
 */
-angular.module('Citizen.controller', [])
+angular.module('Citizen.controller', ['Citizen.resources'])
+.controller('CitizenCtrl', ($scope, Citizens) => {
+
+  Citizens.get().$promise
+  .then((data) => {
+    $scope.citizens = data.citizens;
+    $scope.citizens.type = 'Naturales';
+  },
+  (errors) => {
+    
+  });
+
+
+});

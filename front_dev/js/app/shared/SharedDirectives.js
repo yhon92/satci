@@ -4,6 +4,18 @@
 * Description
 */
 angular.module('Shared.directives', [])
+.directive('applicantList', (PathTemplates) => {
+  return {
+    restrict: 'E',
+    scope: {
+      applicant: '=type',
+      edit: '@',
+      show: '&',
+      remove: '&',
+    },
+    templateUrl: `${PathTemplates.partials}shared/applicant-list.html`
+  };
+})
 .directive('filteredInput', ($filter) => {
   let dirLink = (s,e,a,c) => {
     s.$watch(a.ngModel, (v) => {

@@ -25,7 +25,7 @@ class AreaMeansTableSeeder extends Seeder
       'Departamento de Programas de Especial Atención', 
       'Departamento de Programas de Salud y Educativos', 
       'Departamento de Proyectos y Obras', 
-      'Despacho del Alcalde',
+      'Despacho del Alcalde', 
       'Dirección General de Finanzas, Administración y Control de Gestión', 
       'Dirección General de Seguridad Ciudadana', 
       'Dirección General de Servicios Comunitarios', 

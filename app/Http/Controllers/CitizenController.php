@@ -28,7 +28,7 @@ class CitizenController extends Controller {
 		
 		return response()->json([
 
-			'citizens' => $citizens->toArray(),
+			'citizens' => $citizens,
 
 			], 200
 		);
