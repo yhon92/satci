@@ -1,6 +1,9 @@
 <?php 
 namespace SATCI\Http\Controllers\Solicitude;
 
+use Log;
+use Uuid;
+
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 // use Illuminate\Routing\Route;
@@ -69,9 +72,9 @@ class SolicitudeController extends Controller {
 	 */
 	public function store(CreateSolicitudeRequest $request)
 	{
-		$last_solicitude = $this->solicitudeRepo->lastSolicitude();
+		$count_solicitude = $this->solicitudeRepo->countSolicitude();
 
-		$solicitude_number = Helpers::getSolicitudeNumber($last_solicitude);
+		$solicitude_number = Helpers::getSolicitudeNumber($count_solicitude);
 
 		$request['solicitude_number'] = $solicitude_number;
 
@@ -81,7 +84,7 @@ class SolicitudeController extends Controller {
 
 		$request['applicant_type'] = $type;
 
-		$uuid = \Uuid::generate(5, 'SATCI', \Uuid::generate());
+		$uuid = Uuid::generate(5, 'SATCI', Uuid::generate());
 		
 		$request['id'] = $uuid->string;
 
@@ -144,7 +147,7 @@ class SolicitudeController extends Controller {
     }
     catch (QueryException $e)
     {
-      \Log::info($e->errorInfo[2]);
+      Log::info($e->errorInfo[2]);
       return response()->json(['error' => true], 200);
     }
 

@@ -6,32 +6,51 @@ use SATCI\Entities\Citizen;
 class CitizenRepo extends BaseRepo
 {
 
-	public function getModel()
-	{
-		return new Citizen;
-	}
+  public function getModel()
+  {
+    return new Citizen;
+  }
 
-	static public function update($id, $data)
-	{
-		return Citizen::where('id', $id)->update($data);
-	}
+  static public function newCitizen($data)
+  {
+    return Citizen::create($data);
+  }
 
-	static public function getCitizen($id)
-	{
-		return Citizen::with('parish')->find($id);
-	}
+  static public function get($id)
+  {
+    return Citizen::with('parish')->find($id);
+  }
 
-	static public function getListCitizens()
-	{
-		return Citizen::with('parish')
-		->orderBy('full_name', 'ASC')
-		->get();
-			// ->paginate();
-	}
+  static public function update($id, $data)
+  {
+    return Citizen::where('id', $id)->update($data);
+  }
 
-	static public function newCitizen($data)
-	{
-		return Citizen::create($data);
-	}
+  static public function delete($id)
+  {
+    return Citizen::destroy($id);
+  }
+
+  static public function getListCitizens()
+  {
+    return Citizen::with('parish')
+                  ->orderBy('full_name', 'ASC')
+                  ->get();
+                  // ->paginate();
+  }
+
+  static public function getListSolicitudes($id)
+  {
+    return Citizen::with('solicitudes')
+                  ->where('id', $id)
+                  ->get();
+  }
+
+  static public function countCitizens()
+  {
+    return Citizen::count();
+  }
+
+
 
 }

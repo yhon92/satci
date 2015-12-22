@@ -1,6 +1,9 @@
 <?php 
 namespace SATCI\Http\Controllers;
 
+use DB;
+use Log;
+
 use Illuminate\Http\Request;
 
 use SATCI\Http\Controllers\Controller;
@@ -27,12 +30,7 @@ class CitizenController extends Controller {
 	{
 		$citizens = $this->citizenRepo->getListCitizens();
 		
-		return response()->json([
-
-			'citizens' => $citizens,
-
-			], 200
-		);
+		return response()->json(['citizens' => $citizens], 200);
 	}
 
 	/**
@@ -47,7 +45,7 @@ class CitizenController extends Controller {
 		return response()->json([
 				'success' => true,
 				'citizen' => $citizen,
-			]);
+			], 200);
 	}
 
 	/**
@@ -58,7 +56,7 @@ class CitizenController extends Controller {
 	 */
 	public function show($id)
 	{
-		$citizen = $this->citizenRepo->getCitizen($id);
+		$citizen = $this->citizenRepo->get($id);
 
 		return response()->json(['citizen' => $citizen], 200);
 	}
@@ -92,7 +90,33 @@ class CitizenController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		//
+		$solicitudes = $this->citizenRepo->getListSolicitudes($id);
+
+		if (count($solicitudes[0]->solicitudes)) 
+		{
+			return response()->json(['conflict' => true], 200);
+		}
+		else
+		{
+			DB::beginTransaction();
+
+			try 
+      {
+        $this->citizenRepo->delete($id);
+      }
+      catch (QueryException $e)
+      {
+        DB::rollBack();
+
+        Log::info($e->errorInfo[2]);
+
+        return response()->json(['error' => true], 200);
+      }
+		}
+		
+		DB::commit();
+
+		return response()->json(['success' => true] ,200);
 	}
 
 }

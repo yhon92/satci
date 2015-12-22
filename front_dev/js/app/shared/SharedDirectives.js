@@ -10,7 +10,7 @@ angular.module('Shared.directives', [])
     scope: {
       applicant: '=type',
       edit: '@',
-      show: '&',
+      // show: '&',
       remove: '&',
     },
     templateUrl: `${PathTemplates.partials}shared/applicant-list.html`

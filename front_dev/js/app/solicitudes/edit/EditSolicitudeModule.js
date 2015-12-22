@@ -58,7 +58,7 @@ angular.module('Solicitude.Edit', ['ui.router', 'Alertify', 'SATCI.Shared', 'Sol
       status: $scope.solicitude.status
     }
     console.log(solicitude)
-    Solicitudes.update({ id:$stateParams.id }, solicitude).$promise
+    Solicitudes.update({id: $stateParams.id}, solicitude).$promise
       .then( (data) => {
         if (data.success) {
           Alertify.success('Solicitud modificada exitosamente');

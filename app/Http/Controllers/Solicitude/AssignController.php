@@ -1,9 +1,12 @@
 <?php
 namespace SATCI\Http\Controllers\Solicitude;
 
+use DB;
+use Log;
+use Uuid;
+
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
-use DB;
 
 // use SATCI\Http\Requests;
 use SATCI\Http\Controllers\Controller;
@@ -85,7 +88,7 @@ class AssignController extends Controller
         {
           $area_means_id = $this->areaMeansRepo->getID($area['id'], $default_means);
         }
-        $uuid = \Uuid::generate(5, 'SATCI', \Uuid::generate());
+        $uuid = Uuid::generate(5, 'SATCI', Uuid::generate());
 
         $data = ['id' => $uuid->string,
                   'solicitude_id' => $solicitude_id,
@@ -100,7 +103,7 @@ class AssignController extends Controller
         {
           DB::rollBack();
 
-          \Log::info($e->errorInfo[2]);
+          Log::info($e->errorInfo[2]);
 
           return response()->json(['error' => true], 200);
         }
@@ -114,7 +117,7 @@ class AssignController extends Controller
     {
       DB::rollBack();
 
-      \Log::info($e->errorInfo[2]);
+      Log::info($e->errorInfo[2]);
 
       return response()->json(['error' => true], 200);
     }
@@ -164,7 +167,7 @@ class AssignController extends Controller
     }
     catch (QueryException $e)
     {
-      \Log::info($e->errorInfo[2]);
+      Log::info($e->errorInfo[2]);
       return response()->json(['error' => true], 200);
     }
 
@@ -184,7 +187,7 @@ class AssignController extends Controller
       }
       catch (QueryException $e)
       {
-        \Log::info($e->errorInfo[2]);
+        Log::info($e->errorInfo[2]);
 
         return response()->json(['error' => true], 200);
       }

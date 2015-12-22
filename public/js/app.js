@@ -186,15 +186,53 @@ angular.module('Category.resources', ['ngResource', 'SATCI.Shared']).factory('Ca
 *
 * Description
 */
-angular.module('Citizen.controller', ['Citizen.resources']).controller('CitizenCtrl', function ($scope, Citizens) {
+angular.module('Citizen.controller', ['Alertify', 'Citizen.resources']).controller('CitizenCtrl', function ($scope, Alertify, Citizens) {
 
   Citizens.get().$promise.then(function (data) {
     $scope.citizens = data.citizens;
     $scope.citizens.type = 'Naturales';
   }, function (errors) {});
 
-  $scope.remove = function (id) {
-    console.log(id);
+  $scope.removeCitizen = function (id) {
+
+    var index = getIndex($scope.citizens, id);
+
+    Alertify.set({ labels: { ok: "Eliminar", cancel: "Cancelar" } });
+
+    Alertify.confirm('Confirma que desea eliminar a: ' + '</br>Cédula: <strong class="text-danger">' + $scope.citizens[index].identification + '</strong>' + '</br>Nombre: <strong class="text-danger">' + $scope.citizens[index].full_name + '</strong>').then(function (ok) {
+      Citizens.delete({ id: id }).$promise.then(function (data) {
+        if (data.success) {
+          $scope.citizens.splice(index, 1);
+          Alertify.success('¡Registro eliminado exitosamente!');
+        }
+        if (data.conflict) {
+          Alertify.error('¡No es posible eliminar por tener solicitudes asociadas!');
+        }
+        if (data.error) {
+          Alertify.error('¡Ocurrio un error al intentar eliminar!');
+        }
+      }, function (fails) {
+        if (fails.status != 500) {
+          angular.forEach(fails.data, function (values, key) {
+            angular.forEach(values, function (value) {
+              Alertify.error(value);
+            });
+          });
+        } else {
+          console.log(fails);
+        };
+      });
+    }, function (cancel) {
+      return false;
+    });
+  };
+
+  function getIndex(Things, id) {
+    for (var i = 0; i < Things.length; i++) {
+      if (Things[i].id == id) {
+        return i;
+      }
+    }
   };
 });
 
@@ -681,7 +719,7 @@ angular.module('Shared.directives', []).directive('applicantList', function (Pat
     scope: {
       applicant: '=type',
       edit: '@',
-      show: '&',
+      // show: '&',
       remove: '&'
     },
     templateUrl: PathTemplates.partials + 'shared/applicant-list.html'

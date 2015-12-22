@@ -26,7 +26,7 @@
           </tr>
         </thead>
         <tbody>
-        <tr class="pointer" ng-repeat="(key, row) in applicant | 
+        <tr class="pointer" ng-repeat="row in applicant | 
           filter:{ identification : filter.identification } |
           filter:{ full_name : filter.full_name } |
           filter:{ address : filter.address } |
@@ -40,7 +40,7 @@
             <td>
               <div>
                 <a ui-sref="{{ edit }}({id: row.id})" uib-tooltip="Editar" class="btn btn-xs btn-warning glyphicon glyphicon-pencil"></a>
-                <a ng-click="remove(11)" uib-tooltip="Eliminar" class="btn btn-xs btn-danger glyphicon glyphicon-trash"></a>
+                <a ng-click="remove({id:row.id})" uib-tooltip="Eliminar" class="btn btn-xs btn-danger glyphicon glyphicon-trash"></a>
               </div>
             </td>
           </tr>
