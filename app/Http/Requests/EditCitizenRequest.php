@@ -2,7 +2,7 @@
 
 use SATCI\Http\Requests\Request;
 
-class CreateCitizenRequest extends Request {
+class EditCitizenRequest extends Request {
 
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -21,8 +21,10 @@ class CreateCitizenRequest extends Request {
 	 */
 	public function rules()
 	{
+		$id = $this->route()->parameters()['citizen'];
+
 		return [
-			'identification' => 'required|unique:citizens,identification', 
+			'identification' => 'required|min:6|max:8|unique:citizens,identification,'.$id, 
 			'full_name' => 'required', 
 			'first_name' => 'required', 
 			'last_name' => 'required', 

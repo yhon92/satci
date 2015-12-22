@@ -15,5 +15,7 @@ angular.module('Citizen.controller', ['Citizen.resources'])
     
   });
 
-
+  $scope.remove = (id) => {
+    console.log(id);
+  };
 });

@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 
 use SATCI\Http\Controllers\Controller;
 use SATCI\Http\Requests\CreateCitizenRequest;
+use SATCI\Http\Requests\EditCitizenRequest;
 use SATCI\Repositories\CitizenRepo;
 
 class CitizenController extends Controller {
@@ -57,7 +58,9 @@ class CitizenController extends Controller {
 	 */
 	public function show($id)
 	{
-		//
+		$citizen = $this->citizenRepo->getCitizen($id);
+
+		return response()->json(['citizen' => $citizen], 200);
 	}
 
 	/**
@@ -66,9 +69,19 @@ class CitizenController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($id, EditCitizenRequest $request)
 	{
-		//
+		try 
+    {
+      $this->citizenRepo->update($id, $request->all());
+    }
+    catch (QueryException $e)
+    {
+      \Log::info($e->errorInfo[2]);
+      return response()->json(['error' => true], 200);
+    }
+
+		return response()->json(['success' => true], 200);
 	}
 
 	/**

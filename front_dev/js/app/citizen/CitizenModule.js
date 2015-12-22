@@ -35,7 +35,7 @@ angular.module('SATCI.Citizen',['ui.router', 'Citizen.Create', 'Citizen.Edit', '
       },
       'edit@citizenEdit':{
         templateUrl: `${PathTemplates.partials}citizen/create.html`,
-        controller: 'CreateCitizenCtrl'
+        controller: 'EditCitizenCtrl'
       }
     }
   })

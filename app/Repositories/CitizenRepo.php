@@ -11,6 +11,16 @@ class CitizenRepo extends BaseRepo
 		return new Citizen;
 	}
 
+	static public function update($id, $data)
+	{
+		return Citizen::where('id', $id)->update($data);
+	}
+
+	static public function getCitizen($id)
+	{
+		return Citizen::with('parish')->find($id);
+	}
+
 	static public function getListCitizens()
 	{
 		return Citizen::with('parish')

@@ -32,7 +32,7 @@ angular.module('Citizen.Create', ['SATCI.Shared', 'Citizen.resources'])
       address: $scope.citizen.address,
       prefix_phone: $scope.citizen.prefix_phone,
       number_phone: $scope.citizen.number_phone,
-      parish_id: $scope.citizen.parish.id
+      parish_id: $scope.citizen.parish
     }
 
     Citizens.save(dataCitizen).$promise.then(

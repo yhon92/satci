@@ -23,8 +23,7 @@ class SolicitudeRepo extends BaseRepo
 
 	public function getSolicitude($id)
 	{
-		$solicitude = Solicitude::with('applicant.parish')->find($id);
-		return $solicitude;
+		return Solicitude::with('applicant.parish')->find($id);
 	}
 
 	static public function getListSolicitudes()
@@ -46,8 +45,7 @@ class SolicitudeRepo extends BaseRepo
 
 	static public function lastSolicitude()
 	{
-		$solicitude = \DB::table('solicitudes')->count();
-		return $solicitude;
+		return \DB::table('solicitudes')->count();
 	}
 
 	static public function updateStatus($id, $data)

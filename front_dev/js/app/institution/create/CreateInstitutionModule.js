@@ -27,7 +27,7 @@ angular.module('Institution.Create', ['SATCI.Shared', 'Institution.resources'])
       address: $scope.institution.address,
       prefix_phone: $scope.institution.prefix_phone,
       number_phone: $scope.institution.number_phone,
-      parish_id: $scope.institution.parish.id,
+      parish_id: $scope.institution.parish,
       agent_identification: $scope.institution.agent_identification,
       agent_full_name: $filter('titleCase')($scope.institution.agent_first_name +' '+ $scope.institution.agent_last_name),
       agent_first_name: $filter('titleCase')($scope.institution.agent_first_name),

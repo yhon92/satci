@@ -192,6 +192,10 @@ angular.module('Citizen.controller', ['Citizen.resources']).controller('CitizenC
     $scope.citizens = data.citizens;
     $scope.citizens.type = 'Naturales';
   }, function (errors) {});
+
+  $scope.remove = function (id) {
+    console.log(id);
+  };
 });
 
 },{}],9:[function(require,module,exports){
@@ -234,7 +238,7 @@ angular.module('SATCI.Citizen', ['ui.router', 'Citizen.Create', 'Citizen.Edit', 
       },
       'edit@citizenEdit': {
         templateUrl: PathTemplates.partials + 'citizen/create.html',
-        controller: 'CreateCitizenCtrl'
+        controller: 'EditCitizenCtrl'
       }
     }
   });
@@ -290,7 +294,7 @@ angular.module('Citizen.Create', ['SATCI.Shared', 'Citizen.resources']).controll
       address: $scope.citizen.address,
       prefix_phone: $scope.citizen.prefix_phone,
       number_phone: $scope.citizen.number_phone,
-      parish_id: $scope.citizen.parish.id
+      parish_id: $scope.citizen.parish
     };
 
     Citizens.save(dataCitizen).$promise.then(function (data) {
@@ -323,7 +327,52 @@ angular.module('Citizen.Create', ['SATCI.Shared', 'Citizen.resources']).controll
 *
 * Description
 */
-angular.module('Citizen.Edit', []);
+angular.module('Citizen.Edit', ['ui.router', 'Alertify', 'SATCI.Shared', 'Citizen.resources']).controller('EditCitizenCtrl', function ($scope, $state, $stateParams, $filter, Alertify, Citizens, Parishes) {
+
+  if (!$scope.parishes) {
+    Parishes.get(function (data) {
+      $scope.parishes = data.parishes;
+    });
+  };
+
+  Citizens.get({ id: $stateParams.id }).$promise.then(function (data) {
+    $scope.citizen = data.citizen;
+    $scope.citizen.parish = data.citizen.parish.id;
+  }, function (errors) {});
+
+  $scope.saveCitizen = function () {
+
+    var dataCitizen = {
+      identification: $scope.citizen.identification,
+      full_name: $filter('titleCase')($scope.citizen.first_name + ' ' + $scope.citizen.last_name),
+      first_name: $filter('titleCase')($scope.citizen.first_name),
+      last_name: $filter('titleCase')($scope.citizen.last_name),
+      address: $scope.citizen.address,
+      prefix_phone: $scope.citizen.prefix_phone,
+      number_phone: $scope.citizen.number_phone,
+      parish_id: $scope.citizen.parish
+    };
+
+    Citizens.update({ id: $stateParams.id }, dataCitizen).$promise.then(function (data) {
+      if (data.success) {
+        Alertify.success('Persona actuzalizada exitosamente');
+        $state.transitionTo('citizen', {
+          reload: true, notify: false
+        });
+      }
+    }, function (fails) {
+      if (fails.status != 500) {
+        angular.forEach(fails.data, function (values, key) {
+          angular.forEach(values, function (value) {
+            Alertify.error(value);
+          });
+        });
+      } else {
+        console.log(fails);
+      };
+    });
+  };
+});
 
 },{}],13:[function(require,module,exports){
 'use strict';
@@ -447,7 +496,7 @@ angular.module('Institution.Create', ['SATCI.Shared', 'Institution.resources']).
       address: $scope.institution.address,
       prefix_phone: $scope.institution.prefix_phone,
       number_phone: $scope.institution.number_phone,
-      parish_id: $scope.institution.parish.id,
+      parish_id: $scope.institution.parish,
       agent_identification: $scope.institution.agent_identification,
       agent_full_name: $filter('titleCase')($scope.institution.agent_first_name + ' ' + $scope.institution.agent_last_name),
       agent_first_name: $filter('titleCase')($scope.institution.agent_first_name),

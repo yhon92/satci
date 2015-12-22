@@ -41,7 +41,7 @@
 		<div class="form-group">
 			<label class="col-lg-3 control-label" for="parish"><strong>Parroquia:</strong></label>
 			<div class="col-lg-9">
-				<select type="role" class="form-control" name="parish" id="parish" ng-options="parish.name for parish in parishes" ng-model="institution.parish" ng-required="true">
+				<select type="role" class="form-control" name="parish" id="parish" ng-options="parish.id as parish.name for parish in parishes" ng-model="institution.parish" ng-required="true">
 					<!-- <option value="1">Coronel Mariano Peraza</option>
 					<option value="2">Cuara</option>
 					<option value="3">Diego de Lozada</option>
