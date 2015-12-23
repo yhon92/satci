@@ -206,7 +206,7 @@ angular.module('Citizen.controller', ['Alertify', 'Citizen.resources']).controll
           Alertify.success('¡Registro eliminado exitosamente!');
         }
         if (data.conflict) {
-          Alertify.error('¡No es posible eliminar por tener solicitudes asociadas!');
+          Alertify.log('¡No es posible eliminar por tener solicitudes asociadas!');
         }
         if (data.error) {
           Alertify.error('¡Ocurrio un error al intentar eliminar!');
@@ -304,7 +304,12 @@ angular.module('Citizen.resources', ['ngResource', 'SATCI.Shared']).factory('Cit
 *
 * Description
 */
-angular.module('Citizen.Create', ['SATCI.Shared', 'Citizen.resources']).controller('CreateCitizenCtrl', function ($scope, $filter, Alertify, Citizens, Parishes) {
+angular.module('Citizen.Create', ['ui.router', 'SATCI.Shared', 'Citizen.resources']).controller('CreateCitizenCtrl', function ($scope, $state, $filter, Alertify, Citizens, Parishes) {
+
+  $scope.button = {
+    submit: 'Agregar',
+    cancel: 'Limpiar'
+  };
 
   $scope.citizen = {
     identification: '',
@@ -337,11 +342,17 @@ angular.module('Citizen.Create', ['SATCI.Shared', 'Citizen.resources']).controll
 
     Citizens.save(dataCitizen).$promise.then(function (data) {
       if (data.success) {
-        $scope.solicitude.full_name = data.citizen.full_name;
-        $scope.solicitude.identification = data.citizen.identification;
-        $scope.solicitude.applicant_id = data.citizen.id;
+        if ($scope.solicitude) {
+          $scope.solicitude.full_name = data.citizen.full_name;
+          $scope.solicitude.identification = data.citizen.identification;
+          $scope.solicitude.applicant_id = data.citizen.id;
+          $scope.close();
+        } else {
+          $state.transitionTo('citizen', {
+            reload: true, notify: false
+          });
+        }
         Alertify.success('Persona registrada exitosamente');
-        $scope.close();
       }
     }, function (fails) {
       if (fails.status != 500) {
@@ -352,8 +363,21 @@ angular.module('Citizen.Create', ['SATCI.Shared', 'Citizen.resources']).controll
         });
       } else {
         console.log(fails);
-      };
+      }
     });
+  };
+
+  $scope.cancelCitizen = function () {
+    console.log('Citizen');
+    $scope.citizen = {
+      identification: '',
+      first_name: '',
+      last_name: '',
+      address: '',
+      prefix_phone: '',
+      number_phone: '',
+      parish: ''
+    };
   };
 });
 
@@ -366,6 +390,11 @@ angular.module('Citizen.Create', ['SATCI.Shared', 'Citizen.resources']).controll
 * Description
 */
 angular.module('Citizen.Edit', ['ui.router', 'Alertify', 'SATCI.Shared', 'Citizen.resources']).controller('EditCitizenCtrl', function ($scope, $state, $stateParams, $filter, Alertify, Citizens, Parishes) {
+
+  $scope.button = {
+    submit: 'Guardar',
+    cancel: 'Cancelar'
+  };
 
   if (!$scope.parishes) {
     Parishes.get(function (data) {
@@ -408,6 +437,12 @@ angular.module('Citizen.Edit', ['ui.router', 'Alertify', 'SATCI.Shared', 'Citize
       } else {
         console.log(fails);
       };
+    });
+  };
+
+  $scope.cancelCitizen = function () {
+    $state.transitionTo('citizen', {
+      reload: true, notify: false
     });
   };
 });
@@ -455,7 +490,7 @@ angular.module('Institution.controller', ['Institution.resources']).controller('
           Alertify.success('¡Registro eliminado exitosamente!');
         }
         if (data.conflict) {
-          Alertify.error('¡No es posible eliminar por tener solicitudes asociadas!');
+          Alertify.log('¡No es posible eliminar por tener solicitudes asociadas!');
         }
         if (data.error) {
           Alertify.error('¡Ocurrio un error al intentar eliminar!');
@@ -548,7 +583,12 @@ angular.module('Institution.resources', ['ngResource', 'SATCI.Shared']).factory(
 },{}],17:[function(require,module,exports){
 'use strict';
 
-angular.module('Institution.Create', ['SATCI.Shared', 'Institution.resources']).controller('CreateInstitutionCtrl', function ($scope, $filter, Alertify, Institutions, Parishes) {
+angular.module('Institution.Create', ['ui.router', 'SATCI.Shared', 'Institution.resources']).controller('CreateInstitutionCtrl', function ($scope, $state, $filter, Alertify, Institutions, Parishes) {
+
+  $scope.button = {
+    submit: 'Agregar',
+    cancel: 'Limpiar'
+  };
 
   $scope.institution = {
     identification: '',
@@ -585,11 +625,17 @@ angular.module('Institution.Create', ['SATCI.Shared', 'Institution.resources']).
 
     Institutions.save(dataInstitution).$promise.then(function (data) {
       if (data.success) {
-        $scope.solicitude.full_name = data.institution.full_name;
-        $scope.solicitude.identification = data.institution.identification;
-        $scope.solicitude.applicant_id = data.institution.id;
+        if ($scope.solicitide) {
+          $scope.solicitude.full_name = data.institution.full_name;
+          $scope.solicitude.identification = data.institution.identification;
+          $scope.solicitude.applicant_id = data.institution.id;
+          $scope.close();
+        } else {
+          $state.transitionTo('institution', {
+            reload: true, notify: false
+          });
+        }
         Alertify.success('Institución registrada exitosamente');
-        $scope.close();
       }
     }, function (fails) {
       if (fails.status != 500) {
@@ -603,6 +649,20 @@ angular.module('Institution.Create', ['SATCI.Shared', 'Institution.resources']).
       };
     });
   };
+
+  $scope.cancelInstitution = function () {
+    $scope.institution = {
+      identification: '',
+      full_name: '',
+      address: '',
+      prefix_phone: '',
+      number_phone: '',
+      parish: '',
+      agent_identification: '',
+      agent_first_name: '',
+      agent_last_name: ''
+    };
+  };
 });
 
 },{}],18:[function(require,module,exports){
@@ -614,6 +674,11 @@ angular.module('Institution.Create', ['SATCI.Shared', 'Institution.resources']).
 * Description
 */
 angular.module('Institution.Edit', ['ui.router', 'Alertify', 'SATCI.Shared', 'Institution.resources']).controller('EditInstitutionCtrl', function ($scope, $state, $stateParams, $filter, Alertify, Institutions, Parishes) {
+
+  $scope.button = {
+    submit: 'Guardar',
+    cancel: 'Cancelar'
+  };
 
   if (!$scope.parishes) {
     Parishes.get(function (data) {
@@ -658,6 +723,12 @@ angular.module('Institution.Edit', ['ui.router', 'Alertify', 'SATCI.Shared', 'In
       } else {
         console.log(fails);
       };
+    });
+  };
+
+  $scope.cancelInstitution = function () {
+    $state.transitionTo('institution', {
+      reload: true, notify: false
     });
   };
 });
@@ -1670,7 +1741,7 @@ angular.module('Solicitude.Edit', ['ui.router', 'Alertify', 'SATCI.Shared', 'Sol
     });
   };
 
-  $scope.cancel = function () {
+  $scope.institution.cancel = function () {
     $state.transitionTo('solicitude', {
       reload: true, notify: false
     });

@@ -80,7 +80,7 @@ angular.module('Solicitude.Edit', ['ui.router', 'Alertify', 'SATCI.Shared', 'Sol
 
   };
 
-  $scope.cancel = () => {
+  $scope.institution.cancel = () => {
     $state.transitionTo('solicitude', {
         reload: true, notify: false 
       });

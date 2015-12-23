@@ -3,8 +3,13 @@
 *
 * Description
 */
-angular.module('Citizen.Create', ['SATCI.Shared', 'Citizen.resources'])
-.controller('CreateCitizenCtrl', ($scope, $filter, Alertify, Citizens, Parishes) => {
+angular.module('Citizen.Create', ['ui.router', 'SATCI.Shared', 'Citizen.resources'])
+.controller('CreateCitizenCtrl', ($scope, $state, $filter, Alertify, Citizens, Parishes) => {
+  
+  $scope.button = {
+    submit: 'Agregar',
+    cancel: 'Limpiar'
+  }
 
   $scope.citizen = {
     identification: '',
@@ -38,26 +43,43 @@ angular.module('Citizen.Create', ['SATCI.Shared', 'Citizen.resources'])
     Citizens.save(dataCitizen).$promise.then(
       (data) => {
         if (data.success) {
-          $scope.solicitude.full_name = data.citizen.full_name;
-          $scope.solicitude.identification = data.citizen.identification;
-          $scope.solicitude.applicant_id = data.citizen.id;
+          if ($scope.solicitude) {
+            $scope.solicitude.full_name = data.citizen.full_name;
+            $scope.solicitude.identification = data.citizen.identification;
+            $scope.solicitude.applicant_id = data.citizen.id;
+            $scope.close();
+          }
+          else {
+            $state.transitionTo('citizen', {
+              reload: true, notify: false 
+            });
+          }
           Alertify.success('Persona registrada exitosamente');
-          $scope.close();
         }
       },
       (fails) => {
-        if (fails.status != 500) 
-        {
+        if (fails.status != 500) {
           angular.forEach(fails.data, (values, key) => {
             angular.forEach(values, (value) => {
               Alertify.error(value)
             })
           })
         }
-        else
-        {
+        else {
           console.log(fails);
-        };
-      })
-  }
+        }
+      });
+  };
+
+  $scope.cancelCitizen = () => {
+    $scope.citizen = {
+      identification: '',
+      first_name: '',
+      last_name: '',
+      address: '',
+      prefix_phone: '',
+      number_phone: '',
+      parish: ''
+    };
+  };
 })

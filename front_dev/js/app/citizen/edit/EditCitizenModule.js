@@ -6,6 +6,11 @@
 angular.module('Citizen.Edit', ['ui.router', 'Alertify', 'SATCI.Shared', 'Citizen.resources'])
 .controller('EditCitizenCtrl', ($scope, $state, $stateParams, $filter, Alertify, Citizens, Parishes) => {
 
+  $scope.button = {
+    submit: 'Guardar',
+    cancel: 'Cancelar'
+  }
+
   if ( !$scope.parishes ) {
     Parishes.get((data) => {
       $scope.parishes = data.parishes;
@@ -44,18 +49,22 @@ angular.module('Citizen.Edit', ['ui.router', 'Alertify', 'SATCI.Shared', 'Citize
         }
       },
       (fails) => {
-        if (fails.status != 500) 
-        {
+        if (fails.status != 500) {
           angular.forEach(fails.data, (values, key) => {
             angular.forEach(values, (value) => {
               Alertify.error(value)
             })
           })
         }
-        else
-        {
+        else {
           console.log(fails);
         };
+      });
+  };
+
+  $scope.cancelCitizen = () => {
+    $state.transitionTo('citizen', {
+        reload: true, notify: false 
       });
   };
 })

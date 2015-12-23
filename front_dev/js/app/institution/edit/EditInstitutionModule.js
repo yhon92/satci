@@ -6,6 +6,11 @@
 angular.module('Institution.Edit', ['ui.router', 'Alertify', 'SATCI.Shared', 'Institution.resources'])
 .controller('EditInstitutionCtrl', ($scope, $state, $stateParams, $filter, Alertify, Institutions, Parishes) => {
 
+  $scope.button = {
+    submit: 'Guardar',
+    cancel: 'Cancelar'
+  }
+
   if ( !$scope.parishes ) {
     Parishes.get((data) => {
       $scope.parishes = data.parishes;
@@ -58,6 +63,12 @@ angular.module('Institution.Edit', ['ui.router', 'Alertify', 'SATCI.Shared', 'In
         {
           console.log(fails);
         };
+      });
+  };
+
+  $scope.cancelInstitution = () => {
+    $state.transitionTo('institution', {
+        reload: true, notify: false 
       });
   };
 })

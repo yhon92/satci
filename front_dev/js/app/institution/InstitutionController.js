@@ -33,7 +33,7 @@ angular.module('Institution.controller', ['Institution.resources'])
             Alertify.success('¡Registro eliminado exitosamente!');
           }
           if (data.conflict) {
-            Alertify.error('¡No es posible eliminar por tener solicitudes asociadas!');
+            Alertify.log('¡No es posible eliminar por tener solicitudes asociadas!');
           }
           if (data.error) {
             Alertify.error('¡Ocurrio un error al intentar eliminar!');
