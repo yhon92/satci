@@ -368,7 +368,6 @@ angular.module('Citizen.Create', ['ui.router', 'SATCI.Shared', 'Citizen.resource
   };
 
   $scope.cancelCitizen = function () {
-    console.log('Citizen');
     $scope.citizen = {
       identification: '',
       first_name: '',
@@ -1741,7 +1740,7 @@ angular.module('Solicitude.Edit', ['ui.router', 'Alertify', 'SATCI.Shared', 'Sol
     });
   };
 
-  $scope.institution.cancel = function () {
+  $scope.cancel = function () {
     $state.transitionTo('solicitude', {
       reload: true, notify: false
     });
