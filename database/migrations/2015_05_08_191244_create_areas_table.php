@@ -16,6 +16,7 @@ class CreateAreasTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('name');
+			$table->string('email')->default('No tiene');
 			$table->integer('director_id')->unsigned();
 			$table->timestamps();
 

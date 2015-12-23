@@ -65,6 +65,7 @@ class AreaTableSeeder extends Seeder
 
       Area::create([
         'name'          => $area,
+        'email'          => 'No tiene',
         // 'director_id'    => $faker->unique()->numberBetween($min = 1, $max = 10),
         'director_id'   => $faker->numberBetween($min = 1, $max = 10),
       ]);
