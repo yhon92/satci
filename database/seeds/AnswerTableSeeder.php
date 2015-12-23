@@ -7,22 +7,22 @@ use Faker\Factory as Faker;
 
 class AnswerTableSeeder extends Seeder
 {
-	
-	public function run()
-	{
+  
+  public function run()
+  {
 
-		$faker = Faker::create('es_VE');
+    $faker = Faker::create('es_VE');
 
-		foreach (range(1, 50) as $index) {
+    foreach (range(1, 50) as $index) {
 
-			Answer::create([
-				'instrument_id'	=> $faker->numberBetween($min = 1, $max = 50),
-				'date'					=> $faker->dateTimeBetween($startDate = '-4 months', $endDate = 'now'),
-				'number_job'		=> 'ATC-O-'.$index+=122,
-				'observation'		=> $faker->realText($maxNbChars = 200),
-			]);
+      Answer::create([
+        'instrument_id' => $faker->numberBetween($min = 1, $max = 50),
+        'date'          => $faker->dateTimeBetween($startDate = '-4 months', $endDate = 'now'),
+        'number_job'    => 'ATC-O-'.$index+=122,
+        'observation'   => $faker->realText($maxNbChars = 200),
+        ]);
 
 
-		}
-	}
+    }
+  }
 }

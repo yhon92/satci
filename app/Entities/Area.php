@@ -7,7 +7,7 @@ class Area extends Model {
 
   protected $table = 'areas';
 
-  protected $fillable = ['name', ];
+  protected $fillable = ['name', 'email', 'director_id'];
   
   protected $hidden = ['director_id', 'pivot', 'created_at', 'updated_at'];
 
