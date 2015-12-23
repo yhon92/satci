@@ -25,30 +25,7 @@ class CategoryController extends Controller
   {
     $categories = $this->categoryRepo->all();
 
-    return response()->json([
-      'categories' => $categories,
-      ], 200
-    );
-  }
-
-  public function listCategoriesWithThemes()
-  {
-    $categories = $this->categoryRepo->getListCategories();
-    
-    return response()->json([
-      'categories' => $categories,
-      ], 200
-    );
-  }
-
-  /**
-   * Show the form for creating a new resource.
-   *
-   * @return \Illuminate\Http\Response
-   */
-  public function create()
-  {
-      //
+    return response()->json(['categories' => $categories], 200);
   }
 
   /**
@@ -69,17 +46,6 @@ class CategoryController extends Controller
    * @return \Illuminate\Http\Response
    */
   public function show($id)
-  {
-      //
-  }
-
-  /**
-   * Show the form for editing the specified resource.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  public function edit($id)
   {
       //
   }
@@ -106,4 +72,12 @@ class CategoryController extends Controller
   {
       //
   }
+
+  public function listCategoriesWithThemes()
+  {
+    $categories = $this->categoryRepo->getListCategories();
+    
+    return response()->json(['categories' => $categories], 200);
+  }
+
 }

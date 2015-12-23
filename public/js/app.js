@@ -435,12 +435,54 @@ angular.module('SATCI.Home', ['ui.router', 'SATCI.Shared']).config(function ($st
 *
 * Description
 */
-angular.module('Institution.controller', ['Institution.resources']).controller('InstitutionCtrl', function ($scope, Institutions) {
+angular.module('Institution.controller', ['Institution.resources']).controller('InstitutionCtrl', function ($scope, Alertify, Institutions) {
 
   Institutions.get().$promise.then(function (data) {
     $scope.institutions = data.institutions;
     $scope.institutions.type = 'Jurídicos';
   }, function (errors) {});
+
+  $scope.removeInstitution = function (id) {
+
+    var index = getIndex($scope.institutions, id);
+
+    Alertify.set({ labels: { ok: "Eliminar", cancel: "Cancelar" } });
+
+    Alertify.confirm('Confirma que desea eliminar a: ' + '</br>Cédula: <strong class="text-danger">' + $scope.institutions[index].identification + '</strong>' + '</br>Nombre: <strong class="text-danger">' + $scope.institutions[index].full_name + '</strong>').then(function (ok) {
+      Institutions.delete({ id: id }).$promise.then(function (data) {
+        if (data.success) {
+          $scope.institutions.splice(index, 1);
+          Alertify.success('¡Registro eliminado exitosamente!');
+        }
+        if (data.conflict) {
+          Alertify.error('¡No es posible eliminar por tener solicitudes asociadas!');
+        }
+        if (data.error) {
+          Alertify.error('¡Ocurrio un error al intentar eliminar!');
+        }
+      }, function (fails) {
+        if (fails.status != 500) {
+          angular.forEach(fails.data, function (values, key) {
+            angular.forEach(values, function (value) {
+              Alertify.error(value);
+            });
+          });
+        } else {
+          console.log(fails);
+        };
+      });
+    }, function (cancel) {
+      return false;
+    });
+  };
+
+  function getIndex(Things, id) {
+    for (var i = 0; i < Things.length; i++) {
+      if (Things[i].id == id) {
+        return i;
+      }
+    }
+  };
 });
 
 },{}],15:[function(require,module,exports){
@@ -483,7 +525,7 @@ angular.module('SATCI.Institution', ['ui.router', 'Institution.Create', 'Institu
       },
       'edit@institutionEdit': {
         templateUrl: PathTemplates.partials + 'institution/create.html',
-        controller: 'CreateInstitutionCtrl'
+        controller: 'EditInstitutionCtrl'
       }
     }
   });
@@ -542,7 +584,6 @@ angular.module('Institution.Create', ['SATCI.Shared', 'Institution.resources']).
     };
 
     Institutions.save(dataInstitution).$promise.then(function (data) {
-      console.log(data);
       if (data.success) {
         $scope.solicitude.full_name = data.institution.full_name;
         $scope.solicitude.identification = data.institution.identification;
@@ -572,7 +613,54 @@ angular.module('Institution.Create', ['SATCI.Shared', 'Institution.resources']).
 *
 * Description
 */
-angular.module('Institution.Edit', []);
+angular.module('Institution.Edit', ['ui.router', 'Alertify', 'SATCI.Shared', 'Institution.resources']).controller('EditInstitutionCtrl', function ($scope, $state, $stateParams, $filter, Alertify, Institutions, Parishes) {
+
+  if (!$scope.parishes) {
+    Parishes.get(function (data) {
+      $scope.parishes = data.parishes;
+    });
+  };
+
+  Institutions.get({ id: $stateParams.id }).$promise.then(function (data) {
+    $scope.institution = data.institution;
+    $scope.institution.parish = data.institution.parish.id;
+  }, function (errors) {});
+
+  $scope.saveInstitution = function () {
+
+    var dataInstitution = {
+      identification: $filter('titleCase')($scope.institution.identification),
+      full_name: $filter('titleCase')($scope.institution.full_name),
+      address: $scope.institution.address,
+      prefix_phone: $scope.institution.prefix_phone,
+      number_phone: $scope.institution.number_phone,
+      parish_id: $scope.institution.parish,
+      agent_identification: $scope.institution.agent_identification,
+      agent_full_name: $filter('titleCase')($scope.institution.agent_first_name + ' ' + $scope.institution.agent_last_name),
+      agent_first_name: $filter('titleCase')($scope.institution.agent_first_name),
+      agent_last_name: $filter('titleCase')($scope.institution.agent_last_name)
+    };
+
+    Institutions.update({ id: $stateParams.id }, dataInstitution).$promise.then(function (data) {
+      if (data.success) {
+        Alertify.success('Institución actuzalizada exitosamente');
+        $state.transitionTo('institution', {
+          reload: true, notify: false
+        });
+      }
+    }, function (fails) {
+      if (fails.status != 500) {
+        angular.forEach(fails.data, function (values, key) {
+          angular.forEach(values, function (value) {
+            Alertify.error(value);
+          });
+        });
+      } else {
+        console.log(fails);
+      };
+    });
+  };
+});
 
 },{}],19:[function(require,module,exports){
 'use strict';

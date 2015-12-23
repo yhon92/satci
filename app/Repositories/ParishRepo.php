@@ -6,26 +6,24 @@ use SATCI\Entities\Parish;
 class ParishRepo extends BaseRepo
 {
 
-	public function getModel()
-	{
-		return new Parish;
-	}
+  public function getModel()
+  {
+    return new Parish;
+  }
 
-	public function getListParishes()
-	{
-		return Parish::get();
-			// orderby('first_name', 'ASC')
-			// ->paginate();
-	}
+  public function create($data)
+  {
+    return Parish::create($data);
+  }
 
-	public function newParish()
-	{
-		$parish = new Parish();
-	}
+  static public function get($id)
+  {
+    return Parish::find($id);
+  }
 
-	static public function get($id)
-	{
-		return Parish::find($id);
-	}
+  public function getListParishes()
+  {
+    return Parish::get();
+  }
 
 }

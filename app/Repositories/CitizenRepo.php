@@ -11,14 +11,14 @@ class CitizenRepo extends BaseRepo
     return new Citizen;
   }
 
-  static public function newCitizen($data)
+  static public function create($data)
   {
     return Citizen::create($data);
   }
 
   static public function get($id)
   {
-    return Citizen::with('parish')->find($id);
+    return Citizen::find($id);
   }
 
   static public function update($id, $data)
@@ -33,8 +33,7 @@ class CitizenRepo extends BaseRepo
 
   static public function getListCitizens()
   {
-    return Citizen::with('parish')
-                  ->orderBy('full_name', 'ASC')
+    return Citizen::orderBy('full_name', 'ASC')
                   ->get();
                   // ->paginate();
   }
@@ -46,11 +45,9 @@ class CitizenRepo extends BaseRepo
                   ->get();
   }
 
-  static public function countCitizens()
+  static public function count()
   {
     return Citizen::count();
   }
-
-
 
 }

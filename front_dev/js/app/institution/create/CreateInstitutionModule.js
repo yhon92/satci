@@ -36,7 +36,6 @@ angular.module('Institution.Create', ['SATCI.Shared', 'Institution.resources'])
 
     Institutions.save(dataInstitution).$promise.then(
       (data) => {
-        console.log(data)
         if (data.success) 
         {
           $scope.solicitude.full_name = data.institution.full_name;

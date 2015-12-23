@@ -11,6 +11,16 @@ class CategoryRepo extends BaseRepo
     return new Category;
   }
 
+  public function create($data)
+  {
+    return Category::create($data);
+  }
+
+  static public function get($id)
+  {
+    return Category::find($id);
+  }
+
   public function all()
   {
     return Category::orderby('name', 'ASC')->get();
@@ -19,18 +29,8 @@ class CategoryRepo extends BaseRepo
   public function getListCategories()
   {
     return Category::has('themes')
-                  ->with('themes')
-                  ->get();
-  }
-
-  public function newCategory()
-  {
-    $theme = new Category();
-  }
-
-  static public function get($id)
-  {
-    return Category::find($id);
+                   ->with('themes')
+                   ->get();
   }
 
 }

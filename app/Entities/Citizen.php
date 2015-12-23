@@ -5,16 +5,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Citizen extends Model {
 
-	protected $table = 'citizens';
+  protected $table = 'citizens';
 
-	protected $fillable = ['identification', 
-													'full_name', 
-													'first_name', 
-													'last_name', 
-													'address', 
-													'prefix_phone', 
-													'number_phone',
+  protected $fillable = ['identification', 
+                          'full_name', 
+                          'first_name', 
+                          'last_name', 
+                          'address', 
+                          'prefix_phone', 
+                          'number_phone',
                           'parish_id'];
+  
+  protected $with = ['parish']; 
 
   protected $hidden = ['parish_id'];
   

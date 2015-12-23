@@ -11,6 +11,16 @@ class AreaRepo extends BaseRepo
     return new Area;
   }
 
+  public function create($data)
+  {
+    return Area::create($data);
+  }
+
+  static public function get($id)
+  {
+    return Area::find($id);
+  }
+
   public function all()
   {
     return Area::orderby('name', 'ASC')->with('director', 'means')->get();
@@ -18,19 +28,7 @@ class AreaRepo extends BaseRepo
 
   public function getListArea()
   {
-    return Area::/*has('themes')
-    ->with('themes')
-    ->*/get();
-  }
-
-  public function newArea()
-  {
-    $theme = new Area();
-  }
-
-  static public function get($id)
-  {
-    return Area::find($id);
+    return Area::get();
   }
 
 }

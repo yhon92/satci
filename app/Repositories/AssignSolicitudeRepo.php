@@ -16,7 +16,7 @@ class AssignSolicitudeRepo extends BaseRepo
     return AssignSolicitude::find($id);
   }
 
-  static public function newAssign($data)
+  static public function create($data)
   {
     return AssignSolicitude::create($data);
   }
@@ -28,7 +28,7 @@ class AssignSolicitudeRepo extends BaseRepo
 
   static public function listAssign($solicitude_id)
   {
-    return AssignSolicitude::where('solicitude_id', '=', $solicitude_id)
-    ->get();
+    return AssignSolicitude::where('solicitude_id', $solicitude_id)
+                           ->get();
   }
 }

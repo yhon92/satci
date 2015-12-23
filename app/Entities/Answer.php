@@ -5,8 +5,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Answer extends Model {
 
-	protected $table = 'answers';
+  protected $table = 'answers';
 
-	protected $fillable = ['instrument_id', 'number_job', 'observation'];
+  protected $fillable = ['instrument_id', 'number_job', 'observation'];
 
 }

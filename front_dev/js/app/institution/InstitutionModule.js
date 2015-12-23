@@ -35,7 +35,7 @@ angular.module('SATCI.Institution', ['ui.router', 'Institution.Create', 'Institu
       },
       'edit@institutionEdit':{
         templateUrl: `${PathTemplates.partials}institution/create.html`,
-        controller: 'CreateInstitutionCtrl'
+        controller: 'EditInstitutionCtrl'
       }
     },
   })

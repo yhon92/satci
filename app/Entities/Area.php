@@ -5,9 +5,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Area extends Model {
 
-	protected $table = 'areas';
+  protected $table = 'areas';
 
-	protected $fillable = ['name', ];
+  protected $fillable = ['name', ];
   
   protected $hidden = ['director_id', 'pivot', 'created_at', 'updated_at'];
 
