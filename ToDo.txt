@@ -1,7 +1,5 @@
 * Módulo de Seguridad -> (Usuarios => [Crear, Editar, Eliminar], 
                           Perfiles de Usuario => [Asignar Permisos, Ver Permisos, Eliminar Permisos]
 * 
-* Módulo de Solicitantes -> (Editar, Eliminar)
-* 
 * Módulo de Configuración -> (Categorias, Temas, Areas, Directores, Recursos)
 * 
