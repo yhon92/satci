@@ -13,22 +13,22 @@ class ThemeRepo extends BaseRepo
     return new Theme;
   }
 
-  static public function create($data)
+  public static function create($data)
   {
     return Theme::create($data);
   }
 
-  static public function get($id)
+  public static function get($id)
   {
     return Theme::find($id);
   }
 
-  public function getListThemes()
+  public static function getListThemes()
   {
     return DB::select('SELECT t.id, t.category_id, t.name FROM themes t INNER JOIN categories c ON (c.id = t.category_id) ORDER BY c.name, t.name');
   }
 
-  static public function themeBySolicitude($solicitude_id)
+  public static function themeBySolicitude($solicitude_id)
   {
     $themes = Theme::whereHas('assign_solicitude', function($query) use ($solicitude_id){
       $query->where('solicitude_id', $solicitude_id);

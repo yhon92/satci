@@ -1,6 +1,8 @@
-<?php namespace SATCI\Events;
+<?php 
+namespace SATCI\Events;
 
-abstract class Event {
+abstract class Event
+{
 
 	//
 

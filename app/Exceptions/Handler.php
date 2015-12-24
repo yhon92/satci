@@ -1,9 +1,11 @@
-<?php namespace SATCI\Exceptions;
+<?php 
+namespace SATCI\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
-class Handler extends ExceptionHandler {
+class Handler extends ExceptionHandler
+{
 
 	/**
 	 * A list of the exception types that should not be reported.
@@ -37,11 +39,10 @@ class Handler extends ExceptionHandler {
 	 */
 	public function render($request, Exception $e)
 	{
-		if($e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException)
-		{
+		if ($e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
 			return response()->view('layout')->header('Content-Type', 'text/html');
 		}
 		return parent::render($request, $e);
 	}
-
+	
 }

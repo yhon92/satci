@@ -1,5 +1,4 @@
 <?php
-
 namespace SATCI\Http\Requests;
 
 use SATCI\Http\Requests\Request;
@@ -31,4 +30,5 @@ class EditSolicitudeRequest extends Request
       
     return $rules;
   }
+  
 }

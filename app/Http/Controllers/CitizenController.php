@@ -11,7 +11,8 @@ use SATCI\Http\Requests\CreateCitizenRequest;
 use SATCI\Http\Requests\EditCitizenRequest;
 use SATCI\Repositories\CitizenRepo;
 
-class CitizenController extends Controller {
+class CitizenController extends Controller
+{
 
   protected $citizenRepo;
 
@@ -69,13 +70,11 @@ class CitizenController extends Controller {
    */
   public function update($id, EditCitizenRequest $request)
   {
-    try 
-    {
+    try {
       $this->citizenRepo->update($id, $request->all());
-    }
-    catch (QueryException $e)
-    {
-      \Log::info($e->errorInfo[2]);
+    } catch (QueryException $e) {
+      Log::info($e->errorInfo[2]);
+
       return response()->json(['error' => true], 200);
     }
 
@@ -92,20 +91,14 @@ class CitizenController extends Controller {
   {
     $solicitudes = $this->citizenRepo->getListSolicitudes($id);
 
-    if (count($solicitudes[0]->solicitudes)) 
-    {
+    if (count($solicitudes[0]->solicitudes)) {
       return response()->json(['conflict' => true], 200);
-    }
-    else
-    {
+    } else {
       DB::beginTransaction();
 
-      try 
-      {
+      try {
         $this->citizenRepo->delete($id);
-      }
-      catch (QueryException $e)
-      {
+      } catch (QueryException $e) {
         DB::rollBack();
 
         Log::info($e->errorInfo[2]);

@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AreaMeans extends Model
 {
+
   protected $table = 'area_means';
   
   // protected $fillable = ['id'];
@@ -26,4 +27,5 @@ class AreaMeans extends Model
   {
     return $this->hasMany('SATCI\Entities\AssignSolicitude');
   }
+  
 }

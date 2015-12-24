@@ -1,6 +1,8 @@
-<?php namespace SATCI\Commands;
+<?php 
+namespace SATCI\Commands;
 
-abstract class Command {
+abstract class Command
+{
 
 	//
 

@@ -1,4 +1,5 @@
-<?php namespace SATCI\Http\Controllers\Admin;
+<?php
+namespace SATCI\Http\Controllers\Admin;
 
 use SATCI\Entities\User;
 use SATCI\Http\Controllers\Controller;
@@ -13,8 +14,9 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Session;
 
-class UsersController extends Controller {
-
+class UsersController extends Controller
+{
+	
 	public function __construct()
 	{
 		$this->middleware('jwt.auth');
@@ -135,5 +137,4 @@ class UsersController extends Controller {
 
 		return redirect()->route('admin.users.index');
 	}
-
 }

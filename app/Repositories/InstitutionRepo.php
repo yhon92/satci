@@ -11,34 +11,34 @@ class InstitutionRepo extends BaseRepo
     return new Institution;
   }
 
-  static public function create($data)
+  public static function create($data)
   {
     return Institution::create($data);
   }
 
-  static public function get($id)
+  public static function get($id)
   {
     return Institution::find($id);
   }
 
-  static public function update($id, $data)
+  public static function update($id, $data)
   {
     return Institution::where('id', $id)->update($data);
   }
 
-  static public function delete($id)
+  public static function delete($id)
   {
     return Institution::destroy($id);
   }
 
-  static public function getListInstitutions()
+  public static function getListInstitutions()
   {
     return Institution::orderBy('full_name', 'ASC')
                       ->get();
       // ->paginate();
   }
 
-  static public function getListSolicitudes($id)
+  public static function getListSolicitudes($id)
   {
     return Institution::with('solicitudes')
                   ->where('id', $id)

@@ -11,17 +11,17 @@ class ParishRepo extends BaseRepo
     return new Parish;
   }
 
-  public function create($data)
+  public static function create($data)
   {
     return Parish::create($data);
   }
 
-  static public function get($id)
+  public static function get($id)
   {
     return Parish::find($id);
   }
 
-  public function getListParishes()
+  public static function getListParishes()
   {
     return Parish::get();
   }

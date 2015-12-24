@@ -18,6 +18,7 @@ use SATCI\Http\Requests\EditAssignSolicitudeRequest;
 
 class AssignController extends Controller
 {
+  
   protected $areaMeansRepo;
   protected $assignRepo;
   protected $solicitudeRepo;
@@ -28,8 +29,7 @@ class AssignController extends Controller
       AreaMeansRepo $areaMeansRepo, 
       SolicitudeRepo $solicitudeRepo,
       ThemeRepo $themeRepo
-    )
-  {
+    ) {
     $this->areaMeansRepo = $areaMeansRepo;
     $this->assignRepo = $assignRepo;
     $this->solicitudeRepo = $solicitudeRepo;
@@ -62,20 +62,15 @@ class AssignController extends Controller
     $default_means = 1;
 
     DB::beginTransaction();
-    foreach ($themes as $theme) 
-    {
+    foreach ($themes as $theme) {
       $theme_id = $theme['id'];
 
       $areas = $theme['areas'];
 
-      foreach ($areas as $key => $area) 
-      {
-        if (array_key_exists('meansSelected', $area))
-        {
+      foreach ($areas as $key => $area) {
+        if (array_key_exists('meansSelected', $area)) {
           $area_means_id = $this->areaMeansRepo->getID($area['id'], $area['meansSelected']);
-        }
-        else
-        {
+        } else {
           $area_means_id = $this->areaMeansRepo->getID($area['id'], $default_means);
         }
         $uuid = Uuid::generate(5, 'SATCI', Uuid::generate());
@@ -85,12 +80,9 @@ class AssignController extends Controller
                   'theme_id'      => $theme_id,
                   'area_means_id' => $area_means_id
                 ];
-        try 
-        {
+        try {
           $this->assignRepo->create($data);
-        }
-        catch (QueryException $e)
-        {
+        } catch (QueryException $e) {
           DB::rollBack();
 
           Log::info($e->errorInfo[2]);
@@ -99,12 +91,9 @@ class AssignController extends Controller
         }
       }
     }
-    try 
-    {
+    try {
       $this->solicitudeRepo->updateStatus($solicitude_id, 'Procesando');
-    }
-    catch (QueryException $e)
-    {
+    } catch (QueryException $e) {
       DB::rollBack();
 
       Log::info($e->errorInfo[2]);
@@ -140,13 +129,11 @@ class AssignController extends Controller
   {
     $data = $request->all();
     
-    try
-    {
+    try {
       $this->assignRepo->update($id, $data['update']);
-    }
-    catch (QueryException $e)
-    {
+    } catch (QueryException $e) {
       Log::info($e->errorInfo[2]);
+
       return response()->json(['error' => true], 200);
     }
 
@@ -155,17 +142,15 @@ class AssignController extends Controller
     $update_status = true;
 
     foreach ($assigned as $key => $value) {
-      if ($value['status'] != 'Atendido' && $value['status'] != 'Rechazado')
+      if ($value['status'] != 'Atendido' && $value['status'] != 'Rechazado') {
         $update_status = false;
+      }
     }
 
     if ($update_status) {
-      try 
-      {
+      try {
         $this->solicitudeRepo->updateStatus($data['solicitude_id'], 'Finalizado');
-      }
-      catch (QueryException $e)
-      {
+      } catch (QueryException $e) {
         Log::info($e->errorInfo[2]);
 
         return response()->json(['error' => true], 200);
@@ -192,4 +177,5 @@ class AssignController extends Controller
 
     return response()->json($assigned, 200);
   }
+
 }

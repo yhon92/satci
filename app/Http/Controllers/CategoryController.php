@@ -9,6 +9,7 @@ use SATCI\Repositories\CategoryRepo;
 
 class CategoryController extends Controller
 {
+  
   protected $categoryRepo;
 
   public function __construct (CategoryRepo $categoryRepo)

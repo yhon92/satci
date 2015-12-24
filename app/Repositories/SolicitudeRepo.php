@@ -11,36 +11,36 @@ class SolicitudeRepo extends BaseRepo
     return new Solicitude;
   }
 
-  static public function create($data)
+  public static function create($data)
   {
     return Solicitude::create($data);
   }
 
-  public function get($id)
+  public static function get($id)
   {
     return Solicitude::with('applicant')->find($id);
   }
 
-  static public function update($id, $data)
+  public static function update($id, $data)
   {
     return Solicitude::where('id', $id)->update($data);
   }
 
-  static public function updateStatus($id, $data)
+  public static function updateStatus($id, $data)
   {
     return Solicitude::where('id', $id)->update(['status' => $data]);
   }
 
-  static public function getListSolicitudes()
+  public static function getListSolicitudes()
   {
     return Solicitude::with('applicant')->get();
   }
 
-  static public function getApplicant($type, $id){
+  public static function getApplicant($type, $id){
     return $type::find($id);
   }
 
-  static public function getListByApplicant($type)
+  public static function getListByApplicant($type)
   {
     return Solicitude::with('applicant')
     ->where('applicant_type', $type)
@@ -48,7 +48,7 @@ class SolicitudeRepo extends BaseRepo
     ->get();
   }
 
-  static public function count()
+  public static function count()
   {
     return Solicitude::count();
   }

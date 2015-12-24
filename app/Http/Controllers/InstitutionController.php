@@ -11,7 +11,8 @@ use SATCI\Repositories\InstitutionRepo;
 
 use Illuminate\Http\Request;
 
-class InstitutionController extends Controller {
+class InstitutionController extends Controller
+{
 
   protected $institutionRepo;
 
@@ -70,13 +71,11 @@ class InstitutionController extends Controller {
    */
   public function update($id, EditInstitutionRequest $request)
   {
-    try 
-    {
+    try {
       $this->institutionRepo->update($id, $request->all());
-    }
-    catch (QueryException $e)
-    {
-      \Log::info($e->errorInfo[2]);
+    } catch (QueryException $e) {
+      Log::info($e->errorInfo[2]);
+      
       return response()->json(['error' => true], 200);
     }
 
@@ -93,20 +92,14 @@ class InstitutionController extends Controller {
   {
     $solicitudes = $this->institutionRepo->getListSolicitudes($id);
 
-    if (count($solicitudes[0]->solicitudes)) 
-    {
+    if (count($solicitudes[0]->solicitudes)) {
       return response()->json(['conflict' => true], 200);
-    }
-    else
-    {
+    } else {
       DB::beginTransaction();
 
-      try 
-      {
+      try {
         $this->institutionRepo->delete($id);
-      }
-      catch (QueryException $e)
-      {
+      } catch (QueryException $e) {
         DB::rollBack();
 
         Log::info($e->errorInfo[2]);

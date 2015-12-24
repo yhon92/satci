@@ -8,7 +8,8 @@ use SATCI\Http\Controllers\Controller;
 use SATCI\Repositories\ParishRepo;
 
 
-class ParishController extends Controller {
+class ParishController extends Controller
+{
 
   protected $parishRepo;
 

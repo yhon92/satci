@@ -3,7 +3,8 @@ namespace SATCI\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Parish extends Model {
+class Parish extends Model
+{
 
   protected $table = 'parishes';
 
@@ -20,5 +21,5 @@ class Parish extends Model {
   {
     return $this->hasMany('SATCI\Entities\Institution');
   }
-
+  
 }

@@ -3,8 +3,9 @@ namespace SATCI\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Director extends Model {
-
+class Director extends Model
+{
+  
   protected $table = 'directors';
 
   protected $fillable = ['identification', 
@@ -22,4 +23,5 @@ class Director extends Model {
   {
     return $this->hasMay('SATCI\Entities\Area');
   }
+
 }

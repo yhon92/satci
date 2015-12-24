@@ -3,7 +3,8 @@ namespace SATCI\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Institution extends Model {
+class Institution extends Model
+{
 
   protected $table = 'institutions';
 
@@ -31,5 +32,5 @@ class Institution extends Model {
   {
     return $this->morphMany('SATCI\Entities\Solicitude', 'applicant');
   }
-
+  
 }

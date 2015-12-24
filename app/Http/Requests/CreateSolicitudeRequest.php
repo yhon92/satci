@@ -1,4 +1,5 @@
-<?php namespace SATCI\Http\Requests;
+<?php
+namespace SATCI\Http\Requests;
 
 use SATCI\Http\Requests\Request;
 
@@ -31,15 +32,13 @@ class CreateSolicitudeRequest extends Request
 
       $entity = $this->request->get('applicant_type');
       
-      if ( $entity === 'citizen' )
-      {
+      if ($entity === 'citizen') {
         $rules['applicant_id'] = 'required|exists:citizens,id';
       }
-      if ( $entity === 'institution' ) 
-      {
+      if ($entity === 'institution') {
         $rules['applicant_id'] = 'required|exists:institutions,id';
       }
 
       return $rules;
     }
-  }
+}

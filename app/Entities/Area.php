@@ -3,7 +3,8 @@ namespace SATCI\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Area extends Model {
+class Area extends Model
+{
 
   protected $table = 'areas';
 
@@ -20,4 +21,5 @@ class Area extends Model {
   {
     return $this->belongsToMany('SATCI\Entities\Means');
   }
+  
 }

@@ -1,9 +1,11 @@
-<?php namespace SATCI\Providers;
+<?php
+namespace SATCI\Providers;
 
 use Illuminate\Bus\Dispatcher;
 use Illuminate\Support\ServiceProvider;
 
-class BusServiceProvider extends ServiceProvider {
+class BusServiceProvider extends ServiceProvider
+{
 
 	/**
 	 * Bootstrap any application services.

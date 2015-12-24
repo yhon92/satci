@@ -7,7 +7,8 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
+class User extends Model implements AuthenticatableContract, CanResetPasswordContract
+{
 
   use Authenticatable, CanResetPassword;
 
@@ -48,17 +49,18 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
   {
     if ($value) {
       $this->attributes['active'] = true;
-    }
-    else
+    } else {
       $this->attributes['active'] = false;
+    }
   }
 
   public function getStatusAttribute()
   {
-    if ($this->active)
+    if ($this->active) {
       return 'Activo';
-    else
+    } else {
       return 'Inactivo';
+    }
   }
-
+  
 }

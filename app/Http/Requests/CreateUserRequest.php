@@ -1,8 +1,10 @@
-<?php namespace SATCI\Http\Requests;
+<?php
+namespace SATCI\Http\Requests;
 
 use SATCI\Http\Requests\Request;
 
-class CreateUserRequest extends Request {
+class CreateUserRequest extends Request
+{
 
   /**
    * Determine if the user is authorized to make this request.

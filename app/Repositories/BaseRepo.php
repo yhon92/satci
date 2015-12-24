@@ -1,7 +1,8 @@
 <?php 
 namespace SATCI\Repositories;
 
-abstract class BaseRepo {
+abstract class BaseRepo
+{
 
   protected $model;
 

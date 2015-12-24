@@ -9,37 +9,37 @@ use SATCI\Repositories\ParishRepo;
 */
 class Helpers
 {
-	static public function isCheck(&$request, $InputName)
+	public static function isCheck(&$request, $InputName)
 	{
-		if ($request[$InputName])
+		if ($request[$InputName]) {
 			return $request[$InputName] = true;
-		else
+    } else {
 			return $request[$InputName] = false;
+    }
 	}
 
-  static public function longApplicant(&$type)
+  public static function longApplicant(&$type)
   {
     $type = 'SATCI\Entities\\'.ucwords($type);
+
     return $type;
   }
 
-  static public function shortApplicant(&$type)
+  public static function shortApplicant(&$type)
   {
-    if ( strpos($type, 'Citizen') )
-    {
+    if (strpos($type, 'Citizen')) {
       $type = 'Citizen';
     }
-    if ( strpos($type, 'Institution') )
-    {
+    if (strpos($type, 'Institution')) {
       $type = 'Institution';
     }
+
     return $type;
   }
 
-  static public function concatApplicantsWithParish(&$solicitudes)
+  public static function concatApplicantsWithParish(&$solicitudes)
   {
-    foreach ($solicitudes as $key => $value) 
-    {
+    foreach ($solicitudes as $key => $value) {
       $id = $value->applicant->parish_id;
       
       $parish = ParishRepo::get($id);
@@ -52,7 +52,7 @@ class Helpers
     return $solicitudes;
   }
 
-/*  static public function concatSolicitudeWithApplicant(&$solicitude)
+/*  public static function concatSolicitudeWithApplicant(&$solicitude)
   {
     $type = $solicitude->applicant_type;
     $id   = $solicitude->applicant_id;
@@ -65,7 +65,7 @@ class Helpers
     return $solicitude;
   }*/
 
-  static public function concatApplicantWithParish(&$applicant)
+  public static function concatApplicantWithParish(&$applicant)
   {
     $id = $applicant->parish_id;
 
@@ -77,9 +77,10 @@ class Helpers
     return $applicant;
   }
 
-  static public function getSolicitudeNumber($lastSolicitude)
+  public static function getSolicitudeNumber($lastSolicitude)
   {
     $nextSolicitude = $lastSolicitude + 1;
+    
     return str_pad($nextSolicitude, 8, '0', STR_PAD_LEFT);
   }
 }

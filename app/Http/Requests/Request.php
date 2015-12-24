@@ -1,10 +1,12 @@
-<?php namespace SATCI\Http\Requests;
+<?php
+namespace SATCI\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 // use Illuminate\Validation\Validator;
 use Illuminate\Contracts\Validation\Validator;
 
-abstract class Request extends FormRequest {
+abstract class Request extends FormRequest
+{
 
   // protected function formatErrors(Validator $validator)
   protected function formatValidationErrors(Validator $validator)
@@ -12,4 +14,5 @@ abstract class Request extends FormRequest {
     // dd($validator->errors()->all());
     return $validator->errors()->all();
   }
+  
 }

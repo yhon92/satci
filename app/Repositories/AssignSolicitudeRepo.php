@@ -11,24 +11,25 @@ class AssignSolicitudeRepo extends BaseRepo
     return new AssignSolicitude;
   }
 
-  static public function get($id)
+  public static function get($id)
   {
     return AssignSolicitude::find($id);
   }
 
-  static public function create($data)
+  public static function create($data)
   {
     return AssignSolicitude::create($data);
   }
 
-  static public function update($id, $data)
+  public static function update($id, $data)
   {
     return AssignSolicitude::where('id', $id)->update($data);
   }
 
-  static public function listAssign($solicitude_id)
+  public static function listAssign($solicitude_id)
   {
     return AssignSolicitude::where('solicitude_id', $solicitude_id)
                            ->get();
   }
+  
 }

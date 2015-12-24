@@ -1,4 +1,5 @@
-<?php namespace SATCI\Services;
+<?php
+namespace SATCI\Services;
 
 use SATCI\Entities\User;
 
@@ -6,7 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\Registrar;
 
-trait AuthenticatesAndRegistersUsers {
+trait AuthenticatesAndRegistersUsers
+{
 
 	/**
 	 * The Guard implementation.
@@ -42,11 +44,8 @@ trait AuthenticatesAndRegistersUsers {
 	{
 		$validator = $this->registrar->validator($request->all());
 
-		if ($validator->fails())
-		{
-			$this->throwValidationException(
-				$request, $validator
-			);
+		if ($validator->fails()) {
+			$this->throwValidationException($request, $validator);
 		}
 
 		$this->auth->login($this->registrar->create($request->all()));
@@ -82,8 +81,7 @@ trait AuthenticatesAndRegistersUsers {
 
 		$user = User::where('username', '=', $request->username)->first();
 		
-		if (!empty($user))
-		{
+		if (!empty($user)) {
 			if (!$user->active) {
 				return redirect($this->loginPath())
 					->withInput($request->only('username'))
@@ -92,8 +90,7 @@ trait AuthenticatesAndRegistersUsers {
 					]);
 			}
 
-			if ($this->auth->attempt($credentials, $request->has('remember')))
-			{
+			if ($this->auth->attempt($credentials, $request->has('remember'))) {
 				return redirect()->intended($this->redirectPath());
 			}
 		}
@@ -134,8 +131,7 @@ trait AuthenticatesAndRegistersUsers {
 	 */
 	public function redirectPath()
 	{
-		if (property_exists($this, 'redirectPath'))
-		{
+		if (property_exists($this, 'redirectPath')) {
 			return $this->redirectPath;
 		}
 

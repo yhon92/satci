@@ -11,22 +11,22 @@ class AreaRepo extends BaseRepo
     return new Area;
   }
 
-  public function create($data)
+  public static function create($data)
   {
     return Area::create($data);
   }
 
-  static public function get($id)
+  public static function get($id)
   {
     return Area::find($id);
   }
 
-  public function all()
+  public static function all()
   {
     return Area::orderby('name', 'ASC')->with('director', 'means')->get();
   }
 
-  public function getListArea()
+  public static function getListArea()
   {
     return Area::get();
   }

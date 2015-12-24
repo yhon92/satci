@@ -1,8 +1,10 @@
-<?php namespace SATCI\Http\Requests;
+<?php
+namespace SATCI\Http\Requests;
 
 use SATCI\Http\Requests\Request;
 
-class CreateCitizenRequest extends Request {
+class CreateCitizenRequest extends Request
+{
 
   /**
    * Determine if the user is authorized to make this request.
@@ -32,6 +34,5 @@ class CreateCitizenRequest extends Request {
       'parish_id' => 'required|max:1|exists:parishes,id',
     ];
   }
-
 
 }

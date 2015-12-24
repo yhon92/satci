@@ -11,12 +11,12 @@ class UserRepo extends BaseRepo
     return new User;
   }
 
-  public function create($data)
+  public static function create($data)
   {
     return User::create($data);
   }
 
-  public function getListUsers()
+  public static function getListUsers()
   {
     return User::
       orderby('first_name', 'ASC')

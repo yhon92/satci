@@ -3,7 +3,8 @@ namespace SATCI\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Theme extends Model {
+class Theme extends Model
+{
 
   protected $table = 'themes';
 
@@ -20,5 +21,5 @@ class Theme extends Model {
   {
     return $this->hasMany('SATCI\Entities\AssignSolicitude');
   }
-
+  
 }

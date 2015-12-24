@@ -11,12 +11,12 @@ class AreaMeansRepo extends BaseRepo
     return new AreaMeans;
   }
 
-  static public function get($id)
+  public static function get($id)
   {
     return AreaMeans::find($id);
   }
 
-  static public function getID($area_id, $means_id)
+  public static function getID($area_id, $means_id)
   {
     $areaMeans = AreaMeans::where('area_id', $area_id)
                           ->where('means_id', $means_id)

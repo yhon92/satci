@@ -3,7 +3,8 @@ namespace SATCI\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Solicitude extends Model {
+class Solicitude extends Model
+{
 
   protected $table = 'solicitudes';
 
@@ -27,5 +28,5 @@ class Solicitude extends Model {
   {
     return $this->hasMay('SATCI\Entities\AssignSolicitude');
   }
-
+  
 }

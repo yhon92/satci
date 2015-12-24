@@ -12,7 +12,7 @@ Blade::setEscapedContentTags('<%%', '%%>'); // for escaped data
 |
 */
 
-Route::get('/', function (){
+Route::get('/', function () {
 	return view('layout');
 });
 
@@ -21,57 +21,47 @@ Route::get('/', function (){
 	'password' => 'Auth\PasswordController',
 ]);*/
 
-Route::group(['prefix' => 'api', 'namespace' => 'Auth'], function ()
-{
+Route::group(['prefix' => 'api', 'namespace' => 'Auth'], function () {
   Route::post('auth/login', 'AuthController@login');
   Route::get('auth/user', 'AuthController@getUser');
 });
 
-Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function ()
-{
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
 	Route::resource('users', 'UsersController');
 });
 
-Route::group(['prefix' => 'api', 'namespace' => 'Solicitude'], function ()
-{
+Route::group(['prefix' => 'api', 'namespace' => 'Solicitude'], function () {
 	Route::get('solicitude/list/{applicant}', 'SolicitudeController@listByApplicant');
 	Route::get('solicitude/assign/list/{solicitude}', 'AssignController@listBySolicitude');
 	Route::resource('solicitude/assign', 'AssignController');
 	Route::resource('solicitude', 'SolicitudeController');
 });
 
-Route::group(['prefix' => 'api'], function ()
-{
+Route::group(['prefix' => 'api'], function () {
 	Route::get('category/list', 'CategoryController@listCategoriesWithThemes');
 	Route::resource('category', 'CategoryController');
 });
 
-Route::group(['prefix' => 'api'], function ()
-{
+Route::group(['prefix' => 'api'], function () {
 	Route::resource('citizen', 'CitizenController');
 });
 
-Route::group(['prefix' => 'api'], function ()
-{
+Route::group(['prefix' => 'api'], function () {
 	Route::resource('institution', 'InstitutionController');
 });
 
-Route::group(['prefix' => 'api'], function ()
-{
+Route::group(['prefix' => 'api'], function () {
 	Route::resource('parish', 'ParishController');
 });
 
-Route::group(['prefix' => 'api'], function ()
-{
+Route::group(['prefix' => 'api'], function () {
 	Route::resource('theme', 'ThemeController');
 });
 
-Route::group(['prefix' => 'api'], function ()
-{
+Route::group(['prefix' => 'api'], function () {
 	Route::resource('category', 'CategoryController');
 });
 
-Route::group(['prefix' => 'api'], function ()
-{
+Route::group(['prefix' => 'api'], function () {
 	Route::resource('area', 'AreaController');
 });

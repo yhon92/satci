@@ -1,8 +1,10 @@
-<?php namespace SATCI\Http\Requests;
+<?php
+namespace SATCI\Http\Requests;
 
 use SATCI\Http\Requests\Request;
 
-class EditInstitutionRequest extends Request {
+class EditInstitutionRequest extends Request
+{
 
   /**
    * Determine if the user is authorized to make this request.
@@ -36,6 +38,5 @@ class EditInstitutionRequest extends Request {
       'parish_id' => 'required|max:1|exists:parishes,id',
     ];
   }
-
 
 }

@@ -9,6 +9,7 @@ use SATCI\Repositories\AreaRepo;
 
 class AreaController extends Controller
 {
+
   protected $areaRepo;
 
   public function __construct(AreaRepo $areaRepo) {
@@ -71,4 +72,5 @@ class AreaController extends Controller
   {
     //
   }
+  
 }

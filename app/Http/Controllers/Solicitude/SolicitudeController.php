@@ -14,7 +14,8 @@ use SATCI\Http\Requests\EditSolicitudeRequest;
 use SATCI\Http\Controllers\Controller;
 use SATCI\Utils\Helpers;
 
-class SolicitudeController extends Controller {
+class SolicitudeController extends Controller
+{
 
   protected $solicitudeRepo;
 
@@ -101,13 +102,11 @@ class SolicitudeController extends Controller {
    */
   public function update($id, EditSolicitudeRequest $request)
   {
-    try 
-    {
+    try {
       $this->solicitudeRepo->update($id, $request->all());
-    }
-    catch (QueryException $e)
-    {
+    } catch (QueryException $e) {
       Log::info($e->errorInfo[2]);
+
       return response()->json(['error' => true], 200);
     }
 
@@ -128,8 +127,7 @@ class SolicitudeController extends Controller {
   public function listByApplicant($type)
   {
     $type = ucwords($type);
-    if ( $type === 'Citizen' || $type === 'Institution' )
-    {
+    if ($type === 'Citizen' || $type === 'Institution') {
       Helpers::longApplicant($type);
 
       $solicitudes = $this->solicitudeRepo->getListByApplicant($type);
@@ -137,9 +135,7 @@ class SolicitudeController extends Controller {
       // Helpers::concatApplicantsWithParish($solicitudes);
 
       return response()->json($solicitudes, 200);
-    }
-    else
-    {
+    } else {
       return response()->json('Solicitante Inválido', 404);
     }
   }
