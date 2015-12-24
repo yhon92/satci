@@ -1,13 +1,10 @@
-import './InstitutionController';
+import './InstitutionControllers';
 import './InstitutionResources';
-import './create/CreateInstitutionModule';
-import './edit/EditInstitutionModule';
-/**
-* SATCI.Institutions Module
-*
-* Description
-*/
-angular.module('SATCI.Institution', ['ui.router', 'Institution.Create', 'Institution.Edit', 'Institution.controller'])
+import './create/CreateInstitutionController';
+import './edit/EditInstitutionController';
+import './show/ShowInstitutionController';
+
+angular.module('SATCI.Institution', ['ui.router', 'SATCI.Shared', 'Institution.controllers'])
 .config(($authProvider, $stateProvider, PathTemplates) => {
   $stateProvider
   .state('institution', {

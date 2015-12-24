@@ -1,22 +1,19 @@
-import './SolicitudeController';
+import './SolicitudeControllers';
 import './SolicitudeDirectives';
 import './SolicitudeResources';
-import './assign/AssignSolicitudeModule';
-import './create/CreateSolicitudeModule';
-import './edit/EditSolicitudeModule';
-import './show/ShowSolicitudeModule';
+import './assign/AssignSolicitudeController';
+import './create/CreateSolicitudeController';
+import './edit/EditSolicitudeController';
+import './show/ShowAssignSolicitudeController';
+import './show/ShowSolicitudeController';
 
 angular.module('SATCI.Solicitude', [
   'ui.router', 
   'SATCI.Shared',
-  'Solicitude.controller', 
+  'Solicitude.controllers', 
   'Solicitude.directives', 
-  'Solicitude.resources', 
-  'Solicitude.Assign',
-  'Solicitude.Create',
-  'Solicitude.Edit',
-  'Solicitude.Show'])
-
+  'Solicitude.resources'
+  ])
 .config(($authProvider, $stateProvider, PathTemplates) => {
   $stateProvider
   .state('solicitude', {

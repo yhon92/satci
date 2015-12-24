@@ -1,8 +1,12 @@
-import './AreaController';
+import './AreaControllers';
 import './AreaResources';
-/**
-* SATCI.Area Module
-*
-* Description
-*/
-angular.module('SATCI.Area', [])
+import './create/CreateAreaController';
+import './edit/EditAreaController';
+import './show/ShowAreaController';
+
+angular.module('SATCI.Area', [
+  'ui.router', 
+  'SATCI.Shared',
+  'Area.controllers', 
+  'Area.resources'
+  ])

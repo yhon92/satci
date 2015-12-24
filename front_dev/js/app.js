@@ -17,16 +17,18 @@ import './libs/ng-alertify';
 import './app/validation';
 
 /*** Import Modules of SATCI ***/
+import './app/area/AreaModule';
+import './app/category/CategoryModule';
 import './app/citizen/CitizenModule';
+import './app/director/DirectorModule';
 import './app/home/HomeModule';
 import './app/institution/InstitutionModule';
 import './app/login/LoginModule';
+import './app/means/MeansModule';
 import './app/nav/NavModule';
 import './app/shared/SharedModule'
 import './app/solicitudes/SolicitudeModule';
-import './app/category/CategoryModule';
 import './app/theme/ThemeModule';
-import './app/area/AreaModule';
 
 // import './app/';
 import './app/services/RedirectWhenLoggedOut';
@@ -43,16 +45,18 @@ angular.module('SATCI', [
   'angular-loading-bar',
   'Alertify',
 
+  'SATCI.Area',
+  'SATCI.Category',
   'SATCI.Citizen',
+  'SATCI.Director',
   'SATCI.Home',
   'SATCI.Institution',
   'SATCI.Login',
+  'SATCI.Means',
   'SATCI.Nav',
   'SATCI.Shared',
   'SATCI.Solicitude',
-  'SATCI.Category',
   'SATCI.Theme',
-  'SATCI.Area',
 
 
   'SATCI.RedirectWhenLoggedOutServices',

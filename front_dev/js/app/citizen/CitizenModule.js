@@ -1,13 +1,10 @@
-import './CitizenController';
+import './CitizenControllers';
 import './CitizenResources';
-import './create/CreateCitizenModule';
-import './edit/EditCitizenModule';
-/**
-* SATCI.Citizens Module
-*
-* Description
-*/
-angular.module('SATCI.Citizen',['ui.router', 'Citizen.Create', 'Citizen.Edit', 'Citizen.controller'])
+import './create/CreateCitizenController';
+import './edit/EditCitizenController';
+import './show/ShowCitizenController';
+
+angular.module('SATCI.Citizen', ['ui.router', 'SATCI.Shared', 'Citizen.controllers'])
 .config(($authProvider, $stateProvider, PathTemplates) => {
   $stateProvider
   .state('citizen', {
