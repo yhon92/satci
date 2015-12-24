@@ -3,19 +3,19 @@
 		<div class="form-group">
 			<label class="col-lg-3 control-label" for="identification"><strong>Cédula:</strong></label>
 			<div class="col-lg-9">
-				<input class="form-control" type="text" id="identification" placeholder="Cédula" ng-model="citizen.identification" ng-required="true">
+				<input class="form-control" type="text" id="identification" placeholder="Cédula" ng-model="citizen.identification" ng-required="true" only-numbers>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-lg-3 control-label" for="first_name"><strong>Nombres:</strong></label>
 			<div class="col-lg-9">
-				<input class="form-control" type="text" id="first_name" placeholder="Nombres" ng-model="citizen.first_name" ng-required="true">
+				<input class="form-control" type="text" id="first_name" placeholder="Nombres" ng-model="citizen.first_name" ng-required="true" only-letters>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-lg-3 control-label" for="last_name"><strong>Apellidos:</strong></label>
 			<div class="col-lg-9">
-				<input class="form-control" type="text" id="last_name" placeholder="Apellidos" ng-model="citizen.last_name" ng-required="true">
+				<input class="form-control" type="text" id="last_name" placeholder="Apellidos" ng-model="citizen.last_name" ng-required="true" only-letters>
 			</div>
 		</div>
 		<div class="form-group">
@@ -40,7 +40,7 @@
 					</select>
 				</div>
 				<div class="col-xs-9 padding-none">
-					<input class="form-control" type="text" id="number_phone" placeholder="Teléfono" ng-model="citizen.number_phone" ng-required="true">
+					<input class="form-control" type="text" id="number_phone" placeholder="Teléfono" ng-model="citizen.number_phone" ng-required="true" only-numbers>
 				</div>
 			</div>
 		</div>

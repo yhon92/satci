@@ -1,20 +1,4 @@
 angular.module('Shared.filters', [])
-.filter('filterPattern', () => {
-  return (input, pattern) => {
-   if (pattern.indexOf('numbers') != -1){
-     input = input.replace(/[^\d.]/g, "");
-   }
-   else if (pattern.indexOf('alphabets') != -1){
-    input = input.replace(/[^a-zA-Z ]/g, "");
-  }
-  else if (pattern.indexOf('alphaNumeric') != -1){
-    input = input.replace(/[^a-zA-Z\d]/g, "");
-  }
-
-  console.log('return input ' +  input);
-  return input;
-}
-})
 .filter("capitalize", () => {
   return (text) => {
     if(text != null){
