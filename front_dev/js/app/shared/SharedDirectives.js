@@ -11,7 +11,7 @@ angular.module('Shared.directives', [])
       applicant: '=type',
       edit: '@',
       // show: '&',
-      remove: '&',
+      delete: '&',
     },
     templateUrl: `${PathTemplates.partials}shared/applicant-list.html`
   };

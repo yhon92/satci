@@ -66,10 +66,7 @@ class SolicitudeController extends Controller
 
     $solicitude = $this->solicitudeRepo->create($request->all());
 
-    return response()->json([
-      'success' => true,
-      'solicitude' => $solicitude,
-      ]);
+    return response()->json(['success' => true, 'solicitude' => $solicitude], 200);
   }
 
   /**

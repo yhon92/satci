@@ -1,9 +1,12 @@
 <div class="col-md-12" ui-view>
-  <p>
+  <!-- <p>
     <a ui-sref="institutionCreate" class="btn btn-primary">Agregar Institución</a>
-  </p>
+  </p> -->
+  <a ui-sref="institutionCreate" class="btn btn-success btn-add-float" title="Agregar Institución">
+    <img src="./img/bootswatch/plus_2x.png" alt="">  
+  </a>
   
-  <applicant-list type='institutions' edit="institutionEdit" remove='removeInstitution(id)'></applicant-list>
+  <applicant-list type='institutions' edit='institutionEdit' delete='deleteInstitution(id)'></applicant-list>
 
 </div>
 

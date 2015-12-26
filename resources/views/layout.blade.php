@@ -43,7 +43,7 @@
 						<li ng-class="navActive('applicant')" class="dropdown" uib-dropdown>
 							<a class="dropdown-toggle" role="button" uib-dropdown-toggle>
 								Solicitante
-								<span class="caret"></span>
+								<%-- <span class="caret"></span> --%>
 							</a>
 							<ul class="uib-dropdown-menu" role="menu" aria-labelledby="simple-dropdown">
 								<li role="menuitem"><a ui-sref="citizen">Natural</a></li>
@@ -53,21 +53,21 @@
 						<li ng-class="navActive('config')" class="dropdown" uib-dropdown>
 							<a class="dropdown-toggle" role="button" uib-dropdown-toggle>
 								Configuración
-								<span class="caret"></span>
+								<%-- <span class="caret"></span> --%>
 							</a>
 							<ul class="uib-dropdown-menu" role="menu" aria-labelledby="simple-dropdown">
-								<li role="menuitem"><a ui-sref="citizen">Categorías</a></li>
-								<li role="menuitem"><a ui-sref="institution">Temas</a></li>
+								<li role="menuitem"><a ui-sref="category">Categoría</a></li>
+								<li role="menuitem"><a ui-sref="theme">Tema</a></li>
 								<li class="divider"></li>
-								<li role="menuitem"><a ui-sref="institution">Areas</a></li>
-								<li role="menuitem"><a ui-sref="institution">Recursos</a></li>
-								<li role="menuitem"><a ui-sref="institution">Directores</a></li>
+								<li role="menuitem"><a ui-sref="area">Area</a></li>
+								<li role="menuitem"><a ui-sref="means">Recurso</a></li>
+								<li role="menuitem"><a ui-sref="director">Director</a></li>
 							</ul>
 						</li>
 						<li ng-class="navActive('security')" class="dropdown" uib-dropdown>
 							<a class="dropdown-toggle" role="button" uib-dropdown-toggle>
 								Seguridad
-								<span class="caret"></span>
+								<%-- <span class="caret"></span> --%>
 							</a>
 							<ul class="uib-dropdown-menu" role="menu" aria-labelledby="simple-dropdown">
 								<li role="menuitem"><a ui-sref="citizen">Usuarios</a></li>
@@ -80,7 +80,7 @@
 						<li class="dropdown" uib-dropdown>
 							<a class="dropdown-toggle" role="button" uib-dropdown-toggle>
 								{{ currentUser.first_name +' '+currentUser.last_name }}
-								<span class="caret"></span>
+								<%-- <span class="caret"></span> --%>
 							</a>
 							<ul class="uib-dropdown-menu" role="menu" aria-labelledby="simple-dropdown">
 								<li role="menuitem"><a ng-click="logout()">Cerra Sesión</a></li>
@@ -139,7 +139,7 @@
 					<div class="form-group">
 						<label class="col-lg-3 control-label" for="parish"><strong>Parroquia:</strong></label>
 						<div class="col-lg-9">
-							<label class="form-label">{{ applicant.parish }}</label>
+							<label class="form-label">{{ applicant.parish.name }}</label>
 						</div>
 					</div>
 				</section>
@@ -181,7 +181,7 @@
 					<div class="form-group">
 						<label class="col-lg-3 control-label" for="parish"><strong>Parroquia:</strong></label>
 						<div class="col-lg-9">
-							<label class="form-label">{{ applicant.parish }}</label>
+							<label class="form-label">{{ applicant.parish.name }}</label>
 						</div>
 					</div>
 					<legend class="text-center">Representante Legal</legend>

@@ -46,7 +46,7 @@ gulp.task('css', function() {
   gulp.src(paths.src.css)
   .pipe(stylus({
       compress: true,
-      //use: nib()
+      use: nib()
     }))
   .on('error', function(error){
     return notify().write(error);

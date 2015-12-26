@@ -15,7 +15,7 @@ angular.module('Institution.controllers', ['ui.router', 'Alertify', 'SATCI.Share
     
   });
 
-  $scope.removeInstitution = (id) => {
+  $scope.deleteInstitution = (id) => {
 
     let index = getIndex($scope.institutions, id);
 

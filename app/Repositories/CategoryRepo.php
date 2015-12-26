@@ -23,7 +23,7 @@ class CategoryRepo extends BaseRepo
 
   public static function all()
   {
-    return Category::orderby('name', 'ASC')->get();
+    return Category::orderBy('name', 'ASC')->get();
   }
 
   public static function getListCategories()

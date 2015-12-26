@@ -44,10 +44,7 @@ class InstitutionController extends Controller
     
     $institution = $this->institutionRepo->create($request->all());
 
-    return response()->json([
-        'success' => true,
-        'institution' => $institution,
-      ]);
+    return response()->json(['success' => true, 'institution' => $institution], 200);
   }
 
   /**

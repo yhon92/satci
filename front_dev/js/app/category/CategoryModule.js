@@ -10,3 +10,21 @@ angular.module('SATCI.Category', [
   'Category.controllers', 
   'Category.resources'
   ])
+.config(($authProvider, $stateProvider, PathTemplates) => {
+  $stateProvider
+  .state('category', {
+    url: '/config/category',
+    templateUrl: `${PathTemplates.views}category/index.html`,
+    controller: 'CategoryCtrl'
+  })
+  .state('categoryCreate', {
+    url: '/config/category/create',
+    templateUrl: `${PathTemplates.views}category/index.html`,
+    controller: 'CategoryCtrl'
+  })
+  .state('categoryEdit', {
+    url: '/config/category/edit/:id',
+    templateUrl: `${PathTemplates.views}category/index.html`,
+    controller: 'CategoryCtrl'
+  })
+})

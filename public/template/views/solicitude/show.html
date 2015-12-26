@@ -1,8 +1,8 @@
 <div class="col-md-12" ui-view>
 	<div ui-view='show'></div>
 	<div ui-view='assign'>
-  <section class="col-md-6" ng-show="assigned">
-      <article class="panel panel-default" ng-repeat="(keyTheme, theme) in assigned">
+  <section class="col-md-5" ng-show="assigned">
+      <article class="panel panel-primary" ng-repeat="(keyTheme, theme) in assigned">
         <div class="panel-heading">
           <h3 class="panel-title">{{ theme.name }}</h3>
         </div>
@@ -11,7 +11,7 @@
             <!-- <h6>- {{ assign.area_means.area.name }}</h6> -->
             <ul class="padding-none">
               <li class="list-none">
-                <span class="buttom-status" ng-class="statusSelect(assign.status)" uib-tooltip="{{assign.status}}"></span>
+                <span class="button-status" ng-class="statusSelect(assign.status)" uib-tooltip="{{assign.status}}"></span>
                 <!-- <span uib-tooltip="{{assign.area_means.area.director.full_name}}"> -->
                 <span uib-tooltip="{{assign.area_means.area.director.full_name}}">
                   {{ assign.area_means.area.name }}
@@ -42,7 +42,7 @@
         </div>
       </article>
     </section>
-    <section class="col-md-6" ng-show="notAssigned">
+    <section class="col-md-5" ng-show="notAssigned">
       <h3>¡Esta solicitud no posee asignaciones!</h3>
     </section>
   </div>

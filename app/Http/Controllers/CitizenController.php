@@ -43,10 +43,7 @@ class CitizenController extends Controller
   {
     $citizen = $this->citizenRepo->create($request->all());
     
-    return response()->json([
-        'success' => true,
-        'citizen' => $citizen,
-      ], 200);
+    return response()->json(['success' => true, 'citizen' => $citizen], 200);
   }
 
   /**

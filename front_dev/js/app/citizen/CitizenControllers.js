@@ -15,7 +15,7 @@ angular.module('Citizen.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 
     
   });
 
-  $scope.removeCitizen = (id) => {
+  $scope.deleteCitizen = (id) => {
 
     let index = getIndex($scope.citizens, id);
 

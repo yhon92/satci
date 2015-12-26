@@ -4,7 +4,12 @@ import './create/CreateCitizenController';
 import './edit/EditCitizenController';
 import './show/ShowCitizenController';
 
-angular.module('SATCI.Citizen', ['ui.router', 'SATCI.Shared', 'Citizen.controllers'])
+angular.module('SATCI.Citizen', [
+  'ui.router', 
+  'SATCI.Shared', 
+  'Citizen.controllers', 
+  'Citizen.resources'
+  ])
 .config(($authProvider, $stateProvider, PathTemplates) => {
   $stateProvider
   .state('citizen', {

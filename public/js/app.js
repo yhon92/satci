@@ -172,7 +172,70 @@ angular.module('Area.controllers');
 },{}],8:[function(require,module,exports){
 'use strict';
 
-angular.module('Category.controllers', []);
+angular.module('Category.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'Category.resources']).controller('CategoryCtrl', function ($scope, $uibModal, Alertify, Categories) {
+
+  Categories.get().$promise.then(function (data) {
+    $scope.categories = data.categories;
+  }, function (error) {});
+
+  $scope.add = function () {
+    var modalInstance = $uibModal.open({
+      templateUrl: 'modalCategory-template',
+      controller: function controller($scope, $timeout, $uibModalInstance) {
+        $scope.title = 'Agregar';
+
+        $scope.category = null;
+
+        $scope.save = function () {
+          var data = {
+            name: $scope.category
+          };
+
+          Categories.save(data).$promise.then(function (data) {
+            if (data.success) {
+              Alertify.success('¡Categoría registrada exitosamente!');
+              $uibModalInstance.close(data.category);
+            }
+            if (data.error) {
+              Alertify.error('¡No se pudo registrar la categoría!');
+            }
+          }, function (fails) {
+            if (fails.status != 500) {
+              angular.forEach(fails.data, function (values, key) {
+                angular.forEach(values, function (value) {
+                  Alertify.error(value);
+                });
+              });
+            } else {
+              console.log(fails);
+            };
+          });
+        };
+
+        $scope.cancel = function () {
+          $uibModalInstance.dismiss();
+        };
+      },
+      size: 'sm'
+
+    });
+
+    modalInstance.result.then(function (data) {
+      $scope.categories.push(data);
+      console.log(data);
+    });
+  };
+
+  $scope.show = function (category) {
+    console.log(category);
+  }, $scope.edit = function (category) {
+    console.log($scope);
+  };
+
+  $scope.delete = function (category) {
+    console.log(category);
+  };
+});
 
 },{}],9:[function(require,module,exports){
 'use strict';
@@ -187,7 +250,21 @@ require('./edit/EditCategoryController');
 
 require('./show/ShowCategoryController');
 
-angular.module('SATCI.Category', ['ui.router', 'SATCI.Shared', 'Category.controllers', 'Category.resources']);
+angular.module('SATCI.Category', ['ui.router', 'SATCI.Shared', 'Category.controllers', 'Category.resources']).config(function ($authProvider, $stateProvider, PathTemplates) {
+  $stateProvider.state('category', {
+    url: '/config/category',
+    templateUrl: PathTemplates.views + 'category/index.html',
+    controller: 'CategoryCtrl'
+  }).state('categoryCreate', {
+    url: '/config/category/create',
+    templateUrl: PathTemplates.views + 'category/index.html',
+    controller: 'CategoryCtrl'
+  }).state('categoryEdit', {
+    url: '/config/category/edit/:id',
+    templateUrl: PathTemplates.views + 'category/index.html',
+    controller: 'CategoryCtrl'
+  });
+});
 
 },{"./CategoryControllers":8,"./CategoryResources":10,"./create/CreateCategoryController":11,"./edit/EditCategoryController":12,"./show/ShowCategoryController":13}],10:[function(require,module,exports){
 'use strict';
@@ -233,7 +310,7 @@ angular.module('Citizen.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 
     $scope.citizens.type = 'Naturales';
   }, function (errors) {});
 
-  $scope.removeCitizen = function (id) {
+  $scope.deleteCitizen = function (id) {
 
     var index = getIndex($scope.citizens, id);
 
@@ -289,7 +366,7 @@ require('./edit/EditCitizenController');
 
 require('./show/ShowCitizenController');
 
-angular.module('SATCI.Citizen', ['ui.router', 'SATCI.Shared', 'Citizen.controllers']).config(function ($authProvider, $stateProvider, PathTemplates) {
+angular.module('SATCI.Citizen', ['ui.router', 'SATCI.Shared', 'Citizen.controllers', 'Citizen.resources']).config(function ($authProvider, $stateProvider, PathTemplates) {
   $stateProvider.state('citizen', {
     url: '/applicant/citizen',
     templateUrl: PathTemplates.views + 'citizen/index.html',
@@ -557,7 +634,7 @@ angular.module('Institution.controllers', ['ui.router', 'Alertify', 'SATCI.Share
     $scope.institutions.type = 'Jurídicos';
   }, function (errors) {});
 
-  $scope.removeInstitution = function (id) {
+  $scope.deleteInstitution = function (id) {
 
     var index = getIndex($scope.institutions, id);
 
@@ -1005,7 +1082,7 @@ angular.module('Shared.directives', []).directive('applicantList', function (Pat
       applicant: '=type',
       edit: '@',
       // show: '&',
-      remove: '&'
+      delete: '&'
     },
     templateUrl: PathTemplates.partials + 'shared/applicant-list.html'
   };

@@ -1,8 +1,11 @@
 <div class="col-md-12" ui-view>
-  <p>
+  <!-- <p>
     <a ui-sref="citizenCreate" class="btn btn-primary">Agregar Persona</a>
-  </p>
+  </p> -->
+  <a ui-sref="citizenCreate" class="btn btn-success btn-add-float" title="Agregar Persona">
+    <img src="./img/bootswatch/plus_2x.png" alt="">  
+  </a>
 
-  <applicant-list type='citizens' edit="citizenEdit" remove='removeCitizen(id)'></applicant-list>
+  <applicant-list type='citizens' edit='citizenEdit' delete='deleteCitizen(id)'></applicant-list>
 </div>
 

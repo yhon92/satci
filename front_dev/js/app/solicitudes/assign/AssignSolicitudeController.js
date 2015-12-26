@@ -27,10 +27,9 @@ angular.module('Solicitude.controllers')
 
   });
 
-  $scope.someGroupFn = function (theme){
-    for (var i = _categories.length - 1; i >= 0; i--) {
-      if (theme.category_id == _categories[i].id)
-      {
+  $scope.someGroupFn = (theme) => {
+    for (let i = _categories.length - 1; i >= 0; i--) {
+      if (theme.category_id == _categories[i].id) {
         return _categories[i].name;
       }
     };
@@ -45,7 +44,7 @@ angular.module('Solicitude.controllers')
   $scope.assignArea = (key, theme) => {
 
     let modalInstance = $uibModal.open({
-      templateUrl: `modalAssignArea-template`,
+      templateUrl: 'modalAssignArea-template',
       controller: ($scope, $uibModalInstance, areas, theme) => {
         $scope.areas = areas;
         $scope.theme = theme;
@@ -53,8 +52,7 @@ angular.module('Solicitude.controllers')
         $scope.selected.areas;
 
         $scope.ok = () => {
-          if ($scope.selected.areas)
-          {
+          if ($scope.selected.areas) {
             $uibModalInstance.close($scope.selected.areas);
           }
         };
@@ -83,7 +81,7 @@ angular.module('Solicitude.controllers')
   $scope.editArea = (key, theme) => {
 
     let modalInstance = $uibModal.open({
-      templateUrl: `modalAssignArea-template`,
+      templateUrl: 'modalAssignArea-template',
       controller: ($scope, $uibModalInstance, areas, theme) => {
         $scope.areas = areas;
         $scope.theme = theme;
@@ -91,8 +89,7 @@ angular.module('Solicitude.controllers')
         $scope.selected.areas = theme.areas;
 
         $scope.ok = () => {
-          if ($scope.selected.areas.length)
-          {
+          if ($scope.selected.areas.length) {
             $uibModalInstance.close($scope.selected.areas);
           }
         };
@@ -141,7 +138,7 @@ angular.module('Solicitude.controllers')
   $scope.preview = () => {
 
     let modalInstance = $uibModal.open({
-      templateUrl: `modalPreviewAssign-template`,
+      templateUrl: 'modalPreviewAssign-template',
       controller: ($scope, $uibModalInstance, themes) => {
         
         $scope.unassigned = [];
@@ -207,7 +204,7 @@ angular.module('Solicitude.controllers')
               Alertify.error(value)
             })
           })
-        }else {
+        } else {
           console.log(fails);
         };
       });

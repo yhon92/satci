@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 // use SATCI\Http\Requests;
 use SATCI\Http\Controllers\Controller;
 use SATCI\Repositories\CategoryRepo;
+use SATCI\Http\Requests\CreateCategoryRequest;
 
 class CategoryController extends Controller
 {
@@ -35,9 +36,11 @@ class CategoryController extends Controller
    * @param  \Illuminate\Http\Request  $request
    * @return \Illuminate\Http\Response
    */
-  public function store(Request $request)
+  public function store(CreateCategoryRequest $request)
   {
-      //
+    $category = $this->categoryRepo->create($request->all());
+
+    return response()->json(['success' => true, 'category' => $category], 200);
   }
 
   /**
