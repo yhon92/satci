@@ -30,7 +30,7 @@ angular.module('Citizen.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 
         .then( (data) => {
           if (data.success) {
             $scope.citizens.splice(index,1);
-            Alertify.success('¡Registro eliminado exitosamente!');
+            Alertify.success('¡Persona eliminada!');
           }
           if (data.conflict) {
             Alertify.log('¡No es posible eliminar por tener solicitudes asociadas!');
@@ -40,11 +40,11 @@ angular.module('Citizen.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 
           }
         }, (fails) => {
           if (fails.status != 500){
-            angular.forEach(fails.data, (values, key) => {
-              angular.forEach(values, (value) => {
-                Alertify.error(value)
-              })
-            })
+            for (let firstKey in fails.data) {
+              for (let secondKey in fails.data[firstKey]) {
+                Alertify.error(fails.data[firstKey][secondKey])
+              }
+            }
           }else {
             console.log(fails);
           };
@@ -54,7 +54,7 @@ angular.module('Citizen.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 
     }); 
   };
 
-  function getIndex(Things,id){
+  function getIndex(Things, id){
     for (let i = 0; i < Things.length; i++) {
       if (Things[i].id == id) {
         return i;

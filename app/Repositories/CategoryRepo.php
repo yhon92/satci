@@ -21,16 +21,32 @@ class CategoryRepo extends BaseRepo
     return Category::find($id);
   }
 
+  public static function update($id, $data)
+  {
+    return Category::where('id', $id)->update($data);
+  }
+
+  public static function delete($id)
+  {
+    return Category::destroy($id);
+  }
+
   public static function all()
   {
     return Category::orderBy('name', 'ASC')->get();
   }
 
-  public static function getListCategories()
+  public static function allWithTheme()
   {
     return Category::has('themes')
                    ->with('themes')
                    ->get();
   }
 
+  public static function getListTheme($id)
+  {
+    return Category::with('themes')
+                  ->where('id', $id)
+                  ->get();
+  }
 }

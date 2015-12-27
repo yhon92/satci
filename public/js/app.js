@@ -181,19 +181,19 @@ angular.module('Category.controllers', ['ui.router', 'Alertify', 'SATCI.Shared',
   $scope.add = function () {
     var modalInstance = $uibModal.open({
       templateUrl: 'modalCategory-template',
-      controller: function controller($scope, $timeout, $uibModalInstance) {
+      controller: function controller($scope, $filter, $uibModalInstance) {
         $scope.title = 'Agregar';
 
         $scope.category = null;
 
         $scope.save = function () {
           var data = {
-            name: $scope.category
+            name: $filter('titleCase')($scope.category)
           };
 
           Categories.save(data).$promise.then(function (data) {
             if (data.success) {
-              Alertify.success('¡Categoría registrada exitosamente!');
+              Alertify.success('¡Categoría registrada!');
               $uibModalInstance.close(data.category);
             }
             if (data.error) {
@@ -201,11 +201,11 @@ angular.module('Category.controllers', ['ui.router', 'Alertify', 'SATCI.Shared',
             }
           }, function (fails) {
             if (fails.status != 500) {
-              angular.forEach(fails.data, function (values, key) {
-                angular.forEach(values, function (value) {
-                  Alertify.error(value);
-                });
-              });
+              for (var firstKey in fails.data) {
+                for (var secondKey in fails.data[firstKey]) {
+                  Alertify.error(fails.data[firstKey][secondKey]);
+                }
+              }
             } else {
               console.log(fails);
             };
@@ -222,18 +222,104 @@ angular.module('Category.controllers', ['ui.router', 'Alertify', 'SATCI.Shared',
 
     modalInstance.result.then(function (data) {
       $scope.categories.push(data);
-      console.log(data);
     });
   };
 
   $scope.show = function (category) {
     console.log(category);
-  }, $scope.edit = function (category) {
-    console.log($scope);
+  }, $scope.edit = function (_category) {
+    var modalInstance = $uibModal.open({
+      templateUrl: 'modalCategory-template',
+      controller: function controller($scope, $filter, $uibModalInstance, category) {
+        $scope.title = 'Editar';
+
+        $scope.category = category.name;
+
+        $scope.save = function () {
+          $scope.category = $filter('titleCase')($scope.category);
+
+          var data = {
+            name: $scope.category
+          };
+
+          Categories.update({ id: category.id }, data).$promise.then(function (data) {
+            if (data.success) {
+              Alertify.success('¡Categoría editada!');
+              category.name = $scope.category;
+              $uibModalInstance.close(category);
+            }
+            if (data.error) {
+              Alertify.error('¡No se pudo editar la categoría!');
+            }
+          }, function (fails) {
+            if (fails.status != 500) {
+              for (var firstKey in fails.data) {
+                for (var secondKey in fails.data[firstKey]) {
+                  Alertify.error(fails.data[firstKey][secondKey]);
+                }
+              }
+            } else {
+              console.log(fails);
+            };
+          });
+        };
+
+        $scope.cancel = function () {
+          $uibModalInstance.dismiss();
+        };
+      },
+      size: 'sm',
+      resolve: {
+        category: function category() {
+          return _category;
+        }
+      }
+
+    });
   };
 
   $scope.delete = function (category) {
-    console.log(category);
+
+    var id = category.id;
+
+    var index = getIndex($scope.categories, id);
+
+    Alertify.set({ labels: { ok: "Eliminar", cancel: "Cancelar" } });
+
+    Alertify.confirm('Confirma que desea eliminar la categoría: ' + '</br>Nombre: <strong class="text-danger">' + category.name + '</strong>').then(function (ok) {
+      Categories.delete({ id: id }).$promise.then(function (data) {
+        if (data.success) {
+          $scope.categories.splice(index, 1);
+          Alertify.success('¡Categoría eliminada!');
+        }
+        if (data.conflict) {
+          Alertify.log('¡No es posible eliminar por tener <strong class="text-warning">Temas</strong> asociados!');
+        }
+        if (data.error) {
+          Alertify.error('¡Ocurrio un error al intentar eliminar!');
+        }
+      }, function (fails) {
+        if (fails.status != 500) {
+          for (var firstKey in fails.data) {
+            for (var secondKey in fails.data[firstKey]) {
+              Alertify.error(fails.data[firstKey][secondKey]);
+            }
+          }
+        } else {
+          console.log(fails);
+        };
+      });
+    }, function (cancel) {
+      return false;
+    });
+  };
+
+  function getIndex(Things, id) {
+    for (var i = 0; i < Things.length; i++) {
+      if (Things[i].id == id) {
+        return i;
+      }
+    }
   };
 });
 
@@ -255,12 +341,8 @@ angular.module('SATCI.Category', ['ui.router', 'SATCI.Shared', 'Category.control
     url: '/config/category',
     templateUrl: PathTemplates.views + 'category/index.html',
     controller: 'CategoryCtrl'
-  }).state('categoryCreate', {
-    url: '/config/category/create',
-    templateUrl: PathTemplates.views + 'category/index.html',
-    controller: 'CategoryCtrl'
-  }).state('categoryEdit', {
-    url: '/config/category/edit/:id',
+  }).state('categoryShow', {
+    url: '/config/category/:id',
     templateUrl: PathTemplates.views + 'category/index.html',
     controller: 'CategoryCtrl'
   });
@@ -320,7 +402,7 @@ angular.module('Citizen.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 
       Citizens.delete({ id: id }).$promise.then(function (data) {
         if (data.success) {
           $scope.citizens.splice(index, 1);
-          Alertify.success('¡Registro eliminado exitosamente!');
+          Alertify.success('¡Persona eliminada!');
         }
         if (data.conflict) {
           Alertify.log('¡No es posible eliminar por tener solicitudes asociadas!');
@@ -330,11 +412,11 @@ angular.module('Citizen.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 
         }
       }, function (fails) {
         if (fails.status != 500) {
-          angular.forEach(fails.data, function (values, key) {
-            angular.forEach(values, function (value) {
-              Alertify.error(value);
-            });
-          });
+          for (var firstKey in fails.data) {
+            for (var secondKey in fails.data[firstKey]) {
+              Alertify.error(fails.data[firstKey][secondKey]);
+            }
+          }
         } else {
           console.log(fails);
         };
@@ -465,11 +547,11 @@ angular.module('Citizen.controllers').controller('CreateCitizenCtrl', function (
       }
     }, function (fails) {
       if (fails.status != 500) {
-        angular.forEach(fails.data, function (values, key) {
-          angular.forEach(values, function (value) {
-            Alertify.error(value);
-          });
-        });
+        for (var firstKey in fails.data) {
+          for (var secondKey in fails.data[firstKey]) {
+            Alertify.error(fails.data[firstKey][secondKey]);
+          }
+        }
       } else {
         console.log(fails);
       }
@@ -532,11 +614,11 @@ angular.module('Citizen.controllers').controller('EditCitizenCtrl', function ($s
       }
     }, function (fails) {
       if (fails.status != 500) {
-        angular.forEach(fails.data, function (values, key) {
-          angular.forEach(values, function (value) {
-            Alertify.error(value);
-          });
-        });
+        for (var firstKey in fails.data) {
+          for (var secondKey in fails.data[firstKey]) {
+            Alertify.error(fails.data[firstKey][secondKey]);
+          }
+        }
       } else {
         console.log(fails);
       };
@@ -644,7 +726,7 @@ angular.module('Institution.controllers', ['ui.router', 'Alertify', 'SATCI.Share
       Institutions.delete({ id: id }).$promise.then(function (data) {
         if (data.success) {
           $scope.institutions.splice(index, 1);
-          Alertify.success('¡Registro eliminado exitosamente!');
+          Alertify.success('¡Institución eliminada!');
         }
         if (data.conflict) {
           Alertify.log('¡No es posible eliminar por tener solicitudes asociadas!');
@@ -654,11 +736,11 @@ angular.module('Institution.controllers', ['ui.router', 'Alertify', 'SATCI.Share
         }
       }, function (fails) {
         if (fails.status != 500) {
-          angular.forEach(fails.data, function (values, key) {
-            angular.forEach(values, function (value) {
-              Alertify.error(value);
-            });
-          });
+          for (var firstKey in fails.data) {
+            for (var secondKey in fails.data[firstKey]) {
+              Alertify.error(fails.data[firstKey][secondKey]);
+            }
+          }
         } else {
           console.log(fails);
         };
@@ -793,11 +875,11 @@ angular.module('Institution.controllers').controller('CreateInstitutionCtrl', fu
       }
     }, function (fails) {
       if (fails.status != 500) {
-        angular.forEach(fails.data, function (values, key) {
-          angular.forEach(values, function (value) {
-            Alertify.error(value);
-          });
-        });
+        for (var firstKey in fails.data) {
+          for (var secondKey in fails.data[firstKey]) {
+            Alertify.error(fails.data[firstKey][secondKey]);
+          }
+        }
       } else {
         console.log(fails);
       };
@@ -864,11 +946,11 @@ angular.module('Institution.controllers').controller('EditInstitutionCtrl', func
       }
     }, function (fails) {
       if (fails.status != 500) {
-        angular.forEach(fails.data, function (values, key) {
-          angular.forEach(values, function (value) {
-            Alertify.error(value);
-          });
-        });
+        for (var firstKey in fails.data) {
+          for (var secondKey in fails.data[firstKey]) {
+            Alertify.error(fails.data[firstKey][secondKey]);
+          }
+        }
       } else {
         console.log(fails);
       };
@@ -1171,6 +1253,8 @@ angular.module('Shared.filters', []).filter("capitalize", function () {
   };
 }).filter('titleCase', function () {
   return function (input) {
+    input = input.toLowerCase();
+
     var smallWords = /^(de|para|vs?\.?|via)$/i;
 
     return input.replace(/[A-Za-z0-9\u00C0-\u00FF]+[^\s-]*/g, function (match, index, title) {
@@ -1599,11 +1683,11 @@ angular.module('Solicitude.controllers').controller('AssignSolicitudeCtrl', func
       }
     }, function (fails) {
       if (fails.status != 500) {
-        angular.forEach(fails.data, function (values, key) {
-          angular.forEach(values, function (value) {
-            Alertify.error(value);
-          });
-        });
+        for (var firstKey in fails.data) {
+          for (var secondKey in fails.data[firstKey]) {
+            Alertify.error(fails.data[firstKey][secondKey]);
+          }
+        }
       } else {
         console.log(fails);
       };
@@ -1614,7 +1698,7 @@ angular.module('Solicitude.controllers').controller('AssignSolicitudeCtrl', func
 },{}],52:[function(require,module,exports){
 'use strict';
 
-angular.module('Solicitude.controllers').controller('CreateSolicitudeCtrl', function ($state, $scope, $filter, $controller, $q, $timeout, Alertify, Citizens, Institutions, Parishes, Solicitudes, paginateService, PathTemplates) {
+angular.module('Solicitude.controllers').controller('CreateSolicitudeCtrl', function ($state, $scope, $filter, $controller, $q, Alertify, Citizens, Institutions, Parishes, Solicitudes, paginateService, PathTemplates) {
 
   $controller('CreateCitizenCtrl', { $scope: $scope });
   $controller('CreateInstitutionCtrl', { $scope: $scope });
@@ -1724,11 +1808,11 @@ angular.module('Solicitude.controllers').controller('CreateSolicitudeCtrl', func
       }
     }, function (fails) {
       if (fails.status != 500) {
-        angular.forEach(fails.data, function (values, key) {
-          angular.forEach(values, function (value) {
-            Alertify.error(value);
-          });
-        });
+        for (var firstKey in fails.data) {
+          for (var secondKey in fails.data[firstKey]) {
+            Alertify.error(fails.data[firstKey][secondKey]);
+          }
+        }
       } else {
         console.log(fails);
       };
@@ -1901,11 +1985,11 @@ angular.module('Solicitude.controllers').controller('EditSolicitudeCtrl', functi
       }
     }, function (fails) {
       if (fails.status != 500) {
-        angular.forEach(fails.data, function (values, key) {
-          angular.forEach(values, function (value) {
-            Alertify.error(value);
-          });
-        });
+        for (var firstKey in fails.data) {
+          for (var secondKey in fails.data[firstKey]) {
+            Alertify.error(fails.data[firstKey][secondKey]);
+          }
+        }
       } else {
         console.log(fails);
       };
@@ -2056,11 +2140,11 @@ angular.module('Solicitude.controllers').controller('ShowAssignSolicitudeCtrl', 
         };
       }, function (fails) {
         if (fails.status != 500) {
-          angular.forEach(fails.data, function (values, key) {
-            angular.forEach(values, function (value) {
-              Alertify.error(value);
-            });
-          });
+          for (var firstKey in fails.data) {
+            for (var secondKey in fails.data[firstKey]) {
+              Alertify.error(fails.data[firstKey][secondKey]);
+            }
+          }
           $scope.isCollapsed[keyTheme][keyAssign] = true;
         } else {
           console.log(fails);

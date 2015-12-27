@@ -9,6 +9,8 @@ angular.module('Shared.filters', [])
 
 .filter('titleCase', () => {
   return (input) => {
+    input = input.toLowerCase();
+    
     let smallWords = /^(de|para|vs?\.?|via)$/i;
 
     return input.replace(/[A-Za-z0-9\u00C0-\u00FF]+[^\s-]*/g, (match, index, title) => {

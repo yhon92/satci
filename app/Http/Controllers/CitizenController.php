@@ -29,7 +29,7 @@ class CitizenController extends Controller
    */
   public function index()
   {
-    $citizens = $this->citizenRepo->getListCitizens();
+    $citizens = $this->citizenRepo->all();
     
     return response()->json(['citizens' => $citizens], 200);
   }
@@ -106,7 +106,7 @@ class CitizenController extends Controller
     
     DB::commit();
 
-    return response()->json(['success' => true] ,200);
+    return response()->json(['success' => true], 200);
   }
 
 }

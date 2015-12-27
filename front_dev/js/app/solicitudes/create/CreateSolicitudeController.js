@@ -5,7 +5,6 @@ angular.module('Solicitude.controllers')
   $filter, 
   $controller, 
   $q, 
-  $timeout, 
   Alertify,
   Citizens, 
   Institutions, 
@@ -124,11 +123,11 @@ angular.module('Solicitude.controllers')
       }, 
       (fails) => {
         if (fails.status != 500) {
-          angular.forEach(fails.data, (values, key) => {
-            angular.forEach(values, (value) => {
-              Alertify.error(value)
-            })
-          })
+          for (let firstKey in fails.data) {
+            for (let secondKey in fails.data[firstKey]) {
+              Alertify.error(fails.data[firstKey][secondKey])
+            }
+          }
         }else {
           console.log(fails);
         };
@@ -161,7 +160,7 @@ angular.module('Solicitude.controllers')
       let start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
       let number = pagination.number || 10;  // Number of entries showed per page.
 
-      paginateService.getPage($scope.applicants, start, number, tableState).then(function (result) {
+      paginateService.getPage($scope.applicants, start, number, tableState).then((result) => {
         $scope.displayed = result.data;
         tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
         $scope.isLoading = false;

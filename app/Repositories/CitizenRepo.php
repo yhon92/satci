@@ -31,7 +31,7 @@ class CitizenRepo extends BaseRepo
     return Citizen::destroy($id);
   }
 
-  public static function getListCitizens()
+  public static function all()
   {
     return Citizen::orderBy('full_name', 'ASC')
                   ->get();

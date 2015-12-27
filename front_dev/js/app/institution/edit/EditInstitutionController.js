@@ -48,11 +48,11 @@ angular.module('Institution.controllers')
       (fails) => {
         if (fails.status != 500) 
         {
-          angular.forEach(fails.data, (values, key) => {
-            angular.forEach(values, (value) => {
-              Alertify.error(value)
-            })
-          })
+          for (let firstKey in fails.data) {
+            for (let secondKey in fails.data[firstKey]) {
+              Alertify.error(fails.data[firstKey][secondKey])
+            }
+          }
         }
         else
         {

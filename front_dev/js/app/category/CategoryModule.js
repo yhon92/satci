@@ -17,13 +17,8 @@ angular.module('SATCI.Category', [
     templateUrl: `${PathTemplates.views}category/index.html`,
     controller: 'CategoryCtrl'
   })
-  .state('categoryCreate', {
-    url: '/config/category/create',
-    templateUrl: `${PathTemplates.views}category/index.html`,
-    controller: 'CategoryCtrl'
-  })
-  .state('categoryEdit', {
-    url: '/config/category/edit/:id',
+  .state('categoryShow', {
+    url: '/config/category/:id',
     templateUrl: `${PathTemplates.views}category/index.html`,
     controller: 'CategoryCtrl'
   })

@@ -1,12 +1,15 @@
 <?php
 namespace SATCI\Http\Controllers;
 
+use DB;
+use Log;
 use Illuminate\Http\Request;
 
 // use SATCI\Http\Requests;
 use SATCI\Http\Controllers\Controller;
 use SATCI\Repositories\CategoryRepo;
 use SATCI\Http\Requests\CreateCategoryRequest;
+use SATCI\Http\Requests\EditCategoryRequest;
 
 class CategoryController extends Controller
 {
@@ -61,9 +64,17 @@ class CategoryController extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function update(Request $request, $id)
+  public function update($id, EditCategoryRequest $request)
   {
-      //
+    try {
+      $this->categoryRepo->update($id, $request->all());
+    } catch (QueryException $e) {
+      Log::info($e->errorInfo[2]);
+
+      return response()->json(['error' => true], 200);
+    }
+
+    return response()->json(['success' => true], 200);
   }
 
   /**
@@ -74,12 +85,32 @@ class CategoryController extends Controller
    */
   public function destroy($id)
   {
-      //
+    $categories = $this->categoryRepo->getListTheme($id);
+
+    if (count($categories[0]->themes)) {
+      return response()->json(['conflict' => true], 200);
+    } else {
+      DB::beginTransaction();
+
+      try {
+        $this->categoryRepo->delete($id);
+      } catch (QueryException $e) {
+        DB::rollBack();
+
+        Log::info($e->errorInfo[2]);
+
+        return response()->json(['error' => true], 200);
+      }
+    }
+    
+    DB::commit();
+
+    return response()->json(['success' => true], 200);
   }
 
   public function listCategoriesWithThemes()
   {
-    $categories = $this->categoryRepo->getListCategories();
+    $categories = $this->categoryRepo->allWithTheme();
     
     return response()->json(['categories' => $categories], 200);
   }
