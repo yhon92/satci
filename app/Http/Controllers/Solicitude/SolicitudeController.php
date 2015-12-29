@@ -1,18 +1,15 @@
 <?php 
 namespace SATCI\Http\Controllers\Solicitude;
 
-use Log;
-use Uuid;
-
-use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
-// use Illuminate\Routing\Route;
-
-use SATCI\Repositories\SolicitudeRepo;
+use Illuminate\Http\Request;
+use Log;
+use SATCI\Http\Controllers\Controller;
 use SATCI\Http\Requests\CreateSolicitudeRequest;
 use SATCI\Http\Requests\EditSolicitudeRequest;
-use SATCI\Http\Controllers\Controller;
+use SATCI\Repositories\SolicitudeRepo;
 use SATCI\Utils\Helpers;
+use Uuid;
 
 class SolicitudeController extends Controller
 {
@@ -131,7 +128,7 @@ class SolicitudeController extends Controller
 
       // Helpers::concatApplicantsWithParish($solicitudes);
 
-      return response()->json($solicitudes, 200);
+      return response()->json(['solicitudes' => $solicitudes], 200);
     } else {
       return response()->json('Solicitante Inválido', 404);
     }

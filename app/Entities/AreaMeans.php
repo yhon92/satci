@@ -15,17 +15,17 @@ class AreaMeans extends Model
 
   public function area()
   {
-    return $this->belongsTo('SATCI\Entities\Area');
+    return $this->belongsTo(Area::class);
   }
 
   public function means()
   {
-    return $this->belongsTo('SATCI\Entities\Means');
+    return $this->belongsTo(Means::class);
   }
 
   public function solicitude()
   {
-    return $this->hasMany('SATCI\Entities\AssignSolicitude');
+    return $this->hasMany(AssignSolicitude::class);
   }
   
 }

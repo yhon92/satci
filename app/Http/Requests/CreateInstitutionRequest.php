@@ -24,16 +24,16 @@ class CreateInstitutionRequest extends Request
   public function rules()
   {
     return [
-      'identification' => 'required|unique:institutions,identification', 
-      'full_name' => 'required', 
-      'address' => 'required', 
-      'prefix_phone' => 'required|min:4|max:4', 
-      'number_phone' => 'required|min:7|max:7', 
-      'agent_identification' => 'required', 
-      'agent_full_name' => 'required', 
-      'agent_first_name' => 'required', 
-      'agent_last_name' => 'required', 
-      'parish_id' => 'required|max:1|exists:parishes,id',
+    'identification' => 'required|regex:(^([VEPGJC]{1})-([0-9]{8})-([0-9]{1})$)|unique:institutions,identification', 
+    'full_name' => 'required', 
+    'address' => 'required', 
+    'prefix_phone' => 'required|min:4|max:4', 
+    'number_phone' => 'required|min:7|max:7', 
+    'agent_identification' => 'required|min:6|max:8|', 
+    'agent_full_name' => 'required', 
+    'agent_first_name' => 'required', 
+    'agent_last_name' => 'required', 
+    'parish_id' => 'required|max:1|exists:parishes,id',
     ];
   }
 

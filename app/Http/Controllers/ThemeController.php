@@ -1,10 +1,13 @@
 <?php
 namespace SATCI\Http\Controllers;
 
+use DB;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
-
-// use SATCI\Http\Requests;
+use Log;
 use SATCI\Http\Controllers\Controller;
+use SATCI\Http\Requests\CreateThemeRequest;
+use SATCI\Http\Requests\EditThemeRequest;
 use SATCI\Repositories\ThemeRepo;
 
 class ThemeController extends Controller
@@ -23,7 +26,7 @@ class ThemeController extends Controller
    */
   public function index()
   {
-    $themes = $this->themeRepo->getListThemes();
+    $themes = $this->themeRepo->all();
 
     return response()->json(['themes' => $themes], 200);
   }
@@ -34,9 +37,11 @@ class ThemeController extends Controller
    * @param  \Illuminate\Http\Request  $request
    * @return \Illuminate\Http\Response
    */
-  public function store(Request $request)
+  public function store(CreateThemeRequest $request)
   {
-      //
+    $theme = $this->themeRepo->create($request->all());
+
+    return response()->json(['success' => true, 'theme' => $theme], 200);
   }
 
   /**
@@ -57,9 +62,17 @@ class ThemeController extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function update(Request $request, $id)
+  public function update($id, EditThemeRequest $request)
   {
-      //
+    try {
+      $this->themeRepo->update($id, $request->all());
+    } catch (QueryException $e) {
+      Log::info($e->errorInfo[2]);
+
+      return response()->json(['error' => true], 200);
+    }
+
+    return response()->json(['success' => true], 200);
   }
 
   /**
@@ -70,6 +83,33 @@ class ThemeController extends Controller
    */
   public function destroy($id)
   {
-      //
+    $solicitudes = $this->themeRepo->getListSolicitudes($id);
+
+    if (count($solicitudes->assign_solicitude)) {
+      return response()->json(['conflict' => true], 200);
+    } else {
+      DB::beginTransaction();
+
+      try {
+        $this->themeRepo->delete($id);
+      } catch (QueryException $e) {
+        DB::rollBack();
+
+        Log::info($e->errorInfo[2]);
+
+        return response()->json(['error' => true], 200);
+      }
+    }
+    
+    DB::commit();
+
+    return response()->json(['success' => true], 200);
+  }
+
+  public function getListThemesOrderByCategory()
+  {
+    $themes = $this->themeRepo->getListThemes();
+
+    return response()->json(['themes' => $themes], 200);
   }
 }

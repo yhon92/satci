@@ -33,20 +33,25 @@ class CategoryRepo extends BaseRepo
 
   public static function all()
   {
-    return Category::orderBy('name', 'ASC')->get();
+    return Category::/*has('themes')*/
+                    with(['themes' => function ($query) {
+                     $query->orderBy('name', 'ASC');
+                   }])
+                   ->orderBy('name', 'ASC')
+                   ->get();
   }
 
-  public static function allWithTheme()
+  public static function listOnlyCategories()
   {
-    return Category::has('themes')
-                   ->with('themes')
-                   ->get();
+    return Category::orderBy('name', 'ASC')->get();
   }
 
   public static function getListTheme($id)
   {
-    return Category::with('themes')
-                  ->where('id', $id)
-                  ->get();
+    return Category::with(['themes' => function ($query) {
+                      $query->orderBy('name', 'ASC');
+                    }])
+                    ->find($id);
+                    // ->get();
   }
 }

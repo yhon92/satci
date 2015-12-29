@@ -9,23 +9,24 @@ angular.module('Solicitude.controllers')
   Solicitudes) => {
 
   Solicitudes.get({id: $stateParams.id}).$promise
-    .then( (data) => {
-      let solicitude = data.solicitude;
+  .then((data) => {
+    let solicitude = data.solicitude;
 
-      if (solicitude.status != 'Recibido') {
-        Alertify.alert('No es permitido editar la solicitud <strong class="text-danger">No. '
-          + solicitude.solicitude_number +'</strong>'+
-          ' por estar en estado <strong class="text-danger">'+ solicitude.status +'</strong>');
-        $state.transitionTo('solicitude', {
-          reload: true, notify: false 
-        });
-      }else{
-        $scope.solicitude = solicitude;
-      }
+    if (solicitude.status != 'Recibido') {
+      Alertify.alert('No es permitido editar la solicitud <strong class="text-danger">No. '
+        + solicitude.solicitude_number +'</strong>'+
+        ' por estar en estado <strong class="text-danger">'+ solicitude.status +'</strong>');
+      $state.transitionTo('solicitude', {
+        reload: true, notify: false 
+      });
+    }else{
+      $scope.solicitude = solicitude;
+    }
 
-    }, (fails) => {
+  })
+  .catch((fails) => {
 
-    });
+  });
 
   $scope.showApplicant = (type, applicant) => {
     let modalInstance = $uibModal.open({
@@ -54,31 +55,32 @@ angular.module('Solicitude.controllers')
     }
     console.log(solicitude)
     Solicitudes.update({id: $stateParams.id}, solicitude).$promise
-      .then( (data) => {
-        if (data.success) {
-          Alertify.success('Solicitud modificada exitosamente');
-          $state.transitionTo('solicitude', { 
-            reload: true, inherit: false, notify: false 
-          });
-        }
-      }, (fails) => {
-        if (fails.status != 500){
-          for (let firstKey in fails.data) {
-            for (let secondKey in fails.data[firstKey]) {
-              Alertify.error(fails.data[firstKey][secondKey])
-            }
+    .then( (data) => {
+      if (data.success) {
+        Alertify.success('Solicitud modificada exitosamente');
+        $state.transitionTo('solicitude', { 
+          reload: true, inherit: false, notify: false 
+        });
+      }
+    })
+    .catch((fails) => {
+      if (fails.status != 500) {
+        for (let firstKey in fails.data) {
+          for (let secondKey in fails.data[firstKey]) {
+            Alertify.error(fails.data[firstKey][secondKey]);
           }
-        }else {
-          console.log(fails);
-        };
-      });
+        }
+      } else {
+        console.log(fails);
+      };
+    });
 
   };
 
   $scope.cancel = () => {
     $state.transitionTo('solicitude', {
-        reload: true, notify: false 
-      });
+      reload: true, notify: false 
+    });
   };
 
   /******************************************************Datepicker******************************************************/

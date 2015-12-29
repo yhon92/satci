@@ -14,7 +14,7 @@ class Category extends Model
 
   public function themes()
   {
-    return $this->hasMany('SATCI\Entities\Theme');
+    return $this->hasMany(Theme::class);
   }
   
 }

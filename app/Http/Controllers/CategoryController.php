@@ -2,14 +2,13 @@
 namespace SATCI\Http\Controllers;
 
 use DB;
-use Log;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
-
-// use SATCI\Http\Requests;
+use Log;
 use SATCI\Http\Controllers\Controller;
-use SATCI\Repositories\CategoryRepo;
 use SATCI\Http\Requests\CreateCategoryRequest;
 use SATCI\Http\Requests\EditCategoryRequest;
+use SATCI\Repositories\CategoryRepo;
 
 class CategoryController extends Controller
 {
@@ -54,7 +53,9 @@ class CategoryController extends Controller
    */
   public function show($id)
   {
-      //
+    $category = $this->categoryRepo->getListTheme($id);
+
+    return response()->json(['category' => $category[0]], 200);
   }
 
   /**
@@ -87,7 +88,7 @@ class CategoryController extends Controller
   {
     $categories = $this->categoryRepo->getListTheme($id);
 
-    if (count($categories[0]->themes)) {
+    if (count($categories->themes)) {
       return response()->json(['conflict' => true], 200);
     } else {
       DB::beginTransaction();
@@ -108,9 +109,9 @@ class CategoryController extends Controller
     return response()->json(['success' => true], 200);
   }
 
-  public function listCategoriesWithThemes()
+  public function listOnlyCategories()
   {
-    $categories = $this->categoryRepo->allWithTheme();
+    $categories = $this->categoryRepo->listOnlyCategories();
     
     return response()->json(['categories' => $categories], 200);
   }

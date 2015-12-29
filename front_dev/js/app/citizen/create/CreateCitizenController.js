@@ -1,10 +1,10 @@
 angular.module('Citizen.controllers')
 .controller('CreateCitizenCtrl', ($scope, $state, $filter, Alertify, Citizens, Parishes) => {
-  
+
   $scope.button = {
     submit: 'Agregar',
     cancel: 'Limpiar'
-  }
+  };
 
   $scope.citizen = {
     identification: '',
@@ -16,8 +16,9 @@ angular.module('Citizen.controllers')
     parish: ''
   };
 
-  if ( !$scope.parishes ) {
-    Parishes.get((data) => {
+  if (!$scope.parishes) {
+    Parishes.get().$promise
+    .then((data) => {
       $scope.parishes = data.parishes;
     })
   };
@@ -33,37 +34,35 @@ angular.module('Citizen.controllers')
       prefix_phone: $scope.citizen.prefix_phone,
       number_phone: $scope.citizen.number_phone,
       parish_id: $scope.citizen.parish
-    }
+    };
 
-    Citizens.save(dataCitizen).$promise.then(
-      (data) => {
-        if (data.success) {
-          if ($scope.solicitude) {
-            $scope.solicitude.full_name = data.citizen.full_name;
-            $scope.solicitude.identification = data.citizen.identification;
-            $scope.solicitude.applicant_id = data.citizen.id;
-            $scope.close();
-          }
-          else {
-            $state.transitionTo('citizen', {
-              reload: true, notify: false 
-            });
-          }
-          Alertify.success('Persona registrada exitosamente');
+    Citizens.save(dataCitizen).$promise
+    .then((data) => {
+      if (data.success) {
+        if ($scope.solicitude) {
+          $scope.solicitude.full_name = data.citizen.full_name;
+          $scope.solicitude.identification = data.citizen.identification;
+          $scope.solicitude.applicant_id = data.citizen.id;
+          $scope.close();
+        } else {
+          $state.transitionTo('citizen', {
+            reload: true, notify: false 
+          });
         }
-      },
-      (fails) => {
-        if (fails.status != 500) {
-          for (let firstKey in fails.data) {
-            for (let secondKey in fails.data[firstKey]) {
-              Alertify.error(fails.data[firstKey][secondKey])
-            }
+        Alertify.success('Persona registrada exitosamente');
+      }
+    })
+    .catch((fails) => {
+      if (fails.status != 500) {
+        for (let firstKey in fails.data) {
+          for (let secondKey in fails.data[firstKey]) {
+            Alertify.error(fails.data[firstKey][secondKey]);
           }
         }
-        else {
-          console.log(fails);
-        }
-      });
+      } else {
+        console.log(fails);
+      }
+    });
   };
 
   $scope.cancelCitizen = () => {

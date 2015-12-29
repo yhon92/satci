@@ -1,12 +1,12 @@
 <div class="col-md-12" ui-view>
-  <a class="btn btn-success btn-add-float" title="Agregar Categoria" ng-click="add()">
+  <a class="btn btn-success btn-add-float" title="Agregar Tema" ng-click="add()">
     <img src="./img/bootswatch/plus_2x.png" alt="Agregar">
   </a>
 
-  <div class="col-md-4 col-md-offset-4">
+  <div class="col-lg-6 col-lg-offset-3">
     <section class="panel panel-primary">
       <div class="panel-heading">
-      <h3 class="panel-title inline-block">Lista de Categorias</h3>
+        <h3 class="panel-title inline-block">Lista de Temas</h3>
         <div class="float-right">
           <button class="btn btn-default btn-sm ButtonSearch collapsed" ng-click="toggleCollapsed()">
             <span class="glyphicon glyphicon-search"></span>
@@ -20,8 +20,8 @@
           </div>
         </div>
         <ul class="list-group CategoryList">
-          <li class="list-group-item CategoryList-item" ng-repeat="category in filtered = ( categories  | filter: filter.name)">
-            {{category.name}}
+          <li class="list-group-item CategoryList-item" ng-repeat="theme in filtered = ( themes | filter:filter.name)">
+            {{theme.name}}
             <div class="float-right">
               <div class="MenuActions"uib-dropdown is-open="status.isopen" ng-mouseenter="status.isopen = true" ng-mouseleave="status.isopen = false">
                 <button type="button" class="btn btn-link btn-xs MenuActions-button" uib-dropdown-toggle>
@@ -29,13 +29,13 @@
                 </button>
                 <ul class="dropdown-menu MenuActions-list" role="menu">
                   <li class="MenuActions-item">
-                    <a class="MenuActions-action" ng-click="delete(category)"><span class="glyphicon glyphicon-trash"></span> </a>
+                    <a class="MenuActions-action" ng-click="delete(theme)"><span class="glyphicon glyphicon-trash"></span> </a>
                   </li>
                   <li class="MenuActions-item">
-                    <a class="MenuActions-action" ng-click="edit(category)"><span class="glyphicon glyphicon-pencil"></span> </a>
+                    <a class="MenuActions-action" ng-click="edit(theme)"><span class="glyphicon glyphicon-pencil"></span> </a>
                   </li>
                   <li class="MenuActions-item">
-                    <a class="MenuActions-action" ng-click="show(category)"><span class="glyphicon glyphicon-eye-open"></span> </a>
+                    <a class="MenuActions-action" ng-click="show(theme)"><span class="glyphicon glyphicon-eye-open"></span> </a>
                   </li>
                 </ul>
               </div>
@@ -47,10 +47,10 @@
     </div>
   </div>
 </div>
-<script type="text/ng-template" id="modalFormCategory-template">
+<script type="text/ng-template" id="modalFormTheme-template">
   <section class="modal-header">
     <button type="button" class="close" ng-click="close()">×</button>
-    <h4 class="modal-title">{{title}} Categoría</h4>
+    <h4 class="modal-title">{{title}} Tema</h4>
   </section>
   <form class="form-horizontal" ng-submit="save()">
     <section class="modal-body">
@@ -59,7 +59,16 @@
           <label for="category"><strong>Nombre</strong></label>
         </div>
         <div class="col-lg-12">
-          <input type="text" class="form-control" placeholder="Nombre" autofocus ng-model="category" ng-required="true" only-letters>
+        <input type="text" class="form-control" placeholder="Nombre" autofocus ng-model="theme.name" ng-required="true" only-letters>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-lg-12">
+          <label for="category"><strong>Categoría</strong></label>
+        </div>
+        <div class="col-lg-12">
+          <select type="role" class="form-control" name="category" id="category" ng-options="category.id as category.name for category in categories" ng-model="theme.category_id" ng-required="true">
+          </select>
         </div>
       </div>
     </section>
@@ -69,21 +78,14 @@
     </section>
   </form>
 </script>
-<script type="text/ng-template" id="modalShowCategory-template">
+<script type="text/ng-template" id="modalShowTheme-template">
   <section class="modal-header">
     <button type="button" class="close" ng-click="close()">×</button>
-    <h4 class="modal-title border-bottom">{{category.name}}</h4>
+    <h4 class="modal-title border-bottom">{{theme.name}}</h4>
   </section>
   <section class="modal-body">
-    <h6 class="text-success"><strong><em>Temas:</em></strong></h6>
-    <div class="form-group">
-      <div class="col-lg-12">
-        <ul class="list-unstyled">
-         <li ng-repeat="theme in themes">- {{theme.name}}</li>
-        </ul>
-        <h6 class="align-center" ng-if="notThemes">¡Esta categoria no posee temas asociados!</h6>
-      </div>
-    </div>
+    <h6><strong class="text-success"><em>Categoría: </em></strong>{{theme.category.name}}</h6>
+    <p></p>
   </section>
   <section class="modal-footer">
     <button type="submit" class="btn btn-warning btn-sm" ng-click="close()">Cerrar</button>

@@ -14,12 +14,12 @@ class Parish extends Model
   
   public function citizens()
   {
-    return $this->hasMany('SATCI\Entities\Citizen');
+    return $this->hasMany(Citizen::class);
   }
 
   public function institutions()
   {
-    return $this->hasMany('SATCI\Entities\Institution');
+    return $this->hasMany(Institution::class);
   }
   
 }

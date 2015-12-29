@@ -2,14 +2,13 @@
 namespace SATCI\Http\Controllers;
 
 use DB;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 use Log;
-
 use SATCI\Http\Controllers\Controller;
 use SATCI\Http\Requests\CreateInstitutionRequest;
 use SATCI\Http\Requests\EditInstitutionRequest;
 use SATCI\Repositories\InstitutionRepo;
-
-use Illuminate\Http\Request;
 
 class InstitutionController extends Controller
 {

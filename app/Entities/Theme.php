@@ -8,7 +8,7 @@ class Theme extends Model
 
   protected $table = 'themes';
 
-  protected $fillable = ['category_id', 'name',];
+  protected $fillable = ['name', 'category_id'];
 
   protected $hidden = ['created_at', 'updated_at'];
 
@@ -19,7 +19,7 @@ class Theme extends Model
 
   public function assign_solicitude()
   {
-    return $this->hasMany('SATCI\Entities\AssignSolicitude');
+    return $this->hasMany(AssignSolicitude::class);
   }
   
 }

@@ -58,6 +58,7 @@ angular.module('SATCI.Solicitude', [
         controller: 'ShowSolicitudeCtrl'
       },
       'assign@solicitudeShow': {
+        // templateUrl: '',
         controller: 'ShowAssignSolicitudeCtrl'
       }
     }

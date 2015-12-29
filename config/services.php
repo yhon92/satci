@@ -30,7 +30,7 @@ return [
 	],
 
 	'stripe' => [
-		'model'  => 'SATCI\Entities\User',
+		'model'  => SATCI\Entities\User::class,
 		'key' => '',
 		'secret' => '',
 	],

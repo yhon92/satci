@@ -44,7 +44,7 @@ class SolicitudeRepo extends BaseRepo
   {
     return Solicitude::with('applicant')
     ->where('applicant_type', $type)
-    ->orderBy('solicitude_number', 'desc')
+    ->orderBy('solicitude_number', 'DESC')
     ->get();
   }
 

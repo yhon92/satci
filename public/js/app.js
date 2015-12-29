@@ -23,8 +23,6 @@ require('satellizer');
 
 require('./libs/ng-alertify');
 
-require('./app/validation');
-
 require('./app/area/AreaModule');
 
 require('./app/category/CategoryModule');
@@ -56,7 +54,9 @@ require('./app/ui/Datepicker');
 // import './app/';
 
 /*** Import Modules of SATCI ***/
-/*** Import Dependencies for AngularJS ***/
+
+// import 'angular-moment';
+// import 'ng-fx';
 
 angular.module('SATCI', ['ngAnimate', 'ngSanitize', 'ui.bootstrap', 'ui.router', 'satellizer', 'smart-table',
 // 'angularMoment',
@@ -116,11 +116,9 @@ angular.module('SATCI', ['ngAnimate', 'ngSanitize', 'ui.bootstrap', 'ui.router',
   $locale.DATETIME_FORMATS.MONTH = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
   $locale.DATETIME_FORMATS.SHORTMONTH = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
   // console.log($locale.DATETIME_FORMATS);
-});
-// import 'angular-moment';
-// import 'ng-fx';
+}); /*** Import Dependencies for AngularJS ***/
 
-},{"./app/area/AreaModule":3,"./app/category/CategoryModule":9,"./app/citizen/CitizenModule":15,"./app/director/DirectorModule":21,"./app/home/HomeModule":26,"./app/institution/InstitutionModule":28,"./app/login/LoginModule":33,"./app/means/MeansModule":35,"./app/nav/NavModule":40,"./app/services/RedirectWhenLoggedOut":41,"./app/shared/SharedModule":44,"./app/solicitudes/SolicitudeModule":49,"./app/theme/ThemeModule":57,"./app/ui/Datepicker":62,"./app/validation":63,"./libs/ng-alertify":64,"angular":78,"angular-animate":66,"angular-bootstrap-npm":67,"angular-loading-bar":69,"angular-resource":71,"angular-sanitize":73,"angular-smart-table":75,"angular-ui-router":76,"satellizer":79,"ui-select":80}],2:[function(require,module,exports){
+},{"./app/area/AreaModule":3,"./app/category/CategoryModule":9,"./app/citizen/CitizenModule":15,"./app/director/DirectorModule":21,"./app/home/HomeModule":26,"./app/institution/InstitutionModule":28,"./app/login/LoginModule":33,"./app/means/MeansModule":35,"./app/nav/NavModule":40,"./app/services/RedirectWhenLoggedOut":41,"./app/shared/SharedModule":44,"./app/solicitudes/SolicitudeModule":49,"./app/theme/ThemeModule":57,"./app/ui/Datepicker":62,"./libs/ng-alertify":63,"angular":77,"angular-animate":65,"angular-bootstrap-npm":66,"angular-loading-bar":68,"angular-resource":70,"angular-sanitize":72,"angular-smart-table":74,"angular-ui-router":75,"satellizer":78,"ui-select":79}],2:[function(require,module,exports){
 'use strict';
 
 angular.module('Area.controllers', []);
@@ -150,7 +148,12 @@ angular.module('SATCI.Area', ['ui.router', 'SATCI.Shared', 'Area.controllers', '
 */
 angular.module('Area.resources', ['ngResource', 'SATCI.Shared']).factory('Areas', function ($resource, ResourcesUrl) {
   return $resource(ResourcesUrl.api + 'area/:id', { id: '@_id' }, {
-    update: { method: 'PUT', params: { id: '@_id' } }
+    update: {
+      method: 'PUT',
+      params: {
+        id: '@_id'
+      }
+    }
   });
 });
 
@@ -176,48 +179,26 @@ angular.module('Category.controllers', ['ui.router', 'Alertify', 'SATCI.Shared',
 
   Categories.get().$promise.then(function (data) {
     $scope.categories = data.categories;
-  }, function (error) {});
+  }).catch(function (fails) {});
+
+  $scope.filter = {
+    name: ''
+  };
+
+  $scope.isCollapsed = true;
+
+  $scope.toggleCollapsed = function () {
+    $scope.filter.name = '';
+    $scope.isCollapsed = !$scope.isCollapsed;
+  };
 
   $scope.add = function () {
     var modalInstance = $uibModal.open({
-      templateUrl: 'modalCategory-template',
-      controller: function controller($scope, $filter, $uibModalInstance) {
-        $scope.title = 'Agregar';
-
-        $scope.category = null;
-
-        $scope.save = function () {
-          var data = {
-            name: $filter('titleCase')($scope.category)
-          };
-
-          Categories.save(data).$promise.then(function (data) {
-            if (data.success) {
-              Alertify.success('¡Categoría registrada!');
-              $uibModalInstance.close(data.category);
-            }
-            if (data.error) {
-              Alertify.error('¡No se pudo registrar la categoría!');
-            }
-          }, function (fails) {
-            if (fails.status != 500) {
-              for (var firstKey in fails.data) {
-                for (var secondKey in fails.data[firstKey]) {
-                  Alertify.error(fails.data[firstKey][secondKey]);
-                }
-              }
-            } else {
-              console.log(fails);
-            };
-          });
-        };
-
-        $scope.cancel = function () {
-          $uibModalInstance.dismiss();
-        };
-      },
-      size: 'sm'
-
+      templateUrl: 'modalFormCategory-template',
+      controller: 'CreateCategoryCtrl',
+      size: 'sm',
+      backdrop: 'static',
+      keyboard: false
     });
 
     modalInstance.result.then(function (data) {
@@ -225,56 +206,31 @@ angular.module('Category.controllers', ['ui.router', 'Alertify', 'SATCI.Shared',
     });
   };
 
-  $scope.show = function (category) {
-    console.log(category);
-  }, $scope.edit = function (_category) {
+  $scope.show = function (_category) {
     var modalInstance = $uibModal.open({
-      templateUrl: 'modalCategory-template',
-      controller: function controller($scope, $filter, $uibModalInstance, category) {
-        $scope.title = 'Editar';
-
-        $scope.category = category.name;
-
-        $scope.save = function () {
-          $scope.category = $filter('titleCase')($scope.category);
-
-          var data = {
-            name: $scope.category
-          };
-
-          Categories.update({ id: category.id }, data).$promise.then(function (data) {
-            if (data.success) {
-              Alertify.success('¡Categoría editada!');
-              category.name = $scope.category;
-              $uibModalInstance.close(category);
-            }
-            if (data.error) {
-              Alertify.error('¡No se pudo editar la categoría!');
-            }
-          }, function (fails) {
-            if (fails.status != 500) {
-              for (var firstKey in fails.data) {
-                for (var secondKey in fails.data[firstKey]) {
-                  Alertify.error(fails.data[firstKey][secondKey]);
-                }
-              }
-            } else {
-              console.log(fails);
-            };
-          });
-        };
-
-        $scope.cancel = function () {
-          $uibModalInstance.dismiss();
-        };
-      },
-      size: 'sm',
+      templateUrl: 'modalShowCategory-template',
+      controller: 'ShowCategoryCtrl',
+      size: 'dm',
       resolve: {
         category: function category() {
           return _category;
         }
       }
+    });
+  };
 
+  $scope.edit = function (_category2) {
+    var modalInstance = $uibModal.open({
+      templateUrl: 'modalFormCategory-template',
+      controller: 'EditCategoryCtrl',
+      size: 'sm',
+      backdrop: 'static',
+      keyboard: false,
+      resolve: {
+        category: function category() {
+          return _category2;
+        }
+      }
     });
   };
 
@@ -298,7 +254,7 @@ angular.module('Category.controllers', ['ui.router', 'Alertify', 'SATCI.Shared',
         if (data.error) {
           Alertify.error('¡Ocurrio un error al intentar eliminar!');
         }
-      }, function (fails) {
+      }).catch(function (fails) {
         if (fails.status != 500) {
           for (var firstKey in fails.data) {
             for (var secondKey in fails.data[firstKey]) {
@@ -341,10 +297,6 @@ angular.module('SATCI.Category', ['ui.router', 'SATCI.Shared', 'Category.control
     url: '/config/category',
     templateUrl: PathTemplates.views + 'category/index.html',
     controller: 'CategoryCtrl'
-  }).state('categoryShow', {
-    url: '/config/category/:id',
-    templateUrl: PathTemplates.views + 'category/index.html',
-    controller: 'CategoryCtrl'
   });
 });
 
@@ -358,24 +310,119 @@ angular.module('SATCI.Category', ['ui.router', 'SATCI.Shared', 'Category.control
 */
 angular.module('Category.resources', ['ngResource', 'SATCI.Shared']).factory('Categories', function ($resource, ResourcesUrl) {
   return $resource(ResourcesUrl.api + 'category/:id', { id: '@_id' }, {
-    update: { method: 'PUT', params: { id: '@_id' } }
+    update: {
+      method: 'PUT',
+      params: {
+        id: '@_id'
+      }
+    },
+    list: {
+      method: 'GET',
+      url: ResourcesUrl.api + 'category/list'
+    }
   });
 });
 
 },{}],11:[function(require,module,exports){
 'use strict';
 
-angular.module('Category.controllers');
+angular.module('Category.controllers').controller('CreateCategoryCtrl', function ($scope, $filter, $uibModalInstance, Alertify, Categories) {
+  $scope.title = 'Agregar';
+
+  $scope.category = null;
+
+  $scope.save = function () {
+    var data = {
+      name: $filter('titleCase')($scope.category)
+    };
+
+    Categories.save(data).$promise.then(function (data) {
+      if (data.success) {
+        Alertify.success('¡Categoría registrada!');
+        $uibModalInstance.close(data.category);
+      }
+      if (data.error) {
+        Alertify.error('¡No se pudo registrar la categoría!');
+      }
+    }).catch(function (fails) {
+      if (fails.status != 500) {
+        for (var firstKey in fails.data) {
+          for (var secondKey in fails.data[firstKey]) {
+            Alertify.error(fails.data[firstKey][secondKey]);
+          }
+        }
+      } else {
+        console.log(fails);
+      };
+    });
+  };
+
+  $scope.close = function () {
+    $uibModalInstance.dismiss();
+  };
+});
 
 },{}],12:[function(require,module,exports){
 'use strict';
 
-angular.module('Category.controllers');
+angular.module('Category.controllers').controller('EditCategoryCtrl', function ($scope, $filter, $uibModalInstance, Alertify, Categories, category) {
+  $scope.title = 'Editar';
+
+  $scope.category = category.name;
+
+  $scope.save = function () {
+    $scope.category = $filter('titleCase')($scope.category);
+
+    var data = {
+      name: $scope.category
+    };
+
+    Categories.update({ id: category.id }, data).$promise.then(function (data) {
+      if (data.success) {
+        Alertify.success('¡Categoría editada!');
+        category.name = $scope.category;
+        $uibModalInstance.close(category);
+      }
+      if (data.error) {
+        Alertify.error('¡No se pudo editar la categoría!');
+      }
+    }).catch(function (fails) {
+      if (fails.status != 500) {
+        for (var firstKey in fails.data) {
+          for (var secondKey in fails.data[firstKey]) {
+            Alertify.error(fails.data[firstKey][secondKey]);
+          }
+        }
+      } else {
+        console.log(fails);
+      };
+    });
+  };
+
+  $scope.close = function () {
+    $uibModalInstance.dismiss();
+  };
+});
 
 },{}],13:[function(require,module,exports){
 'use strict';
 
-angular.module('Category.controllers');
+angular.module('Category.controllers').controller('ShowCategoryCtrl', function ($scope, $uibModalInstance, category) {
+
+  $scope.category = category;
+  $scope.themes = false;
+  $scope.notThemes = false;
+
+  if (category.themes != undefined && category.themes.length > 0) {
+    $scope.themes = category.themes;
+  } else {
+    $scope.notThemes = true;
+  }
+
+  $scope.close = function () {
+    $uibModalInstance.dismiss();
+  };
+});
 
 },{}],14:[function(require,module,exports){
 'use strict';
@@ -390,7 +437,7 @@ angular.module('Citizen.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 
   Citizens.get().$promise.then(function (data) {
     $scope.citizens = data.citizens;
     $scope.citizens.type = 'Naturales';
-  }, function (errors) {});
+  }).catch(function (fails) {});
 
   $scope.deleteCitizen = function (id) {
 
@@ -410,7 +457,7 @@ angular.module('Citizen.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 
         if (data.error) {
           Alertify.error('¡Ocurrio un error al intentar eliminar!');
         }
-      }, function (fails) {
+      }).catch(function (fails) {
         if (fails.status != 500) {
           for (var firstKey in fails.data) {
             for (var secondKey in fails.data[firstKey]) {
@@ -421,7 +468,7 @@ angular.module('Citizen.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 
           console.log(fails);
         };
       });
-    }, function (cancel) {
+    }).catch(function (cancel) {
       return false;
     });
   };
@@ -488,7 +535,12 @@ angular.module('SATCI.Citizen', ['ui.router', 'SATCI.Shared', 'Citizen.controlle
 */
 angular.module('Citizen.resources', ['ngResource', 'SATCI.Shared']).factory('Citizens', function ($resource, ResourcesUrl) {
   return $resource(ResourcesUrl.api + 'citizen/:id', { id: '@_id' }, {
-    update: { method: 'PUT', params: { id: '@_id' } }
+    update: {
+      method: 'PUT',
+      params: {
+        id: '@_id'
+      }
+    }
   });
 });
 
@@ -513,7 +565,7 @@ angular.module('Citizen.controllers').controller('CreateCitizenCtrl', function (
   };
 
   if (!$scope.parishes) {
-    Parishes.get(function (data) {
+    Parishes.get().$promise.then(function (data) {
       $scope.parishes = data.parishes;
     });
   };
@@ -545,7 +597,7 @@ angular.module('Citizen.controllers').controller('CreateCitizenCtrl', function (
         }
         Alertify.success('Persona registrada exitosamente');
       }
-    }, function (fails) {
+    }).catch(function (fails) {
       if (fails.status != 500) {
         for (var firstKey in fails.data) {
           for (var secondKey in fails.data[firstKey]) {
@@ -582,7 +634,7 @@ angular.module('Citizen.controllers').controller('EditCitizenCtrl', function ($s
   };
 
   if (!$scope.parishes) {
-    Parishes.get(function (data) {
+    Parishes.get().$promise.then(function (data) {
       $scope.parishes = data.parishes;
     });
   };
@@ -590,7 +642,7 @@ angular.module('Citizen.controllers').controller('EditCitizenCtrl', function ($s
   Citizens.get({ id: $stateParams.id }).$promise.then(function (data) {
     $scope.citizen = data.citizen;
     $scope.citizen.parish = data.citizen.parish.id;
-  }, function (errors) {});
+  }).catch(function (fails) {});
 
   $scope.saveCitizen = function () {
 
@@ -612,7 +664,7 @@ angular.module('Citizen.controllers').controller('EditCitizenCtrl', function ($s
           reload: true, notify: false
         });
       }
-    }, function (fails) {
+    }).catch(function (fails) {
       if (fails.status != 500) {
         for (var firstKey in fails.data) {
           for (var secondKey in fails.data[firstKey]) {
@@ -667,7 +719,12 @@ angular.module('SATCI.Director', ['ui.router', 'SATCI.Shared', 'Director.control
 */
 angular.module('Director.resources', ['ngResource', 'SATCI.Shared']).factory('Directors', function ($resource, ResourcesUrl) {
   return $resource(ResourcesUrl.api + 'director/:id', { id: '@_id' }, {
-    update: { method: 'PUT', params: { id: '@_id' } }
+    update: {
+      method: 'PUT',
+      params: {
+        id: '@_id'
+      }
+    }
   });
 });
 
@@ -714,7 +771,7 @@ angular.module('Institution.controllers', ['ui.router', 'Alertify', 'SATCI.Share
   Institutions.get().$promise.then(function (data) {
     $scope.institutions = data.institutions;
     $scope.institutions.type = 'Jurídicos';
-  }, function (errors) {});
+  }).catch(function (fails) {});
 
   $scope.deleteInstitution = function (id) {
 
@@ -734,7 +791,7 @@ angular.module('Institution.controllers', ['ui.router', 'Alertify', 'SATCI.Share
         if (data.error) {
           Alertify.error('¡Ocurrio un error al intentar eliminar!');
         }
-      }, function (fails) {
+      }).catch(function (fails) {
         if (fails.status != 500) {
           for (var firstKey in fails.data) {
             for (var secondKey in fails.data[firstKey]) {
@@ -745,7 +802,7 @@ angular.module('Institution.controllers', ['ui.router', 'Alertify', 'SATCI.Share
           console.log(fails);
         };
       });
-    }, function (cancel) {
+    }).catch(function (cancel) {
       return false;
     });
   };
@@ -812,7 +869,12 @@ angular.module('SATCI.Institution', ['ui.router', 'SATCI.Shared', 'Institution.c
 */
 angular.module('Institution.resources', ['ngResource', 'SATCI.Shared']).factory('Institutions', function ($resource, ResourcesUrl) {
   return $resource(ResourcesUrl.api + 'institution/:id', { id: '@_id' }, {
-    update: { method: 'PUT', params: { id: '@_id' } }
+    update: {
+      method: 'PUT',
+      params: {
+        id: '@_id'
+      }
+    }
   });
 });
 
@@ -839,7 +901,7 @@ angular.module('Institution.controllers').controller('CreateInstitutionCtrl', fu
   };
 
   if (!$scope.parishes) {
-    Parishes.get(function (data) {
+    Parishes.get().$promise.then(function (data) {
       $scope.parishes = data.parishes;
     });
   };
@@ -873,7 +935,7 @@ angular.module('Institution.controllers').controller('CreateInstitutionCtrl', fu
         }
         Alertify.success('Institución registrada exitosamente');
       }
-    }, function (fails) {
+    }).catch(function (fails) {
       if (fails.status != 500) {
         for (var firstKey in fails.data) {
           for (var secondKey in fails.data[firstKey]) {
@@ -920,7 +982,7 @@ angular.module('Institution.controllers').controller('EditInstitutionCtrl', func
   Institutions.get({ id: $stateParams.id }).$promise.then(function (data) {
     $scope.institution = data.institution;
     $scope.institution.parish = data.institution.parish.id;
-  }, function (errors) {});
+  }).catch(function (fails) {});
 
   $scope.saveInstitution = function () {
 
@@ -944,7 +1006,7 @@ angular.module('Institution.controllers').controller('EditInstitutionCtrl', func
           reload: true, notify: false
         });
       }
-    }, function (fails) {
+    }).catch(function (fails) {
       if (fails.status != 500) {
         for (var firstKey in fails.data) {
           for (var secondKey in fails.data[firstKey]) {
@@ -1055,7 +1117,12 @@ angular.module('SATCI.Means', ['ui.router', 'SATCI.Shared', 'Means.controllers',
 */
 angular.module('Means.resources', ['ngResource', 'SATCI.Shared']).factory('Means', function ($resource, ResourcesUrl) {
   return $resource(ResourcesUrl.api + 'means/:id', { id: '@_id' }, {
-    update: { method: 'PUT', params: { id: '@_id' } }
+    update: {
+      method: 'PUT',
+      params: {
+        id: '@_id'
+      }
+    }
   });
 });
 
@@ -1221,11 +1288,12 @@ angular.module('Shared.directives', []).directive('applicantList', function (Pat
     element.bind("keypress", function (event) {
       var key = event.which || event.keyCode;
       var input = element[0].value;
+
       /*
-        69 = e, 101 = E, 71 = g, 103 = G, 73 = i, 105 = I
-        74 = j, 106 = J, 77 = m, 109 = M, 80 = i, 112 = P
-        82 = r, 114 = R, 86 = v, 118 = V */
-      if ((key == 69 || key == 101 || key == 71 || key == 103 || key == 73 || key == 105 || key == 74 || key == 106 || key == 77 || key == 109 || key == 80 || key == 112 || key == 82 || key == 114 || key == 86 || key == 118) && input.length === 0) {
+        86 = V, 118 = v, 69 = E, 101 = e, 80 = P, 112 = p,
+        71 = G, 103 = g, 74 = J, 106 = j,  67 = C, 99 = c
+        */
+      if ((key == 86 || key == 118 || key == 69 || key == 101 || key == 80 || key == 112 || key == 71 || key == 103 || key == 74 || key == 106 || key == 67 || key == 99) && input.length === 0) {
         return true;
       }
       if (key == 45 && (input.length === 1 || input.length === 10)) {
@@ -1255,7 +1323,7 @@ angular.module('Shared.filters', []).filter("capitalize", function () {
   return function (input) {
     input = input.toLowerCase();
 
-    var smallWords = /^(de|para|vs?\.?|via)$/i;
+    var smallWords = /^(a|y|de|que|para|con|vs?\.?|via)$/i;
 
     return input.replace(/[A-Za-z0-9\u00C0-\u00FF]+[^\s-]*/g, function (match, index, title) {
       if (index > 0 && index + match.length !== title.length && match.search(smallWords) > -1 && title.charAt(index - 2) !== ":" && (title.charAt(index + match.length) !== '-' || title.charAt(index - 1) === '-') && title.charAt(index - 1).search(/[^\s-]/) < 0) {
@@ -1325,7 +1393,12 @@ angular.module('SATCI.Shared', ['Shared.directives', 'Shared.filters', 'Shared.r
 */
 angular.module('Shared.resources', ['ngResource']).factory('Parishes', function ($resource, ResourcesUrl) {
   return $resource(ResourcesUrl.api + 'parish/:id', { id: '@_id' }, {
-    update: { method: 'PUT', params: { id: '@_id' } }
+    update: {
+      method: 'PUT',
+      params: {
+        id: '@_id'
+      }
+    }
   });
 });
 
@@ -1373,22 +1446,22 @@ angular.module('Shared.services', []).factory('paginateService', ['$q', '$filter
 },{}],47:[function(require,module,exports){
 'use strict';
 
-angular.module('Solicitude.controllers', ['ui.router', 'ui.select', 'ui.bootstrap', 'Alertify', 'SATCI.Shared', 'Solicitude.resources', 'Theme.resources', 'Category.resources', 'Area.resources']).controller('SolicitudeCtrl', function ($scope, $http, SolicitudesList) {
+angular.module('Solicitude.controllers', ['ui.router', 'ui.select', 'ui.bootstrap', 'Alertify', 'SATCI.Shared', 'Solicitude.resources', 'Theme.resources', 'Category.resources', 'Area.resources']).controller('SolicitudeCtrl', function ($scope, $http, Solicitudes) {
   $scope.citizens = '';
   $scope.institutions = '';
 
-  SolicitudesList('Citizen').then(function (response) {
-    $scope.citizens = response.data;
+  Solicitudes.list({ applicant: 'Citizen' }).$promise.then(function (data) {
+    $scope.citizens = data.solicitudes;
     $scope.citizens.type = 'Personas';
-  }, function (error) {
-    console.log(error);
+  }).catch(function (fails) {
+    console.log(fails);
   });
 
-  SolicitudesList('Institution').then(function (response) {
-    $scope.institutions = response.data;
+  Solicitudes.list({ applicant: 'Institution' }).$promise.then(function (data) {
+    $scope.institutions = data.solicitudes;
     $scope.institutions.type = 'Instituciones';
-  }, function (error) {
-    console.log(error);
+  }).catch(function (fails) {
+    console.log(fails);
   });
 });
 
@@ -1470,6 +1543,7 @@ angular.module('SATCI.Solicitude', ['ui.router', 'SATCI.Shared', 'Solicitude.con
         controller: 'ShowSolicitudeCtrl'
       },
       'assign@solicitudeShow': {
+        // templateUrl: '',
         controller: 'ShowAssignSolicitudeCtrl'
       }
     }
@@ -1481,20 +1555,36 @@ angular.module('SATCI.Solicitude', ['ui.router', 'SATCI.Shared', 'Solicitude.con
 
 angular.module('Solicitude.resources', ['ngResource', 'SATCI.Shared']).factory('Solicitudes', function ($resource, ResourcesUrl) {
   return $resource(ResourcesUrl.api + 'solicitude/:id', { id: '@_id' }, {
-    update: { method: 'PUT', params: { id: '@_id' } }
+    update: {
+      method: 'PUT',
+      params: {
+        id: '@_id'
+      }
+    },
+    list: {
+      method: 'GET',
+      params: {
+        applicant: '@_applicant'
+      },
+      url: ResourcesUrl.api + 'solicitude/list/:applicant'
+    }
   });
-}).factory('SolicitudesList', function ($http, ResourcesUrl) {
-  return function (applicant) {
-    return $http.get(ResourcesUrl.api + 'solicitude/list/' + applicant);
-  };
 }).factory('SolicitudesAssign', function ($resource, ResourcesUrl) {
   return $resource(ResourcesUrl.api + 'solicitude/assign/:id', { id: '@_id' }, {
-    update: { method: 'PUT', params: { id: '@_id' } }
+    update: {
+      method: 'PUT',
+      params: {
+        id: '@_id'
+      }
+    },
+    list: {
+      method: 'GET',
+      params: {
+        solicitude: '@_solicitude'
+      },
+      url: ResourcesUrl.api + 'solicitude/assign/list/:solicitude'
+    }
   });
-}).factory('SolicitudesAssignList', function ($http, ResourcesUrl) {
-  return function (solicitude) {
-    return $http.get(ResourcesUrl.api + 'solicitude/assign/list/' + solicitude);
-  };
 });
 
 },{}],51:[function(require,module,exports){
@@ -1504,16 +1594,23 @@ angular.module('Solicitude.resources', ['ngResource', 'SATCI.Shared']).factory('
 angular.module('Solicitude.controllers').controller('AssignSolicitudeCtrl', function ($state, $scope, $stateParams, $uibModal, Alertify, Solicitudes, SolicitudesAssign, Themes, Categories, Areas) {
 
   $scope.selected = {};
-  $scope.selected.themes;
+  $scope.selected.themes = [];
+  $scope.themes = [];
 
   var _categories = '';
 
-  Categories.get(function (data) {
+  Categories.get().$promise.then(function (data) {
     _categories = data.categories;
 
-    Themes.get(function (data) {
-      $scope.themes = data.themes;
-    });
+    for (var i = 0; i < _categories.length; i++) {
+      var themes = _categories[i].themes;
+
+      for (var z = 0; z < themes.length; z++) {
+        $scope.themes.push(themes[z]);
+      };
+
+      delete _categories[i].themes;
+    };
   });
 
   $scope.someGroupFn = function (theme) {
@@ -1546,11 +1643,13 @@ angular.module('Solicitude.controllers').controller('AssignSolicitudeCtrl', func
           }
         };
 
-        $scope.cancel = function () {
+        $scope.close = function () {
           $uibModalInstance.dismiss();
         };
       },
       // size: 'sm',
+      backdrop: 'static',
+      keyboard: false,
       resolve: {
         areas: function areas() {
           return _areas;
@@ -1583,11 +1682,13 @@ angular.module('Solicitude.controllers').controller('AssignSolicitudeCtrl', func
           }
         };
 
-        $scope.cancel = function () {
+        $scope.close = function () {
           $uibModalInstance.dismiss();
         };
       },
       // size: 'sm',
+      backdrop: 'static',
+      keyboard: false,
       resolve: {
         areas: function areas() {
           return _areas;
@@ -1681,7 +1782,7 @@ angular.module('Solicitude.controllers').controller('AssignSolicitudeCtrl', func
         Alertify.error('¡No se pudo guardar la asignación!');
         $state.reload();
       }
-    }, function (fails) {
+    }).catch(function (fails) {
       if (fails.status != 500) {
         for (var firstKey in fails.data) {
           for (var secondKey in fails.data[firstKey]) {
@@ -1757,7 +1858,7 @@ angular.module('Solicitude.controllers').controller('CreateSolicitudeCtrl', func
     $scope.template = PathTemplates.partials + 'solicitude/applicant.html';
   };
 
-  Parishes.get(function (data) {
+  Parishes.get().$promise.then(function (data) {
     $scope.parishes = data.parishes;
   });
 
@@ -1769,13 +1870,13 @@ angular.module('Solicitude.controllers').controller('CreateSolicitudeCtrl', func
     var dataUploaded = $q.defer();
 
     if ($scope.solicitude.applicant_type === 'citizen') {
-      Citizens.get(function (data) {
+      Citizens.get().$promise.then(function (data) {
         $scope.applicants = data.citizens;
         dataUploaded.resolve();
       });
     }
     if ($scope.solicitude.applicant_type === 'institution') {
-      Institutions.get(function (data) {
+      Institutions.get().$promise.then(function (data) {
         $scope.applicants = data.institutions;
         dataUploaded.resolve();
       });
@@ -1806,7 +1907,7 @@ angular.module('Solicitude.controllers').controller('CreateSolicitudeCtrl', func
           reload: true, inherit: false, notify: false
         });
       }
-    }, function (fails) {
+    }).catch(function (fails) {
       if (fails.status != 500) {
         for (var firstKey in fails.data) {
           for (var secondKey in fails.data[firstKey]) {
@@ -1948,7 +2049,7 @@ angular.module('Solicitude.controllers').controller('EditSolicitudeCtrl', functi
     } else {
       $scope.solicitude = solicitude;
     }
-  }, function (fails) {});
+  }).catch(function (fails) {});
 
   $scope.showApplicant = function (type, _applicant) {
     var modalInstance = $uibModal.open({
@@ -1983,7 +2084,7 @@ angular.module('Solicitude.controllers').controller('EditSolicitudeCtrl', functi
           reload: true, inherit: false, notify: false
         });
       }
-    }, function (fails) {
+    }).catch(function (fails) {
       if (fails.status != 500) {
         for (var firstKey in fails.data) {
           for (var secondKey in fails.data[firstKey]) {
@@ -2084,20 +2185,20 @@ angular.module('Solicitude.controllers').controller('EditSolicitudeCtrl', functi
 'use strict';
 
 // ['ui.router', 'ui.select', 'ui.bootstrap', 'Alertify', 'SATCI.Shared', 'Solicitude.resources', 'Theme.resources', 'Category.resources', 'Area.resources']
-angular.module('Solicitude.controllers').controller('ShowAssignSolicitudeCtrl', function ($state, $scope, $stateParams, $uibModal, Alertify, SolicitudesAssign, SolicitudesAssignList) {
+angular.module('Solicitude.controllers').controller('ShowAssignSolicitudeCtrl', function ($state, $scope, $stateParams, $uibModal, Alertify, SolicitudesAssign) {
 
   $scope.assigned = false;
   $scope.notAssigned = false;
   $scope.isCollapsed = [];
   $scope.newStatus = [];
 
-  SolicitudesAssignList($stateParams.id).then(function (response) {
-    if (response.data.length > 0) {
-      $scope.assigned = response.data;
+  SolicitudesAssign.list({ solicitude: $stateParams.id }).$promise.then(function (data) {
+    if (data.assigned.length > 0) {
+      $scope.assigned = data.assigned;
     } else {
       $scope.notAssigned = true;
     };
-  }, function (error) {
+  }).catch(function (error) {
     console.log(error.data);
   });
 
@@ -2138,7 +2239,7 @@ angular.module('Solicitude.controllers').controller('ShowAssignSolicitudeCtrl', 
           Alertify.success("¡Estado Actualizado!");
           $scope.isCollapsed[keyTheme][keyAssign] = true;
         };
-      }, function (fails) {
+      }).catch(function (fails) {
         if (fails.status != 500) {
           for (var firstKey in fails.data) {
             for (var secondKey in fails.data[firstKey]) {
@@ -2173,7 +2274,7 @@ angular.module('Solicitude.controllers').controller('ShowSolicitudeCtrl', functi
         $scope.applicant = applicant;
 
         $scope.close = function () {
-          $uibModalInstance.close();
+          $uibModalInstance.dismiss();
         };
       },
       size: 'sm',
@@ -2189,12 +2290,136 @@ angular.module('Solicitude.controllers').controller('ShowSolicitudeCtrl', functi
 },{}],56:[function(require,module,exports){
 'use strict';
 
-/**
-* Theme.controllers Module
-*
-* Description
-*/
-angular.module('Theme.controllers', []);
+angular.module('Theme.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'Category.resources', 'Theme.resources']).controller('ThemeCtrl', function ($scope, $uibModal, Alertify, Categories, Themes) {
+
+  var _categories = null;
+
+  Themes.get().$promise.then(function (data) {
+    $scope.themes = data.themes;
+  }).catch(function (fails) {});
+
+  Categories.list().$promise.then(function (data) {
+    _categories = data.categories;
+  }).catch(function (fails) {
+    console.log(fails);
+  });
+
+  $scope.filter = {
+    name: ''
+  };
+
+  $scope.isCollapsed = true;
+
+  $scope.toggleCollapsed = function () {
+    $scope.filter.name = '';
+    $scope.isCollapsed = !$scope.isCollapsed;
+  };
+
+  $scope.add = function () {
+    var modalInstance = $uibModal.open({
+      templateUrl: 'modalFormTheme-template',
+      controller: 'CreateThemeCtrl',
+      size: 'sm',
+      backdrop: 'static',
+      keyboard: false,
+      resolve: {
+        categories: function categories() {
+          return _categories;
+        }
+      }
+    });
+
+    modalInstance.result.then(function (data) {
+      $scope.themes.push(data);
+    });
+  };
+
+  $scope.show = function (_theme) {
+    var modalInstance = $uibModal.open({
+      templateUrl: 'modalShowTheme-template',
+      controller: 'ShowThemeCtrl',
+      size: 'dm',
+      resolve: {
+        categories: function categories() {
+          return _categories;
+        },
+        theme: function theme() {
+          return _theme;
+        }
+      }
+    });
+  };
+
+  $scope.edit = function (_theme2) {
+
+    var index = getIndex($scope.themes, _theme2.id);
+
+    var modalInstance = $uibModal.open({
+      templateUrl: 'modalFormTheme-template',
+      controller: 'EditThemeCtrl',
+      size: 'md',
+      backdrop: 'static',
+      keyboard: false,
+      resolve: {
+        categories: function categories() {
+          return _categories;
+        },
+        theme: function theme() {
+          return _theme2;
+        }
+      }
+    });
+
+    modalInstance.result.then(function (data) {
+      $scope.themes[index].name = data.name;
+      $scope.themes[index].category_id = data.category_id;
+    });
+  };
+
+  $scope.delete = function (theme) {
+
+    var id = theme.id;
+
+    var index = getIndex($scope.themes, id);
+
+    Alertify.set({ labels: { ok: "Eliminar", cancel: "Cancelar" } });
+
+    Alertify.confirm('Confirma que desea eliminar el Tema: ' + '</br>Nombre: <strong class="text-danger">' + theme.name + '</strong>').then(function (ok) {
+      Themes.delete({ id: id }).$promise.then(function (data) {
+        if (data.success) {
+          $scope.themes.splice(index, 1);
+          Alertify.success('Tema eliminado!');
+        }
+        if (data.conflict) {
+          Alertify.log('¡No es posible eliminar por tener <strong class="text-warning">Solicitudes</strong> asociadas!');
+        }
+        if (data.error) {
+          Alertify.error('¡Ocurrio un error al intentar eliminar!');
+        }
+      }).catch(function (fails) {
+        if (fails.status != 500) {
+          for (var firstKey in fails.data) {
+            for (var secondKey in fails.data[firstKey]) {
+              Alertify.error(fails.data[firstKey][secondKey]);
+            }
+          }
+        } else {
+          console.log(fails);
+        };
+      });
+    }, function (cancel) {
+      return false;
+    });
+  };
+
+  function getIndex(Things, id) {
+    for (var i = 0; i < Things.length; i++) {
+      if (Things[i].id == id) {
+        return i;
+      }
+    }
+  };
+});
 
 },{}],57:[function(require,module,exports){
 'use strict';
@@ -2209,7 +2434,17 @@ require('./edit/EditThemeController');
 
 require('./show/ShowThemeController');
 
-angular.module('SATCI.Theme', ['ui.router', 'SATCI.Shared', 'Theme.controllers', 'Theme.resources']);
+angular.module('SATCI.Theme', ['ui.router', 'SATCI.Shared', 'Theme.controllers', 'Theme.resources']).config(function ($authProvider, $stateProvider, PathTemplates) {
+  $stateProvider.state('theme', {
+    url: '/config/theme',
+    templateUrl: PathTemplates.views + 'theme/index.html',
+    controller: 'ThemeCtrl'
+  }).state('themeShow', {
+    url: '/config/theme/:id',
+    templateUrl: PathTemplates.views + 'theme/index.html',
+    controller: 'ThemeCtrl'
+  });
+});
 
 },{"./ThemeControllers":56,"./ThemeResources":58,"./create/CreateThemeController":59,"./edit/EditThemeController":60,"./show/ShowThemeController":61}],58:[function(require,module,exports){
 'use strict';
@@ -2221,24 +2456,127 @@ angular.module('SATCI.Theme', ['ui.router', 'SATCI.Shared', 'Theme.controllers',
 */
 angular.module('Theme.resources', ['ngResource', 'SATCI.Shared']).factory('Themes', function ($resource, ResourcesUrl) {
   return $resource(ResourcesUrl.api + 'theme/:id', { id: '@_id' }, {
-    update: { method: 'PUT', params: { id: '@_id' } }
+    update: {
+      method: 'PUT',
+      params: {
+        id: '@_id'
+      }
+    }
   });
 });
 
 },{}],59:[function(require,module,exports){
 'use strict';
 
-angular.module('Theme.controllers');
+angular.module('Theme.controllers').controller('CreateThemeCtrl', function ($scope, $filter, $uibModalInstance, Alertify, Themes, categories) {
+
+  $scope.title = 'Agregar';
+
+  $scope.categories = categories;
+
+  $scope.theme = {
+    name: null,
+    category_id: null
+  };
+
+  $scope.save = function () {
+    var data = {
+      name: $filter('titleCase')($scope.theme.name),
+      category_id: $scope.theme.category_id
+    };
+
+    Themes.save(data).$promise.then(function (data) {
+      if (data.success) {
+        Alertify.success('¡Tema registrado!');
+        $uibModalInstance.close(data.theme);
+      }
+      if (data.error) {
+        Alertify.error('¡No se pudo registrar el tema!');
+      }
+    }).catch(function (fails) {
+      if (fails.status != 500) {
+        for (var firstKey in fails.data) {
+          for (var secondKey in fails.data[firstKey]) {
+            Alertify.error(fails.data[firstKey][secondKey]);
+          }
+        }
+      } else {
+        console.log(fails);
+      };
+    });
+  };
+
+  $scope.close = function () {
+    $uibModalInstance.dismiss();
+  };
+});
 
 },{}],60:[function(require,module,exports){
 'use strict';
 
-angular.module('Theme.controllers');
+angular.module('Theme.controllers').controller('EditThemeCtrl', function ($scope, $filter, $uibModalInstance, Alertify, Themes, categories, theme) {
+  $scope.title = 'Editar';
+
+  $scope.categories = categories;
+
+  $scope.theme = {
+    // id: theme.id,
+    category_id: theme.category_id,
+    name: theme.name
+  };
+
+  // $$hashKey: theme.$$hashKey,
+  $scope.save = function () {
+    $scope.theme.name = $filter('titleCase')($scope.theme.name);
+
+    var data = {
+      name: $scope.theme.name,
+      category_id: $scope.theme.category_id
+    };
+    Themes.update({ id: theme.id }, data).$promise.then(function (data) {
+      if (data.success) {
+        Alertify.success('¡Tema editado!');
+        theme = $scope.theme;
+        $uibModalInstance.close(theme);
+      }
+      if (data.error) {
+        Alertify.error('¡No se pudo editar la tema!');
+      }
+    }).catch(function (fails) {
+      if (fails.status != 500) {
+        for (var firstKey in fails.data) {
+          for (var secondKey in fails.data[firstKey]) {
+            Alertify.error(fails.data[firstKey][secondKey]);
+          }
+        }
+      } else {
+        console.log(fails);
+      };
+    });
+  };
+
+  $scope.close = function () {
+    $uibModalInstance.dismiss();
+  };
+});
 
 },{}],61:[function(require,module,exports){
 'use strict';
 
-angular.module('Theme.controllers');
+angular.module('Theme.controllers').controller('ShowThemeCtrl', function ($scope, $uibModalInstance, categories, theme) {
+
+  $scope.theme = theme;
+
+  for (var i = 0; i < categories.length; i++) {
+    if (categories[i].id === theme.category_id) {
+      $scope.theme.category = categories[i];
+    };
+  };
+
+  $scope.close = function () {
+    $uibModalInstance.dismiss();
+  };
+});
 
 },{}],62:[function(require,module,exports){
 'use strict';
@@ -2315,125 +2653,6 @@ angular.module('SATCI.Datepicker', []).controller('DatepickerCtrl', function ($s
 });
 
 },{}],63:[function(require,module,exports){
-"use strict";
-
-function onlyLetters(e) {
-	debugger;
-	var key = e.keyCode || e.which,
-	    tecla = String.fromCharCode(key).toLowerCase(),
-	    letras = " áéíóúüabcdefghijklmnñopqrstuvwxyz",
-	    especiales = [8, 37, 39, 46],
-	    tecla_especial = false;
-
-	for (var i in especiales) {
-		if (key == especiales[i]) {
-			tecla_especial = true;
-			break;
-		}
-	}
-	if (letras.indexOf(tecla) == -1 && !tecla_especial) {
-		return false;
-	}
-}
-
-function onlyNumbers(e) {
-	var key = e.keyCode || e.which,
-	    tecla = String.fromCharCode(key).toLowerCase(),
-	    num = "0123456789",
-	    especiales = [8, 37, 39, 46],
-	    tecla_especial = false;
-
-	for (var i in especiales) {
-		if (key == especiales[i]) {
-			tecla_especial = true;
-			break;
-		}
-	}
-	if (num.indexOf(tecla) == -1 && !tecla_especial) {
-		return false;
-	}
-}
-
-function onlyClear(e) {
-	var key = e.keyCode || e.which,
-	    tecla = String.fromCharCode(key).toLowerCase(),
-	    num = "",
-	    especiales = [8, 13],
-	    tecla_especial = false;
-
-	for (var i in especiales) {
-		if (key == especiales[i]) {
-			tecla_especial = true;
-			break;
-		}
-	}
-	if (num.indexOf(tecla) == -1 && !tecla_especial) {
-		return false;
-	}
-}
-
-function noKey(e) {
-	return false;
-}
-// Forma de Uso: onkeyup="cedulaMask(this)"
-function cedulaMask(input) {
-	// var number = new String(input.value);
-	// number = number.replace(/\./g,''); //quita todos los puntos de la cadena
-	// var result = '';
-	// while( number.length > 3 ){
-	// 	result = '.' + number.substr(number.length - 3) + result;
-	// 	number = number.substring(0, number.length - 3);
-	// }
-	// result = number + result;
-	// input.value = result;
-
-	var num = input.value.replace(/\./g, '');
-	if (!isNaN(num)) {
-		num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g, '$1.');
-		num = num.split('').reverse().join('').replace(/^[\.]/, '');
-		input.value = num;
-	}
-	// else{
-	// alert('Solo se permiten numeros');
-	// input.value = input.value.replace(/[^\d\.]*/g,'');
-	// }
-}
-
-function solicitudeNumberMask(input, e) {
-	var key = e.which || e.keyCode;
-	var input = input.value;
-
-	if (key == 45 && input.length === 3) {
-		return true;
-	}
-	if (key >= 48 && key <= 57 && input.length >= 0 && input.length <= 2 || input.length >= 4 && input.length <= 6) {
-		return true;
-	}
-	return false;
-}
-
-function rifMask(input, e) {
-	var key = e.which || e.keyCode;
-	var input = input.value;
-
-	/*
- 	69 = E, 101 = e, 71 = G, 103 = g, 73 = I, 105 = i
- 	74 = J, 106 = j, 77 = M, 109 = m, 80 = P, 112 = p
- 	82 = R, 114 = r, 86 = V, 118 = v
- 	*/
-	if ((key == 69 || key == 101 || key == 71 || key == 103 || key == 73 || key == 105 || key == 74 || key == 106 || key == 77 || key == 109 || key == 80 || key == 112 || key == 82 || key == 114 || key == 86 || key == 118) && input.length === 0) {
-		return true;
-	}
-	if (key == 45 && (input.length === 1 || input.length === 10)) {
-		return true;
-	}
-	if (key >= 48 && key <= 57 && input.length >= 2 && input.length <= 9 || input.length === 11) {
-		return true;
-	}
-	return false;
-}
-
-},{}],64:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -3186,7 +3405,7 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
 })(window.angular, window.alertify);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],65:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.8
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -7118,11 +7337,11 @@ angular.module('ngAnimate', [])
 
 })(window, window.angular);
 
-},{}],66:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 require('./angular-animate');
 module.exports = 'ngAnimate';
 
-},{"./angular-animate":65}],67:[function(require,module,exports){
+},{"./angular-animate":64}],66:[function(require,module,exports){
 /*
  * angular-ui-bootstrap
  * http://angular-ui.github.io/bootstrap/
@@ -15626,7 +15845,7 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
     "");
 }]);
 !angular.$$csp() && angular.element(document).find('head').prepend('<style type="text/css">.ng-animate.item:not(.left):not(.right){-webkit-transition:0s ease-in-out left;transition:0s ease-in-out left}</style>');if(typeof module!=='undefined')module.exports='ui.bootstrap';
-},{}],68:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 /*! 
  * angular-loading-bar v0.8.0
  * https://chieffancypants.github.io/angular-loading-bar
@@ -15957,11 +16176,11 @@ angular.module('cfp.loadingBar', [])
   });       // wtf javascript. srsly
 })();       //
 
-},{}],69:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 require('./build/loading-bar');
 module.exports = 'angular-loading-bar';
 
-},{"./build/loading-bar":68}],70:[function(require,module,exports){
+},{"./build/loading-bar":67}],69:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.8
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -16647,11 +16866,11 @@ angular.module('ngResource', ['ng']).
 
 })(window, window.angular);
 
-},{}],71:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 require('./angular-resource');
 module.exports = 'ngResource';
 
-},{"./angular-resource":70}],72:[function(require,module,exports){
+},{"./angular-resource":69}],71:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.8
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -17336,11 +17555,11 @@ angular.module('ngSanitize').filter('linky', ['$sanitize', function($sanitize) {
 
 })(window, window.angular);
 
-},{}],73:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 require('./angular-sanitize');
 module.exports = 'ngSanitize';
 
-},{"./angular-sanitize":72}],74:[function(require,module,exports){
+},{"./angular-sanitize":71}],73:[function(require,module,exports){
 /** 
 * @version 2.1.6
 * @license MIT
@@ -17868,10 +18087,10 @@ ng.module('smart-table')
   }]);
 
 })(angular);
-},{}],75:[function(require,module,exports){
+},{}],74:[function(require,module,exports){
 require('./dist/smart-table.js');
 module.exports = 'smart-table';
-},{"./dist/smart-table.js":74}],76:[function(require,module,exports){
+},{"./dist/smart-table.js":73}],75:[function(require,module,exports){
 /**
  * State-based routing for AngularJS
  * @version v0.2.15
@@ -22242,7 +22461,7 @@ angular.module('ui.router.state')
   .filter('isState', $IsStateFilter)
   .filter('includedByState', $IncludedByStateFilter);
 })(window, window.angular);
-},{}],77:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.8
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -51261,11 +51480,11 @@ $provide.value("$locale", {
 })(window, document);
 
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
-},{}],78:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":77}],79:[function(require,module,exports){
+},{"./angular":76}],78:[function(require,module,exports){
 /**
  * Satellizer 0.13.2
  * (c) 2015 Sahat Yalkabov
@@ -52190,7 +52409,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
 
 })(window, window.angular);
 
-},{}],80:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 /*!
  * ui-select
  * http://github.com/angular-ui/ui-select

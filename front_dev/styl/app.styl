@@ -21,14 +21,27 @@ textarea
   resize none
 
 .MenuActions
+  &:hover, &:focus
+    background-color rgba(186, 231, 238, 0.3)
+    border-radius 50%
   &-button
     color inherit
+    padding 0 5px 2px 6px
     &:hover, &:focus
       color initial
   &-list
+    // left -14px
     min-width 50px
-  // &-item
-  // &-action
+    left -105px
+    top -4px
+    min-width 50px
+    padding 0
+    border 1px solid rgba(0,0,0,0.15)
+    box-shadow none
+  &-item
+    display inline-block
+  &-action
+    padding 3px 10px !important
   
 .btn-circle
   border-radius 50%
@@ -105,9 +118,11 @@ textarea
     padding 5px 15px
     .close
       margin-top 5px
+    .border-bottom
+      border-bottom solid 1px #DDDDDD
   &-body
     padding 0 15px
-    
+
 .pagination
   margin 10px 0
 
@@ -146,7 +161,11 @@ ui-select
 
 .float-right
   float right
-  
+  box-sizing border-box
+
+.ButtonSearch
+  margin-top -3px
+
 .CategoryList
   margin 0
   

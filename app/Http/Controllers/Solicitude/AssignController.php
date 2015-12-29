@@ -2,19 +2,16 @@
 namespace SATCI\Http\Controllers\Solicitude;
 
 use DB;
-use Log;
-use Uuid;
-
-use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
-
-// use SATCI\Http\Requests;
+use Illuminate\Http\Request;
+use Log;
 use SATCI\Http\Controllers\Controller;
+use SATCI\Http\Requests\EditAssignSolicitudeRequest;
 use SATCI\Repositories\AreaMeansRepo;
 use SATCI\Repositories\AssignSolicitudeRepo;
 use SATCI\Repositories\SolicitudeRepo;
 use SATCI\Repositories\ThemeRepo;
-use SATCI\Http\Requests\EditAssignSolicitudeRequest;
+use Uuid;
 
 class AssignController extends Controller
 {
@@ -175,7 +172,7 @@ class AssignController extends Controller
   {
     $assigned = $this->themeRepo->themeBySolicitude($id);
 
-    return response()->json($assigned, 200);
+    return response()->json(['assigned' => $assigned], 200);
   }
 
 }

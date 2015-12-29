@@ -2,7 +2,7 @@ angular.module('SATCI.Nav',[])
 .controller('NavCtrl', ($auth, $state, $scope, $rootScope, $location) => {
   $scope.logout = () => {
     //Remove the satellizer_token from localstorage
-    $auth.logout().then( () => {
+    $auth.logout().then(() => {
     //Remove the authenticated user from local storage
     sessionStorage.removeItem('user');
     //Flip authenticated to false so that we no longer

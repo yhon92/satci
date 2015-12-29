@@ -3,7 +3,7 @@ namespace SATCI\Http\Requests;
 
 use SATCI\Http\Requests\Request;
 
-class EditSolicitudeRequest extends Request
+class CreateThemeRequest extends Request
 {
   /**
    * Determine if the user is authorized to make this request.
@@ -22,13 +22,9 @@ class EditSolicitudeRequest extends Request
    */
   public function rules()
   {
-    $rules = [
-    'document_date' => 'required|date', 
-    'topic' => 'required',
-    'status' => 'required|in:Recibido,Rechazado,Anulado'
+    return [
+    'name' => 'required|unique:themes,name',
+    'category_id' => 'required|exists:categories,id'
     ];
-    
-    return $rules;
   }
-  
 }

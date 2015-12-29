@@ -60,8 +60,8 @@
 								<li role="menuitem"><a ui-sref="theme">Tema</a></li>
 								<li class="divider"></li>
 								<li role="menuitem"><a ui-sref="area">Area</a></li>
-								<li role="menuitem"><a ui-sref="means">Recurso</a></li>
 								<li role="menuitem"><a ui-sref="director">Director</a></li>
+								<li role="menuitem"><a ui-sref="means">Recurso</a></li>
 							</ul>
 						</li>
 						<li ng-class="navActive('security')" class="dropdown" uib-dropdown>

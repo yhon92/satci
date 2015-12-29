@@ -10,3 +10,16 @@ angular.module('SATCI.Theme', [
   'Theme.controllers', 
   'Theme.resources'
   ])
+.config(($authProvider, $stateProvider, PathTemplates) => {
+  $stateProvider
+  .state('theme', {
+    url: '/config/theme',
+    templateUrl: `${PathTemplates.views}theme/index.html`,
+    controller: 'ThemeCtrl'
+  })
+  .state('themeShow', {
+    url: '/config/theme/:id',
+    templateUrl: `${PathTemplates.views}theme/index.html`,
+    controller: 'ThemeCtrl'
+  })
+})

@@ -29,11 +29,11 @@
           </tr>
         </thead>
         <tbody>
-        <tr class="pointer" ng-repeat="row in applicant | 
+        <tr class="pointer" ng-repeat="row in filtered = ( applicant | 
           filter:{ solicitude_number : filter.solicitude_number } |
           filter:{ applicant: {identification: filter.identification, full_name: filter.full_name} } |
           filter:{ topic : filter.topic } |
-          filter:{ status : filter.status } ">
+          filter:{ status : filter.status } )">
             <td><a ui-sref="solicitudeShow({id: row.id})">{{ row.solicitude_number }}</a></td>
             <td>{{ row.reception_date | date:'dd-MM-yyyy' }}</td>
             <td>{{ row.applicant.identification }}</td>
@@ -49,6 +49,7 @@
           </tr>
         </tbody>
       </table>
+      <p class="align-center" ng-show="!filtered.length"><strong>¡No hay resultado!</strong></p>
     </div>
   </div>
 </div>

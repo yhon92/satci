@@ -4,22 +4,22 @@ angular.module('Institution.controllers')
   $scope.button = {
     submit: 'Guardar',
     cancel: 'Cancelar'
-  }
+  };
 
-  if ( !$scope.parishes ) {
+  if (!$scope.parishes) {
     Parishes.get((data) => {
       $scope.parishes = data.parishes;
     })
   };
 
-  Institutions.get({id: $stateParams.id}).$promise.then(
-    (data) => {
-      $scope.institution = data.institution;
-      $scope.institution.parish = data.institution.parish.id;
-    },
-    (errors) => {
+  Institutions.get({id: $stateParams.id}).$promise
+  .then((data) => {
+    $scope.institution = data.institution;
+    $scope.institution.parish = data.institution.parish.id;
+  })
+  .catch((fails) => {
 
-    });
+  });
 
   $scope.saveInstitution = () =>{
 
@@ -34,36 +34,33 @@ angular.module('Institution.controllers')
       agent_full_name: $filter('titleCase')($scope.institution.agent_first_name +' '+ $scope.institution.agent_last_name),
       agent_first_name: $filter('titleCase')($scope.institution.agent_first_name),
       agent_last_name: $filter('titleCase')($scope.institution.agent_last_name)
-    }
+    };
 
-    Institutions.update({id: $stateParams.id}, dataInstitution).$promise.then(
-      (data) => {
-        if (data.success) {
-          Alertify.success('Institución actuzalizada exitosamente');
-          $state.transitionTo('institution', {
-            reload: true, notify: false 
-          });
-        }
-      },
-      (fails) => {
-        if (fails.status != 500) 
-        {
-          for (let firstKey in fails.data) {
-            for (let secondKey in fails.data[firstKey]) {
-              Alertify.error(fails.data[firstKey][secondKey])
-            }
+    Institutions.update({id: $stateParams.id}, dataInstitution).$promise
+    .then((data) => {
+      if (data.success) {
+        Alertify.success('Institución actuzalizada exitosamente');
+        $state.transitionTo('institution', {
+          reload: true, notify: false 
+        });
+      }
+    })
+    .catch((fails) => {
+      if (fails.status != 500) {
+        for (let firstKey in fails.data) {
+          for (let secondKey in fails.data[firstKey]) {
+            Alertify.error(fails.data[firstKey][secondKey]);
           }
         }
-        else
-        {
-          console.log(fails);
-        };
-      });
+      } else {
+        console.log(fails);
+      };
+    });
   };
 
   $scope.cancelInstitution = () => {
     $state.transitionTo('institution', {
-        reload: true, notify: false 
-      });
+      reload: true, notify: false 
+    });
   };
 })

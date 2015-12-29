@@ -23,7 +23,7 @@
                   <a class="btn btn-xs btn-warning glyphicon glyphicon-refresh" uib-tooltip="Act. Estado" ng-init="isCollapsed[keyTheme][keyAssign] = true" ng-click="isCollapsed[keyTheme][keyAssign] = !isCollapsed[keyTheme][keyAssign]"></a>
                 </div>
                 <div uib-collapse="isCollapsed[keyTheme][keyAssign]">
-                  <div class="well well-sm">
+                  <div class="well well-sm margin-none">
                     <label for="select" class="control-label" ><strong>Estado:</strong></label>
                     <select class="align-middle" name="status" id="status" ng-init="newStatus = assign.status" ng-model="newStatus" ng-required="true" style="width: 120px;">
                       <option value="Enviado">Enviado</option>

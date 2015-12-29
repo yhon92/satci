@@ -4,7 +4,7 @@ angular.module('Institution.controllers')
   $scope.button = {
     submit: 'Agregar',
     cancel: 'Limpiar'
-  }
+  };
 
   $scope.institution = {
     identification: '',
@@ -18,8 +18,9 @@ angular.module('Institution.controllers')
     agent_last_name: ''
   };
 
-  if ( !$scope.parishes ) {
-    Parishes.get((data) => {
+  if (!$scope.parishes) {
+    Parishes.get().$promise
+    .then((data) => {
       $scope.parishes = data.parishes;
     })
   };
@@ -37,37 +38,35 @@ angular.module('Institution.controllers')
       agent_full_name: $filter('titleCase')($scope.institution.agent_first_name +' '+ $scope.institution.agent_last_name),
       agent_first_name: $filter('titleCase')($scope.institution.agent_first_name),
       agent_last_name: $filter('titleCase')($scope.institution.agent_last_name)
-    }
+    };
 
-    Institutions.save(dataInstitution).$promise.then(
-      (data) => {
-        if (data.success) {
-          if ($scope.solicitide) {
-            $scope.solicitude.full_name = data.institution.full_name;
-            $scope.solicitude.identification = data.institution.identification;
-            $scope.solicitude.applicant_id = data.institution.id;
-            $scope.close();
-          }
-          else {
-            $state.transitionTo('institution', {
-              reload: true, notify: false 
-            });
-          }
-          Alertify.success('Institución registrada exitosamente');
+    Institutions.save(dataInstitution).$promise
+    .then((data) => {
+      if (data.success) {
+        if ($scope.solicitide) {
+          $scope.solicitude.full_name = data.institution.full_name;
+          $scope.solicitude.identification = data.institution.identification;
+          $scope.solicitude.applicant_id = data.institution.id;
+          $scope.close();
+        } else {
+          $state.transitionTo('institution', {
+            reload: true, notify: false 
+          });
         }
-      },
-      (fails) => {
-        if (fails.status != 500) {
-          for (let firstKey in fails.data) {
-            for (let secondKey in fails.data[firstKey]) {
-              Alertify.error(fails.data[firstKey][secondKey])
-            }
+        Alertify.success('Institución registrada exitosamente');
+      }
+    })
+    .catch((fails) => {
+      if (fails.status != 500) {
+        for (let firstKey in fails.data) {
+          for (let secondKey in fails.data[firstKey]) {
+            Alertify.error(fails.data[firstKey][secondKey]);
           }
         }
-        else {
-          console.log(fails);
-        };
-      });
+      } else {
+        console.log(fails);
+      };
+    });
   };
 
   $scope.cancelInstitution = () => {

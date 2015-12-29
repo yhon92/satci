@@ -14,8 +14,6 @@ import 'satellizer';
 
 import './libs/ng-alertify';
 
-import './app/validation';
-
 /*** Import Modules of SATCI ***/
 import './app/area/AreaModule';
 import './app/category/CategoryModule';

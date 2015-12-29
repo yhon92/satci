@@ -14,7 +14,7 @@ class Means extends Model
 
   public function areas()
   {
-    return $this->belongsToMany('SATCI\Entities\Area');
+    return $this->belongsToMany(Area::class);
   }
   
 }

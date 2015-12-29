@@ -28,7 +28,7 @@ return [
 	|
 	*/
 
-	'model' => 'SATCI\Entities\User',
+	'model' => SATCI\Entities\User::class,
 
 	/*
 	|--------------------------------------------------------------------------

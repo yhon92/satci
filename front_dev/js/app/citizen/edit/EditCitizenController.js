@@ -4,22 +4,23 @@ angular.module('Citizen.controllers')
   $scope.button = {
     submit: 'Guardar',
     cancel: 'Cancelar'
-  }
+  };
 
-  if ( !$scope.parishes ) {
-    Parishes.get((data) => {
+  if (!$scope.parishes) {
+    Parishes.get().$promise
+    .then((data) => {
       $scope.parishes = data.parishes;
     })
   };
 
-  Citizens.get({id: $stateParams.id}).$promise.then(
-    (data) => {
-      $scope.citizen = data.citizen;
-      $scope.citizen.parish = data.citizen.parish.id;
-    },
-    (errors) => {
+  Citizens.get({id: $stateParams.id}).$promise
+  .then((data) => {
+    $scope.citizen = data.citizen;
+    $scope.citizen.parish = data.citizen.parish.id;
+  })
+  .catch((fails) => {
 
-    });
+  });
 
   $scope.saveCitizen = () =>{
 
@@ -32,34 +33,33 @@ angular.module('Citizen.controllers')
       prefix_phone: $scope.citizen.prefix_phone,
       number_phone: $scope.citizen.number_phone,
       parish_id: $scope.citizen.parish
-    }
+    };
 
-    Citizens.update({id: $stateParams.id}, dataCitizen).$promise.then(
-      (data) => {
-        if (data.success) {
-          Alertify.success('Persona actuzalizada exitosamente');
-          $state.transitionTo('citizen', {
-            reload: true, notify: false 
-          });
-        }
-      },
-      (fails) => {
-        if (fails.status != 500) {
-          for (let firstKey in fails.data) {
-            for (let secondKey in fails.data[firstKey]) {
-              Alertify.error(fails.data[firstKey][secondKey])
-            }
+    Citizens.update({id: $stateParams.id}, dataCitizen).$promise
+    .then((data) => {
+      if (data.success) {
+        Alertify.success('Persona actuzalizada exitosamente');
+        $state.transitionTo('citizen', {
+          reload: true, notify: false 
+        });
+      }
+    })
+    .catch((fails) => {
+      if (fails.status != 500) {
+        for (let firstKey in fails.data) {
+          for (let secondKey in fails.data[firstKey]) {
+            Alertify.error(fails.data[firstKey][secondKey]);
           }
         }
-        else {
-          console.log(fails);
-        };
-      });
+      } else {
+        console.log(fails);
+      };
+    });
   };
 
   $scope.cancelCitizen = () => {
     $state.transitionTo('citizen', {
-        reload: true, notify: false 
-      });
+      reload: true, notify: false 
+    });
   };
 })

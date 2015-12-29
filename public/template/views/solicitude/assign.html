@@ -5,7 +5,7 @@
 </div>
 <script type="text/ng-template" id="modalAssignArea-template">
   <section class="modal-header">
-    <button type="button" class="close" ng-click="cancel()">×</button>
+    <button type="button" class="close" ng-click="close()">×</button>
     <h4 class="modal-title">Asignar Áreas</h4>
     <p><strong>Tema: </strong><em class="text-success">{{ theme.name }}</em></p>
   </section>
@@ -34,13 +34,13 @@
     </div>
   </section>
   <section class="modal-footer">
-    <button class="btn btn-sm btn-link" type="button" ng-click="cancel()">Cancelar</button>
+    <button class="btn btn-sm btn-link" type="button" ng-click="close()">Cancelar</button>
     <button class="btn btn-sm btn-primary" type="button" ng-click="ok()">Aceptar</button>
   </section>
 </script>
 <script type="text/ng-template" id="modalPreviewAssign-template">
   <section class="modal-header">
-    <button type="button" class="close" ng-click="cancel()">×</button>
+    <button type="button" class="close" ng-click="close()">×</button>
     <h4 class="modal-title">Visualización de Asignacies</h4>
   </section>
   <section class="modal-body form-horizontal">

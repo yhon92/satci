@@ -2,10 +2,9 @@
 namespace SATCI\Http\Controllers;
 
 use DB;
-use Log;
-
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
-
+use Log;
 use SATCI\Http\Controllers\Controller;
 use SATCI\Http\Requests\CreateCitizenRequest;
 use SATCI\Http\Requests\EditCitizenRequest;

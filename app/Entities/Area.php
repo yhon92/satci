@@ -14,12 +14,12 @@ class Area extends Model
 
   public function director()
   {
-    return $this->belongsTo('SATCI\Entities\Director');
+    return $this->belongsTo(Director::class);
   }
 
   public function means()
   {
-    return $this->belongsToMany('SATCI\Entities\Means');
+    return $this->belongsToMany(Means::class);
   }
   
 }

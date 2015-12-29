@@ -12,12 +12,12 @@ class Kernel extends HttpKernel
 	 * @var array
 	 */
 	protected $middleware = [
-		'Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode',
-		'Illuminate\Cookie\Middleware\EncryptCookies',
-		'Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse',
-		'Illuminate\Session\Middleware\StartSession',
-		'Illuminate\View\Middleware\ShareErrorsFromSession',
-		// 'SATCI\Http\Middleware\VerifyCsrfToken',
+		\Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
+		\Illuminate\Cookie\Middleware\EncryptCookies::class,
+		\Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+		\Illuminate\Session\Middleware\StartSession::class,
+		\Illuminate\View\Middleware\ShareErrorsFromSession::class,
+		// SATCI\Http\Middleware\VerifyCsrfToken::class,
 	];
 
 	/**
@@ -26,11 +26,11 @@ class Kernel extends HttpKernel
 	 * @var array
 	 */
 	protected $routeMiddleware = [
-		'auth' 				=> 'SATCI\Http\Middleware\Authenticate',
-		'auth.basic'  => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
-		'guest' 			=> 'SATCI\Http\Middleware\RedirectIfAuthenticated',
-		'jwt.auth' 		=> 'Tymon\JWTAuth\Middleware\GetUserFromToken',
-    'jwt.refresh' => 'Tymon\JWTAuth\Middleware\RefreshToken',
+		'auth' 				=> \SATCI\Http\Middleware\Authenticate::class,
+		'auth.basic'  => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+		'guest' 			=> \SATCI\Http\Middleware\RedirectIfAuthenticated::class,
+		'jwt.auth' 		=> \Tymon\JWTAuth\Middleware\GetUserFromToken::class,
+    'jwt.refresh' => \Tymon\JWTAuth\Middleware\RefreshToken::class,
 	];
 
 }

@@ -23,10 +23,25 @@ class ThemeRepo extends BaseRepo
     return Theme::find($id);
   }
 
-  public static function getListThemes()
+  public static function update($id, $data)
+  {
+    return Theme::where('id', $id)->update($data);
+  }
+
+  public static function delete($id)
+  {
+    return Theme::destroy($id);
+  }
+
+  public static function all()
+  {
+    return Theme::orderBy('name', 'ASC')->get();
+  }
+
+  /*public static function getListThemes()
   {
     return DB::select('SELECT t.id, t.category_id, t.name FROM themes t INNER JOIN categories c ON (c.id = t.category_id) ORDER BY c.name, t.name');
-  }
+  }*/
 
   public static function themeBySolicitude($solicitude_id)
   {
@@ -37,6 +52,11 @@ class ThemeRepo extends BaseRepo
     ->get();
 
     return $themes;
+  }
+
+  public static function getListSolicitudes($id)
+  {
+    return Theme::with('assign_solicitude')->find($id);
   }
 
 }

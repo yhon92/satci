@@ -6,22 +6,22 @@ angular.module('Solicitude.controllers')
   $stateParams,
   $uibModal,
   Alertify,
-  SolicitudesAssign,
-  SolicitudesAssignList) => {
+  SolicitudesAssign) => {
   
   $scope.assigned = false;
   $scope.notAssigned = false;
   $scope.isCollapsed = [];
   $scope.newStatus = [];
   
-  SolicitudesAssignList($stateParams.id).then( (response) => {
-    if (response.data.length > 0) {
-      $scope.assigned = response.data;
-    }else{
+  SolicitudesAssign.list({solicitude: $stateParams.id}).$promise
+  .then((data) => {
+    if (data.assigned.length > 0) {
+      $scope.assigned = data.assigned;
+    } else {
       $scope.notAssigned = true;
     };
-  }, 
-  (error) => {
+  })
+  .catch((error) => {
     console.log(error.data)
   });
 
@@ -43,15 +43,15 @@ angular.module('Solicitude.controllers')
     }
   };
 
-  $scope.disable = (status) =>{
-    if(status == 'Atendido' || status == 'Rechazado')
+  $scope.disable = (status) => {
+    if (status == 'Atendido' || status == 'Rechazado')
       return 'display-none';
   }
 
   $scope.saveUpdate = (keyTheme, keyAssign, newStatus, id) => {
     if ($scope.assigned[keyTheme].assign_solicitude[keyAssign].status == newStatus) {
       $scope.isCollapsed[keyTheme][keyAssign] = true;
-    }else {
+    } else {
       let assign = {
         update: {status: newStatus},
         solicitude_id: $stateParams.id
@@ -64,16 +64,16 @@ angular.module('Solicitude.controllers')
           Alertify.success("¡Estado Actualizado!")
           $scope.isCollapsed[keyTheme][keyAssign] = true;
         };
-      }, 
-      (fails) => {
+      })
+      .catch((fails) => {
         if (fails.status != 500) {
           for (let firstKey in fails.data) {
             for (let secondKey in fails.data[firstKey]) {
-              Alertify.error(fails.data[firstKey][secondKey])
+              Alertify.error(fails.data[firstKey][secondKey]);
             }
           }
           $scope.isCollapsed[keyTheme][keyAssign] = true;
-        }else {
+        } else {
           console.log(fails);
         };
       });

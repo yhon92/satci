@@ -28,7 +28,7 @@ angular.module('Solicitude.controllers')
     reception_date: '',
     document_date: '',
     topic: '',
-  }
+  };
 
   $scope.addApplicant = () =>{
     _add = true;
@@ -70,7 +70,8 @@ angular.module('Solicitude.controllers')
     $scope.template = `${PathTemplates.partials}solicitude/applicant.html`;
   };
 
-  Parishes.get((data) => {
+  Parishes.get().$promise
+  .then((data) => {
     $scope.parishes = data.parishes;
   });
 
@@ -82,13 +83,15 @@ angular.module('Solicitude.controllers')
     let dataUploaded = $q.defer();
 
     if ($scope.solicitude.applicant_type === 'citizen') {
-      Citizens.get((data) => {
+      Citizens.get().$promise
+      .then((data) => {
         $scope.applicants = data.citizens;
         dataUploaded.resolve();
       });
     }
     if ($scope.solicitude.applicant_type === 'institution') {
-      Institutions.get((data) => {
+      Institutions.get().$promise
+      .then((data) => {
         $scope.applicants = data.institutions;
         dataUploaded.resolve();
       });
@@ -110,28 +113,28 @@ angular.module('Solicitude.controllers')
       applicant_id: $scope.solicitude.applicant_id, 
       document_date: $filter('date')($scope.solicitude.document_date, 'yyyy-MM-dd'), 
       topic: $scope.solicitude.topic, 
-    }
+    };
 
     Solicitudes.save(solicitude).$promise
-      .then( (data) => {
-        if (data.success) {
-          Alertify.success('Solicitud registrada exitosamente');
-          $state.transitionTo('solicitude', { 
-            reload: true, inherit: false, notify: false 
-          });
-        }
-      }, 
-      (fails) => {
-        if (fails.status != 500) {
-          for (let firstKey in fails.data) {
-            for (let secondKey in fails.data[firstKey]) {
-              Alertify.error(fails.data[firstKey][secondKey])
-            }
+    .then( (data) => {
+      if (data.success) {
+        Alertify.success('Solicitud registrada exitosamente');
+        $state.transitionTo('solicitude', { 
+          reload: true, inherit: false, notify: false 
+        });
+      }
+    })
+    .catch((fails) => {
+      if (fails.status != 500) {
+        for (let firstKey in fails.data) {
+          for (let secondKey in fails.data[firstKey]) {
+            Alertify.error(fails.data[firstKey][secondKey]);
           }
-        }else {
-          console.log(fails);
-        };
-      });
+        }
+      } else {
+        console.log(fails);
+      };
+    });
   }
 
   $scope.selectApplicant = (id, identification, full_name) => {
@@ -147,7 +150,7 @@ angular.module('Solicitude.controllers')
     if (_search) {
       $scope.searchApplicant();
     }
-    });
+  });
 
   $scope.displayed = [];
 

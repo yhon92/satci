@@ -19,7 +19,7 @@ angular.module('SATCI.Login',['ui.router', 'SATCI.Shared'])
       password: $scope.password
     }
     // Use Satellizer's $auth service to login
-    $auth.login(credentials).then( () => {
+    $auth.login(credentials).then(() => {
       // If login is successful, redirect to the users state
       // $state.go('home', {});
       // Return an $http request for the now authenticated
@@ -31,7 +31,7 @@ angular.module('SATCI.Login',['ui.router', 'SATCI.Shared'])
 
       // Because we returned the $http.get request in the $auth.login
       // promise, we can chain the next promise to the end here
-    }).then( (response) => {
+    }).then((response) => {
       // Stringify the returned data to prepare it
       // to go into local storage
       let user = JSON.stringify(response.data.user);
@@ -49,7 +49,7 @@ angular.module('SATCI.Login',['ui.router', 'SATCI.Shared'])
       $state.go('home');
     });
   }
-  setTimeout( () => {
+  setTimeout(() => {
     cfpLoadingBar.complete();
   }, 600);
 })

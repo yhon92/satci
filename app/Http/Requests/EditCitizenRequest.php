@@ -26,14 +26,14 @@ class EditCitizenRequest extends Request
     $id = $this->route()->parameters()['citizen'];
 
     return [
-      'identification' => 'required|min:6|max:8|unique:citizens,identification,'.$id, 
-      'full_name' => 'required', 
-      'first_name' => 'required', 
-      'last_name' => 'required', 
-      'address' => 'required', 
-      'prefix_phone' => 'required|min:4|max:4', 
-      'number_phone' => 'required|min:7|max:7', 
-      'parish_id' => 'required|max:1|exists:parishes,id',
+    'identification' => 'required|numeric|min:6|max:8|unique:citizens,identification,'.$id, 
+    'full_name' => 'required', 
+    'first_name' => 'required', 
+    'last_name' => 'required', 
+    'address' => 'required', 
+    'prefix_phone' => 'required|min:4|max:4', 
+    'number_phone' => 'required|min:7|max:7', 
+    'parish_id' => 'required|max:1|exists:parishes,id',
     ];
   }
 

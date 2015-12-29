@@ -23,12 +23,12 @@ class Citizen extends Model
   
   public function parish()
   {
-    return $this->belongsTo('SATCI\Entities\Parish');
+    return $this->belongsTo(Parish::class);
   }
 
   public function solicitudes()
   {
-    return $this->morphMany('SATCI\Entities\Solicitude', 'applicant');
+    return $this->morphMany(Solicitude::class, 'applicant');
   }
   
 }

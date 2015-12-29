@@ -16,52 +16,48 @@ Route::get('/', function () {
 	return view('layout');
 });
 
-/*Route::controllers([
-	'auth' => 'Auth\AuthController',
-	'password' => 'Auth\PasswordController',
-]);*/
-
 Route::group(['prefix' => 'api', 'namespace' => 'Auth'], function () {
+  
   Route::post('auth/login', 'AuthController@login');
+  
   Route::get('auth/user', 'AuthController@getUser');
+
 });
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
+
 	Route::resource('users', 'UsersController');
+
 });
 
 Route::group(['prefix' => 'api', 'namespace' => 'Solicitude'], function () {
-	Route::get('solicitude/list/{applicant}', 'SolicitudeController@listByApplicant');
+
+  Route::get('solicitude/list/{applicant}', 'SolicitudeController@listByApplicant');
+
 	Route::get('solicitude/assign/list/{solicitude}', 'AssignController@listBySolicitude');
+
 	Route::resource('solicitude/assign', 'AssignController');
+
 	Route::resource('solicitude', 'SolicitudeController');
+  
 });
 
 Route::group(['prefix' => 'api'], function () {
-	Route::get('category/list', 'CategoryController@listCategoriesWithThemes');
-	Route::resource('category', 'CategoryController');
-});
+	
+  Route::resource('area', 'AreaController');
 
-Route::group(['prefix' => 'api'], function () {
-	Route::resource('citizen', 'CitizenController');
-});
+  Route::get('category/list', 'CategoryController@listOnlyCategories');
+  
+  Route::resource('category', 'CategoryController');
+  
+  Route::resource('citizen', 'CitizenController');
+  
+  Route::resource('institution', 'InstitutionController');
+  
+  Route::resource('parish', 'ParishController');
+  
+  Route::get('theme/list', 'ThemeController@getListThemesOrderByCategory');
 
-Route::group(['prefix' => 'api'], function () {
-	Route::resource('institution', 'InstitutionController');
-});
+  Route::resource('theme', 'ThemeController');
 
-Route::group(['prefix' => 'api'], function () {
-	Route::resource('parish', 'ParishController');
-});
-
-Route::group(['prefix' => 'api'], function () {
-	Route::resource('theme', 'ThemeController');
-});
-
-Route::group(['prefix' => 'api'], function () {
-	Route::resource('category', 'CategoryController');
-});
-
-Route::group(['prefix' => 'api'], function () {
-	Route::resource('area', 'AreaController');
 });

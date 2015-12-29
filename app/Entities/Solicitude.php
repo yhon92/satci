@@ -26,7 +26,7 @@ class Solicitude extends Model
 
   public function assigned()
   {
-    return $this->hasMay('SATCI\Entities\AssignSolicitude');
+    return $this->hasMay(AssignSolicitude::class);
   }
   
 }

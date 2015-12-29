@@ -23,7 +23,7 @@ angular.module('Solicitude.controllers')
         $scope.applicant = applicant;
 
         $scope.close = () => {
-          $uibModalInstance.close();
+          $uibModalInstance.dismiss();
         };
       },
       size: 'sm',

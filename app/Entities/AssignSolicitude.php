@@ -14,12 +14,12 @@ class AssignSolicitude extends Model
 
   public function theme()
   {
-    return $this->belongsTo('SATCI\Entities\Theme');
+    return $this->belongsTo(Theme::class);
   }
 
   public function area_means()
   {
-    return $this->belongsTo('SATCI\Entities\AreaMeans');
+    return $this->belongsTo(AreaMeans::class);
   }
 
 }

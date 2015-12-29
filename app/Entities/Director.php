@@ -21,7 +21,7 @@ class Director extends Model
 
   public function areas()
   {
-    return $this->hasMay('SATCI\Entities\Area');
+    return $this->hasMay(Area::class);
   }
 
 }

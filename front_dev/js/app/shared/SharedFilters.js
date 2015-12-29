@@ -1,7 +1,7 @@
 angular.module('Shared.filters', [])
 .filter("capitalize", () => {
   return (text) => {
-    if(text != null){
+    if (text != null) {
       return text.substring(0,1).toUpperCase()+text.substring(1);
     }
   }
@@ -11,7 +11,7 @@ angular.module('Shared.filters', [])
   return (input) => {
     input = input.toLowerCase();
     
-    let smallWords = /^(de|para|vs?\.?|via)$/i;
+    let smallWords = /^(a|y|de|que|para|con|vs?\.?|via)$/i;
 
     return input.replace(/[A-Za-z0-9\u00C0-\u00FF]+[^\s-]*/g, (match, index, title) => {
       if (index > 0 && index + match.length !== title.length &&
@@ -32,7 +32,7 @@ angular.module('Shared.filters', [])
 
 .filter('translateApplicant', () => {
   return (applicant) => {
-    if(applicant != null) {
+    if (applicant != null) {
       if (applicant === 'citizen' || applicant === 'Citizen') {
         return 'Natural';
       }
@@ -45,7 +45,7 @@ angular.module('Shared.filters', [])
 
 .filter('indentification', () => {
   return (applicant) => {
-    if(applicant != null) {
+    if (applicant != null) {
       if (applicant === 'citizen' || applicant === 'Citizen') {
         return 'Cédula';
       }

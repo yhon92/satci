@@ -14,16 +14,25 @@ angular.module('Solicitude.controllers')
   ) => {
 
   $scope.selected = {};
-  $scope.selected.themes;
+  $scope.selected.themes = [];
+  $scope.themes = [];
 
   let _categories = '';
 
-  Categories.get((data) => {
+  Categories.get().$promise
+  .then((data) => {
     _categories = data.categories;
 
-    Themes.get((data) => {
-      $scope.themes = data.themes;
-    });
+    for (let i = 0; i < _categories.length; i++) {
+      let themes = _categories[i].themes;
+
+      for (let z = 0; z < themes.length; z++) {
+        $scope.themes.push(themes[z]);
+      };
+      
+      delete _categories[i].themes;
+
+    };
 
   });
 
@@ -57,11 +66,13 @@ angular.module('Solicitude.controllers')
           }
         };
 
-        $scope.cancel = () => {
+        $scope.close = () => {
           $uibModalInstance.dismiss();
         };
       },
       // size: 'sm',
+      backdrop: 'static',
+      keyboard: false,
       resolve: {
         areas: () => {
           return _areas;
@@ -94,11 +105,13 @@ angular.module('Solicitude.controllers')
           }
         };
 
-        $scope.cancel = () => {
+        $scope.close = () => {
           $uibModalInstance.dismiss();
         };
       },
       // size: 'sm',
+      backdrop: 'static',
+      keyboard: false,
       resolve: {
         areas: () => {
           return _areas;
@@ -140,7 +153,7 @@ angular.module('Solicitude.controllers')
     let modalInstance = $uibModal.open({
       templateUrl: 'modalPreviewAssign-template',
       controller: ($scope, $uibModalInstance, themes) => {
-        
+
         $scope.unassigned = [];
         $scope.assigned = [];
 
@@ -185,28 +198,28 @@ angular.module('Solicitude.controllers')
     }
 
     SolicitudesAssign.save(data).$promise
-      .then( (data) => {
-        if (data.success) {
-          Alertify.success('¡La asignación se realizó de forma exitosa!');
-          $state.transitionTo('solicitude', { 
-            reload: true, notify: false 
-          });
-        }
-        if (data.error) {
-          Alertify.error('¡No se pudo guardar la asignación!');
-          $state.reload();
-        }
-      },
-      (fails) => {
-        if (fails.status != 500) {
-          for (let firstKey in fails.data) {
-            for (let secondKey in fails.data[firstKey]) {
-              Alertify.error(fails.data[firstKey][secondKey])
-            }
+    .then((data) => {
+      if (data.success) {
+        Alertify.success('¡La asignación se realizó de forma exitosa!');
+        $state.transitionTo('solicitude', { 
+          reload: true, notify: false 
+        });
+      }
+      if (data.error) {
+        Alertify.error('¡No se pudo guardar la asignación!');
+        $state.reload();
+      }
+    })
+    .catch((fails) => {
+      if (fails.status != 500) {
+        for (let firstKey in fails.data) {
+          for (let secondKey in fails.data[firstKey]) {
+            Alertify.error(fails.data[firstKey][secondKey]);
           }
-        } else {
-          console.log(fails);
-        };
-      });
+        }
+      } else {
+        console.log(fails);
+      };
+    });
   };
 })

@@ -30,18 +30,18 @@ $app = new Illuminate\Foundation\Application(
 */
 
 $app->singleton(
-	'Illuminate\Contracts\Http\Kernel',
-	'SATCI\Http\Kernel'
+	Illuminate\Contracts\Http\Kernel::class,
+	SATCI\Http\Kernel::class
 );
 
 $app->singleton(
-	'Illuminate\Contracts\Console\Kernel',
-	'SATCI\Console\Kernel'
+	Illuminate\Contracts\Console\Kernel::class,
+	SATCI\Console\Kernel::class
 );
 
 $app->singleton(
-	'Illuminate\Contracts\Debug\ExceptionHandler',
-	'SATCI\Exceptions\Handler'
+	Illuminate\Contracts\Debug\ExceptionHandler::class,
+	SATCI\Exceptions\Handler::class
 );
 
 /*

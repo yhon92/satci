@@ -2,8 +2,6 @@
 namespace SATCI\Http\Controllers;
 
 use Illuminate\Http\Request;
-
-// use SATCI\Http\Requests;
 use SATCI\Http\Controllers\Controller;
 use SATCI\Repositories\ParishRepo;
 
