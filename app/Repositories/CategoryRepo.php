@@ -52,6 +52,5 @@ class CategoryRepo extends BaseRepo
                       $query->orderBy('name', 'ASC');
                     }])
                     ->find($id);
-                    // ->get();
   }
 }

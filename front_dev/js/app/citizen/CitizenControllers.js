@@ -33,7 +33,7 @@ angular.module('Citizen.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 
           Alertify.success('¡Persona eliminada!');
         }
         if (data.conflict) {
-          Alertify.log('¡No es posible eliminar por tener solicitudes asociadas!');
+          Alertify.log('¡No es posible eliminar por tener <strong class="text-warning">Solicitudes</strong> asociadas!');
         }
         if (data.error) {
           Alertify.error('¡Ocurrio un error al intentar eliminar!');

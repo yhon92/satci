@@ -45,13 +45,15 @@ class ThemeRepo extends BaseRepo
 
   public static function themeBySolicitude($solicitude_id)
   {
-    $themes = Theme::whereHas('assign_solicitude', function($query) use ($solicitude_id){
-      $query->where('solicitude_id', $solicitude_id);
-    })
-    ->with('assign_solicitude', 'assign_solicitude.area_means.area.director', 'assign_solicitude.area_means.means')
-    ->get();
-
-    return $themes;
+    return Theme::whereHas('assign_solicitude', function($query) use ($solicitude_id){
+                  $query->where('solicitude_id', $solicitude_id);
+                })
+                ->with(
+                  'assign_solicitude', 
+                  'assign_solicitude.area_means.area.director', 
+                  'assign_solicitude.area_means.means'
+                  )
+                ->get();
   }
 
   public static function getListSolicitudes($id)

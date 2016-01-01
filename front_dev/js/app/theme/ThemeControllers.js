@@ -1,5 +1,5 @@
 angular.module('Theme.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'Category.resources', 'Theme.resources'])
-.controller('ThemeCtrl', ($scope, $uibModal, Alertify, Categories, Themes) => {
+.controller('ThemeCtrl', ($scope, $uibModal, Alertify, Helpers, Categories, Themes) => {
 
   let categories = null;
 
@@ -67,7 +67,7 @@ angular.module('Theme.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'C
 
   $scope.edit = (theme) => {
 
-    let index = getIndex($scope.themes, theme.id)
+    let index = Helpers.getIndex($scope.themes, theme.id);
     
     let modalInstance = $uibModal.open({
       templateUrl: 'modalFormTheme-template',
@@ -95,7 +95,7 @@ angular.module('Theme.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'C
 
     let id = theme.id;
     
-    let index = getIndex($scope.themes, id);
+    let index = Helpers.getIndex($scope.themes, id);
 
     Alertify.set({ labels: {ok: "Eliminar", cancel: "Cancelar"} });
 
@@ -130,13 +130,5 @@ angular.module('Theme.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'C
     }, (cancel) => {
       return false;
     }); 
-  };
-
-  function getIndex(Things, id){
-    for (let i = 0; i < Things.length; i++) {
-      if (Things[i].id == id) {
-        return i;
-      }
-    }
   };
 })

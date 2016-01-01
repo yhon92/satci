@@ -14,9 +14,9 @@ angular.module('Category.controllers')
     Categories.update({id: category.id}, data).$promise
     .then((data) => {
       if (data.success) {
-        Alertify.success('¡Categoría editada!')
+        Alertify.success('¡Categoría editada!');
         category.name = $scope.category;
-        $uibModalInstance.close(category)
+        $uibModalInstance.close(category);
       }
       if (data.error) {
         Alertify.error('¡No se pudo editar la categoría!');

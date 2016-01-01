@@ -12,8 +12,8 @@ angular.module('Category.controllers')
     Categories.save(data).$promise
     .then((data) => {
       if (data.success) {
-        Alertify.success('¡Categoría registrada!')
-        $uibModalInstance.close(data.category)
+        Alertify.success('¡Categoría registrada!');
+        $uibModalInstance.close(data.category);
       }
       if (data.error) {
         Alertify.error('¡No se pudo registrar la categoría!');

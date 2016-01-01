@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
 	 * @var array
 	 */
 	protected $commands = [
-		SATCI\Console\Commands\Inspire::class,
+		\SATCI\Console\Commands\Inspire::class,
 	];
 
 	/**

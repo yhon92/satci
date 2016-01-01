@@ -13,14 +13,14 @@
           </button>
         </div>
       </div>
-      <div class="panel-body Category-container">
+      <div class="panel-body List-container">
         <div uib-collapse="isCollapsed">
           <div class="well well-sm form-group">
             <input type="text" class="form-control" placeholder="Buscar..." ng-model="filter.name">
           </div>
         </div>
-        <ul class="list-group CategoryList">
-          <li class="list-group-item CategoryList-item" ng-repeat="theme in filtered = ( themes | filter:filter.name)">
+        <ul class="list-group ListGroup">
+          <li class="list-group-item ListGroup-item" ng-repeat="theme in filtered = ( themes | filter:filter.name)">
             {{theme.name}}
             <div class="float-right">
               <div class="MenuActions"uib-dropdown is-open="status.isopen" ng-mouseenter="status.isopen = true" ng-mouseleave="status.isopen = false">

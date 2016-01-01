@@ -17,9 +17,4 @@ angular.module('SATCI.Theme', [
     templateUrl: `${PathTemplates.views}theme/index.html`,
     controller: 'ThemeCtrl'
   })
-  .state('themeShow', {
-    url: '/config/theme/:id',
-    templateUrl: `${PathTemplates.views}theme/index.html`,
-    controller: 'ThemeCtrl'
-  })
 })

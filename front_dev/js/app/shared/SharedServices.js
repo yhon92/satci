@@ -4,7 +4,7 @@
 * Description
 */
 angular.module('Shared.services', [])
-.factory('paginateService', ['$q', '$filter', '$timeout', ($q, $filter, $timeout) => {
+.factory('paginateService', ($q, $filter, $timeout) => {
 
   function getPage(data, start, number, params) {
 
@@ -34,4 +34,15 @@ angular.module('Shared.services', [])
     getPage: getPage
   };
 
-}])
+})
+.factory('Helpers', () => {
+  return {
+    getIndex: (Things, id) => {
+      for (let i = 0; i < Things.length; i++) {
+        if (Things[i].id == id) {
+          return i;
+        }
+      }
+    },
+  }
+})

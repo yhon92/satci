@@ -1,0 +1,132 @@
+<div class="col-md-12" ui-view>
+  <a class="btn btn-success btn-add-float" title="Agregar Área" ng-click="add()">
+    <img src="./img/bootswatch/plus_2x.png" alt="Agregar">
+  </a>
+
+  <div class="col-lg-6 col-lg-offset-3">
+    <section class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title inline-block">Lista de Áreas</h3>
+        <div class="float-right">
+          <button class="btn btn-default btn-sm ButtonSearch collapsed" ng-click="toggleCollapsed()">
+            <span class="glyphicon glyphicon-search"></span>
+          </button>
+        </div>
+      </div>
+      <div class="panel-body List-container">
+        <div uib-collapse="isCollapsed">
+          <div class="well well-sm form-group">
+            <input type="text" class="form-control" placeholder="Buscar..." ng-model="filter.name">
+          </div>
+        </div>
+        <ul class="list-group ListGroup">
+          <li class="list-group-item ListGroup-item" ng-repeat="area in filtered = ( areas  | filter: filter.name)">
+            {{area.name}}
+            <div class="float-right">
+              <div class="MenuActions"uib-dropdown is-open="status.isopen" ng-mouseenter="status.isopen = true" ng-mouseleave="status.isopen = false">
+                <button type="button" class="btn btn-link btn-xs MenuActions-button" uib-dropdown-toggle>
+                  <span class="glyphicon glyphicon-option-vertical"></span>
+                </button>
+                <ul class="dropdown-menu MenuActions-list" role="menu">
+                  <li class="MenuActions-item">
+                    <a class="MenuActions-action" ng-click="delete(area)"><span class="glyphicon glyphicon-trash"></span> </a>
+                  </li>
+                  <li class="MenuActions-item">
+                    <a class="MenuActions-action" ng-click="edit(area)"><span class="glyphicon glyphicon-pencil"></span> </a>
+                  </li>
+                  <li class="MenuActions-item">
+                    <a class="MenuActions-action" ng-click="show(area)"><span class="glyphicon glyphicon-eye-open"></span> </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <p class="align-center" ng-show="!filtered.length"><strong>¡No hay resultado!</strong></p>
+      </section>
+    </div>
+  </div>
+</div>
+<script type="text/ng-template" id="modalFormArea-template">
+  <section class="modal-header">
+    <button type="button" class="close" ng-click="close()">×</button>
+    <h4 class="modal-title">{{title}} Área</h4>
+  </section>
+  <form class="form-horizontal" ng-submit="save()">
+    <section class="modal-body">
+      <div class="form-group">
+        <div class="col-lg-12">
+          <label for="name"><strong>Nombre</strong></label>
+        </div>
+        <div class="col-lg-12">
+          <input type="text" class="form-control" id="name" placeholder="Nombre" autofocus ng-model="area.name" ng-required="true" only-letters>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-lg-12">
+          <label for="email"><strong>Correo Electrónico</strong></label>
+        </div>
+        <div class="col-lg-12">
+          <input type="text" class="form-control" id="email" placeholder="Correo Electrónico" autofocus ng-model="area.email">
+          <span class="text-danger" ng-if="title === 'Agregar'">
+            <small><em>Si no tiene correo eletrónico dejar en blanco</em></small>
+          </span>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-lg-12">
+          <label for="director"><strong>Director</strong></label>
+        </div>
+        <div class="col-lg-12">
+          <select type="role" class="form-control" name="director" id="director" ng-options="director.id as director.full_name for director in directors" ng-model="area.director" ng-required="true">
+          </select>
+
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-lg-12">
+          <label for="means"><strong>Recurso</strong></label>
+        </div>
+        <div class="col-lg-12">
+          <select multiple="true" type="role" class="form-control" name="means" id="means" ng-options="item.id as item.name for item in means" ng-model="area.means" ng-required="true">
+          </select>
+        </div>
+      </div>
+    </section>
+    <section class="modal-footer">
+      <button type="button" class="btn btn-link btn-sm" ng-click="close()">Cancelar</button>
+      <button type="submit" class="btn btn-primary btn-sm">Agregar</button>
+    </section>
+  </form>
+</script>
+<script type="text/ng-template" id="modalShowArea-template">
+  <section class="modal-header">
+    <button type="button" class="close" ng-click="close()">×</button>
+    <h4 class="modal-title border-bottom">{{area.name}}</h4>
+  </section>
+  <section class="modal-body">
+    <h6 class="text-success"><strong><em>Correo Electrónico:</em></strong></h6>
+    <div class="form-group">
+      <div class="col-lg-12">
+        <p>- {{area.email}}</p>
+      </div>
+    </div>
+    <h6 class="text-success"><strong><em>Director:</em></strong></h6>
+    <div class="form-group">
+      <div class="col-lg-12">
+        <p>- {{area.director.full_name}}</p>
+      </div>
+    </div>
+    <h6 class="text-success"><strong><em>Recuros:</em></strong></h6>
+    <div class="form-group">
+      <div class="col-lg-12">
+        <ul class="list-unstyled">
+         <li ng-repeat="means in area.means">- {{means.name}}</li>
+       </ul>
+     </div>
+   </div>
+ </section>
+ <section class="modal-footer">
+  <button type="submit" class="btn btn-warning btn-sm" ng-click="close()">Cerrar</button>
+</section>
+</script>

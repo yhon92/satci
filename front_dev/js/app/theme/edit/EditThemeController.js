@@ -21,9 +21,9 @@ angular.module('Theme.controllers')
     Themes.update({id: theme.id}, data).$promise
     .then((data) => {
       if (data.success) {
-        Alertify.success('¡Tema editado!')
+        Alertify.success('¡Tema editado!');
         theme = $scope.theme;
-        $uibModalInstance.close(theme)
+        $uibModalInstance.close(theme);
       }
       if (data.error) {
         Alertify.error('¡No se pudo editar la tema!');

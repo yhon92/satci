@@ -121,7 +121,137 @@ angular.module('SATCI', ['ngAnimate', 'ngSanitize', 'ui.bootstrap', 'ui.router',
 },{"./app/area/AreaModule":3,"./app/category/CategoryModule":9,"./app/citizen/CitizenModule":15,"./app/director/DirectorModule":21,"./app/home/HomeModule":26,"./app/institution/InstitutionModule":28,"./app/login/LoginModule":33,"./app/means/MeansModule":35,"./app/nav/NavModule":40,"./app/services/RedirectWhenLoggedOut":41,"./app/shared/SharedModule":44,"./app/solicitudes/SolicitudeModule":49,"./app/theme/ThemeModule":57,"./app/ui/Datepicker":62,"./libs/ng-alertify":63,"angular":77,"angular-animate":65,"angular-bootstrap-npm":66,"angular-loading-bar":68,"angular-resource":70,"angular-sanitize":72,"angular-smart-table":74,"angular-ui-router":75,"satellizer":78,"ui-select":79}],2:[function(require,module,exports){
 'use strict';
 
-angular.module('Area.controllers', []);
+angular.module('Area.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'Director.resources', 'Means.resources', 'Area.resources']).controller('AreaCtrl', function ($scope, $uibModal, Alertify, Helpers, Directors, Means, Areas) {
+
+  var _directors = null;
+  var _means = null;
+
+  Areas.get().$promise.then(function (data) {
+    $scope.areas = data.areas;
+  }).catch(function (faild) {});
+
+  Directors.get().$promise.then(function (data) {
+    _directors = data.directors;
+  }).catch(function (fails) {});
+
+  Means.get().$promise.then(function (data) {
+    _means = data.means;
+  }).catch(function (data) {});
+
+  $scope.filter = {
+    name: ''
+  };
+
+  $scope.isCollapsed = true;
+
+  $scope.toggleCollapsed = function () {
+    $scope.filter.name = '';
+    $scope.isCollapsed = !$scope.isCollapsed;
+  };
+
+  $scope.add = function () {
+    var modalInstance = $uibModal.open({
+      templateUrl: 'modalFormArea-template',
+      controller: 'CreateAreaCtrl',
+      size: 'md',
+      backdrop: 'static',
+      keyboard: false,
+      resolve: {
+        directors: function directors() {
+          return _directors;
+        },
+        means: function means() {
+          return _means;
+        }
+      }
+    });
+
+    modalInstance.result.then(function (data) {
+      $scope.areas.push(data);
+    });
+  };
+
+  $scope.show = function (_area) {
+    var modalInstance = $uibModal.open({
+      templateUrl: 'modalShowArea-template',
+      controller: 'ShowAreaCtrl',
+      size: 'dm',
+      resolve: {
+        area: function area() {
+          return _area;
+        }
+      }
+    });
+  };
+
+  $scope.edit = function (_area2) {
+
+    var index = Helpers.getIndex($scope.areas, _area2.id);
+
+    var modalInstance = $uibModal.open({
+      templateUrl: 'modalFormArea-template',
+      controller: 'EditAreaCtrl',
+      size: 'md',
+      backdrop: 'static',
+      keyboard: false,
+      resolve: {
+        directors: function directors() {
+          return _directors;
+        },
+        means: function means() {
+          return _means;
+        },
+        area: function area() {
+          return _area2;
+        }
+      }
+    });
+
+    modalInstance.result.then(function (data) {
+      $scope.areas[index].id = data.id;
+      $scope.areas[index].name = data.name;
+      $scope.areas[index].email = data.email;
+      $scope.areas[index].director = data.director;
+      $scope.areas[index].means = data.means;
+    });
+  };
+
+  $scope.delete = function (area) {
+
+    var id = area.id;
+
+    var index = Helpers.getIndex($scope.areas, id);
+
+    Alertify.set({ labels: { ok: "Eliminar", cancel: "Cancelar" } });
+
+    Alertify.confirm('Confirma que desea eliminar el Área: ' + '</br>Nombre: <strong class="text-danger">' + area.name + '</strong>').then(function (ok) {
+      Areas.delete({ id: id }).$promise.then(function (data) {
+        if (data.success) {
+          $scope.areas.splice(index, 1);
+          Alertify.success('¡Área eliminada!');
+        }
+        if (data.conflict) {
+          Alertify.log('¡No es posible eliminar por tener <strong class="text-warning">Solicitudes</strong> asociadas!');
+        }
+        if (data.error) {
+          Alertify.error('¡Ocurrio un error al intentar eliminar!');
+        }
+      }).catch(function (fails) {
+        if (fails.status != 500) {
+          for (var firstKey in fails.data) {
+            for (var secondKey in fails.data[firstKey]) {
+              Alertify.error(fails.data[firstKey][secondKey]);
+            }
+          }
+        } else {
+          console.log(fails);
+        };
+      });
+    }, function (cancel) {
+      return false;
+    });
+  };
+});
 
 },{}],3:[function(require,module,exports){
 'use strict';
@@ -136,7 +266,13 @@ require('./edit/EditAreaController');
 
 require('./show/ShowAreaController');
 
-angular.module('SATCI.Area', ['ui.router', 'SATCI.Shared', 'Area.controllers', 'Area.resources']);
+angular.module('SATCI.Area', ['ui.router', 'SATCI.Shared', 'Area.controllers', 'Area.resources']).config(function ($authProvider, $stateProvider, PathTemplates) {
+  $stateProvider.state('area', {
+    url: '/config/area',
+    templateUrl: PathTemplates.views + 'area/index.html',
+    controller: 'AreaCtrl'
+  });
+});
 
 },{"./AreaControllers":2,"./AreaResources":4,"./create/CreateAreaController":5,"./edit/EditAreaController":6,"./show/ShowAreaController":7}],4:[function(require,module,exports){
 'use strict';
@@ -160,22 +296,167 @@ angular.module('Area.resources', ['ngResource', 'SATCI.Shared']).factory('Areas'
 },{}],5:[function(require,module,exports){
 'use strict';
 
-angular.module('Area.controllers');
+angular.module('Area.controllers').controller('CreateAreaCtrl', function ($scope, $filter, $uibModalInstance, Alertify, Helpers, directors, means, Areas) {
+  $scope.title = 'Agregar';
+
+  $scope.directors = directors;
+
+  $scope.means = means;
+
+  $scope.area = {
+    "name": null,
+    "email": '',
+    "director": null,
+    "means": null
+  };
+
+  $scope.save = function () {
+
+    var data = {
+      name: $filter('titleCase')($scope.area.name),
+      email: $scope.area.email,
+      director_id: $scope.area.director,
+      means: $scope.area.means
+    };
+
+    Areas.save(data).$promise.then(function (data) {
+      if (data.success) {
+        Alertify.success('¡Área registrada!');
+        $uibModalInstance.close(data.area);
+      }
+      if (data.error) {
+        Alertify.error('¡No se pudo registrar el área!');
+      }
+    }).catch(function (fails) {
+      if (fails.status != 500) {
+        for (var firstKey in fails.data) {
+          for (var secondKey in fails.data[firstKey]) {
+            Alertify.error(fails.data[firstKey][secondKey]);
+          }
+        }
+      } else {
+        console.log(fails);
+      };
+    });
+  };
+
+  $scope.close = function () {
+    $uibModalInstance.dismiss();
+  };
+});
 
 },{}],6:[function(require,module,exports){
 'use strict';
 
-angular.module('Area.controllers');
+angular.module('Area.controllers').controller('EditAreaCtrl', function ($scope, $filter, $uibModalInstance, Alertify, Helpers, directors, means, area, Areas) {
+  $scope.title = 'Editar';
+
+  $scope.directors = directors;
+
+  $scope.means = means;
+
+  $scope.area = {
+    // "id": area.id,
+    "name": area.name,
+    "email": area.email,
+    "director": area.director.id,
+    "means": getID(area.means)
+  };
+
+  $scope.save = function () {
+    $scope.area.name = $filter('titleCase')($scope.area.name);
+
+    var data = {
+      name: $scope.area.name,
+      email: $scope.area.email,
+      director_id: $scope.area.director,
+      means: $scope.area.means
+    };
+
+    Areas.update({ id: area.id }, data).$promise.then(function (data) {
+      if (data.success) {
+        Alertify.success('¡Área editada!');
+        area = buildAreaRow();
+        $uibModalInstance.close(area);
+      }
+      if (data.error) {
+        Alertify.error('¡No se pudo editar el área!');
+      }
+    }).catch(function (fails) {
+      if (fails.status != 500) {
+        for (var firstKey in fails.data) {
+          for (var secondKey in fails.data[firstKey]) {
+            Alertify.error(fails.data[firstKey][secondKey]);
+          }
+        }
+      } else {
+        console.log(fails);
+      };
+    });
+  };
+
+  $scope.close = function () {
+    $uibModalInstance.dismiss();
+  };
+
+  function buildAreaRow() {
+    var indexDirector = Helpers.getIndex(directors, $scope.area.director);
+    var groupMeans = [];
+
+    for (var i = 0; i < $scope.area.means.length; i++) {
+      for (var z = 0; z < means.length; z++) {
+        if ($scope.area.means[i] === means[z].id) {
+          groupMeans.push(means[z]);
+        };
+      };
+    };
+
+    return {
+      id: area.id,
+      name: $scope.area.name,
+      email: $scope.area.email,
+      director: directors[indexDirector],
+      means: groupMeans
+    };
+  }
+
+  function getID(arr) {
+    var rv = [];
+    for (var i = 0; i < arr.length; ++i) {
+      if (arr[i] !== undefined) {
+        rv.push(arr[i].id);
+      }
+    }
+    return rv;
+  }
+  //
+  // function toObject(arr) {
+  //   let rv = {};
+  //   for (let i = 0; i < arr.length; ++i) {
+  //     if (arr[i] !== undefined) {
+  //       rv[arr[i].id] = arr[i];
+  //     }
+  //   }
+  //   return rv;
+  // }
+});
 
 },{}],7:[function(require,module,exports){
 'use strict';
 
-angular.module('Area.controllers');
+angular.module('Area.controllers').controller('ShowAreaCtrl', function ($scope, $filter, $uibModalInstance, area) {
+
+  $scope.area = area;
+
+  $scope.close = function () {
+    $uibModalInstance.dismiss();
+  };
+});
 
 },{}],8:[function(require,module,exports){
 'use strict';
 
-angular.module('Category.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'Category.resources']).controller('CategoryCtrl', function ($scope, $uibModal, Alertify, Categories) {
+angular.module('Category.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'Category.resources']).controller('CategoryCtrl', function ($scope, $uibModal, Helpers, Alertify, Categories) {
 
   Categories.get().$promise.then(function (data) {
     $scope.categories = data.categories;
@@ -238,7 +519,7 @@ angular.module('Category.controllers', ['ui.router', 'Alertify', 'SATCI.Shared',
 
     var id = category.id;
 
-    var index = getIndex($scope.categories, id);
+    var index = Helpers.getIndex($scope.categories, id);
 
     Alertify.set({ labels: { ok: "Eliminar", cancel: "Cancelar" } });
 
@@ -268,14 +549,6 @@ angular.module('Category.controllers', ['ui.router', 'Alertify', 'SATCI.Shared',
     }, function (cancel) {
       return false;
     });
-  };
-
-  function getIndex(Things, id) {
-    for (var i = 0; i < Things.length; i++) {
-      if (Things[i].id == id) {
-        return i;
-      }
-    }
   };
 });
 
@@ -452,7 +725,7 @@ angular.module('Citizen.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 
           Alertify.success('¡Persona eliminada!');
         }
         if (data.conflict) {
-          Alertify.log('¡No es posible eliminar por tener solicitudes asociadas!');
+          Alertify.log('¡No es posible eliminar por tener <strong class="text-warning">Solicitudes</strong> asociadas!');
         }
         if (data.error) {
           Alertify.error('¡Ocurrio un error al intentar eliminar!');
@@ -786,7 +1059,7 @@ angular.module('Institution.controllers', ['ui.router', 'Alertify', 'SATCI.Share
           Alertify.success('¡Institución eliminada!');
         }
         if (data.conflict) {
-          Alertify.log('¡No es posible eliminar por tener solicitudes asociadas!');
+          Alertify.log('¡No es posible eliminar por tener <strong class="text-warning">Solicitudes</strong> asociadas!');
         }
         if (data.error) {
           Alertify.error('¡Ocurrio un error al intentar eliminar!');
@@ -1247,11 +1520,20 @@ angular.module('Shared.directives', []).directive('applicantList', function (Pat
 }).directive('onlyNumbers', function () {
   return function (scope, element, attrs) {
     element.bind("keypress", function (event) {
-      var key = event.keyCode || event.which,
-          tecla = String.fromCharCode(key).toLowerCase(),
-          num = "0123456789";
+      var key = event.keyCode || event.which;
+      var tecla = String.fromCharCode(key).toLowerCase();
+      var num = "0123456789";
+      var especiales = [8, 37, 39, 46];
+      var tecla_especial = false;
 
-      if (num.indexOf(tecla) == -1) {
+      for (var i in especiales) {
+        if (key == especiales[i]) {
+          tecla_especial = true;
+          break;
+        }
+      }
+
+      if (num.indexOf(tecla) == -1 && !tecla_especial) {
         scope.$apply(function () {
           scope.$eval(attrs.onlyNumbers);
           event.preventDefault();
@@ -1262,11 +1544,11 @@ angular.module('Shared.directives', []).directive('applicantList', function (Pat
 }).directive('onlyLetters', function () {
   return function (scope, element, attrs) {
     element.bind("keypress", function (event) {
-      var key = event.keyCode || event.which,
-          tecla = String.fromCharCode(key).toLowerCase(),
-          letras = " áéíóúüabcdefghijklmnñopqrstuvwxyz",
-          especiales = [8, 13, 39, 46],
-          tecla_especial = false;
+      var key = event.keyCode || event.which;
+      var tecla = String.fromCharCode(key).toLowerCase();
+      var letras = " áéíóúüabcdefghijklmnñopqrstuvwxyz";
+      var especiales = [8, 13, 39, 46];
+      var tecla_especial = false;
 
       for (var i in especiales) {
         if (key == especiales[i]) {
@@ -1410,7 +1692,7 @@ angular.module('Shared.resources', ['ngResource']).factory('Parishes', function 
 *
 * Description
 */
-angular.module('Shared.services', []).factory('paginateService', ['$q', '$filter', '$timeout', function ($q, $filter, $timeout) {
+angular.module('Shared.services', []).factory('paginateService', function ($q, $filter, $timeout) {
 
   function getPage(data, start, number, params) {
 
@@ -1441,7 +1723,17 @@ angular.module('Shared.services', []).factory('paginateService', ['$q', '$filter
   return {
     getPage: getPage
   };
-}]);
+}).factory('Helpers', function () {
+  return {
+    getIndex: function getIndex(Things, id) {
+      for (var i = 0; i < Things.length; i++) {
+        if (Things[i].id == id) {
+          return i;
+        }
+      }
+    }
+  };
+});
 
 },{}],47:[function(require,module,exports){
 'use strict';
@@ -2290,7 +2582,7 @@ angular.module('Solicitude.controllers').controller('ShowSolicitudeCtrl', functi
 },{}],56:[function(require,module,exports){
 'use strict';
 
-angular.module('Theme.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'Category.resources', 'Theme.resources']).controller('ThemeCtrl', function ($scope, $uibModal, Alertify, Categories, Themes) {
+angular.module('Theme.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'Category.resources', 'Theme.resources']).controller('ThemeCtrl', function ($scope, $uibModal, Alertify, Helpers, Categories, Themes) {
 
   var _categories = null;
 
@@ -2352,7 +2644,7 @@ angular.module('Theme.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'C
 
   $scope.edit = function (_theme2) {
 
-    var index = getIndex($scope.themes, _theme2.id);
+    var index = Helpers.getIndex($scope.themes, _theme2.id);
 
     var modalInstance = $uibModal.open({
       templateUrl: 'modalFormTheme-template',
@@ -2380,7 +2672,7 @@ angular.module('Theme.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'C
 
     var id = theme.id;
 
-    var index = getIndex($scope.themes, id);
+    var index = Helpers.getIndex($scope.themes, id);
 
     Alertify.set({ labels: { ok: "Eliminar", cancel: "Cancelar" } });
 
@@ -2411,14 +2703,6 @@ angular.module('Theme.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'C
       return false;
     });
   };
-
-  function getIndex(Things, id) {
-    for (var i = 0; i < Things.length; i++) {
-      if (Things[i].id == id) {
-        return i;
-      }
-    }
-  };
 });
 
 },{}],57:[function(require,module,exports){
@@ -2437,10 +2721,6 @@ require('./show/ShowThemeController');
 angular.module('SATCI.Theme', ['ui.router', 'SATCI.Shared', 'Theme.controllers', 'Theme.resources']).config(function ($authProvider, $stateProvider, PathTemplates) {
   $stateProvider.state('theme', {
     url: '/config/theme',
-    templateUrl: PathTemplates.views + 'theme/index.html',
-    controller: 'ThemeCtrl'
-  }).state('themeShow', {
-    url: '/config/theme/:id',
     templateUrl: PathTemplates.views + 'theme/index.html',
     controller: 'ThemeCtrl'
   });

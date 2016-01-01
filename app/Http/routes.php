@@ -51,9 +51,13 @@ Route::group(['prefix' => 'api'], function () {
   Route::resource('category', 'CategoryController');
   
   Route::resource('citizen', 'CitizenController');
+
+  Route::resource('director', 'DirectorController');
   
   Route::resource('institution', 'InstitutionController');
   
+  Route::resource('means', 'MeansController');
+
   Route::resource('parish', 'ParishController');
   
   Route::get('theme/list', 'ThemeController@getListThemesOrderByCategory');

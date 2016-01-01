@@ -24,7 +24,7 @@ class CreateCitizenRequest extends Request
   public function rules()
   {
     return [
-    'identification' => 'required|min:6|max:8|unique:citizens,identification', 
+    'identification' => 'required|regex:(^([0-9]{6,8})$)|min:6|max:8|unique:citizens,identification', 
     'full_name' => 'required', 
     'first_name' => 'required', 
     'last_name' => 'required', 

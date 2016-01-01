@@ -25,4 +25,11 @@ class AreaMeansRepo extends BaseRepo
     return $areaMeans[0]->id;
   }
 
+  public static function getListSolicitudes($id)
+  {
+    return AreaMeans::with('solicitude')
+                    ->where('area_id', $id)
+                    ->get();
+  }
+
 }

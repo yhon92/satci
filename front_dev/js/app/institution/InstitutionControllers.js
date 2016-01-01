@@ -33,7 +33,7 @@ angular.module('Institution.controllers', ['ui.router', 'Alertify', 'SATCI.Share
           Alertify.success('¡Institución eliminada!');
         }
         if (data.conflict) {
-          Alertify.log('¡No es posible eliminar por tener solicitudes asociadas!');
+          Alertify.log('¡No es posible eliminar por tener <strong class="text-warning">Solicitudes</strong> asociadas!');
         }
         if (data.error) {
           Alertify.error('¡Ocurrio un error al intentar eliminar!');

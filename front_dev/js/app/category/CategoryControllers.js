@@ -1,5 +1,5 @@
 angular.module('Category.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'Category.resources'])
-.controller('CategoryCtrl', ($scope, $uibModal, Alertify, Categories) => {
+.controller('CategoryCtrl', ($scope, $uibModal, Helpers, Alertify, Categories) => {
 
   Categories.get().$promise
   .then((data) => {
@@ -66,7 +66,7 @@ angular.module('Category.controllers', ['ui.router', 'Alertify', 'SATCI.Shared',
 
     let id = category.id;
     
-    let index = getIndex($scope.categories, id);
+    let index = Helpers.getIndex($scope.categories, id);
 
     Alertify.set({ labels: {ok: "Eliminar", cancel: "Cancelar"} });
 
@@ -101,13 +101,5 @@ angular.module('Category.controllers', ['ui.router', 'Alertify', 'SATCI.Shared',
     }, (cancel) => {
       return false;
     }); 
-  };
-
-  function getIndex(Things, id){
-    for (let i = 0; i < Things.length; i++) {
-      if (Things[i].id == id) {
-        return i;
-      }
-    }
   };
 })

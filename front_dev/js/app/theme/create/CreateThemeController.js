@@ -19,8 +19,8 @@ angular.module('Theme.controllers')
     Themes.save(data).$promise
     .then((data) => {
       if (data.success) {
-        Alertify.success('¡Tema registrado!')
-        $uibModalInstance.close(data.theme)
+        Alertify.success('¡Tema registrado!');
+        $uibModalInstance.close(data.theme);
       }
       if (data.error) {
         Alertify.error('¡No se pudo registrar el tema!');

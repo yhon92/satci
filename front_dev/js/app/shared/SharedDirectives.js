@@ -29,11 +29,20 @@ angular.module('Shared.directives', [])
 .directive('onlyNumbers', () => {
   return (scope, element, attrs) => {
     element.bind("keypress", (event) => {
-      let key = event.keyCode || event.which,
-      tecla = String.fromCharCode(key).toLowerCase(),
-      num = "0123456789";
+      let key = event.keyCode || event.which;
+      let tecla = String.fromCharCode(key).toLowerCase();
+      let num = "0123456789";
+      let especiales = [8, 37, 39, 46];
+      let tecla_especial = false;
 
-      if (num.indexOf(tecla) == -1) {
+      for (var i in especiales) {
+        if (key == especiales[i]) {
+          tecla_especial = true;
+          break;
+        }
+      }
+
+      if (num.indexOf(tecla) == -1  && !tecla_especial) {
         scope.$apply(() => {
           scope.$eval(attrs.onlyNumbers);
           event.preventDefault();
@@ -45,11 +54,11 @@ angular.module('Shared.directives', [])
 .directive('onlyLetters', () => {
   return (scope, element, attrs) => {
     element.bind("keypress", (event) => {
-      let key = event.keyCode || event.which,
-      tecla = String.fromCharCode(key).toLowerCase(),
-      letras = " áéíóúüabcdefghijklmnñopqrstuvwxyz",
-      especiales = [8,13,39,46],
-      tecla_especial = false
+      let key = event.keyCode || event.which;
+      let tecla = String.fromCharCode(key).toLowerCase();
+      let letras = " áéíóúüabcdefghijklmnñopqrstuvwxyz";
+      let especiales = [8, 13, 39, 46];
+      let tecla_especial = false;
 
       for (var i in especiales) {
         if (key == especiales[i]) {

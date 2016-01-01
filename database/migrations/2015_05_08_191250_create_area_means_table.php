@@ -16,7 +16,7 @@ class CreateAreaMeansTable extends Migration
       $table->increments('id');
       
       $table->integer('area_id')->unsigned()->index();
-      $table->foreign('area_id')->references('id')->on('areas');
+      $table->foreign('area_id')->references('id')->on('areas')->onDelete('cascade');
 
       $table->integer('means_id')->unsigned()->index();
       $table->foreign('means_id')->references('id')->on('means');

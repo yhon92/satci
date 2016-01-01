@@ -10,3 +10,11 @@ angular.module('SATCI.Area', [
   'Area.controllers', 
   'Area.resources'
   ])
+.config(($authProvider, $stateProvider, PathTemplates) => {
+  $stateProvider
+  .state('area', {
+    url: '/config/area',
+    templateUrl: `${PathTemplates.views}area/index.html`,
+    controller: 'AreaCtrl'
+  })
+})

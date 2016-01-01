@@ -26,7 +26,7 @@ class EditCitizenRequest extends Request
     $id = $this->route()->parameters()['citizen'];
 
     return [
-    'identification' => 'required|numeric|min:6|max:8|unique:citizens,identification,'.$id, 
+    'identification' => 'required|regex:(^([0-9]{6,8})$)|min:6|max:8|unique:citizens,identification,'.$id, 
     'full_name' => 'required', 
     'first_name' => 'required', 
     'last_name' => 'required', 

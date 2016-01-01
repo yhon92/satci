@@ -1,6 +1,5 @@
 <?php
-
-namespace App\Jobs;
+namespace SATCI\Jobs;
 
 use Illuminate\Bus\Queueable;
 

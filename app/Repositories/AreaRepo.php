@@ -13,17 +13,41 @@ class AreaRepo extends BaseRepo
 
   public static function create($data)
   {
-    return Area::create($data);
+    $means = $data['means'];
+    unset($data['means']);
+
+    $area = Area::create($data);
+    $area->means()->sync($means);
+    return $area;
   }
 
   public static function get($id)
   {
-    return Area::find($id);
+    return Area::with('director', 'means')->find($id);
+  }
+
+  public static function update($id, $data)
+  {
+    $means = $data['means'];
+    unset($data['means']);
+
+    $area = Area::find($id);
+
+    $area->update($data);
+
+    $area->means()->sync($means);
+
+    return true;
+  }
+
+  public static function delete($id)
+  {
+    return Area::destroy($id);
   }
 
   public static function all()
   {
-    return Area::orderby('name', 'ASC')->with('director', 'means')->get();
+    return Area::orderBy('name', 'ASC')->with('director', 'means')->get();
   }
 
   public static function getListArea()

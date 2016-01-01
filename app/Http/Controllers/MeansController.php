@@ -6,21 +6,18 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Log;
 use SATCI\Http\Controllers\Controller;
-use SATCI\Http\Requests\CreateAreaRequest;
-use SATCI\Http\Requests\EditAreaRequest;
-use SATCI\Repositories\AreaMeansRepo;
-use SATCI\Repositories\AreaRepo;
+// use SATCI\Http\Requests\CreateMeansRequest;
+// use SATCI\Http\Requests\EditMeansRequest;
+use SATCI\Repositories\MeansRepo;
 
-class AreaController extends Controller
+class MeansController extends Controller
 {
+  protected $meansRepo;
 
-  protected $areaRepo;
-  protected $areaMeansRepo;
-
-  public function __construct(AreaRepo $areaRepo, AreaMeansRepo $areaMeansRepo) {
+  public function __construct (MeansRepo $meansRepo)
+  {
     // $this->middleware('jwt.auth');
-    $this->areaRepo = $areaRepo;
-    $this->areaMeansRepo = $areaMeansRepo;
+    $this->meansRepo = $meansRepo;
   }
   /**
    * Display a listing of the resource.
@@ -29,9 +26,9 @@ class AreaController extends Controller
    */
   public function index()
   {
-    $areas = $this->areaRepo->all();
+    $means = $this->meansRepo->all();
 
-    return response()->json(['areas' => $areas], 200);
+    return response()->json(['means' => $means], 200);
   }
 
   /**
@@ -40,23 +37,11 @@ class AreaController extends Controller
    * @param  \Illuminate\Http\Request  $request
    * @return \Illuminate\Http\Response
    */
-  public function store(CreateAreaRequest $request)
+  public function store(CreateMeansRequest $request)
   {
-    DB::beginTransaction();
-    try {
-      $area = $this->areaRepo->create($request->all());
-    } catch (QueryException $e) {
-      DB::rollBack();
-      
-      Log::info($e->errorInfo[2]);
+    $means = $this->meansRepo->create($request->all());
 
-      return response()->json(['error' => true], 200);
-    }
-    DB::commit();
-
-    $area = $this->areaRepo->get($area->id);
-
-    return response()->json(['success' => true, 'area' => $area], 200);
+    return response()->json(['success' => true, 'means' => $means], 200);
   }
 
   /**
@@ -67,7 +52,7 @@ class AreaController extends Controller
    */
   public function show($id)
   {
-    //
+      //
   }
 
   /**
@@ -77,10 +62,10 @@ class AreaController extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function update($id, EditAreaRequest $request)
+  public function update($id, EditMeansRequest $request)
   {
     try {
-      $this->areaRepo->update($id, $request->all());
+      $this->meansRepo->update($id, $request->all());
     } catch (QueryException $e) {
       Log::info($e->errorInfo[2]);
 
@@ -98,21 +83,15 @@ class AreaController extends Controller
    */
   public function destroy($id)
   {
-    $solicitudes = $this->areaMeansRepo->getListSolicitudes($id);
+    $solicitudes = $this->meansRepo->getListSolicitudes($id);
 
-    $count = 0;
-
-    foreach ($solicitudes as $key => $value) {
-      $count += count($value->solicitude);
-    }
-
-    if ($count) {
+    if (count($solicitudes->assign_solicitude)) {
       return response()->json(['conflict' => true], 200);
     } else {
       DB::beginTransaction();
 
       try {
-        $this->areaRepo->delete($id);
+        $this->meansRepo->delete($id);
       } catch (QueryException $e) {
         DB::rollBack();
 
@@ -126,5 +105,11 @@ class AreaController extends Controller
 
     return response()->json(['success' => true], 200);
   }
-  
+
+  public function getListMeanssOrderByCategory()
+  {
+    $means = $this->meansRepo->getListMeanss();
+
+    return response()->json(['means' => $means], 200);
+  }
 }
