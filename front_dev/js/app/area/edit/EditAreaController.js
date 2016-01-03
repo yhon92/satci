@@ -1,6 +1,11 @@
 angular.module('Area.controllers')
 .controller('EditAreaCtrl', ($scope, $filter, $uibModalInstance, Alertify, Helpers, directors, means, area, Areas) => {
   $scope.title = 'Editar';
+
+  $scope.button = {
+    submit: 'Guardar',
+    cancel: 'Cancelar'
+  };
   
   $scope.directors = directors;
 
@@ -44,7 +49,7 @@ angular.module('Area.controllers')
         }
       } else {
         console.log(fails);
-      };
+      }
     });
   };
 
@@ -56,13 +61,17 @@ angular.module('Area.controllers')
     let indexDirector = Helpers.getIndex(directors, $scope.area.director);
     let groupMeans = [];
 
+    if (!$scope.area.email.length) {
+      $scope.area.email = area.email;
+    }
+
     for (let i = 0; i < $scope.area.means.length; i++) {
       for (let z = 0; z < means.length; z++) {
         if ($scope.area.means[i] === means[z].id) {
           groupMeans.push(means[z]);
-        };
-      };
-    };
+        }
+      }
+    }
 
     return {
       id: area.id,

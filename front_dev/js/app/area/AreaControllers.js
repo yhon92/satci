@@ -98,7 +98,6 @@ angular.module('Area.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'Di
     });
 
     modalInstance.result.then((data) => {
-      $scope.areas[index].id = data.id;
       $scope.areas[index].name = data.name;
       $scope.areas[index].email = data.email;
       $scope.areas[index].director = data.director;
@@ -146,4 +145,5 @@ angular.module('Area.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'Di
       return false;
     }); 
   };
+  
 })

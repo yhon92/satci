@@ -40,7 +40,7 @@ class AreaTableSeeder extends Seeder
       'Gerencia de Administración Tributaria',
       'Gerencia de Gestión de Talento Humano',
       'Gerencia de Infraestructura',
-      'Gerencia De Relaciones Y Comunicaciones',
+      'Gerencia de Relaciones y Comunicaciones',
       'Oficina de Atención al Ciudadano',
       'Oficina de Consultoria Jurídica',
       'Oficina de Planificación Estratégica',

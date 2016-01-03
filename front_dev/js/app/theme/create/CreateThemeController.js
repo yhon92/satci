@@ -1,7 +1,11 @@
 angular.module('Theme.controllers')
 .controller('CreateThemeCtrl', ($scope, $filter, $uibModalInstance, Alertify, Themes, categories) => {
-  
   $scope.title = 'Agregar';
+
+  $scope.button = {
+    submit: 'Agregar',
+    cancel: 'Cancelar'
+  };
   
   $scope.categories = categories;
 

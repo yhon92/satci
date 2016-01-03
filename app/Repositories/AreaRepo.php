@@ -14,7 +14,13 @@ class AreaRepo extends BaseRepo
   public static function create($data)
   {
     $means = $data['means'];
-    unset($data['means']);
+
+    if (empty($data['email'])) {
+      unset($data['means'], $data['email']);
+    } else {
+      unset($data['means']);
+    }
+
 
     $area = Area::create($data);
     $area->means()->sync($means);
@@ -29,7 +35,12 @@ class AreaRepo extends BaseRepo
   public static function update($id, $data)
   {
     $means = $data['means'];
-    unset($data['means']);
+
+    if (empty($data['email'])) {
+      unset($data['means'], $data['email']);
+    } else {
+      unset($data['means']);
+    }
 
     $area = Area::find($id);
 
@@ -50,9 +61,9 @@ class AreaRepo extends BaseRepo
     return Area::orderBy('name', 'ASC')->with('director', 'means')->get();
   }
 
-  public static function getListArea()
+  /*public static function getListArea()
   {
     return Area::get();
   }
-
+*/
 }

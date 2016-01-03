@@ -17,11 +17,11 @@ class Director extends Model
                           'email', 
                           'resolution'];
 
-  protected $hidden = ['pivot', 'created_at', 'updated_at'];
+  // protected $hidden = ['created_at', 'updated_at'];
 
   public function areas()
   {
-    return $this->hasMay(Area::class);
+    return $this->hasMany(Area::class);
   }
 
 }

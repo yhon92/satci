@@ -1,10 +1,12 @@
 angular.module('Citizen.controllers')
-.controller('CreateCitizenCtrl', ($scope, $state, $filter, Alertify, Citizens, Parishes) => {
+.controller('CreateCitizenCtrl', ($scope, $state, $filter, Alertify, Helpers,Citizens, Parishes) => {
 
   $scope.button = {
     submit: 'Agregar',
     cancel: 'Limpiar'
   };
+
+  $scope.prefixesPhone = Helpers.prefixesPhone;
 
   $scope.citizen = {
     identification: '',

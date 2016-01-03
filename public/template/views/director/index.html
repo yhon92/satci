@@ -1,0 +1,179 @@
+<div class="col-md-12" ui-view>
+  <a class="btn btn-success btn-add-float" title="Agregar Director" ng-click="add()">
+    <img src="./img/bootswatch/plus_2x.png" alt="Agregar">
+  </a>
+
+  <div class="col-lg-4 col-lg-offset-4">
+    <section class="panel panel-primary">
+      <section class="panel-heading">
+        <h3 class="panel-title inline-block">Lista de Directores</h3>
+        <div class="float-right">
+          <button class="btn btn-default btn-sm ButtonSearch collapsed" ng-click="toggleCollapsed()">
+            <span class="glyphicon glyphicon-search"></span>
+          </button>
+        </div>
+      </section>
+      <section class="panel-body List-container">
+        <div uib-collapse="isCollapsed">
+          <div class="well well-sm form-group">
+            <input type="text" class="form-control" placeholder="Buscar..." ng-model="filter.full_name">
+          </div>
+        </div>
+        <ul class="list-group ListGroup">
+          <li class="list-group-item ListGroup-item" ng-repeat="director in filtered = ( directors  | filter: filter.full_name)">
+            {{director.full_name}}
+            <div class="float-right">
+              <div class="MenuActions"uib-dropdown is-open="status.isopen" ng-mouseenter="status.isopen = true" ng-mouseleave="status.isopen = false">
+                <button type="button" class="btn btn-link btn-xs MenuActions-button" uib-dropdown-toggle>
+                  <span class="glyphicon glyphicon-option-vertical"></span>
+                </button>
+                <ul class="dropdown-menu MenuActions-list" role="menu">
+                  <li class="MenuActions-item">
+                    <a class="MenuActions-action" ng-click="delete(director)"><span class="glyphicon glyphicon-trash"></span> </a>
+                  </li>
+                  <li class="MenuActions-item">
+                    <a class="MenuActions-action" ng-click="edit(director)"><span class="glyphicon glyphicon-pencil"></span> </a>
+                  </li>
+                  <li class="MenuActions-item">
+                    <a class="MenuActions-action" ng-click="show(director)"><span class="glyphicon glyphicon-eye-open"></span> </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <p class="align-center" ng-show="!filtered.length"><strong>¡No hay resultado!</strong></p>
+      </section>
+    </div>
+  </div>
+</div>
+<script type="text/ng-template" id="modalFormDirector-template">
+  <section class="modal-header">
+    <button type="button" class="close" ng-click="close()">×</button>
+    <h4 class="modal-title">{{title}} Director</h4>
+  </section>
+  <form class="form-horizontal" ng-submit="save()">
+    <section class="modal-body">
+      <div class="form-group">
+        <div class="col-lg-12">
+          <label for="identification"><strong>Cédula</strong></label>
+        </div>
+        <div class="col-lg-12">
+          <input type="text" class="form-control" id="identification" placeholder="Cédula" autofocus ng-model="director.identification" ng-required="true" only-numbers>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-lg-12">
+          <label for="first_name"><strong>Nombres</strong></label>
+        </div>
+        <div class="col-lg-12">
+          <input type="text" class="form-control" id="first_name" placeholder="Nombres" ng-model="director.first_name" ng-required="true" only-letters>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-lg-12">
+          <label for="last_name"><strong>Apellidos</strong></label>
+        </div>
+        <div class="col-lg-12">
+          <input type="text" class="form-control" id="last_name" placeholder="Apellidos" ng-model="director.last_name" ng-required="true" only-letters>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-lg-12">
+          <label for="email"><strong>Correo Electrónico</strong></label>
+        </div>
+        <div class="col-lg-12">
+          <input type="email" class="form-control" id="email" placeholder="Correo Electrónico" ng-model="director.email">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-lg-12">
+          <label for="director"><strong>Teléfono</strong></label>
+        </div>
+        <div class="col-lg-12">
+          <div class="col-xs-3 padding-none">
+            <select type="role" class="form-control" name="prefix_phone" id="prefix_phone" ng-options="prefix.operator as prefix.operator for prefix in prefixesPhone" ng-model="director.prefix_phone" ng-required="true"></select>
+          </div>
+          <div class="col-xs-9 padding-none">
+            <input class="form-control" type="text" id="number_phone" placeholder="Teléfono" ng-model="director.number_phone" ng-required="true" only-numbers>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-lg-12">
+        <label for="resolution"><strong>Resolucíon</strong></label>
+      </div>
+      <div class="col-lg-12">
+        <input type="text" class="form-control" id="resolution" placeholder="Resolucíon" ng-model="director.resolution">
+      </div>
+    </div>
+  </section>
+  <section class="modal-footer">
+    <button type="button" class="btn btn-link btn-sm" ng-click="close()">{{button.cancel}}</button>
+    <button type="submit" class="btn btn-primary btn-sm">{{button.submit}}</button>
+  </section>
+</form>
+</script>
+<script type="text/ng-template" id="modalShowDirector-template">
+  <section class="modal-header">
+    <button type="button" class="close" ng-click="close()">×</button>
+    <h4 class="modal-title border-bottom">{{director.full_name}}</h4>
+  </section>
+  <section class="modal-body">
+    <div class="col-lg-6 padding-none">
+      <h6 class="text-success"><strong><em>Cédula:</em></strong></h6>
+      <div class="form-group">
+        <div class="col-lg-12">
+          <p>{{director.identification}}</p>
+        </div>
+      </div>
+      <h6 class="text-success"><strong><em>Nombres:</em></strong></h6>
+      <div class="form-group">
+        <div class="col-lg-12">
+          <p>{{director.first_name}}</p>
+        </div>
+      </div>
+      <h6 class="text-success"><strong><em>Apellidos:</em></strong></h6>
+      <div class="form-group">
+        <div class="col-lg-12">
+          <p>{{director.last_name}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 padding-none">
+      <h6 class="text-success"><strong><em>Teléfono:</em></strong></h6>
+      <div class="form-group">
+        <div class="col-lg-12">
+          <p>{{director.prefix_phone}}-{{director.number_phone}}</p>
+        </div>
+      </div>
+      <h6 class="text-success"><strong><em>Correo Electrónico:</em></strong></h6>
+      <div class="form-group">
+        <div class="col-lg-12">
+          <p>{{director.email}}</p>
+        </div>
+      </div>
+      <h6 class="text-success"><strong><em>Resolución:</em></strong></h6>
+      <div class="form-group">
+        <div class="col-lg-12">
+          <p>{{director.resolution}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-12 padding-none">
+      <h6 class="text-success"><strong><em>Áreas:</em></strong></h6>
+      <div class="form-group">
+        <div class="col-lg-12">
+          <ul class="list-unstyled">
+            <li ng-repeat="area in director.areas">- {{area.name}}</li>
+          </ul>
+          <h6 class="align-center" ng-if="notAreas">¡Este director no posee áreas asociadas!</h6>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="modal-footer">
+    <button type="submit" class="btn btn-warning btn-sm" ng-click="close()">Cerrar</button>
+  </section>
+</script>

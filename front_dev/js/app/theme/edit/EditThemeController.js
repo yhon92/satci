@@ -2,6 +2,11 @@ angular.module('Theme.controllers')
 .controller('EditThemeCtrl', ($scope, $filter, $uibModalInstance, Alertify, Themes, categories, theme) => {
   $scope.title = 'Editar';
 
+  $scope.button = {
+    submit: 'Guardar',
+    cancel: 'Cancelar'
+  };
+
   $scope.categories = categories;
 
   $scope.theme = {

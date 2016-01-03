@@ -2,6 +2,11 @@ angular.module('Category.controllers')
 .controller('EditCategoryCtrl', ($scope, $filter, $uibModalInstance, Alertify, Categories, category) => {
   $scope.title = 'Editar';
 
+  $scope.button = {
+    submit: 'Guardar',
+    cancel: 'Cancelar'
+  };
+
   $scope.category = category.name;
 
   $scope.save = () => {

@@ -208,7 +208,6 @@ angular.module('Area.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'Di
     });
 
     modalInstance.result.then(function (data) {
-      $scope.areas[index].id = data.id;
       $scope.areas[index].name = data.name;
       $scope.areas[index].email = data.email;
       $scope.areas[index].director = data.director;
@@ -299,6 +298,11 @@ angular.module('Area.resources', ['ngResource', 'SATCI.Shared']).factory('Areas'
 angular.module('Area.controllers').controller('CreateAreaCtrl', function ($scope, $filter, $uibModalInstance, Alertify, Helpers, directors, means, Areas) {
   $scope.title = 'Agregar';
 
+  $scope.button = {
+    submit: 'Agregar',
+    cancel: 'Cancelar'
+  };
+
   $scope.directors = directors;
 
   $scope.means = means;
@@ -351,6 +355,11 @@ angular.module('Area.controllers').controller('CreateAreaCtrl', function ($scope
 angular.module('Area.controllers').controller('EditAreaCtrl', function ($scope, $filter, $uibModalInstance, Alertify, Helpers, directors, means, area, Areas) {
   $scope.title = 'Editar';
 
+  $scope.button = {
+    submit: 'Guardar',
+    cancel: 'Cancelar'
+  };
+
   $scope.directors = directors;
 
   $scope.means = means;
@@ -391,7 +400,7 @@ angular.module('Area.controllers').controller('EditAreaCtrl', function ($scope, 
         }
       } else {
         console.log(fails);
-      };
+      }
     });
   };
 
@@ -403,13 +412,17 @@ angular.module('Area.controllers').controller('EditAreaCtrl', function ($scope, 
     var indexDirector = Helpers.getIndex(directors, $scope.area.director);
     var groupMeans = [];
 
+    if (!$scope.area.email.length) {
+      $scope.area.email = area.email;
+    }
+
     for (var i = 0; i < $scope.area.means.length; i++) {
       for (var z = 0; z < means.length; z++) {
         if ($scope.area.means[i] === means[z].id) {
           groupMeans.push(means[z]);
-        };
-      };
-    };
+        }
+      }
+    }
 
     return {
       id: area.id,
@@ -602,6 +615,11 @@ angular.module('Category.resources', ['ngResource', 'SATCI.Shared']).factory('Ca
 angular.module('Category.controllers').controller('CreateCategoryCtrl', function ($scope, $filter, $uibModalInstance, Alertify, Categories) {
   $scope.title = 'Agregar';
 
+  $scope.button = {
+    submit: 'Agregar',
+    cancel: 'Cancelar'
+  };
+
   $scope.category = null;
 
   $scope.save = function () {
@@ -640,6 +658,11 @@ angular.module('Category.controllers').controller('CreateCategoryCtrl', function
 
 angular.module('Category.controllers').controller('EditCategoryCtrl', function ($scope, $filter, $uibModalInstance, Alertify, Categories, category) {
   $scope.title = 'Editar';
+
+  $scope.button = {
+    submit: 'Guardar',
+    cancel: 'Cancelar'
+  };
 
   $scope.category = category.name;
 
@@ -820,12 +843,14 @@ angular.module('Citizen.resources', ['ngResource', 'SATCI.Shared']).factory('Cit
 },{}],17:[function(require,module,exports){
 'use strict';
 
-angular.module('Citizen.controllers').controller('CreateCitizenCtrl', function ($scope, $state, $filter, Alertify, Citizens, Parishes) {
+angular.module('Citizen.controllers').controller('CreateCitizenCtrl', function ($scope, $state, $filter, Alertify, Helpers, Citizens, Parishes) {
 
   $scope.button = {
     submit: 'Agregar',
     cancel: 'Limpiar'
   };
+
+  $scope.prefixesPhone = Helpers.prefixesPhone;
 
   $scope.citizen = {
     identification: '',
@@ -965,7 +990,115 @@ angular.module('Citizen.controllers');
 },{}],20:[function(require,module,exports){
 'use strict';
 
-angular.module('Director.controllers', []);
+angular.module('Director.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'Director.resources']).controller('DirectorCtrl', function ($scope, $uibModal, Helpers, Alertify, Directors) {
+
+  Directors.get().$promise.then(function (data) {
+    $scope.directors = data.directors;
+  }).catch(function (fails) {});
+
+  $scope.filter = {
+    name: ''
+  };
+
+  $scope.isCollapsed = true;
+
+  $scope.toggleCollapsed = function () {
+    $scope.filter.name = '';
+    $scope.isCollapsed = !$scope.isCollapsed;
+  };
+
+  $scope.add = function () {
+    var modalInstance = $uibModal.open({
+      templateUrl: 'modalFormDirector-template',
+      controller: 'CreateDirectorCtrl',
+      size: 'sm',
+      backdrop: 'static',
+      keyboard: false
+    });
+
+    modalInstance.result.then(function (data) {
+      $scope.directors.push(data);
+    });
+  };
+
+  $scope.show = function (_director) {
+    var modalInstance = $uibModal.open({
+      templateUrl: 'modalShowDirector-template',
+      controller: 'ShowDirectorCtrl',
+      size: 'dm',
+      resolve: {
+        director: function director() {
+          return _director;
+        }
+      }
+    });
+  };
+
+  $scope.edit = function (_director2) {
+
+    var index = Helpers.getIndex($scope.directors, _director2.id);
+
+    var modalInstance = $uibModal.open({
+      templateUrl: 'modalFormDirector-template',
+      controller: 'EditDirectorCtrl',
+      size: 'sm',
+      backdrop: 'static',
+      keyboard: false,
+      resolve: {
+        director: function director() {
+          return _director2;
+        }
+      }
+    });
+
+    modalInstance.result.then(function (data) {
+      $scope.directors[index].identification = data.identification;
+      $scope.directors[index].full_name = data.full_name;
+      $scope.directors[index].first_name = data.first_name;
+      $scope.directors[index].last_name = data.last_name;
+      $scope.directors[index].email = data.email;
+      $scope.directors[index].prefix_phone = data.prefix_phone;
+      $scope.directors[index].number_phone = data.number_phone;
+      $scope.directors[index].resolution = data.resolution;
+    });
+  };
+
+  $scope.delete = function (director) {
+
+    var id = director.id;
+
+    var index = Helpers.getIndex($scope.directors, id);
+
+    Alertify.set({ labels: { ok: "Eliminar", cancel: "Cancelar" } });
+
+    Alertify.confirm('Confirma que desea eliminar al director: ' + '</br>Nombre: <strong class="text-danger">' + director.full_name + '</strong>').then(function (ok) {
+      Directors.delete({ id: id }).$promise.then(function (data) {
+        if (data.success) {
+          $scope.directors.splice(index, 1);
+          Alertify.success('¡Director eliminado!');
+        }
+        if (data.conflict) {
+          Alertify.log('¡No es posible eliminar por tener <strong class="text-warning">Áreas</strong> asociadas!');
+        }
+        if (data.error) {
+          Alertify.error('¡Ocurrio un error al intentar eliminar!');
+        }
+      }).catch(function (fails) {
+        if (fails.status != 500) {
+          for (var firstKey in fails.data) {
+            for (var secondKey in fails.data[firstKey]) {
+              Alertify.error(fails.data[firstKey][secondKey]);
+            }
+          }
+        } else {
+          console.log(fails);
+        };
+      });
+    }, function (cancel) {
+      return false;
+    });
+  };
+});
 
 },{}],21:[function(require,module,exports){
 'use strict';
@@ -980,7 +1113,13 @@ require('./edit/EditDirectorController');
 
 require('./show/ShowDirectorController');
 
-angular.module('SATCI.Director', ['ui.router', 'SATCI.Shared', 'Director.controllers', 'Director.resources']);
+angular.module('SATCI.Director', ['ui.router', 'SATCI.Shared', 'Director.controllers', 'Director.resources']).config(function ($authProvider, $stateProvider, PathTemplates) {
+  $stateProvider.state('director', {
+    url: '/config/director',
+    templateUrl: PathTemplates.views + 'director/index.html',
+    controller: 'DirectorCtrl'
+  });
+});
 
 },{"./DirectorControllers":20,"./DirectorResources":22,"./create/CreateDirectorController":23,"./edit/EditDirectorController":24,"./show/ShowDirectorController":25}],22:[function(require,module,exports){
 'use strict';
@@ -1004,17 +1143,145 @@ angular.module('Director.resources', ['ngResource', 'SATCI.Shared']).factory('Di
 },{}],23:[function(require,module,exports){
 'use strict';
 
-angular.module('Director.controllers');
+angular.module('Director.controllers').controller('CreateDirectorCtrl', function ($scope, $filter, $uibModalInstance, Alertify, Helpers, Directors) {
+  $scope.title = 'Agregar';
+
+  $scope.button = {
+    submit: 'Agregar',
+    cancel: 'Cancelar'
+  };
+
+  $scope.prefixesPhone = Helpers.prefixesPhone;
+
+  $scope.director = null;
+
+  $scope.save = function () {
+    $scope.director.first_name = $filter('titleCase')($scope.director.first_name);
+    $scope.director.last_name = $filter('titleCase')($scope.director.last_name);
+    $scope.director.full_name = $scope.director.first_name + ' ' + $scope.director.last_name;
+
+    var data = {
+      identification: $scope.director.identification,
+      full_name: $scope.director.full_name,
+      first_name: $scope.director.first_name,
+      last_name: $scope.director.last_name,
+      prefix_phone: $scope.director.prefix_phone,
+      number_phone: $scope.director.number_phone,
+      email: $scope.director.email,
+      resolution: $scope.director.resolution
+    };
+
+    Directors.save(data).$promise.then(function (data) {
+      if (data.success) {
+        Alertify.success('¡Director registrado!');
+        $uibModalInstance.close(data.director);
+      }
+      if (data.error) {
+        Alertify.error('¡No se pudo registrar al director!');
+      }
+    }).catch(function (fails) {
+      if (fails.status != 500) {
+        for (var firstKey in fails.data) {
+          for (var secondKey in fails.data[firstKey]) {
+            Alertify.error(fails.data[firstKey][secondKey]);
+          }
+        }
+      } else {
+        console.log(fails);
+      };
+    });
+  };
+
+  $scope.close = function () {
+    $uibModalInstance.dismiss();
+  };
+});
 
 },{}],24:[function(require,module,exports){
 'use strict';
 
-angular.module('Director.controllers');
+angular.module('Director.controllers').controller('EditDirectorCtrl', function ($scope, $filter, $uibModalInstance, Alertify, Helpers, Directors, director) {
+  $scope.title = 'Editar';
+
+  $scope.button = {
+    submit: 'Guardar',
+    cancel: 'Cancelar'
+  };
+
+  $scope.prefixesPhone = Helpers.prefixesPhone;
+
+  $scope.director = {
+    identification: director.identification,
+    first_name: director.first_name,
+    last_name: director.last_name,
+    prefix_phone: director.prefix_phone,
+    number_phone: director.number_phone,
+    email: director.email,
+    resolution: director.resolution
+  };
+
+  $scope.save = function () {
+    $scope.director.first_name = $filter('titleCase')($scope.director.first_name);
+    $scope.director.last_name = $filter('titleCase')($scope.director.last_name);
+    $scope.director.full_name = $scope.director.first_name + ' ' + $scope.director.last_name;
+
+    var data = {
+      identification: $scope.director.identification,
+      full_name: $scope.director.full_name,
+      first_name: $scope.director.first_name,
+      last_name: $scope.director.last_name,
+      prefix_phone: $scope.director.prefix_phone,
+      number_phone: $scope.director.number_phone,
+      email: $scope.director.email,
+      resolution: $scope.director.resolution
+    };
+
+    Directors.update({ id: director.id }, data).$promise.then(function (data) {
+      if (data.success) {
+        Alertify.success('¡Director editado!');
+        director = $scope.director;
+        $uibModalInstance.close(director);
+      }
+      if (data.error) {
+        Alertify.error('¡No se pudo editar el director!');
+      }
+    }).catch(function (fails) {
+      if (fails.status != 500) {
+        for (var firstKey in fails.data) {
+          for (var secondKey in fails.data[firstKey]) {
+            Alertify.error(fails.data[firstKey][secondKey]);
+          }
+        }
+      } else {
+        console.log(fails);
+      }
+    });
+  };
+
+  $scope.close = function () {
+    $uibModalInstance.dismiss();
+  };
+});
 
 },{}],25:[function(require,module,exports){
 'use strict';
 
-angular.module('Director.controllers');
+angular.module('Director.controllers').controller('ShowDirectorCtrl', function ($scope, $uibModalInstance, director) {
+
+  $scope.director = director;
+  $scope.areas = false;
+  $scope.notAreas = false;
+
+  if (director.areas != undefined && director.areas.length > 0) {
+    $scope.areas = director.areas;
+  } else {
+    $scope.notAreas = true;
+  }
+
+  $scope.close = function () {
+    $uibModalInstance.dismiss();
+  };
+});
 
 },{}],26:[function(require,module,exports){
 'use strict';
@@ -1731,7 +1998,8 @@ angular.module('Shared.services', []).factory('paginateService', function ($q, $
           return i;
         }
       }
-    }
+    },
+    prefixesPhone: [{ operator: '0212' }, { operator: '0251' }, { operator: '0253' }, { operator: '0412' }, { operator: '0414' }, { operator: '0416' }, { operator: '0424' }, { operator: '0426' }]
   };
 });
 
@@ -2749,8 +3017,12 @@ angular.module('Theme.resources', ['ngResource', 'SATCI.Shared']).factory('Theme
 'use strict';
 
 angular.module('Theme.controllers').controller('CreateThemeCtrl', function ($scope, $filter, $uibModalInstance, Alertify, Themes, categories) {
-
   $scope.title = 'Agregar';
+
+  $scope.button = {
+    submit: 'Agregar',
+    cancel: 'Cancelar'
+  };
 
   $scope.categories = categories;
 
@@ -2796,6 +3068,11 @@ angular.module('Theme.controllers').controller('CreateThemeCtrl', function ($sco
 
 angular.module('Theme.controllers').controller('EditThemeCtrl', function ($scope, $filter, $uibModalInstance, Alertify, Themes, categories, theme) {
   $scope.title = 'Editar';
+
+  $scope.button = {
+    submit: 'Guardar',
+    cancel: 'Cancelar'
+  };
 
   $scope.categories = categories;
 

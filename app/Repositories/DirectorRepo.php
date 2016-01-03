@@ -20,7 +20,7 @@ class DirectorRepo extends BaseRepo
 
   public static function get($id)
   {
-    return Director::find($id);
+    return Director::with('areas')->find($id);
   }
 
   public static function update($id, $data)
@@ -35,7 +35,7 @@ class DirectorRepo extends BaseRepo
 
   public static function all()
   {
-    return Director::orderBy('full_name', 'ASC')->get();
+    return Director::with('areas')->orderBy('full_name', 'ASC')->get();
   }
 
   public static function themeBySolicitude($solicitude_id)
@@ -49,9 +49,9 @@ class DirectorRepo extends BaseRepo
     return $themes;
   }
 
-  public static function getListSolicitudes($id)
+  public static function getListAreas($id)
   {
-    return Director::with('assign_solicitude')->find($id);
+    return Director::with('areas')->find($id);
   }
 
 }

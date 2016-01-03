@@ -2,6 +2,11 @@ angular.module('Category.controllers')
 .controller('CreateCategoryCtrl', ($scope, $filter, $uibModalInstance, Alertify, Categories) => {
   $scope.title = 'Agregar';
 
+  $scope.button = {
+    submit: 'Agregar',
+    cancel: 'Cancelar'
+  };
+
   $scope.category = null;
 
   $scope.save = () => {

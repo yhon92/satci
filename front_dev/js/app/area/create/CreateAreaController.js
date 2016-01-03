@@ -2,6 +2,11 @@ angular.module('Area.controllers')
 .controller('CreateAreaCtrl', ($scope, $filter, $uibModalInstance, Alertify, Helpers, directors, means, Areas) => {
   $scope.title = 'Agregar';
 
+  $scope.button = {
+    submit: 'Agregar',
+    cancel: 'Cancelar'
+  };
+
   $scope.directors = directors;
 
   $scope.means = means;

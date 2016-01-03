@@ -6,8 +6,8 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Log;
 use SATCI\Http\Controllers\Controller;
-// use SATCI\Http\Requests\CreateDirectorRequest;
-// use SATCI\Http\Requests\EditDirectorRequest;
+use SATCI\Http\Requests\CreateDirectorRequest;
+use SATCI\Http\Requests\EditDirectorRequest;
 use SATCI\Repositories\DirectorRepo;
 
 class DirectorController extends Controller
@@ -83,9 +83,9 @@ class DirectorController extends Controller
    */
   public function destroy($id)
   {
-    $solicitudes = $this->directorRepo->getListSolicitudes($id);
+    $director = $this->directorRepo->get($id);
 
-    if (count($solicitudes->assign_solicitude)) {
+    if (count($director->areas)) {
       return response()->json(['conflict' => true], 200);
     } else {
       DB::beginTransaction();
@@ -106,10 +106,4 @@ class DirectorController extends Controller
     return response()->json(['success' => true], 200);
   }
 
-  public function getListDirectorsOrderByCategory()
-  {
-    $directors = $this->directorRepo->getListDirectors();
-
-    return response()->json(['directors' => $directors], 200);
-  }
 }

@@ -5,15 +5,15 @@
 
   <div class="col-lg-6 col-lg-offset-3">
     <section class="panel panel-primary">
-      <div class="panel-heading">
+      <section class="panel-heading">
         <h3 class="panel-title inline-block">Lista de Áreas</h3>
         <div class="float-right">
           <button class="btn btn-default btn-sm ButtonSearch collapsed" ng-click="toggleCollapsed()">
             <span class="glyphicon glyphicon-search"></span>
           </button>
         </div>
-      </div>
-      <div class="panel-body List-container">
+      </section>
+      <section class="panel-body List-container">
         <div uib-collapse="isCollapsed">
           <div class="well well-sm form-group">
             <input type="text" class="form-control" placeholder="Buscar..." ng-model="filter.name">
@@ -94,8 +94,8 @@
       </div>
     </section>
     <section class="modal-footer">
-      <button type="button" class="btn btn-link btn-sm" ng-click="close()">Cancelar</button>
-      <button type="submit" class="btn btn-primary btn-sm">Agregar</button>
+      <button type="button" class="btn btn-link btn-sm" ng-click="close()">{{button.cancel}}</button>
+      <button type="submit" class="btn btn-primary btn-sm">{{button.submit}}</button>
     </section>
   </form>
 </script>
@@ -121,12 +121,12 @@
     <div class="form-group">
       <div class="col-lg-12">
         <ul class="list-unstyled">
-         <li ng-repeat="means in area.means">- {{means.name}}</li>
-       </ul>
-     </div>
-   </div>
- </section>
- <section class="modal-footer">
-  <button type="submit" class="btn btn-warning btn-sm" ng-click="close()">Cerrar</button>
-</section>
+          <li ng-repeat="means in area.means">- {{means.name}}</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="modal-footer">
+    <button type="submit" class="btn btn-warning btn-sm" ng-click="close()">Cerrar</button>
+  </section>
 </script>

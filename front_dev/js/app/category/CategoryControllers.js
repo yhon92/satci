@@ -102,4 +102,5 @@ angular.module('Category.controllers', ['ui.router', 'Alertify', 'SATCI.Shared',
       return false;
     }); 
   };
+  
 })

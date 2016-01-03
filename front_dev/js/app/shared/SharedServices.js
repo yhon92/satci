@@ -44,5 +44,15 @@ angular.module('Shared.services', [])
         }
       }
     },
+    prefixesPhone: [
+      {operator: '0212'}, 
+      {operator: '0251'}, 
+      {operator: '0253'}, 
+      {operator: '0412'}, 
+      {operator: '0414'}, 
+      {operator: '0416'}, 
+      {operator: '0424'}, 
+      {operator: '0426'}, 
+    ],
   }
 })
