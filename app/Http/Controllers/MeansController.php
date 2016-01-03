@@ -6,8 +6,8 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Log;
 use SATCI\Http\Controllers\Controller;
-// use SATCI\Http\Requests\CreateMeansRequest;
-// use SATCI\Http\Requests\EditMeansRequest;
+use SATCI\Http\Requests\CreateMeansRequest;
+use SATCI\Http\Requests\EditMeansRequest;
 use SATCI\Repositories\MeansRepo;
 
 class MeansController extends Controller
@@ -83,9 +83,9 @@ class MeansController extends Controller
    */
   public function destroy($id)
   {
-    $solicitudes = $this->meansRepo->getListSolicitudes($id);
+    $means = $this->meansRepo->getListAreas($id);
 
-    if (count($solicitudes->assign_solicitude)) {
+    if (count($means->areas)) {
       return response()->json(['conflict' => true], 200);
     } else {
       DB::beginTransaction();
@@ -106,10 +106,4 @@ class MeansController extends Controller
     return response()->json(['success' => true], 200);
   }
 
-  public function getListMeanssOrderByCategory()
-  {
-    $means = $this->meansRepo->getListMeanss();
-
-    return response()->json(['means' => $means], 200);
-  }
 }

@@ -1,14 +1,12 @@
 * Módulo de Seguridad -> (Usuarios => [Crear, Editar, Eliminar], 
                           Perfiles de Usuario => [Asignar Permisos, Ver Permisos, Eliminar Permisos]
 * 
-* Módulo de Configuración -> (Recursos)
+* Revisar el sistema de Login y establecer mensajes y alertas.
 * 
 * Al registrar un SOLICITANTE desde la solicitud y este ya existe en la DB informar que ya existe y 
 * añadirlo a la solicitud automaticamente (revisar la validacion para ello).
 * 
-* 
-* 
-* 
+* Hacer que cierre el menu response cuando se selecciona una opción
 * 
 * 
 * 

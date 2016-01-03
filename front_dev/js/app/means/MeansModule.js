@@ -10,3 +10,11 @@ angular.module('SATCI.Means', [
   'Means.controllers', 
   'Means.resources'
   ])
+.config(($authProvider, $stateProvider, PathTemplates) => {
+  $stateProvider
+  .state('means', {
+    url: '/config/means',
+    templateUrl: `${PathTemplates.views}means/index.html`,
+    controller: 'MeansCtrl'
+  })
+})

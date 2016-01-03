@@ -1,9 +1,10 @@
 <?php
+
 namespace SATCI\Http\Requests;
 
 use SATCI\Http\Requests\Request;
 
-class EditCategoryRequest extends Request
+class EditMeansRequest extends Request
 {
   /**
    * Determine if the user is authorized to make this request.
@@ -22,10 +23,8 @@ class EditCategoryRequest extends Request
    */
   public function rules()
   {
-    // $id = $this->route()->parameters()['category'];
-
     return [
-    'name' => 'required|unique:categories'
+      'name' => 'required|unique:means',
     ];
   }
 }

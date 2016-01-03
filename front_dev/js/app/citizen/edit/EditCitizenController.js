@@ -1,10 +1,12 @@
 angular.module('Citizen.controllers')
-.controller('EditCitizenCtrl', ($scope, $state, $stateParams, $filter, Alertify, Citizens, Parishes) => {
+.controller('EditCitizenCtrl', ($scope, $state, $stateParams, $filter, Alertify, Helpers, Citizens, Parishes) => {
 
   $scope.button = {
     submit: 'Guardar',
     cancel: 'Cancelar'
   };
+
+  $scope.prefixesPhone = Helpers.prefixesPhone;
 
   if (!$scope.parishes) {
     Parishes.get().$promise

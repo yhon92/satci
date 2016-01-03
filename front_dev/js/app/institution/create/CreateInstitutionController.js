@@ -1,10 +1,12 @@
 angular.module('Institution.controllers')
-.controller('CreateInstitutionCtrl', ($scope, $state, $filter, Alertify, Institutions, Parishes) => {
+.controller('CreateInstitutionCtrl', ($scope, $state, $filter, Alertify, Helpers, Institutions, Parishes) => {
 
   $scope.button = {
     submit: 'Agregar',
     cancel: 'Limpiar'
   };
+
+  $scope.prefixesPhone = Helpers.prefixesPhone;
 
   $scope.institution = {
     identification: '',

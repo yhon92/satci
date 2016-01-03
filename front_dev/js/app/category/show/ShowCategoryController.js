@@ -1,6 +1,5 @@
 angular.module('Category.controllers')
 .controller('ShowCategoryCtrl', ($scope, $uibModalInstance, category) => {
-
   $scope.category = category;  
   $scope.themes = false;
   $scope.notThemes = false;

@@ -22,16 +22,7 @@
 			<label class="col-lg-3 control-label" for="number_phone"><strong>Teléfono:</strong></label>
 			<div class="col-lg-9">
 				<div class="col-xs-3 padding-none">
-					<select class="form-control" name="prefix_phone" id="prefix_phone" ng-model="institution.prefix_phone" ng-required="true">
-						<option value="0212">0212</option>
-						<option value="0251">0251</option>
-						<option value="0253">0253</option>
-						<option value="0412">0412</option>
-						<option value="0414">0414</option>
-						<option value="0416">0416</option>
-						<option value="0424">0424</option>
-						<option value="0426">0426</option>
-					</select>
+					<select type="role" class="form-control" name="prefix_phone" id="prefix_phone" ng-options="prefix.operator as prefix.operator for prefix in prefixesPhone" ng-model="institution.prefix_phone" ng-required="true"></select>
 				</div>
 				<div class="col-xs-9 padding-none">
 					<input class="form-control" type="text" id="number_phone" placeholder="Teléfono" ng-model="institution.number_phone" ng-required="true">

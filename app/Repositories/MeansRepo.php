@@ -35,7 +35,7 @@ class MeansRepo extends BaseRepo
 
   public static function all()
   {
-    return Means::orderBy('name', 'ASC')->get();
+    return Means::with('areas')->orderBy('name', 'ASC')->get();
   }
 
   public static function themeBySolicitude($solicitude_id)
@@ -49,9 +49,9 @@ class MeansRepo extends BaseRepo
     return $themes;
   }
 
-  public static function getListSolicitudes($id)
+  public static function getListAreas($id)
   {
-    return Means::with('assign_solicitude')->find($id);
+    return Means::with('areas')->find($id);
   }
 
 }

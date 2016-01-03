@@ -1,10 +1,12 @@
 angular.module('Institution.controllers')
-.controller('EditInstitutionCtrl', ($scope, $state, $stateParams, $filter, Alertify, Institutions, Parishes) => {
+.controller('EditInstitutionCtrl', ($scope, $state, $stateParams, $filter, Alertify, Helpers, Institutions, Parishes) => {
 
   $scope.button = {
     submit: 'Guardar',
     cancel: 'Cancelar'
   };
+
+  $scope.prefixesPhone = Helpers.prefixesPhone;
 
   if (!$scope.parishes) {
     Parishes.get((data) => {

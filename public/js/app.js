@@ -704,7 +704,6 @@ angular.module('Category.controllers').controller('EditCategoryCtrl', function (
 'use strict';
 
 angular.module('Category.controllers').controller('ShowCategoryCtrl', function ($scope, $uibModalInstance, category) {
-
   $scope.category = category;
   $scope.themes = false;
   $scope.notThemes = false;
@@ -924,12 +923,14 @@ angular.module('Citizen.controllers').controller('CreateCitizenCtrl', function (
 },{}],18:[function(require,module,exports){
 'use strict';
 
-angular.module('Citizen.controllers').controller('EditCitizenCtrl', function ($scope, $state, $stateParams, $filter, Alertify, Citizens, Parishes) {
+angular.module('Citizen.controllers').controller('EditCitizenCtrl', function ($scope, $state, $stateParams, $filter, Alertify, Helpers, Citizens, Parishes) {
 
   $scope.button = {
     submit: 'Guardar',
     cancel: 'Cancelar'
   };
+
+  $scope.prefixesPhone = Helpers.prefixesPhone;
 
   if (!$scope.parishes) {
     Parishes.get().$promise.then(function (data) {
@@ -1421,12 +1422,14 @@ angular.module('Institution.resources', ['ngResource', 'SATCI.Shared']).factory(
 },{}],30:[function(require,module,exports){
 'use strict';
 
-angular.module('Institution.controllers').controller('CreateInstitutionCtrl', function ($scope, $state, $filter, Alertify, Institutions, Parishes) {
+angular.module('Institution.controllers').controller('CreateInstitutionCtrl', function ($scope, $state, $filter, Alertify, Helpers, Institutions, Parishes) {
 
   $scope.button = {
     submit: 'Agregar',
     cancel: 'Limpiar'
   };
+
+  $scope.prefixesPhone = Helpers.prefixesPhone;
 
   $scope.institution = {
     identification: '',
@@ -1506,12 +1509,14 @@ angular.module('Institution.controllers').controller('CreateInstitutionCtrl', fu
 },{}],31:[function(require,module,exports){
 'use strict';
 
-angular.module('Institution.controllers').controller('EditInstitutionCtrl', function ($scope, $state, $stateParams, $filter, Alertify, Institutions, Parishes) {
+angular.module('Institution.controllers').controller('EditInstitutionCtrl', function ($scope, $state, $stateParams, $filter, Alertify, Helpers, Institutions, Parishes) {
 
   $scope.button = {
     submit: 'Guardar',
     cancel: 'Cancelar'
   };
+
+  $scope.prefixesPhone = Helpers.prefixesPhone;
 
   if (!$scope.parishes) {
     Parishes.get(function (data) {
@@ -1630,7 +1635,100 @@ angular.module('SATCI.Login', ['ui.router', 'SATCI.Shared']).config(function ($s
 },{}],34:[function(require,module,exports){
 'use strict';
 
-angular.module('Means.controllers', []);
+angular.module('Means.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'Means.resources']).controller('MeansCtrl', function ($scope, $uibModal, Helpers, Alertify, Means) {
+  Means.get().$promise.then(function (data) {
+    $scope.means = data.means;
+  }).catch(function (fails) {});
+
+  $scope.filter = {
+    name: ''
+  };
+
+  $scope.isCollapsed = true;
+
+  $scope.toggleCollapsed = function () {
+    $scope.filter.name = '';
+    $scope.isCollapsed = !$scope.isCollapsed;
+  };
+
+  $scope.add = function () {
+    var modalInstance = $uibModal.open({
+      templateUrl: 'modalFormMeans-template',
+      controller: 'CreateMeansCtrl',
+      size: 'sm',
+      backdrop: 'static',
+      keyboard: false
+    });
+
+    modalInstance.result.then(function (data) {
+      $scope.means.push(data);
+    });
+  };
+
+  $scope.show = function (_item) {
+    var modalInstance = $uibModal.open({
+      templateUrl: 'modalShowMeans-template',
+      controller: 'ShowMeansCtrl',
+      size: 'dm',
+      resolve: {
+        item: function item() {
+          return _item;
+        }
+      }
+    });
+  };
+
+  $scope.edit = function (_item2) {
+    var modalInstance = $uibModal.open({
+      templateUrl: 'modalFormMeans-template',
+      controller: 'EditMeansCtrl',
+      size: 'sm',
+      backdrop: 'static',
+      keyboard: false,
+      resolve: {
+        item: function item() {
+          return _item2;
+        }
+      }
+    });
+  };
+
+  $scope.delete = function (item) {
+
+    var id = item.id;
+
+    var index = Helpers.getIndex($scope.means, id);
+
+    Alertify.set({ labels: { ok: "Eliminar", cancel: "Cancelar" } });
+
+    Alertify.confirm('Confirma que desea eliminar el recurso: ' + '</br>Nombre: <strong class="text-danger">' + item.name + '</strong>').then(function (ok) {
+      Means.delete({ id: id }).$promise.then(function (data) {
+        if (data.success) {
+          $scope.means.splice(index, 1);
+          Alertify.success('¡Recurso eliminado!');
+        }
+        if (data.conflict) {
+          Alertify.log('¡No es posible eliminar por tener <strong class="text-warning">Áreas</strong> asociadas!');
+        }
+        if (data.error) {
+          Alertify.error('¡Ocurrio un error al intentar eliminar!');
+        }
+      }).catch(function (fails) {
+        if (fails.status != 500) {
+          for (var firstKey in fails.data) {
+            for (var secondKey in fails.data[firstKey]) {
+              Alertify.error(fails.data[firstKey][secondKey]);
+            }
+          }
+        } else {
+          console.log(fails);
+        };
+      });
+    }, function (cancel) {
+      return false;
+    });
+  };
+});
 
 },{}],35:[function(require,module,exports){
 'use strict';
@@ -1645,7 +1743,13 @@ require('./edit/EditMeansController');
 
 require('./show/ShowMeansController');
 
-angular.module('SATCI.Means', ['ui.router', 'SATCI.Shared', 'Means.controllers', 'Means.resources']);
+angular.module('SATCI.Means', ['ui.router', 'SATCI.Shared', 'Means.controllers', 'Means.resources']).config(function ($authProvider, $stateProvider, PathTemplates) {
+  $stateProvider.state('means', {
+    url: '/config/means',
+    templateUrl: PathTemplates.views + 'means/index.html',
+    controller: 'MeansCtrl'
+  });
+});
 
 },{"./MeansControllers":34,"./MeansResources":36,"./create/CreateMeansController":37,"./edit/EditMeansController":38,"./show/ShowMeansController":39}],36:[function(require,module,exports){
 'use strict';
@@ -1669,17 +1773,112 @@ angular.module('Means.resources', ['ngResource', 'SATCI.Shared']).factory('Means
 },{}],37:[function(require,module,exports){
 'use strict';
 
-angular.module('Means.controllers');
+angular.module('Means.controllers').controller('CreateMeansCtrl', function ($scope, $filter, $uibModalInstance, Alertify, Means) {
+  $scope.title = 'Agregar';
+
+  $scope.button = {
+    submit: 'Agregar',
+    cancel: 'Cancelar'
+  };
+
+  $scope.means = null;
+
+  $scope.save = function () {
+    var data = {
+      name: $filter('titleCase')($scope.means)
+    };
+
+    Means.save(data).$promise.then(function (data) {
+      if (data.success) {
+        Alertify.success('¡Recurso registrado!');
+        $uibModalInstance.close(data.means);
+      }
+      if (data.error) {
+        Alertify.error('¡No se pudo registrar el recurso!');
+      }
+    }).catch(function (fails) {
+      if (fails.status != 500) {
+        for (var firstKey in fails.data) {
+          for (var secondKey in fails.data[firstKey]) {
+            Alertify.error(fails.data[firstKey][secondKey]);
+          }
+        }
+      } else {
+        console.log(fails);
+      };
+    });
+  };
+
+  $scope.close = function () {
+    $uibModalInstance.dismiss();
+  };
+});
 
 },{}],38:[function(require,module,exports){
 'use strict';
 
-angular.module('Means.controllers');
+angular.module('Means.controllers').controller('EditMeansCtrl', function ($scope, $filter, $uibModalInstance, Alertify, Means, item) {
+  $scope.title = 'Editar';
+
+  $scope.button = {
+    submit: 'Guardar',
+    cancel: 'Cancelar'
+  };
+
+  $scope.means = item.name;
+
+  $scope.save = function () {
+    $scope.means = $filter('titleCase')($scope.means);
+
+    var data = {
+      name: $scope.means
+    };
+
+    Means.update({ id: item.id }, data).$promise.then(function (data) {
+      if (data.success) {
+        Alertify.success('¡Recurso editado!');
+        item.name = $scope.means;
+        $uibModalInstance.close(item);
+      }
+      if (data.error) {
+        Alertify.error('¡No se pudo editar el recurso!');
+      }
+    }).catch(function (fails) {
+      if (fails.status != 500) {
+        for (var firstKey in fails.data) {
+          for (var secondKey in fails.data[firstKey]) {
+            Alertify.error(fails.data[firstKey][secondKey]);
+          }
+        }
+      } else {
+        console.log(fails);
+      };
+    });
+  };
+
+  $scope.close = function () {
+    $uibModalInstance.dismiss();
+  };
+});
 
 },{}],39:[function(require,module,exports){
 'use strict';
 
-angular.module('Means.controllers');
+angular.module('Means.controllers').controller('ShowMeansCtrl', function ($scope, $uibModalInstance, item) {
+  $scope.means = item;
+  $scope.areas = false;
+  $scope.notAreas = false;
+
+  if (item.areas != undefined && item.areas.length > 0) {
+    $scope.areas = item.areas;
+  } else {
+    $scope.notAreas = true;
+  }
+
+  $scope.close = function () {
+    $uibModalInstance.dismiss();
+  };
+});
 
 },{}],40:[function(require,module,exports){
 'use strict';
