@@ -17,7 +17,7 @@ class InstitutionController extends Controller
 
   public function __construct (InstitutionRepo $institutionRepo)
   {
-    // $this->middleware('jwt.auth');
+    $this->middleware('jwt.auth');
     $this->institutionRepo = $institutionRepo;
   }
 

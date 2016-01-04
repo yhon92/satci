@@ -16,7 +16,7 @@ class MeansController extends Controller
 
   public function __construct (MeansRepo $meansRepo)
   {
-    // $this->middleware('jwt.auth');
+    $this->middleware('jwt.auth');
     $this->meansRepo = $meansRepo;
   }
   /**

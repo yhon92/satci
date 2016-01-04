@@ -18,7 +18,7 @@ class SolicitudeController extends Controller
 
   public function __construct(SolicitudeRepo $solicitudeRepo)
   {
-    // $this->middleware('jwt.auth');
+    $this->middleware('jwt.auth');
     $this->solicitudeRepo = $solicitudeRepo;
     // $this->beforeFilter('@findSolicitude', ['only' => ['show', 'edit', 'update', 'destroy']]);
   }

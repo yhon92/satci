@@ -16,7 +16,7 @@ class ThemeController extends Controller
 
   public function __construct (ThemeRepo $themeRepo)
   {
-    // $this->middleware('jwt.auth');
+    $this->middleware('jwt.auth');
     $this->themeRepo = $themeRepo;
   }
   /**

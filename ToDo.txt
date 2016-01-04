@@ -8,6 +8,8 @@
 * 
 * Hacer que cierre el menu response cuando se selecciona una opción
 * 
+* Implementar paginacion en los listado
+* 
 * 
 * 
 * Realizar pruebas en Firefox

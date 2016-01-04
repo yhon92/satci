@@ -27,6 +27,8 @@ class AssignController extends Controller
       SolicitudeRepo $solicitudeRepo,
       ThemeRepo $themeRepo
     ) {
+    $this->middleware('jwt.auth');
+    
     $this->areaMeansRepo = $areaMeansRepo;
     $this->assignRepo = $assignRepo;
     $this->solicitudeRepo = $solicitudeRepo;

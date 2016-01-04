@@ -20,7 +20,7 @@ Route::group(['prefix' => 'api', 'namespace' => 'Auth'], function () {
   
   Route::post('auth/login', 'AuthController@login');
   
-  Route::get('auth/user', 'AuthController@getUser');
+  Route::get('auth/user', 'AuthController@user');
 
 });
 

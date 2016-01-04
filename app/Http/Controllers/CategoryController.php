@@ -17,7 +17,7 @@ class CategoryController extends Controller
 
   public function __construct (CategoryRepo $categoryRepo)
   {
-    // $this->middleware('jwt.auth');
+    $this->middleware('jwt.auth');
     $this->categoryRepo = $categoryRepo;
   }
   /**

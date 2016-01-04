@@ -16,7 +16,7 @@ class DirectorController extends Controller
 
   public function __construct (DirectorRepo $directorRepo)
   {
-    // $this->middleware('jwt.auth');
+    $this->middleware('jwt.auth');
     $this->directorRepo = $directorRepo;
   }
   /**

@@ -36,7 +36,7 @@ class AuthController extends Controller
 	/**
    * Determine if user is authenticate by locating token
    */
-	public function getUser()
+	public function user()
 	{
 		try {
 			if (!$user = JWTAuth::parseToken()->authenticate()) {

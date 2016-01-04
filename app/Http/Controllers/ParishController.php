@@ -13,7 +13,7 @@ class ParishController extends Controller
 
   public function __construct (ParishRepo $parishRepo)
   {
-    // $this->middleware('jwt.auth');
+    $this->middleware('jwt.auth');
     $this->parishRepo = $parishRepo;
   }
 
