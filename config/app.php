@@ -139,10 +139,10 @@ return [
 
 		/* Vendor Providers */
 
-		Collective\Html\HtmlServiceProvider::class,
-		Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
 		Barryvdh\Debugbar\ServiceProvider::class,
-
+		Spatie\Activitylog\ActivitylogServiceProvider::class,
+		Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
+		Johnnymn\Sim\Roles\RolesServiceProvider::class,
 		/*
 		 * Application Service Providers...
 		 */
@@ -201,12 +201,11 @@ return [
 		'View'      => Illuminate\Support\Facades\View::class,
 
 		/* Aliase Vendor */
+    'Debugbar' 	 => Barryvdh\Debugbar\Facade::class,
+    'Activity' 	 => Spatie\Activitylog\ActivitylogFacade::class,
 		'Uuid' 			 => Webpatser\Uuid\Uuid::class,
     'JWTAuth' 	 => Tymon\JWTAuth\Facades\JWTAuth::class,
     'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
-		'Form' 			 => Collective\Html\FormFacade::class,
-    'Html' 			 => Collective\Html\HtmlFacade::class,
-    'Debugbar' 	 => Barryvdh\Debugbar\Facade::class,
 
 	],
 
