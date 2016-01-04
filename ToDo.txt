@@ -1,6 +1,8 @@
 * Módulo de Seguridad -> (Usuarios => [Crear, Editar, Eliminar], 
                           Perfiles de Usuario => [Asignar Permisos, Ver Permisos, Eliminar Permisos]
 * 
+* Envio de correo electronico al momento de hacer una asignación.
+* 
 * Implementar y verificar sistema de Log.
 * 
 * Revisar el sistema de Login y establecer mensajes y alertas.
