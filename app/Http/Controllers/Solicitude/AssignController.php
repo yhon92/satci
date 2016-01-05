@@ -1,6 +1,7 @@
 <?php
 namespace SATCI\Http\Controllers\Solicitude;
 
+use Gate;
 use DB;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -27,7 +28,7 @@ class AssignController extends Controller
       SolicitudeRepo $solicitudeRepo,
       ThemeRepo $themeRepo
     ) {
-    // $this->middleware('jwt.auth');
+    $this->middleware('jwt.auth');
     
     $this->areaMeansRepo = $areaMeansRepo;
     $this->assignRepo = $assignRepo;

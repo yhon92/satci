@@ -38,17 +38,6 @@ class MeansRepo extends BaseRepo
     return Means::with('areas')->orderBy('name', 'ASC')->get();
   }
 
-  public static function themeBySolicitude($solicitude_id)
-  {
-    $themes = Means::whereHas('assign_solicitude', function($query) use ($solicitude_id){
-      $query->where('solicitude_id', $solicitude_id);
-    })
-    ->with('assign_solicitude', 'assign_solicitude.area_means.area.director', 'assign_solicitude.area_means.means')
-    ->get();
-
-    return $themes;
-  }
-
   public static function getListAreas($id)
   {
     return Means::with('areas')->find($id);
