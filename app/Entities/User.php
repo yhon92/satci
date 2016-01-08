@@ -6,11 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Spatie\Activitylog\LogsActivityInterface;
+use Spatie\Activitylog\LogsActivity;
 
-class User extends Model implements AuthenticatableContract, CanResetPasswordContract
+class User extends Model implements AuthenticatableContract, CanResetPasswordContract, LogsActivityInterface
 {
 
-  use Authenticatable, CanResetPassword;
+  use Authenticatable, CanResetPassword, LogsActivity;
 
   /**
    * The database table used by the model.
@@ -61,6 +63,32 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     } else {
       return 'Inactivo';
     }
+  }
+
+  /**
+  * Get the message that needs to be logged for the given event name.
+  *
+  * @param string $eventName
+  * @return string
+  */
+  public function getActivityDescriptionForEvent($eventName)
+  {
+    if ($eventName == 'created')
+    {
+      return 'Usuario "' . $this->first_name . ' ' . $this->first_name . '" fue creado';
+    }
+
+    if ($eventName == 'updated')
+    {
+      return 'Usuario "' . $this->first_name . ' ' . $this->first_name . '" fue actualizado';
+    }
+
+    if ($eventName == 'deleted')
+    {
+      return 'Usuario "' . $this->first_name . ' ' . $this->first_name . '" fue eliminado';
+    }
+
+    return '';
   }
   
 }

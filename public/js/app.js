@@ -2006,7 +2006,7 @@ angular.module('Shared.directives', []).directive('applicantList', function (Pat
       var key = event.keyCode || event.which;
       var tecla = String.fromCharCode(key).toLowerCase();
       var letras = " áéíóúüabcdefghijklmnñopqrstuvwxyz";
-      var especiales = [8, 13, 39, 46];
+      var especiales = [8, 13, 37, 39, 46];
       var tecla_especial = false;
 
       for (var i in especiales) {
@@ -2029,7 +2029,6 @@ angular.module('Shared.directives', []).directive('applicantList', function (Pat
     element.bind("keypress", function (event) {
       var key = event.which || event.keyCode;
       var input = element[0].value;
-
       /*
         86 = V, 118 = v, 69 = E, 101 = e, 80 = P, 112 = p,
         71 = G, 103 = g, 74 = J, 106 = j,  67 = C, 99 = c
@@ -2043,6 +2042,10 @@ angular.module('Shared.directives', []).directive('applicantList', function (Pat
       if (key >= 48 && key <= 57 && input.length >= 2 && input.length <= 9 || input.length === 11) {
         return true;
       }
+      if (key == 8 || key == 37 || key == 39 || key == 46) {
+        return true;
+      }
+
       scope.$apply(function () {
         scope.$eval(attrs.maskRif);
         event.preventDefault();
@@ -2064,7 +2067,7 @@ angular.module('Shared.filters', []).filter("capitalize", function () {
   return function (input) {
     input = input.toLowerCase();
 
-    var smallWords = /^(a|y|de|que|para|con|vs?\.?|via)$/i;
+    var smallWords = /^(a|y|de|del|que|para|con|vs?\.?|via)$/i;
 
     return input.replace(/[A-Za-z0-9\u00C0-\u00FF]+[^\s-]*/g, function (match, index, title) {
       if (index > 0 && index + match.length !== title.length && match.search(smallWords) > -1 && title.charAt(index - 2) !== ":" && (title.charAt(index + match.length) !== '-' || title.charAt(index - 1) === '-') && title.charAt(index - 1).search(/[^\s-]/) < 0) {

@@ -21,11 +21,11 @@ class Means extends Model implements LogsActivityInterface
   }
   
   /**
- * Get the message that needs to be logged for the given event name.
- *
- * @param string $eventName
- * @return string
- */
+  * Get the message that needs to be logged for the given event name.
+  *
+  * @param string $eventName
+  * @return string
+  */
   public function getActivityDescriptionForEvent($eventName)
   {
     if ($eventName == 'created')
