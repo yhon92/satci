@@ -2,6 +2,8 @@
 namespace SATCI\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogsActivityInterface;
+use Spatie\Activitylog\LogsActivity;
 
 class AssignSolicitude extends Model implements LogsActivityInterface
 {
