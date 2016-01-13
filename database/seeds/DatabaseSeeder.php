@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder {
   {
     Model::unguard();
 
+    $this->call('PermissionsTableSeeder');
     $this->call('RolesTableSeeder');
     $this->call('UserTableSeeder');
     $this->call('ParishTableSeeder');
@@ -24,9 +25,9 @@ class DatabaseSeeder extends Seeder {
     $this->call('AreaTableSeeder');
     $this->call('AreaMeansTableSeeder');
     // $this->call('');
-    // $this->call('CitizenTableSeeder');
-    // $this->call('InstitutionTableSeeder');
-    // $this->call('SolicitudeTableSeeder');
+    $this->call('CitizenTableSeeder');
+    $this->call('InstitutionTableSeeder');
+    $this->call('SolicitudeTableSeeder');
     /*$this->call('ThemeAreaSolicitudeTableSeeder');
     $this->call('InstrumentTableSeeder');
     $this->call('AnswerTableSeeder');*/

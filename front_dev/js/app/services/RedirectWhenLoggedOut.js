@@ -19,6 +19,8 @@ angular.module('SATCI.RedirectWhenLoggedOutServices', [])
           sessionStorage.removeItem('user');
           $rootScope.authenticated = false;
           $rootScope.currentUser = null;
+          $rootScope.currentRole = null;
+          $rootScope.currentPermissions = null;
           // Send the user to the auth state so they can login
           $state.go('login');
           }

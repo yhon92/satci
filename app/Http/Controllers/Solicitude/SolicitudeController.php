@@ -1,6 +1,7 @@
 <?php 
 namespace SATCI\Http\Controllers\Solicitude;
 
+use Auth;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Log;
@@ -20,6 +21,7 @@ class SolicitudeController extends Controller
   {
     $this->middleware('jwt.auth');
     $this->solicitudeRepo = $solicitudeRepo;
+
     // $this->beforeFilter('@findSolicitude', ['only' => ['show', 'edit', 'update', 'destroy']]);
   }
 
@@ -34,9 +36,11 @@ class SolicitudeController extends Controller
    */
   public function index()
   {
-    $solicitudes = $this->solicitudeRepo->getListSolicitudes();
+    if ($user->is('moderator')) {
+      $solicitudes = $this->solicitudeRepo->getListSolicitudes();
 
-    return response()->json(['solicitudes' => $solicitudes], 200);
+      return response()->json(['solicitudes' => $solicitudes], 200);
+    }
   }
   /**
    * Store a newly created resource in storage.
@@ -120,17 +124,17 @@ class SolicitudeController extends Controller
 
   public function listByApplicant($type)
   {
-    $type = ucwords($type);
-    if ($type === 'Citizen' || $type === 'Institution') {
-      Helpers::longApplicant($type);
+    if (Auth::user()->is('admin|coordinator|moderator|guest')) {
+      $type = ucwords($type);
+      if ($type === 'Citizen' || $type === 'Institution') {
+        Helpers::longApplicant($type);
 
-      $solicitudes = $this->solicitudeRepo->getListByApplicant($type);
+        $solicitudes = $this->solicitudeRepo->getListByApplicant($type);
 
-      // Helpers::concatApplicantsWithParish($solicitudes);
-
-      return response()->json(['solicitudes' => $solicitudes], 200);
-    } else {
-      return response()->json('Solicitante Inválido', 404);
+        return response()->json(['solicitudes' => $solicitudes], 200);
+      } else {
+        return response()->json('Solicitante Inválido', 404);
+      }
     }
   }
 

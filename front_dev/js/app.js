@@ -87,7 +87,7 @@ angular.module('SATCI', [
 
   // uiSelectConfig.theme = 'selectize';
 })
-.run(($rootScope, $state, i18n_es, $templateCache) => {
+.run(($rootScope, $state, $http, i18n_es, $templateCache, ResourcesUrl) => {
   $templateCache.remove('template/smart-table/pagination.html');
   // amMoment.changeLocale('de');
   // $stateChangeStart is fired whenever the state changes. We can use some parameters
@@ -100,23 +100,28 @@ angular.module('SATCI', [
     // otherwise not actually authenticated, they will be redirected to
     // the auth state because of the rejected request anyway
     if(user) {
-      // The user's authenticated state gets flipped to
-      // true so we can now show parts of the UI that rely
-      // on the user being logged in
-      $rootScope.authenticated = true;
-      // Putting the user's data on $rootScope allows
-      // us to access it anywhere across the app. Here
-      // we are grabbing what is in local storage
-      $rootScope.currentUser = user;
-      // If the user is logged in and we hit the auth route we don't need
-      // to stay there and can send the user to the main state
-      if(toState.name === "login") {
-        // Preventing the default behavior allows us to use $state.go
-        // to change states
-        event.preventDefault();
-        // go to the "main" state which in our case is users
-        $state.go('home');
-      }
+      $http.get(ResourcesUrl.api + 'auth/permissions')
+      .then((response) => {
+        // The user's authenticated state gets flipped to
+        // true so we can now show parts of the UI that rely
+        // on the user being logged in
+        $rootScope.authenticated = true;
+        // Putting the user's data on $rootScope allows
+        // us to access it anywhere across the app. Here
+        // we are grabbing what is in local storage
+        $rootScope.currentUser = user;
+        $rootScope.currentRole = response.data.role;
+        $rootScope.currentPermissions = response.data.permissions;
+        // If the user is logged in and we hit the auth route we don't need
+        // to stay there and can send the user to the main state
+        if(toState.name === "login") {
+          // Preventing the default behavior allows us to use $state.go
+          // to change states
+          event.preventDefault();
+          // go to the "main" state which in our case is users
+          $state.go('home');
+        }
+      })
     }
   })
 })

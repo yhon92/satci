@@ -1,6 +1,7 @@
 <?php
 namespace SATCI\Http\Controllers\Auth;
 
+use Auth;
 use SATCI\Http\Controllers\Controller;
 // use SATCI\Http\Requests\Request;
 use SATCI\Entities\User;
@@ -49,7 +50,9 @@ class AuthController extends Controller
 		}	catch (JWTException $e) {
 			return response()->json(['token_absent'], $e->getStatusCode());
 		}
-        //The token is valid and we have found the user via the sub claim
+
+
+    //The token is valid and we have found the user via the sub claim
 		return response()->json(compact('user'));
 	}
 
@@ -67,7 +70,16 @@ class AuthController extends Controller
 			return response()->json(['error' => 'could_not_create_token'], 500);
 		}
     // if no errors are encountered we can return a JWT
-		return response()->json(compact('token'));
+		return response()->json(compact('token'), 200);
+	}
+
+	public function permissions()
+	{
+		$role = Auth::user()->getRoles();
+
+		$permissions = Auth::user()->getPermissions();
+
+		return response()->json(['role' => $role[0], 'permissions' => $permissions], 200);
 	}
 
 }

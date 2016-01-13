@@ -20,22 +20,32 @@ angular.module('SATCI.Login',['ui.router', 'SATCI.Shared'])
     .then(() => {
       // If login is successful, redirect to the users state
       $http.get(ResourcesUrl.api + 'auth/user')
-      .then((response) => {
-        // Stringify the returned data to prepare it
-        // to go into local storage
-        let user = JSON.stringify(response.data.user);
-        // Set the stringified user data into local storage
-        sessionStorage.setItem('user', user);
-        // The user's authenticated state gets flipped to
-        // true so we can now show parts of the UI that rely
-        // on the user being logged in
-        $rootScope.authenticated = true;
-        // Putting the user's data on $rootScope allows
-        // us to access it anywhere across the app
-        $rootScope.currentUser = response.data.user;
-        // Everything worked out so we can now redirect to
-        // the users state to view the data
-        $state.go('home');
+      .then((responseUser) => {
+        $http.get(ResourcesUrl.api + 'auth/permissions')
+        .then((response) => {
+          // Stringify the returned data to prepare it
+          // to go into local storage
+          let user = JSON.stringify(responseUser.data.user);
+          // Set the stringified user data into local storage
+          sessionStorage.setItem('user', user);
+          // The user's authenticated state gets flipped to
+          // true so we can now show parts of the UI that rely
+          // on the user being logged in
+          $rootScope.authenticated = true;
+          // Putting the user's data on $rootScope allows
+          // us to access it anywhere across the app
+          $rootScope.currentUser = responseUser.data.user;
+          $rootScope.currentRole = response.data.role;
+          $rootScope.currentPermissions = response.data.permissions;
+          console.log($rootScope)
+          // Everything worked out so we can now redirect to
+          // the users state to view the data
+          $state.go('home');
+
+        })
+        .catch((fails) => {
+          
+        })
       });
     })
     .catch((fails) => {

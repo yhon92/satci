@@ -78,7 +78,7 @@ angular.module('SATCI', ['ngAnimate', 'ngSanitize', 'ui.bootstrap', 'ui.router',
   $locationProvider.html5Mode(true);
 
   // uiSelectConfig.theme = 'selectize';
-}).run(function ($rootScope, $state, i18n_es, $templateCache) {
+}).run(function ($rootScope, $state, $http, i18n_es, $templateCache, ResourcesUrl) {
   $templateCache.remove('template/smart-table/pagination.html');
   // amMoment.changeLocale('de');
   // $stateChangeStart is fired whenever the state changes. We can use some parameters
@@ -91,23 +91,27 @@ angular.module('SATCI', ['ngAnimate', 'ngSanitize', 'ui.bootstrap', 'ui.router',
     // otherwise not actually authenticated, they will be redirected to
     // the auth state because of the rejected request anyway
     if (user) {
-      // The user's authenticated state gets flipped to
-      // true so we can now show parts of the UI that rely
-      // on the user being logged in
-      $rootScope.authenticated = true;
-      // Putting the user's data on $rootScope allows
-      // us to access it anywhere across the app. Here
-      // we are grabbing what is in local storage
-      $rootScope.currentUser = user;
-      // If the user is logged in and we hit the auth route we don't need
-      // to stay there and can send the user to the main state
-      if (toState.name === "login") {
-        // Preventing the default behavior allows us to use $state.go
-        // to change states
-        event.preventDefault();
-        // go to the "main" state which in our case is users
-        $state.go('home');
-      }
+      $http.get(ResourcesUrl.api + 'auth/permissions').then(function (response) {
+        // The user's authenticated state gets flipped to
+        // true so we can now show parts of the UI that rely
+        // on the user being logged in
+        $rootScope.authenticated = true;
+        // Putting the user's data on $rootScope allows
+        // us to access it anywhere across the app. Here
+        // we are grabbing what is in local storage
+        $rootScope.currentUser = user;
+        $rootScope.currentRole = response.data.role;
+        $rootScope.currentPermissions = response.data.permissions;
+        // If the user is logged in and we hit the auth route we don't need
+        // to stay there and can send the user to the main state
+        if (toState.name === "login") {
+          // Preventing the default behavior allows us to use $state.go
+          // to change states
+          event.preventDefault();
+          // go to the "main" state which in our case is users
+          $state.go('home');
+        }
+      });
     }
   });
 }).service('i18n_es', function ($locale) {
@@ -1596,22 +1600,27 @@ angular.module('SATCI.Login', ['ui.router', 'SATCI.Shared']).config(function ($s
     // Use Satellizer's $auth service to login
     $auth.login(credentials).then(function () {
       // If login is successful, redirect to the users state
-      $http.get(ResourcesUrl.api + 'auth/user').then(function (response) {
-        // Stringify the returned data to prepare it
-        // to go into local storage
-        var user = JSON.stringify(response.data.user);
-        // Set the stringified user data into local storage
-        sessionStorage.setItem('user', user);
-        // The user's authenticated state gets flipped to
-        // true so we can now show parts of the UI that rely
-        // on the user being logged in
-        $rootScope.authenticated = true;
-        // Putting the user's data on $rootScope allows
-        // us to access it anywhere across the app
-        $rootScope.currentUser = response.data.user;
-        // Everything worked out so we can now redirect to
-        // the users state to view the data
-        $state.go('home');
+      $http.get(ResourcesUrl.api + 'auth/user').then(function (responseUser) {
+        $http.get(ResourcesUrl.api + 'auth/permissions').then(function (response) {
+          // Stringify the returned data to prepare it
+          // to go into local storage
+          var user = JSON.stringify(responseUser.data.user);
+          // Set the stringified user data into local storage
+          sessionStorage.setItem('user', user);
+          // The user's authenticated state gets flipped to
+          // true so we can now show parts of the UI that rely
+          // on the user being logged in
+          $rootScope.authenticated = true;
+          // Putting the user's data on $rootScope allows
+          // us to access it anywhere across the app
+          $rootScope.currentUser = responseUser.data.user;
+          $rootScope.currentRole = response.data.role;
+          $rootScope.currentPermissions = response.data.permissions;
+          console.log($rootScope);
+          // Everything worked out so we can now redirect to
+          // the users state to view the data
+          $state.go('home');
+        }).catch(function (fails) {});
       });
     }).catch(function (fails) {
       Alertify.error(fails.data.error);
@@ -1939,6 +1948,8 @@ angular.module('SATCI.RedirectWhenLoggedOutServices', []).factory('redirectWhenL
           sessionStorage.removeItem('user');
           $rootScope.authenticated = false;
           $rootScope.currentUser = null;
+          $rootScope.currentRole = null;
+          $rootScope.currentPermissions = null;
           // Send the user to the auth state so they can login
           $state.go('login');
         }
@@ -2029,6 +2040,7 @@ angular.module('Shared.directives', []).directive('applicantList', function (Pat
     element.bind("keypress", function (event) {
       var key = event.which || event.keyCode;
       var input = element[0].value;
+
       /*
         86 = V, 118 = v, 69 = E, 101 = e, 80 = P, 112 = p,
         71 = G, 103 = g, 74 = J, 106 = j,  67 = C, 99 = c

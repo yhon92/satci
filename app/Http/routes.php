@@ -22,6 +22,8 @@ Route::group(['prefix' => 'api', 'namespace' => 'Auth'], function () {
   
   Route::get('auth/user', 'AuthController@user');
 
+  Route::get('auth/permissions', 'AuthController@permissions');
+
 });
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
