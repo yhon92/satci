@@ -57,7 +57,7 @@ angular.module('Shared.directives', [])
       let key = event.keyCode || event.which;
       let tecla = String.fromCharCode(key).toLowerCase();
       let letras = " áéíóúüabcdefghijklmnñopqrstuvwxyz";
-      let especiales = [8, 13, 39, 46];
+      let especiales = [8, 13, 37, 39, 46];
       let tecla_especial = false;
 
       for (var i in especiales) {
@@ -86,7 +86,7 @@ angular.module('Shared.directives', [])
         86 = V, 118 = v, 69 = E, 101 = e, 80 = P, 112 = p,
         71 = G, 103 = g, 74 = J, 106 = j,  67 = C, 99 = c
         */
-        if (((key == 86 || key == 118) || (key == 69 || key == 101) || (key == 80 || key == 112) || 
+      if (((key == 86 || key == 118) || (key == 69 || key == 101) || (key == 80 || key == 112) || 
           (key == 71 || key == 103) || (key == 74 || key == 106) || (key == 67 || key == 99)) && input.length === 0 ) {
           return true
       }
@@ -96,6 +96,10 @@ angular.module('Shared.directives', [])
       if (key >= 48 && key <= 57 && (input.length >= 2 && input.length <= 9) || input.length === 11) {
         return true
       }
+      if (key == 8 || key == 37 || key == 39 || key == 46) {
+        return true
+      }
+
       scope.$apply(() => {
         scope.$eval(attrs.maskRif);
         event.preventDefault();

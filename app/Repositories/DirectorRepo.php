@@ -25,7 +25,11 @@ class DirectorRepo extends BaseRepo
 
   public static function update($id, $data)
   {
-    return Director::where('id', $id)->update($data);
+    $director = Director::find($id);
+    
+    $director->update($data);
+
+    return true;
   }
 
   public static function delete($id)

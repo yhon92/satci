@@ -14,17 +14,19 @@ class DatabaseSeeder extends Seeder {
   {
     Model::unguard();
 
+    $this->call('RolesTableSeeder');
     $this->call('UserTableSeeder');
     $this->call('ParishTableSeeder');
     $this->call('CategoryTableSeeder');
     $this->call('DirectorTableSeeder');
-    $this->call('CitizenTableSeeder');
-    $this->call('InstitutionTableSeeder');
     $this->call('ThemeTableSeeder');
     $this->call('MeansTableSeeder');
     $this->call('AreaTableSeeder');
     $this->call('AreaMeansTableSeeder');
-    $this->call('SolicitudeTableSeeder');
+    // $this->call('');
+    // $this->call('CitizenTableSeeder');
+    // $this->call('InstitutionTableSeeder');
+    // $this->call('SolicitudeTableSeeder');
     /*$this->call('ThemeAreaSolicitudeTableSeeder');
     $this->call('InstrumentTableSeeder');
     $this->call('AnswerTableSeeder');*/

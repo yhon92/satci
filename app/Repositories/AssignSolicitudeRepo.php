@@ -23,7 +23,11 @@ class AssignSolicitudeRepo extends BaseRepo
 
   public static function update($id, $data)
   {
-    return AssignSolicitude::where('id', $id)->update($data);
+    $assign = AssignSolicitude::find($id);
+    
+    $assign->update($data);
+    
+    return true;
   }
 
   public static function listAssign($solicitude_id)

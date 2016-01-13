@@ -19,6 +19,7 @@ class RolesTableSeeder extends Seeder
       'description' => '',
     ]);
 
+
     $coordinatorRole = Role::create([
       'name' => 'Coordinador',
       'slug' => 'coordinator',

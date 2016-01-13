@@ -2,9 +2,12 @@
 namespace SATCI\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogsActivityInterface;
+use Spatie\Activitylog\LogsActivity;
 
-class Solicitude extends Model
+class Solicitude extends Model implements LogsActivityInterface
 {
+  use LogsActivity;
 
   protected $table = 'solicitudes';
 
@@ -27,6 +30,33 @@ class Solicitude extends Model
   public function assigned()
   {
     return $this->hasMay(AssignSolicitude::class);
+  }
+
+  /**
+ * Get the message that needs to be logged for the given event name.
+ *
+ * @param string $eventName
+ * @return string
+ */
+  public function getActivityDescriptionForEvent($eventName)
+  {
+    if ($eventName == 'created') {
+      return 'Solicitud "' . $this->solicitude_number . '" fue creado';
+    }
+
+    if ($eventName == 'updated') {
+      if ($this->status == 'Rechazado' || $this->status == 'Anulado') {
+        return 'Solicitud "' . $this->solicitude_number . '" fue actualizado al Estado: "' . $this->status . '"';
+      }
+
+      return 'Solicitud "' . $this->solicitude_number . '" fue actualizado';
+    }
+
+    if ($eventName == 'deleted') {
+      return 'Solicitud "' . $this->solicitude_number . '" fue eliminado';
+    }
+
+    return '';
   }
   
 }

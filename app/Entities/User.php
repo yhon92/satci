@@ -8,11 +8,19 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Johnnymn\Sim\Roles\Traits\HasRoleAndPermission;
 use Johnnymn\Sim\Roles\Contracts\HasRoleAndPermission as HasRoleAndPermissionContract;
+use Spatie\Activitylog\LogsActivityInterface;
+use Spatie\Activitylog\LogsActivity;
 
-class User extends Model implements AuthenticatableContract, CanResetPasswordContract, HasRoleAndPermissionContract
+class User extends Model implements 
+  AuthenticatableContract, 
+  CanResetPasswordContract, 
+  HasRoleAndPermissionContract, 
+  LogsActivityInterface
 {
-
-  use Authenticatable, CanResetPassword, HasRoleAndPermission;
+  use Authenticatable; 
+  use CanResetPassword;
+  use HasRoleAndPermission;
+  use LogsActivity;
 
   /**
    * The database table used by the model.
@@ -63,6 +71,29 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     } else {
       return 'Inactivo';
     }
+  }
+
+  /**
+  * Get the message that needs to be logged for the given event name.
+  *
+  * @param string $eventName
+  * @return string
+  */
+  public function getActivityDescriptionForEvent($eventName)
+  {
+    if ($eventName == 'created') {
+      return 'Usuario "' . $this->first_name . ' ' . $this->last_name . '" fue creado';
+    }
+
+    if ($eventName == 'updated') {
+      return 'Usuario "' . $this->first_name . ' ' . $this->last_name . '" fue actualizado';
+    }
+
+    if ($eventName == 'deleted') {
+      return 'Usuario "' . $this->first_name . ' ' . $this->last_name . '" fue eliminado';
+    }
+
+    return '';
   }
   
 }
