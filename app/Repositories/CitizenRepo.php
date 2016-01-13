@@ -23,7 +23,11 @@ class CitizenRepo extends BaseRepo
 
   public static function update($id, $data)
   {
-    return Citizen::where('id', $id)->update($data);
+    $citizen = Citizen::find($id);
+    
+    $citizen->update($data);
+
+    return true;
   }
 
   public static function delete($id)

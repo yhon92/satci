@@ -33,18 +33,15 @@ class Area extends Model implements LogsActivityInterface
  */
   public function getActivityDescriptionForEvent($eventName)
   {
-    if ($eventName == 'created')
-    {
+    if ($eventName == 'created') {
       return 'Area "' . $this->name . '" fue creado';
     }
 
-    if ($eventName == 'updated')
-    {
+    if ($eventName == 'updated') {
       return 'Area "' . $this->name . '" fue actualizado';
     }
 
-    if ($eventName == 'deleted')
-    {
+    if ($eventName == 'deleted') {
       return 'Area "' . $this->name . '" fue eliminado';
     }
 

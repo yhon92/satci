@@ -35,18 +35,15 @@ class Director extends Model implements LogsActivityInterface
  */
   public function getActivityDescriptionForEvent($eventName)
   {
-    if ($eventName == 'created')
-    {
+    if ($eventName == 'created') {
       return 'Director "' . $this->full_name . '" fue creado';
     }
 
-    if ($eventName == 'updated')
-    {
+    if ($eventName == 'updated') {
       return 'Director "' . $this->full_name . '" fue actualizado';
     }
 
-    if ($eventName == 'deleted')
-    {
+    if ($eventName == 'deleted') {
       return 'Director "' . $this->full_name . '" fue eliminado';
     }
 

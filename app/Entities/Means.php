@@ -28,18 +28,15 @@ class Means extends Model implements LogsActivityInterface
   */
   public function getActivityDescriptionForEvent($eventName)
   {
-    if ($eventName == 'created')
-    {
+    if ($eventName == 'created') {
       return 'Recurso "' . $this->name . '" fue creado';
     }
 
-    if ($eventName == 'updated')
-    {
+    if ($eventName == 'updated') {
       return 'Recurso "' . $this->name . '" fue actualizado';
     }
 
-    if ($eventName == 'deleted')
-    {
+    if ($eventName == 'deleted') {
       return 'Recurso "' . $this->name . '" fue eliminado';
     }
 

@@ -42,18 +42,15 @@ class Citizen extends Model implements LogsActivityInterface
  */
   public function getActivityDescriptionForEvent($eventName)
   {
-    if ($eventName == 'created')
-    {
+    if ($eventName == 'created') {
       return 'Persona "' . $this->full_name . '" fue creado';
     }
 
-    if ($eventName == 'updated')
-    {
+    if ($eventName == 'updated') {
       return 'Persona "' . $this->full_name . '" fue actualizado';
     }
 
-    if ($eventName == 'deleted')
-    {
+    if ($eventName == 'deleted') {
       return 'Persona "' . $this->full_name . '" fue eliminado';
     }
 

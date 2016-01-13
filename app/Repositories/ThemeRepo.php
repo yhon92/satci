@@ -25,7 +25,11 @@ class ThemeRepo extends BaseRepo
 
   public static function update($id, $data)
   {
-    return Theme::where('id', $id)->update($data);
+    $theme = Theme::find($id);
+
+    $theme->update($data);
+
+    return true;
   }
 
   public static function delete($id)

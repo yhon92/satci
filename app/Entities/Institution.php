@@ -44,18 +44,15 @@ class Institution extends Model implements LogsActivityInterface
  */
   public function getActivityDescriptionForEvent($eventName)
   {
-    if ($eventName == 'created')
-    {
+    if ($eventName == 'created') {
       return 'Institución "' . $this->full_name . '" fue creado';
     }
 
-    if ($eventName == 'updated')
-    {
+    if ($eventName == 'updated') {
       return 'Institución "' . $this->full_name . '" fue actualizado';
     }
 
-    if ($eventName == 'deleted')
-    {
+    if ($eventName == 'deleted') {
       return 'Institución "' . $this->full_name . '" fue eliminado';
     }
 

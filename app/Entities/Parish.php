@@ -33,18 +33,15 @@ class Parish extends Model implements LogsActivityInterface
  */
   public function getActivityDescriptionForEvent($eventName)
   {
-    if ($eventName == 'created')
-    {
+    if ($eventName == 'created') {
       return 'Parroquia "' . $this->name . '" fue creado';
     }
 
-    if ($eventName == 'updated')
-    {
+    if ($eventName == 'updated') {
       return 'Parroquia "' . $this->name . '" fue actualizado';
     }
 
-    if ($eventName == 'deleted')
-    {
+    if ($eventName == 'deleted') {
       return 'Parroquia "' . $this->name . '" fue eliminado';
     }
 

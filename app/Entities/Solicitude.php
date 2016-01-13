@@ -40,18 +40,19 @@ class Solicitude extends Model implements LogsActivityInterface
  */
   public function getActivityDescriptionForEvent($eventName)
   {
-    if ($eventName == 'created')
-    {
+    if ($eventName == 'created') {
       return 'Solicitud "' . $this->solicitude_number . '" fue creado';
     }
 
-    if ($eventName == 'updated')
-    {
+    if ($eventName == 'updated') {
+      if ($this->status == 'Rechazado' || $this->status == 'Anulado') {
+        return 'Solicitud "' . $this->solicitude_number . '" fue actualizado al Estado: "' . $this->status . '"';
+      }
+
       return 'Solicitud "' . $this->solicitude_number . '" fue actualizado';
     }
 
-    if ($eventName == 'deleted')
-    {
+    if ($eventName == 'deleted') {
       return 'Solicitud "' . $this->solicitude_number . '" fue eliminado';
     }
 

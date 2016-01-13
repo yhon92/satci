@@ -27,19 +27,16 @@ class AssignSolicitude extends Model implements LogsActivityInterface
 
   public function getActivityDescriptionForEvent($eventName)
   {
-    if ($eventName == 'created')
-    {
-      return 'Asignación de Solicitud "' . $this->solicitude_id . '" fue creado';
+    if ($eventName == 'created') {
+      return 'Asignación de Solicitud "' . $this->id . '" fue creado';
     }
 
-    if ($eventName == 'updated')
-    {
-      return 'Asignación de Solicitud "' . $this->solicitude_id . '" fue actualizado';
+    if ($eventName == 'updated') {
+      return 'Asignación de Solicitud "' . $this->id . '" fue actualizado al Estado: "' . $this->status . '"';
     }
 
-    if ($eventName == 'deleted')
-    {
-      return 'Asignación de Solicitud "' . $this->solicitude_id . '" fue eliminado';
+    if ($eventName == 'deleted') {
+      return 'Asignación de Solicitud "' . $this->id . '" fue eliminado';
     }
 
     return '';

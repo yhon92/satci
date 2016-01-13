@@ -23,7 +23,11 @@ class InstitutionRepo extends BaseRepo
 
   public static function update($id, $data)
   {
-    return Institution::where('id', $id)->update($data);
+    $institution = Institution::find($id);
+    
+    $institution->update($data);
+
+    return true;
   }
 
   public static function delete($id)

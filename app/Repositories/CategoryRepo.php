@@ -23,7 +23,11 @@ class CategoryRepo extends BaseRepo
 
   public static function update($id, $data)
   {
-    return Category::where('id', $id)->update($data);
+    $category = Category::find($id);
+    
+    $category->update($data);
+
+    return true;
   }
 
   public static function delete($id)

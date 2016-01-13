@@ -1,8 +1,8 @@
 <?php
 namespace SATCI\Http\Controllers\Solicitude;
 
-use Gate;
 use DB;
+use Gate;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Log;
@@ -12,6 +12,7 @@ use SATCI\Repositories\AreaMeansRepo;
 use SATCI\Repositories\AssignSolicitudeRepo;
 use SATCI\Repositories\SolicitudeRepo;
 use SATCI\Repositories\ThemeRepo;
+use Activity;
 use Uuid;
 
 class AssignController extends Controller
@@ -93,6 +94,8 @@ class AssignController extends Controller
     }
     try {
       $this->solicitudeRepo->updateStatus($solicitude_id, 'Procesando');
+
+      Activity::log('Solicitud "' . $solicitude_id . '" fue actualizado al Estado: "Procesando"');
     } catch (QueryException $e) {
       DB::rollBack();
 
@@ -129,9 +132,12 @@ class AssignController extends Controller
   {
     $data = $request->all();
     
+    DB::beginTransaction();
     try {
       $this->assignRepo->update($id, $data['update']);
     } catch (QueryException $e) {
+      DB::rollBack();
+
       Log::info($e->errorInfo[2]);
 
       return response()->json(['error' => true], 200);
@@ -150,12 +156,17 @@ class AssignController extends Controller
     if ($update_status) {
       try {
         $this->solicitudeRepo->updateStatus($data['solicitude_id'], 'Finalizado');
+
+        Activity::log('Solicitud "' . $data['solicitude_id'] . '" fue actualizado al Estado: "Finalizado"');
       } catch (QueryException $e) {
+        DB::rollBack();
+
         Log::info($e->errorInfo[2]);
 
         return response()->json(['error' => true], 200);
       }
     }
+    DB::commit();
 
     return response()->json(['success' => true]);
   }

@@ -39,18 +39,15 @@ class AreaMeans extends Model implements LogsActivityInterface
  */
   public function getActivityDescriptionForEvent($eventName)
   {
-    if ($eventName == 'created')
-    {
+    if ($eventName == 'created') {
       return 'Asignacion de Recurso a Area "' . $this->area_id . ' -> ' . $this->means_id . '" fue creado';
     }
 
-    if ($eventName == 'updated')
-    {
+    if ($eventName == 'updated') {
       return 'Asignacion de Recurso a Area "' . $this->area_id . ' -> ' . $this->means_id . '" fue actualizado';
     }
 
-    if ($eventName == 'deleted')
-    {
+    if ($eventName == 'deleted') {
       return 'Asignacion de Recurso a Area "' . $this->area_id . ' -> ' . $this->means_id . '" fue eliminado';
     }
 

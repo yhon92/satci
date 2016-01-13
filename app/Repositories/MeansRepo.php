@@ -25,7 +25,11 @@ class MeansRepo extends BaseRepo
 
   public static function update($id, $data)
   {
-    return Means::where('id', $id)->update($data);
+    $means = Means::find($id);
+    
+    $means->update($data);
+
+    return true;
   }
 
   public static function delete($id)

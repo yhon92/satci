@@ -23,7 +23,11 @@ class SolicitudeRepo extends BaseRepo
 
   public static function update($id, $data)
   {
-    return Solicitude::where('id', $id)->update($data);
+    $solicitude = Solicitude::find($id);
+    
+    $solicitude->update($data);
+
+    return true;
   }
 
   public static function updateStatus($id, $data)

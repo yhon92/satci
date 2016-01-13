@@ -73,19 +73,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
   */
   public function getActivityDescriptionForEvent($eventName)
   {
-    if ($eventName == 'created')
-    {
-      return 'Usuario "' . $this->first_name . ' ' . $this->first_name . '" fue creado';
+    if ($eventName == 'created') {
+      return 'Usuario "' . $this->first_name . ' ' . $this->last_name . '" fue creado';
     }
 
-    if ($eventName == 'updated')
-    {
-      return 'Usuario "' . $this->first_name . ' ' . $this->first_name . '" fue actualizado';
+    if ($eventName == 'updated') {
+      return 'Usuario "' . $this->first_name . ' ' . $this->last_name . '" fue actualizado';
     }
 
-    if ($eventName == 'deleted')
-    {
-      return 'Usuario "' . $this->first_name . ' ' . $this->first_name . '" fue eliminado';
+    if ($eventName == 'deleted') {
+      return 'Usuario "' . $this->first_name . ' ' . $this->last_name . '" fue eliminado';
     }
 
     return '';
