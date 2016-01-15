@@ -1,34 +1,38 @@
 'use-stric';
+
 var gulp = require('gulp');
-//    concat        = require('gulp-concat'),
-//    jade          = require('gulp-jade'),
-//    jshint        = require('gulp-jshint'),
+// concat = require('gulp-concat'),
+// jade = require('gulp-jade'),
+// jshint = require('gulp-jshint'),
 var livereload = require('gulp-livereload');
-//    minifyCSS     = require('gulp-minify-css'),
+// minifyCSS = require('gulp-minify-css'),
 var notify = require('gulp-notify');
-//    plumber       = require('gulp-plumber'),
+// plumber = require('gulp-plumber'),
 var stylus = require('gulp-stylus');
-//    uglify        = require('gulp-uglify'),
+var uglify = require('gulp-uglify');
 var babelify = require('babelify');
 var browserify = require('browserify');
 var nib = require('nib');
-//    watchify      = require('watchify'),
-//    buffer        = require('vinyl-buffer'),
+// watchify = require('watchify'),
+var buffer = require('vinyl-buffer');
 var source = require('vinyl-source-stream');
-//    transform     = require('vinyl-transform');
+// transform = require('vinyl-transform');
+var sourcemaps  = require('gulp-sourcemaps');
+var ngAnnotate = require('gulp-ng-annotate');
+var Elixir = require('laravel-elixir');
 
-var elixir        = require('laravel-elixir');
+require('laravel-elixir-stylus');
+// require('laravel-elixir-livereload');
 
-elixir.config.assetsPath = 'front_dev';
-elixir.config.js.browserify.transformers.push({
-    name: 'babelify',
-    options: {"presets": ["es2015"]}
-});
+var $ = Elixir.Plugins;
+var Task = Elixir.Task;
+
+Elixir.config.assetsPath = 'front_dev';
 
 var paths = {
   src: {
     js    : './front_dev/js/app.js',
-    css   : './front_dev/styl/app.styl',
+    css   : './front_dev/stylus/app.styl',
     html  : ['./public/template/**/*.html', 
             './resources/views/**/*.html', 
             './resources/views/**/*.blade.php']
@@ -86,7 +90,7 @@ gulp.task('js', function(){
   this.emit('end');
 });
 
-gulp.task('w', function() {
+gulp.task('watch', function() {
   livereload.listen();
   gulp.watch(paths.src.html, ['html']);
   gulp.watch(['./front_dev/styl/**/*.styl'], ['css']);
@@ -97,9 +101,39 @@ gulp.task('w', function() {
   //gulp.watch(['./app/js/**/*.js', './Gulpfile.js'], ['jshint', 'inject']);
 });
 
-elixir(function(mix) {
-  mix.browserify('app.js')
-      .version(['public/js/app.js']);
+Elixir.extend('browserifyAngular', function(opts) {
+  new Task('browserifyAngular', function() {
+  var entries = opts.src;
+  var dist    = opts.dist;
+
+  this.log(opts.src, opts.dist);
+
+   return browserify({          
+      entries: entries,
+      transform: [ ['babelify', { "presets": ["es2015"] } ] ] //transformaciones
+          //debug: true
+    })//.transform(babelify)
+      .bundle()
+    .pipe(source('app.js'))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({loadMaps: true}))
+    .pipe($.if(Elixir.config.production,  ngAnnotate()))
+    .pipe($.if(Elixir.config.production, $.uglify()))
+    .on('error', function(e) {
+      new Elixir.Notification().error(e, 'BrowserifyAngular Failed!');
+      this.emit('end');
+     })
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest(dist))
+    .pipe(new Elixir.Notification('BrowserifyAngular Compiled!'));
+  });
 });
 
-// gulp.task('default', ['watch',]);
+Elixir(function(mix) {
+  mix.stylus('app.styl', null, {use: [nib()] })
+  mix.browserifyAngular({src: paths.src.js, dist: paths.dest.js})
+  mix.version(['public/js/app.js', 'public/css/app.css'])
+  //mix.livereload(['public/build/js/*', 'public/css/app.css'])
+});
+
+gulp.task('default', ['watch',]);

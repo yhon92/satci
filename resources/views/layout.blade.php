@@ -7,8 +7,12 @@
 	<link rel="shortcut icon" type="image/x-icon" href="<% asset('favicon.ico') %>">
 	<title>Sistema de Atención al Ciudadano</title>
 	<base href="/">
-
-	<link href="<% asset('/css/app.css') %>" rel="stylesheet">
+	
+	@if ( Config::get('app.debug') )
+		<link href="<% asset('css/app.css') %>" rel="stylesheet">
+	@else
+		<link href="<% elixir('css/app.css') %>" rel="stylesheet">
+	@endif
 
 	<!-- Fonts -->
 	<%-- <link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'> --%>
@@ -45,7 +49,7 @@
 							Solicitante
 							<%-- <span class="caret"></span> --%>
 						</a>
-						<ul class="uib-dropdown-menu" role="menu" aria-labelledby="simple-dropdown">
+						<ul class="uib-dropdown-menu" role="menu" aria-labelledby="simple-dropdown" uib-dropdown-menu>
 							<li role="menuitem"><a ui-sref="citizen">Natural</a></li>
 							<li role="menuitem"><a ui-sref="institution">Jurídico</a></li>
 						</ul>
@@ -55,7 +59,7 @@
 							Configuración
 							<%-- <span class="caret"></span> --%>
 						</a>
-						<ul class="uib-dropdown-menu" role="menu" aria-labelledby="simple-dropdown">
+						<ul class="uib-dropdown-menu" role="menu" aria-labelledby="simple-dropdown" uib-dropdown-menu>
 							<li role="menuitem"><a ui-sref="category">Categoría</a></li>
 							<li role="menuitem"><a ui-sref="theme">Tema</a></li>
 							<li class="divider"></li>
@@ -69,7 +73,7 @@
 							Seguridad
 							<%-- <span class="caret"></span> --%>
 						</a>
-						<ul class="uib-dropdown-menu" role="menu" aria-labelledby="simple-dropdown">
+						<ul class="uib-dropdown-menu" role="menu" aria-labelledby="simple-dropdown" uib-dropdown-menu>
 							<li role="menuitem"><a ui-sref="citizen">Usuarios</a></li>
 							<li role="menuitem"><a ui-sref="institution">Permisos</a></li>
 						</ul>
@@ -82,7 +86,7 @@
 							{{ currentUser.first_name +' '+currentUser.last_name }}
 							<%-- <span class="caret"></span> --%>
 						</a>
-						<ul class="uib-dropdown-menu" role="menu" aria-labelledby="simple-dropdown">
+						<ul class="uib-dropdown-menu" role="menu" aria-labelledby="simple-dropdown" uib-dropdown-menu>
 							<li role="menuitem"><a ng-click="logout()">Cerra Sesión</a></li>
 						</ul>
 					</li>
@@ -97,8 +101,11 @@
 	</div>
 	<!-- Scripts -->
 	<%-- <script src="<% asset('js/libs.js') %>"></script> --%>
-
-	<script src="<% elixir('js/app.js') %>"></script>
+	@if ( Config::get('app.debug') )
+		<script src="<% asset('js/app.js') %>"></script>
+	@else
+		<script src="<% elixir('js/app.js') %>"></script>
+	@endif
 
 	<script type="text/ng-template" id="modalShowCitizen-template">
 		<section class="modal-header">
