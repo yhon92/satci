@@ -11,6 +11,7 @@ angular.module('Solicitude.directives', ['SATCI.Shared'])
       applicant: '=type',
       show: '&',
       remove: '&',
+      can: '=can',
     },
     templateUrl: `${PathTemplates.partials}solicitude/solicitude-list-applicant.html`
   };

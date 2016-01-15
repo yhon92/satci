@@ -50,4 +50,36 @@
       </form>
     </div>
   </div>
+  <section ng-if="showLegende">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <ul class="padding-none">
+          <div class="col-md-5">
+            <li class="list-none">
+              <span class="button-status label-default"></span>
+              Enviado
+            </li>
+            <li class="list-none">
+              <span class="button-status label-warning"></span>
+              Leído
+            </li>
+            <li class="list-none">
+              <span class="button-status label-primary"></span>
+              Aceptado
+            </li>
+          </div>
+          <div class="col-md-5">
+            <li class="list-none">
+              <span class="button-status label-danger"></span>
+              Rechazado
+            </li>
+            <li class="list-none">
+              <span class="button-status label-success"></span>
+              Atendido
+            </li>
+          </div>
+        </ul>
+      </div>
+    </div>
+  </section>
 </div>

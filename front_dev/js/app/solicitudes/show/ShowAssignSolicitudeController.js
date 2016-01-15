@@ -5,8 +5,11 @@ angular.module('Solicitude.controllers')
   $scope,
   $stateParams,
   $uibModal,
+  AclService,
   Alertify,
   SolicitudesAssign) => {
+  
+  $scope.can = AclService.can;
   
   $scope.assigned = false;
   $scope.notAssigned = false;

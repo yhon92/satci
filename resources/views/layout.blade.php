@@ -39,8 +39,8 @@
 			<div class="navbar-collapse collapse" uib-collapse="navCollapsed" ng-if="authenticated">
 				<ul class="nav navbar-nav">
 					<li ng-class="navActive('home')"><a ui-sref="home">Inicio</a></li>
-					<li ng-class="navActive('solicitude')"><a ui-sref="solicitude">Solicitud</a></li>
-					<li ng-class="navActive('applicant')" class="dropdown" uib-dropdown>
+					<li ng-if="can('solicitude')" ng-class="navActive('solicitude')"><a ui-sref="solicitude">Solicitud</a></li>
+					<li ng-if="can('applicant')" ng-class="navActive('applicant')" class="dropdown" uib-dropdown>
 						<a class="dropdown-toggle" role="button" uib-dropdown-toggle>
 							Solicitante
 							<%-- <span class="caret"></span> --%>
@@ -50,7 +50,7 @@
 							<li role="menuitem"><a ui-sref="institution">Jurídico</a></li>
 						</ul>
 					</li>
-					<li ng-class="navActive('config')" class="dropdown" uib-dropdown>
+					<li ng-if="can('config')" ng-class="navActive('config')" class="dropdown" uib-dropdown>
 						<a class="dropdown-toggle" role="button" uib-dropdown-toggle>
 							Configuración
 							<%-- <span class="caret"></span> --%>
@@ -64,7 +64,7 @@
 							<li role="menuitem"><a ui-sref="means">Recurso</a></li>
 						</ul>
 					</li>
-					<li ng-class="navActive('security')" class="dropdown" uib-dropdown>
+					<li ng-if="can('security')" ng-class="navActive('security')" class="dropdown" uib-dropdown>
 						<a class="dropdown-toggle" role="button" uib-dropdown-toggle>
 							Seguridad
 							<%-- <span class="caret"></span> --%>

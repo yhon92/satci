@@ -1,15 +1,19 @@
 angular.module('SATCI.Nav',[])
-.controller('NavCtrl', ($auth, $state, $scope, $rootScope, $location) => {
+.controller('NavCtrl', ($auth, $state, $scope, $rootScope, $location, AclService) => {
+  $scope.can = AclService.can;
+  
   $scope.logout = () => {
     //Remove the satellizer_token from localstorage
     $auth.logout().then(() => {
     //Remove the authenticated user from local storage
     sessionStorage.removeItem('user');
+    sessionStorage.removeItem('AclService');
     //Flip authenticated to false so that we no longer
     //show UI elements dependant on the user being logged in
     $rootScope.authenticated = false;
     //Remove the current user from rootscope
     $rootScope.currentUser = null;
+    $rootScope.currentAcl = null;
     $state.go('login');
   });
   };

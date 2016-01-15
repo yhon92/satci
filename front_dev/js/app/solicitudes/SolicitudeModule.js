@@ -32,6 +32,19 @@ angular.module('SATCI.Solicitude', [
     controller: 'EditSolicitudeCtrl'
   })
   .state('solicitudeAssign', {
+    resolve : {
+      'acl' : ($rootScope, $q, AclService) => {
+        if (AclService.can('create-assign-solicitude')) {
+          console.log('paso')
+          // Has proper permissions
+          return true;
+        } else {
+          console.log('denegado')
+          // Does not have permission
+          $rootScope.$emit('$routeChangeError', 'Unauthorized');
+        }
+      },
+    },
     url: '/solicitude/assign/:id',
     views: {
       '': {

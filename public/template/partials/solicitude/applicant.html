@@ -4,17 +4,19 @@
 			<fieldset>
 				<legend>Solicitante {{ solicitude.applicant_type | translateApplicant }}<button class="close" ng-click="close()">×</button></legend>
 				<div class="form-group">
-				<div class="inline-block border-right">
-					<button type="button" class="btn btn-primary btn-circle" uib-tooltip="Buscar" ng-click="searchApplicant()">
-						<strong><span class="glyphicon glyphicon-search"></span></strong>
-					</button>
+					<div ng-if="can('view-applicant')" class="inline-block border-right">
+						<button type="button" class="btn btn-primary btn-circle" uib-tooltip="Buscar" ng-click="searchApplicant()">
+							<strong><span class="glyphicon glyphicon-search"></span></strong>
+						</button>
 						Buscar
-				</div>
-					<button type="button" class="btn btn-info btn-circle" uib-tooltip="Agregar" ng-click="addApplicant()">
-						<!-- <strong><span class="glyphicon glyphicon-plus"></span></strong> -->
-				    <img class="img-btn-add" src="./img/bootswatch/plus_2x.png" alt="">
-					</button>
-					Agregar
+					</div>
+					<div ng-if="can('create-applicant')" class="inline-block">
+						<button type="button" class="btn btn-info btn-circle" uib-tooltip="Agregar" ng-click="addApplicant()">
+							<!-- <strong><span class="glyphicon glyphicon-plus"></span></strong> -->
+							<img class="img-btn-add" src="./img/bootswatch/plus_2x.png" alt="">
+						</button>
+						Agregar
+					</div>
 				</div>
 				<div ng-include="applicantTemplate"></div>
 			</fieldset>

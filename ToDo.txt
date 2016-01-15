@@ -3,10 +3,6 @@
 * 
 * Envio de correo electronico al momento de hacer una asignación.
 * 
-* Implementar y verificar sistema de Log.
-* 
-* Revisar el sistema de Login y establecer mensajes y alertas.
-* 
 * Al registrar un SOLICITANTE desde la solicitud y este ya existe en la DB informar que ya existe y 
 * añadirlo a la solicitud automaticamente (revisar la validacion para ello).
 * 
@@ -16,5 +12,5 @@
 * 
 * 
 * 
-* Realizar pruebas en Firefox
+* Realizar pruebas en Firefox (-<> SIEMPRE <>-)
 * 

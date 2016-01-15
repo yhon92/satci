@@ -36,11 +36,9 @@ class SolicitudeController extends Controller
    */
   public function index()
   {
-    if ($user->is('moderator')) {
-      $solicitudes = $this->solicitudeRepo->getListSolicitudes();
+    $solicitudes = $this->solicitudeRepo->getListSolicitudes();
 
-      return response()->json(['solicitudes' => $solicitudes], 200);
-    }
+    return response()->json(['solicitudes' => $solicitudes], 200);
   }
   /**
    * Store a newly created resource in storage.

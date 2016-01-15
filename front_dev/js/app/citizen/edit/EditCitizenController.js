@@ -1,5 +1,7 @@
 angular.module('Citizen.controllers')
-.controller('EditCitizenCtrl', ($scope, $state, $stateParams, $filter, Alertify, Helpers, Citizens, Parishes) => {
+.controller('EditCitizenCtrl', ($scope, $state, $stateParams, $filter, AclService, Alertify, Helpers, Citizens, Parishes) => {
+  
+  $scope.can = AclService.can;
 
   $scope.button = {
     submit: 'Guardar',

@@ -10,15 +10,17 @@
 							<div class="col-lg-3">
 								<label class="form-label">{{ solicitude.solicitude_number }}</label>
 							</div>
-							<label class="col-xs-2 control-label" for="status"><strong>Estado</strong></label>
-							<div class="col-xs-3">
-								<select type="role" class="form-control" name="status" id="status" ng-model="solicitude.status" ng-required="true">
-									<option value="Recibido">Recibido</option>
-									<!-- <option value="Procesando">Procesando</option> -->
-									<option value="Rechazado">Rechazado</option>
-									<!-- <option value="Finalizado">Finalizado</option> -->
-									<option value="Anulado">Anulado</option>
-								</select>
+							<div ng-if="can('change-state-solicitude')">
+								<label class="col-xs-2 control-label" for="status"><strong>Estado</strong></label>
+								<div class="col-xs-3">
+									<select type="role" class="form-control" name="status" id="status" ng-model="solicitude.status" ng-required="true">
+										<option value="Recibido">Recibido</option>
+										<!-- <option value="Procesando">Procesando</option> -->
+										<option value="Rechazado">Rechazado</option>
+										<!-- <option value="Finalizado">Finalizado</option> -->
+										<option value="Anulado">Anulado</option>
+									</select>
+								</div>
 							</div>
 						</div>
 						<div class="form-group">

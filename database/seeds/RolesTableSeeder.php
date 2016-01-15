@@ -12,7 +12,6 @@ class RolesTableSeeder extends Seeder
    */
   public function run()
   {
-
     $adminRole = Role::create([
       'name' => 'Administrador',
       'slug' => 'admin',
@@ -30,6 +29,10 @@ class RolesTableSeeder extends Seeder
     $adminRole->attachPermission(9);
     $adminRole->attachPermission(10);
     $adminRole->attachPermission(11);
+    $adminRole->attachPermission(12);
+    $adminRole->attachPermission(13);
+    $adminRole->attachPermission(14);
+    $adminRole->attachPermission(15);
 
     $coordinatorRole = Role::create([
       'name' => 'Coordinador',
@@ -48,6 +51,10 @@ class RolesTableSeeder extends Seeder
     $coordinatorRole->attachPermission(9);
     $coordinatorRole->attachPermission(10);
     $coordinatorRole->attachPermission(11);
+    $coordinatorRole->attachPermission(12);
+    $coordinatorRole->attachPermission(13);
+    $coordinatorRole->attachPermission(14);
+    $coordinatorRole->attachPermission(15);
 
     $moderatorRole = Role::create([
       'name' => 'Moderador',
@@ -55,12 +62,15 @@ class RolesTableSeeder extends Seeder
       'description' => '',
     ]);
 
-    $moderatorRole->attachPermission(1);
-    $moderatorRole->attachPermission(2);
     $moderatorRole->attachPermission(3);
+    $moderatorRole->attachPermission(4);
+    $moderatorRole->attachPermission(5);
     $moderatorRole->attachPermission(6);
-    $moderatorRole->attachPermission(7);
     $moderatorRole->attachPermission(8);
+    $moderatorRole->attachPermission(12);
+    $moderatorRole->attachPermission(13);
+    $moderatorRole->attachPermission(14);
+    $moderatorRole->attachPermission(15);
 
     $guestRole = Role::create([
       'name' => 'Invitado',

@@ -4,11 +4,16 @@ angular.module('Solicitude.controllers')
   $scope,
   $stateParams,
   $uibModal,
+  AclService,
   Alertify,
   Solicitudes) => {
+
+  $scope.can = AclService.can;
+  
   $scope.solicitude = '';
-/*  let solicitude = Solicitudes.get({id: $stateParams.id});
-  // console.log(solicitude);*/
+  
+
+  $scope.showLegende = $state.is('solicitudeShow');
 
   Solicitudes.get({id: $stateParams.id}).$promise.then( (data) => {
     $scope.solicitude = data.solicitude;

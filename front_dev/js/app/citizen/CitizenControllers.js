@@ -4,7 +4,9 @@
 * Description
 */
 angular.module('Citizen.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'Citizen.resources'])
-.controller('CitizenCtrl', ($scope, Alertify, Citizens) => {
+.controller('CitizenCtrl', ($scope, AclService, Alertify, Citizens) => {
+
+  $scope.can = AclService.can;
 
   Citizens.get().$promise
   .then((data) => {

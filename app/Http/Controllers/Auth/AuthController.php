@@ -2,13 +2,14 @@
 namespace SATCI\Http\Controllers\Auth;
 
 use Auth;
-use SATCI\Http\Controllers\Controller;
-// use SATCI\Http\Requests\Request;
-use SATCI\Entities\User;
-use JWTAuth;
-use Tymon\JWTAuth\Exceptions\JWTException;
-
+use ErrorException;
 use Illuminate\Http\Request;
+use Johnnymn\Sim\Roles\Models\Permission;
+use Johnnymn\Sim\Roles\Models\Role;
+use JWTAuth;
+use SATCI\Entities\User;
+use SATCI\Http\Controllers\Controller;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
 {
@@ -34,6 +35,26 @@ class AuthController extends Controller
 		return "<h1>HOLA</h1>";
 	}
 
+	public function login(Request $request)
+	{
+		$credentials = $request->only('username', 'password');
+
+		try {
+      // verify the credentials and create a token for the user
+			if (!$token = JWTAuth::attempt($credentials)) {
+				return response()->json(['error' => trans('validation.invalid_user')], 401);
+			} elseif (!Auth::user()->active) {
+				Auth::logout();
+				return response()->json(['error' => trans('validation.active_user')], 401);
+			}
+		} catch (JWTException $e) {
+      // something went wrong
+			return response()->json(['error' => 'could_not_create_token'], 500);
+		}
+    // if no errors are encountered we can return a JWT
+		return response()->json(compact('token'), 200);
+	}
+
 	/**
    * Determine if user is authenticate by locating token
    */
@@ -44,7 +65,7 @@ class AuthController extends Controller
 				return response()->json(['user_not_found'], 404);
 			}
 		} catch (TokenExpiredException $e) {
-			return response()->json(['token_expired']. $e->getStatusCode());
+			return response()->json(['token_expired'], $e->getStatusCode());
 		} catch (TokenInvalidException $e) {
 			return response()->json(['token_invalid'], $e->getStatusCode());
 		}	catch (JWTException $e) {
@@ -56,30 +77,24 @@ class AuthController extends Controller
 		return response()->json(compact('user'));
 	}
 
-	public function login(Request $request)
-	{
-		$credentials = $request->only('username', 'password');
-
-		try {
-      // verify the credentials and create a token for the user
-			if (!$token = JWTAuth::attempt($credentials)) {
-				return response()->json(['error' => trans('validation.active_user')], 401);
-			}
-		} catch (JWTException $e) {
-      // something went wrong
-			return response()->json(['error' => 'could_not_create_token'], 500);
-		}
-    // if no errors are encountered we can return a JWT
-		return response()->json(compact('token'), 200);
-	}
-
 	public function permissions()
 	{
-		$role = Auth::user()->getRoles();
+		try {
+			$getRole = Auth::user()->getRoles();	
+			$role = $getRole[0]->slug;
 
-		$permissions = Auth::user()->getPermissions();
+			$getPermissions = Auth::user()->getPermissions();
+			$permissions = [];
 
-		return response()->json(['role' => $role[0], 'permissions' => $permissions], 200);
+			foreach ($getPermissions as $key => $value) {
+				array_push($permissions, $value->slug);
+			}
+		} catch (ErrorException $e) {
+			Auth::logout();
+			return response()->json(['error' => trans('validation.permissions_user')], 401);
+		}
+
+		return response()->json(['acl' => [$role => $permissions]], 200);
 	}
 
 }

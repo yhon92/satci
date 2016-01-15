@@ -5,8 +5,11 @@ angular.module('Solicitude.controllers')
   $stateParams,
   $filter,
   $uibModal,
+  AclService,
   Alertify,
   Solicitudes) => {
+  
+  $scope.can = AclService.can;
 
   Solicitudes.get({id: $stateParams.id}).$promise
   .then((data) => {

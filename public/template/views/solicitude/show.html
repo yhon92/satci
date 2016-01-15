@@ -1,7 +1,7 @@
 <div class="col-md-12" ui-view>
-	<div ui-view='show'></div>
-	<div ui-view='assign'>
-  <section class="col-md-5" ng-show="assigned">
+  <div ui-view='show'></div>
+  <div ui-view='assign'>
+    <section class="col-md-5" ng-show="assigned">
       <article class="panel panel-primary" ng-repeat="(keyTheme, theme) in assigned">
         <div class="panel-heading">
           <h3 class="panel-title">{{ theme.name }}</h3>
@@ -19,10 +19,10 @@
                     ({{ assign.area_means.means.name }})
                   </strong>
                 </span>
-                <div class="float-right" ng-class="disable(assign.status)">
+                <div ng-if="can('change-state-assign-solicitude')" class="float-right" ng-class="disable(assign.status)">
                   <a class="btn btn-xs btn-warning glyphicon glyphicon-refresh" uib-tooltip="Act. Estado" ng-init="isCollapsed[keyTheme][keyAssign] = true" ng-click="isCollapsed[keyTheme][keyAssign] = !isCollapsed[keyTheme][keyAssign]"></a>
                 </div>
-                <div uib-collapse="isCollapsed[keyTheme][keyAssign]">
+                <div ng-if="can('change-state-assign-solicitude')" uib-collapse="isCollapsed[keyTheme][keyAssign]">
                   <div class="well well-sm margin-none">
                     <label for="select" class="control-label" ><strong>Estado:</strong></label>
                     <select class="align-middle" name="status" id="status" ng-init="newStatus = assign.status" ng-model="newStatus" ng-required="true" style="width: 120px;">
@@ -33,7 +33,6 @@
                       <option value="Atendido">Atendido</option>
                     </select>
                     <button class="btn btn-primary btn-xs" ng-click="saveUpdate(keyTheme, keyAssign, newStatus, assign.id)">Actualizar</button>
-
                   </div>
                 </div>
               </li>

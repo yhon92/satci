@@ -1,5 +1,8 @@
 angular.module('Solicitude.controllers',['ui.router', 'ui.select', 'ui.bootstrap', 'Alertify', 'SATCI.Shared', 'Solicitude.resources', 'Theme.resources', 'Category.resources', 'Area.resources'])
-.controller('SolicitudeCtrl', ($scope, $http, Solicitudes) => {
+.controller('SolicitudeCtrl', ($scope, $http, AclService, Solicitudes) => {
+  
+  $scope.can = AclService.can;
+  
   $scope.citizens = '';
   $scope.institutions = '';
 

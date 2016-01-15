@@ -1,5 +1,7 @@
 angular.module('Institution.controllers')
-.controller('EditInstitutionCtrl', ($scope, $state, $stateParams, $filter, Alertify, Helpers, Institutions, Parishes) => {
+.controller('EditInstitutionCtrl', ($scope, $state, $stateParams, $filter, AclService, Alertify, Helpers, Institutions, Parishes) => {
+
+  $scope.can = AclService.can;
 
   $scope.button = {
     submit: 'Guardar',

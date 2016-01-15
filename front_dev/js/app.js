@@ -1,5 +1,6 @@
 /*** Import Dependencies for AngularJS ***/
 import 'angular';
+import 'angular-acl';
 import 'angular-animate';
 import 'angular-resource';
 import 'angular-sanitize';
@@ -42,6 +43,7 @@ angular.module('SATCI', [
   // 'angularMoment',
   'angular-loading-bar',
   'Alertify',
+  'mm.acl',
 
   'SATCI.Area',
   'SATCI.Category',
@@ -87,43 +89,60 @@ angular.module('SATCI', [
 
   // uiSelectConfig.theme = 'selectize';
 })
-.run(($rootScope, $state, $http, i18n_es, $templateCache, ResourcesUrl) => {
+.run(($rootScope, $state, $http, i18n_es, $templateCache, AclService, ResourcesUrl) => {
   $templateCache.remove('template/smart-table/pagination.html');
   // amMoment.changeLocale('de');
   // $stateChangeStart is fired whenever the state changes. We can use some parameters
   // such as toState to hook into details about the state as it is changing
   $rootScope.$on('$stateChangeStart', (event, toState) => {
     // Grab the user from local storage and parse it to an object
-    let user = JSON.parse(sessionStorage.getItem('user'));      
+    let user = JSON.parse(sessionStorage.getItem('user'));
     // If there is any user data in local storage then the user is quite
     // likely authenticated. If their token is expired, or if they are
     // otherwise not actually authenticated, they will be redirected to
     // the auth state because of the rejected request anyway
     if(user) {
-      $http.get(ResourcesUrl.api + 'auth/permissions')
-      .then((response) => {
-        // The user's authenticated state gets flipped to
-        // true so we can now show parts of the UI that rely
-        // on the user being logged in
-        $rootScope.authenticated = true;
-        // Putting the user's data on $rootScope allows
-        // us to access it anywhere across the app. Here
-        // we are grabbing what is in local storage
-        $rootScope.currentUser = user;
-        $rootScope.currentRole = response.data.role;
-        $rootScope.currentPermissions = response.data.permissions;
-        // If the user is logged in and we hit the auth route we don't need
-        // to stay there and can send the user to the main state
-        if(toState.name === "login") {
-          // Preventing the default behavior allows us to use $state.go
-          // to change states
+      $rootScope.authenticated = true;
+      $rootScope.currentUser = user;
+      
+      if (!$rootScope.currentAcl) {
+        $http.get(ResourcesUrl.api + 'auth/permissions')
+        .then((response) => {
+          $rootScope.currentAcl = response.data.acl;
+
+          let aclData = $rootScope.currentAcl;
+          let role = Object.keys($rootScope.currentAcl)[0];
+
+          AclService.setAbilities(aclData);
+          AclService.attachRole(role);
+        })
+        .catch((fails) => {
           event.preventDefault();
-          // go to the "main" state which in our case is users
-          $state.go('home');
-        }
-      })
+          sessionStorage.removeItem('user');
+          $rootScope.authenticated = false;
+          $rootScope.currentUser = null;
+          $rootScope.currentAcl = null;
+          console.log('error app')
+          $state.go('login');
+        })
+      };
+      
+      if(toState.name === "login") {
+        event.preventDefault();
+        $state.go('home');
+      };
+    };
+  });
+
+  // $rootScope.$on('$routeChangeError', (current, previous, rejection) => {
+  $rootScope.$on('$routeChangeError', (current, rejection) => {
+    if(rejection === 'Unauthorized') {
+      event.preventDefault();
+      event.stopPropagation();
+
+      $state.go('home');
     }
-  })
+  });
 })
 .service('i18n_es', ($locale) => {
   $locale.DATETIME_FORMATS.DAY = [

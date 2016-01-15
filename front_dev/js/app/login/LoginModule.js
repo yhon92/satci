@@ -7,7 +7,7 @@ angular.module('SATCI.Login',['ui.router', 'SATCI.Shared'])
     controller: 'LoginCtrl'
   })
 })
-.controller('LoginCtrl', ($auth, $state, $http, $scope, $rootScope, cfpLoadingBar, Alertify, ResourcesUrl) => {
+.controller('LoginCtrl', ($auth, $state, $http, $scope, $rootScope, cfpLoadingBar, AclService, Alertify, ResourcesUrl) => {
   cfpLoadingBar.start();
 
   $scope.login = () => {
@@ -35,16 +35,22 @@ angular.module('SATCI.Login',['ui.router', 'SATCI.Shared'])
           // Putting the user's data on $rootScope allows
           // us to access it anywhere across the app
           $rootScope.currentUser = responseUser.data.user;
-          $rootScope.currentRole = response.data.role;
-          $rootScope.currentPermissions = response.data.permissions;
-          console.log($rootScope)
+          $rootScope.currentAcl = response.data.acl;
+
+          let aclData = $rootScope.currentAcl;
+          let role = Object.keys($rootScope.currentAcl)[0];
+
+          AclService.setAbilities(aclData);
+          AclService.attachRole(role);
           // Everything worked out so we can now redirect to
           // the users state to view the data
           $state.go('home');
 
         })
         .catch((fails) => {
-          
+          Alertify.error(fails.data.error);
+          console.log('error login')
+          return false;
         })
       });
     })

@@ -3,6 +3,8 @@
 
 require('angular');
 
+require('angular-acl');
+
 require('angular-animate');
 
 require('angular-resource');
@@ -57,10 +59,11 @@ require('./app/ui/Datepicker');
 
 // import 'angular-moment';
 // import 'ng-fx';
+/*** Import Dependencies for AngularJS ***/
 
 angular.module('SATCI', ['ngAnimate', 'ngSanitize', 'ui.bootstrap', 'ui.router', 'satellizer', 'smart-table',
 // 'angularMoment',
-'angular-loading-bar', 'Alertify', 'SATCI.Area', 'SATCI.Category', 'SATCI.Citizen', 'SATCI.Director', 'SATCI.Home', 'SATCI.Institution', 'SATCI.Login', 'SATCI.Means', 'SATCI.Nav', 'SATCI.Shared', 'SATCI.Solicitude', 'SATCI.Theme', 'SATCI.RedirectWhenLoggedOutServices', 'SATCI.Datepicker']).config(function ($authProvider, $urlRouterProvider, $locationProvider, $provide, $httpProvider, uiSelectConfig, PathTemplates) {
+'angular-loading-bar', 'Alertify', 'mm.acl', 'SATCI.Area', 'SATCI.Category', 'SATCI.Citizen', 'SATCI.Director', 'SATCI.Home', 'SATCI.Institution', 'SATCI.Login', 'SATCI.Means', 'SATCI.Nav', 'SATCI.Shared', 'SATCI.Solicitude', 'SATCI.Theme', 'SATCI.RedirectWhenLoggedOutServices', 'SATCI.Datepicker']).config(function ($authProvider, $urlRouterProvider, $locationProvider, $provide, $httpProvider, uiSelectConfig, PathTemplates) {
 
   // Push the new factory onto the $http interceptor array
   $httpProvider.interceptors.push('redirectWhenLoggedOut');
@@ -78,7 +81,7 @@ angular.module('SATCI', ['ngAnimate', 'ngSanitize', 'ui.bootstrap', 'ui.router',
   $locationProvider.html5Mode(true);
 
   // uiSelectConfig.theme = 'selectize';
-}).run(function ($rootScope, $state, $http, i18n_es, $templateCache, ResourcesUrl) {
+}).run(function ($rootScope, $state, $http, i18n_es, $templateCache, AclService, ResourcesUrl) {
   $templateCache.remove('template/smart-table/pagination.html');
   // amMoment.changeLocale('de');
   // $stateChangeStart is fired whenever the state changes. We can use some parameters
@@ -91,27 +94,43 @@ angular.module('SATCI', ['ngAnimate', 'ngSanitize', 'ui.bootstrap', 'ui.router',
     // otherwise not actually authenticated, they will be redirected to
     // the auth state because of the rejected request anyway
     if (user) {
-      $http.get(ResourcesUrl.api + 'auth/permissions').then(function (response) {
-        // The user's authenticated state gets flipped to
-        // true so we can now show parts of the UI that rely
-        // on the user being logged in
-        $rootScope.authenticated = true;
-        // Putting the user's data on $rootScope allows
-        // us to access it anywhere across the app. Here
-        // we are grabbing what is in local storage
-        $rootScope.currentUser = user;
-        $rootScope.currentRole = response.data.role;
-        $rootScope.currentPermissions = response.data.permissions;
-        // If the user is logged in and we hit the auth route we don't need
-        // to stay there and can send the user to the main state
-        if (toState.name === "login") {
-          // Preventing the default behavior allows us to use $state.go
-          // to change states
+      $rootScope.authenticated = true;
+      $rootScope.currentUser = user;
+
+      if (!$rootScope.currentAcl) {
+        $http.get(ResourcesUrl.api + 'auth/permissions').then(function (response) {
+          $rootScope.currentAcl = response.data.acl;
+
+          var aclData = $rootScope.currentAcl;
+          var role = Object.keys($rootScope.currentAcl)[0];
+
+          AclService.setAbilities(aclData);
+          AclService.attachRole(role);
+        }).catch(function (fails) {
           event.preventDefault();
-          // go to the "main" state which in our case is users
-          $state.go('home');
-        }
-      });
+          sessionStorage.removeItem('user');
+          $rootScope.authenticated = false;
+          $rootScope.currentUser = null;
+          $rootScope.currentAcl = null;
+          console.log('error app');
+          $state.go('login');
+        });
+      };
+
+      if (toState.name === "login") {
+        event.preventDefault();
+        $state.go('home');
+      };
+    };
+  });
+
+  // $rootScope.$on('$routeChangeError', (current, previous, rejection) => {
+  $rootScope.$on('$routeChangeError', function (current, rejection) {
+    if (rejection === 'Unauthorized') {
+      event.preventDefault();
+      event.stopPropagation();
+
+      $state.go('home');
     }
   });
 }).service('i18n_es', function ($locale) {
@@ -120,9 +139,9 @@ angular.module('SATCI', ['ngAnimate', 'ngSanitize', 'ui.bootstrap', 'ui.router',
   $locale.DATETIME_FORMATS.MONTH = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
   $locale.DATETIME_FORMATS.SHORTMONTH = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
   // console.log($locale.DATETIME_FORMATS);
-}); /*** Import Dependencies for AngularJS ***/
+});
 
-},{"./app/area/AreaModule":3,"./app/category/CategoryModule":9,"./app/citizen/CitizenModule":15,"./app/director/DirectorModule":21,"./app/home/HomeModule":26,"./app/institution/InstitutionModule":28,"./app/login/LoginModule":33,"./app/means/MeansModule":35,"./app/nav/NavModule":40,"./app/services/RedirectWhenLoggedOut":41,"./app/shared/SharedModule":44,"./app/solicitudes/SolicitudeModule":49,"./app/theme/ThemeModule":57,"./app/ui/Datepicker":62,"./libs/ng-alertify":63,"angular":77,"angular-animate":65,"angular-bootstrap-npm":66,"angular-loading-bar":68,"angular-resource":70,"angular-sanitize":72,"angular-smart-table":74,"angular-ui-router":75,"satellizer":78,"ui-select":79}],2:[function(require,module,exports){
+},{"./app/area/AreaModule":3,"./app/category/CategoryModule":9,"./app/citizen/CitizenModule":15,"./app/director/DirectorModule":21,"./app/home/HomeModule":26,"./app/institution/InstitutionModule":28,"./app/login/LoginModule":33,"./app/means/MeansModule":35,"./app/nav/NavModule":40,"./app/services/RedirectWhenLoggedOut":41,"./app/shared/SharedModule":44,"./app/solicitudes/SolicitudeModule":49,"./app/theme/ThemeModule":57,"./app/ui/Datepicker":62,"./libs/ng-alertify":63,"angular":78,"angular-acl":64,"angular-animate":66,"angular-bootstrap-npm":67,"angular-loading-bar":69,"angular-resource":71,"angular-sanitize":73,"angular-smart-table":75,"angular-ui-router":76,"satellizer":79,"ui-select":80}],2:[function(require,module,exports){
 'use strict';
 
 angular.module('Area.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'Director.resources', 'Means.resources', 'Area.resources']).controller('AreaCtrl', function ($scope, $uibModal, Alertify, Helpers, Directors, Means, Areas) {
@@ -731,7 +750,9 @@ angular.module('Category.controllers').controller('ShowCategoryCtrl', function (
 *
 * Description
 */
-angular.module('Citizen.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'Citizen.resources']).controller('CitizenCtrl', function ($scope, Alertify, Citizens) {
+angular.module('Citizen.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'Citizen.resources']).controller('CitizenCtrl', function ($scope, AclService, Alertify, Citizens) {
+
+  $scope.can = AclService.can;
 
   Citizens.get().$promise.then(function (data) {
     $scope.citizens = data.citizens;
@@ -846,7 +867,9 @@ angular.module('Citizen.resources', ['ngResource', 'SATCI.Shared']).factory('Cit
 },{}],17:[function(require,module,exports){
 'use strict';
 
-angular.module('Citizen.controllers').controller('CreateCitizenCtrl', function ($scope, $state, $filter, Alertify, Helpers, Citizens, Parishes) {
+angular.module('Citizen.controllers').controller('CreateCitizenCtrl', function ($scope, $state, $filter, AclService, Alertify, Helpers, Citizens, Parishes) {
+
+  $scope.can = AclService.can;
 
   $scope.button = {
     submit: 'Agregar',
@@ -927,7 +950,9 @@ angular.module('Citizen.controllers').controller('CreateCitizenCtrl', function (
 },{}],18:[function(require,module,exports){
 'use strict';
 
-angular.module('Citizen.controllers').controller('EditCitizenCtrl', function ($scope, $state, $stateParams, $filter, Alertify, Helpers, Citizens, Parishes) {
+angular.module('Citizen.controllers').controller('EditCitizenCtrl', function ($scope, $state, $stateParams, $filter, AclService, Alertify, Helpers, Citizens, Parishes) {
+
+  $scope.can = AclService.can;
 
   $scope.button = {
     submit: 'Guardar',
@@ -1311,7 +1336,9 @@ angular.module('SATCI.Home', ['ui.router', 'SATCI.Shared']).config(function ($st
 *
 * Description
 */
-angular.module('Institution.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'Institution.resources']).controller('InstitutionCtrl', function ($scope, Alertify, Institutions) {
+angular.module('Institution.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'Institution.resources']).controller('InstitutionCtrl', function ($scope, AclService, Alertify, Institutions) {
+
+  $scope.can = AclService.can;
 
   Institutions.get().$promise.then(function (data) {
     $scope.institutions = data.institutions;
@@ -1426,7 +1453,9 @@ angular.module('Institution.resources', ['ngResource', 'SATCI.Shared']).factory(
 },{}],30:[function(require,module,exports){
 'use strict';
 
-angular.module('Institution.controllers').controller('CreateInstitutionCtrl', function ($scope, $state, $filter, Alertify, Helpers, Institutions, Parishes) {
+angular.module('Institution.controllers').controller('CreateInstitutionCtrl', function ($scope, $state, $filter, AclService, Alertify, Helpers, Institutions, Parishes) {
+
+  $scope.can = AclService.can;
 
   $scope.button = {
     submit: 'Agregar',
@@ -1513,7 +1542,9 @@ angular.module('Institution.controllers').controller('CreateInstitutionCtrl', fu
 },{}],31:[function(require,module,exports){
 'use strict';
 
-angular.module('Institution.controllers').controller('EditInstitutionCtrl', function ($scope, $state, $stateParams, $filter, Alertify, Helpers, Institutions, Parishes) {
+angular.module('Institution.controllers').controller('EditInstitutionCtrl', function ($scope, $state, $stateParams, $filter, AclService, Alertify, Helpers, Institutions, Parishes) {
+
+  $scope.can = AclService.can;
 
   $scope.button = {
     submit: 'Guardar',
@@ -1589,7 +1620,7 @@ angular.module('SATCI.Login', ['ui.router', 'SATCI.Shared']).config(function ($s
     templateUrl: PathTemplates.views + 'auth/login.html',
     controller: 'LoginCtrl'
   });
-}).controller('LoginCtrl', function ($auth, $state, $http, $scope, $rootScope, cfpLoadingBar, Alertify, ResourcesUrl) {
+}).controller('LoginCtrl', function ($auth, $state, $http, $scope, $rootScope, cfpLoadingBar, AclService, Alertify, ResourcesUrl) {
   cfpLoadingBar.start();
 
   $scope.login = function () {
@@ -1614,13 +1645,21 @@ angular.module('SATCI.Login', ['ui.router', 'SATCI.Shared']).config(function ($s
           // Putting the user's data on $rootScope allows
           // us to access it anywhere across the app
           $rootScope.currentUser = responseUser.data.user;
-          $rootScope.currentRole = response.data.role;
-          $rootScope.currentPermissions = response.data.permissions;
-          console.log($rootScope);
+          $rootScope.currentAcl = response.data.acl;
+
+          var aclData = $rootScope.currentAcl;
+          var role = Object.keys($rootScope.currentAcl)[0];
+
+          AclService.setAbilities(aclData);
+          AclService.attachRole(role);
           // Everything worked out so we can now redirect to
           // the users state to view the data
           $state.go('home');
-        }).catch(function (fails) {});
+        }).catch(function (fails) {
+          Alertify.error(fails.data.error);
+          console.log('error login');
+          return false;
+        });
       });
     }).catch(function (fails) {
       Alertify.error(fails.data.error);
@@ -1885,17 +1924,21 @@ angular.module('Means.controllers').controller('ShowMeansCtrl', function ($scope
 },{}],40:[function(require,module,exports){
 'use strict';
 
-angular.module('SATCI.Nav', []).controller('NavCtrl', function ($auth, $state, $scope, $rootScope, $location) {
+angular.module('SATCI.Nav', []).controller('NavCtrl', function ($auth, $state, $scope, $rootScope, $location, AclService) {
+  $scope.can = AclService.can;
+
   $scope.logout = function () {
     //Remove the satellizer_token from localstorage
     $auth.logout().then(function () {
       //Remove the authenticated user from local storage
       sessionStorage.removeItem('user');
+      sessionStorage.removeItem('AclService');
       //Flip authenticated to false so that we no longer
       //show UI elements dependant on the user being logged in
       $rootScope.authenticated = false;
       //Remove the current user from rootscope
       $rootScope.currentUser = null;
+      $rootScope.currentAcl = null;
       $state.go('login');
     });
   };
@@ -1948,8 +1991,7 @@ angular.module('SATCI.RedirectWhenLoggedOutServices', []).factory('redirectWhenL
           sessionStorage.removeItem('user');
           $rootScope.authenticated = false;
           $rootScope.currentUser = null;
-          $rootScope.currentRole = null;
-          $rootScope.currentPermissions = null;
+          $rootScope.currentAcl = null;
           // Send the user to the auth state so they can login
           $state.go('login');
         }
@@ -1974,7 +2016,8 @@ angular.module('Shared.directives', []).directive('applicantList', function (Pat
       applicant: '=type',
       edit: '@',
       // show: '&',
-      delete: '&'
+      delete: '&',
+      can: '=can'
     },
     templateUrl: PathTemplates.partials + 'shared/applicant-list.html'
   };
@@ -2213,7 +2256,10 @@ angular.module('Shared.services', []).factory('paginateService', function ($q, $
 },{}],47:[function(require,module,exports){
 'use strict';
 
-angular.module('Solicitude.controllers', ['ui.router', 'ui.select', 'ui.bootstrap', 'Alertify', 'SATCI.Shared', 'Solicitude.resources', 'Theme.resources', 'Category.resources', 'Area.resources']).controller('SolicitudeCtrl', function ($scope, $http, Solicitudes) {
+angular.module('Solicitude.controllers', ['ui.router', 'ui.select', 'ui.bootstrap', 'Alertify', 'SATCI.Shared', 'Solicitude.resources', 'Theme.resources', 'Category.resources', 'Area.resources']).controller('SolicitudeCtrl', function ($scope, $http, AclService, Solicitudes) {
+
+  $scope.can = AclService.can;
+
   $scope.citizens = '';
   $scope.institutions = '';
 
@@ -2246,7 +2292,8 @@ angular.module('Solicitude.directives', ['SATCI.Shared']).directive('solicitudeL
     scope: {
       applicant: '=type',
       show: '&',
-      remove: '&'
+      remove: '&',
+      can: '=can'
     },
     templateUrl: PathTemplates.partials + 'solicitude/solicitude-list-applicant.html'
   };
@@ -2285,6 +2332,19 @@ angular.module('SATCI.Solicitude', ['ui.router', 'SATCI.Shared', 'Solicitude.con
     templateUrl: PathTemplates.views + 'solicitude/edit.html',
     controller: 'EditSolicitudeCtrl'
   }).state('solicitudeAssign', {
+    resolve: {
+      'acl': function acl($rootScope, $q, AclService) {
+        if (AclService.can('create-assign-solicitude')) {
+          console.log('paso');
+          // Has proper permissions
+          return true;
+        } else {
+          console.log('denegado');
+          // Does not have permission
+          $rootScope.$emit('$routeChangeError', 'Unauthorized');
+        }
+      }
+    },
     url: '/solicitude/assign/:id',
     views: {
       '': {
@@ -2358,7 +2418,9 @@ angular.module('Solicitude.resources', ['ngResource', 'SATCI.Shared']).factory('
 'use strict';
 
 // ['ui.router', 'ui.select', 'ui.bootstrap', 'Alertify', 'SATCI.Shared', 'Solicitude.resources', 'Theme.resources', 'Category.resources', 'Area.resources']
-angular.module('Solicitude.controllers').controller('AssignSolicitudeCtrl', function ($state, $scope, $stateParams, $uibModal, Alertify, Solicitudes, SolicitudesAssign, Themes, Categories, Areas) {
+angular.module('Solicitude.controllers').controller('AssignSolicitudeCtrl', function ($state, $scope, $stateParams, $uibModal, AclService, Alertify, Solicitudes, SolicitudesAssign, Themes, Categories, Areas) {
+
+  $scope.can = AclService.can;
 
   $scope.selected = {};
   $scope.selected.themes = [];
@@ -2566,7 +2628,9 @@ angular.module('Solicitude.controllers').controller('AssignSolicitudeCtrl', func
 },{}],52:[function(require,module,exports){
 'use strict';
 
-angular.module('Solicitude.controllers').controller('CreateSolicitudeCtrl', function ($state, $scope, $filter, $controller, $q, Alertify, Citizens, Institutions, Parishes, Solicitudes, paginateService, PathTemplates) {
+angular.module('Solicitude.controllers').controller('CreateSolicitudeCtrl', function ($state, $scope, $filter, $controller, $q, AclService, Alertify, Citizens, Institutions, Parishes, Solicitudes, paginateService, PathTemplates) {
+
+  $scope.can = AclService.can;
 
   $controller('CreateCitizenCtrl', { $scope: $scope });
   $controller('CreateInstitutionCtrl', { $scope: $scope });
@@ -2803,7 +2867,9 @@ angular.module('Solicitude.controllers').controller('CreateSolicitudeCtrl', func
 },{}],53:[function(require,module,exports){
 'use strict';
 
-angular.module('Solicitude.controllers').controller('EditSolicitudeCtrl', function ($state, $scope, $stateParams, $filter, $uibModal, Alertify, Solicitudes) {
+angular.module('Solicitude.controllers').controller('EditSolicitudeCtrl', function ($state, $scope, $stateParams, $filter, $uibModal, AclService, Alertify, Solicitudes) {
+
+  $scope.can = AclService.can;
 
   Solicitudes.get({ id: $stateParams.id }).$promise.then(function (data) {
     var solicitude = data.solicitude;
@@ -2952,7 +3018,9 @@ angular.module('Solicitude.controllers').controller('EditSolicitudeCtrl', functi
 'use strict';
 
 // ['ui.router', 'ui.select', 'ui.bootstrap', 'Alertify', 'SATCI.Shared', 'Solicitude.resources', 'Theme.resources', 'Category.resources', 'Area.resources']
-angular.module('Solicitude.controllers').controller('ShowAssignSolicitudeCtrl', function ($state, $scope, $stateParams, $uibModal, Alertify, SolicitudesAssign) {
+angular.module('Solicitude.controllers').controller('ShowAssignSolicitudeCtrl', function ($state, $scope, $stateParams, $uibModal, AclService, Alertify, SolicitudesAssign) {
+
+  $scope.can = AclService.can;
 
   $scope.assigned = false;
   $scope.notAssigned = false;
@@ -3025,10 +3093,13 @@ angular.module('Solicitude.controllers').controller('ShowAssignSolicitudeCtrl', 
 },{}],55:[function(require,module,exports){
 'use strict';
 
-angular.module('Solicitude.controllers').controller('ShowSolicitudeCtrl', function ($state, $scope, $stateParams, $uibModal, Alertify, Solicitudes) {
+angular.module('Solicitude.controllers').controller('ShowSolicitudeCtrl', function ($state, $scope, $stateParams, $uibModal, AclService, Alertify, Solicitudes) {
+
+  $scope.can = AclService.can;
+
   $scope.solicitude = '';
-  /*  let solicitude = Solicitudes.get({id: $stateParams.id});
-    // console.log(solicitude);*/
+
+  $scope.showLegende = $state.is('solicitudeShow');
 
   Solicitudes.get({ id: $stateParams.id }).$promise.then(function (data) {
     $scope.solicitude = data.solicitude;
@@ -4170,6 +4241,248 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],64:[function(require,module,exports){
+'use strict';
+
+angular.module('mm.acl', []);
+
+angular.module('mm.acl').provider('AclService', [
+  function () {
+
+    /**
+     * Polyfill for IE8
+     *
+     * http://stackoverflow.com/a/1181586
+     */
+    if (!Array.prototype.indexOf) {
+      Array.prototype.indexOf = function (needle) {
+        var l = this.length;
+        for (; l--;) {
+          if (this[l] === needle) {
+            return l;
+          }
+        }
+        return -1;
+      };
+    }
+
+    var config = {
+      storage: 'sessionStorage',
+      storageKey: 'AclService'
+    };
+
+    var data = {
+      roles: [],
+      abilities: {}
+    };
+
+    /**
+     * Does the given role have abilities granted to it?
+     *
+     * @param role
+     * @returns {boolean}
+     */
+    var roleHasAbilities = function (role) {
+      return (typeof data.abilities[role] === 'object');
+    };
+
+    /**
+     * Retrieve the abilities array for the given role
+     *
+     * @param role
+     * @returns {Array}
+     */
+    var getRoleAbilities = function (role) {
+      return (roleHasAbilities(role)) ? data.abilities[role] : [];
+    };
+
+    /**
+     * Persist data to storage based on config
+     */
+    var save = function () {
+      switch (config.storage) {
+        case 'sessionStorage':
+          saveToStorage('sessionStorage');
+          break;
+        case 'localStorage':
+          saveToStorage('localStorage');
+          break;
+        default:
+          // Don't save
+          return;
+      }
+    };
+
+    /**
+     * Persist data to web storage
+     */
+    var saveToStorage = function (storagetype) {
+      window[storagetype].setItem(config.storageKey, JSON.stringify(data));
+    };
+
+    /**
+     * Retrieve data from web storage
+     */
+    var fetchFromStorage = function (storagetype) {
+      var data = window[storagetype].getItem(config.storageKey);
+      return (data) ? JSON.parse(data) : false;
+    };
+
+    var AclService = {};
+    AclService.resume = resume;
+
+
+    /**
+     * Restore data from web storage.
+     *
+     * Returns true if web storage exists and false if it doesn't.
+     *
+     * @returns {boolean}
+     */
+    function resume() {
+      var storedData;
+
+      switch (config.storage) {
+        case 'sessionStorage':
+          storedData = fetchFromStorage('sessionStorage');
+          break;
+        case 'localStorage':
+          storedData = fetchFromStorage('localStorage');
+          break;
+        default:
+          storedData = null;
+      }
+      if (storedData) {
+        angular.extend(data, storedData);
+        return true;
+      }
+
+      return false;
+    }
+
+    /**
+     * Attach a role to the current user
+     *
+     * @param role
+     */
+    AclService.attachRole = function (role) {
+      if (data.roles.indexOf(role) === -1) {
+        data.roles.push(role);
+        save();
+      }
+    };
+
+    /**
+     * Remove role from current user
+     *
+     * @param role
+     */
+    AclService.detachRole = function (role) {
+      var i = data.roles.indexOf(role);
+      if (i > -1) {
+        data.roles.splice(i, 1);
+        save();
+      }
+    };
+
+    /**
+     * Remove all roles from current user
+     */
+    AclService.flushRoles = function () {
+      data.roles = [];
+      save();
+    };
+
+    /**
+     * Check if the current user has role attached
+     *
+     * @param role
+     * @returns {boolean}
+     */
+    AclService.hasRole = function (role) {
+      return (data.roles.indexOf(role) > -1);
+    };
+
+    /**
+     * Returns the current user roles
+     * @returns {Array}
+     */
+    AclService.getRoles = function () {
+      return data.roles;
+    };
+
+    /**
+     * Set the abilities object (overwriting previous abilities)
+     *
+     * Each property on the abilities object should be a role.
+     * Each role should have a value of an array. The array should contain
+     * a list of all of the roles abilities.
+     *
+     * Example:
+     *
+     *    {
+     *        guest: ['login'],
+     *        user: ['logout', 'view_content'],
+     *        admin: ['logout', 'view_content', 'manage_users']
+     *    }
+     *
+     * @param abilities
+     */
+    AclService.setAbilities = function (abilities) {
+      data.abilities = abilities;
+      save();
+    };
+
+    /**
+     * Add an ability to a role
+     *
+     * @param role
+     * @param ability
+     */
+    AclService.addAbility = function (role, ability) {
+      if (!data.abilities[role]) {
+        data.abilities[role] = [];
+      }
+      data.abilities[role].push(ability);
+      save();
+    };
+
+    /**
+     * Does current user have permission to do something?
+     *
+     * @param ability
+     * @returns {boolean}
+     */
+    AclService.can = function (ability) {
+      var role, abilities;
+      // Loop through roles
+        var l = data.roles.length;
+      for (; l--;) {
+        // Grab the the current role
+        role = data.roles[l];
+        abilities = getRoleAbilities(role);
+        if (abilities.indexOf(ability) > -1) {
+          // Ability is in role abilities
+          return true;
+        }
+      }
+      // We made it here, so the ability wasn't found in attached roles
+      return false;
+    };
+
+    return {
+      config: function (userConfig) {
+        angular.extend(config, userConfig);
+      },
+      resume: resume,
+      $get: function () {
+        return AclService;
+      }
+    };
+
+  }
+]);
+
+},{}],65:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.8
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -8101,11 +8414,11 @@ angular.module('ngAnimate', [])
 
 })(window, window.angular);
 
-},{}],65:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 require('./angular-animate');
 module.exports = 'ngAnimate';
 
-},{"./angular-animate":64}],66:[function(require,module,exports){
+},{"./angular-animate":65}],67:[function(require,module,exports){
 /*
  * angular-ui-bootstrap
  * http://angular-ui.github.io/bootstrap/
@@ -16609,7 +16922,7 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
     "");
 }]);
 !angular.$$csp() && angular.element(document).find('head').prepend('<style type="text/css">.ng-animate.item:not(.left):not(.right){-webkit-transition:0s ease-in-out left;transition:0s ease-in-out left}</style>');if(typeof module!=='undefined')module.exports='ui.bootstrap';
-},{}],67:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 /*! 
  * angular-loading-bar v0.8.0
  * https://chieffancypants.github.io/angular-loading-bar
@@ -16940,11 +17253,11 @@ angular.module('cfp.loadingBar', [])
   });       // wtf javascript. srsly
 })();       //
 
-},{}],68:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 require('./build/loading-bar');
 module.exports = 'angular-loading-bar';
 
-},{"./build/loading-bar":67}],69:[function(require,module,exports){
+},{"./build/loading-bar":68}],70:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.8
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -17630,11 +17943,11 @@ angular.module('ngResource', ['ng']).
 
 })(window, window.angular);
 
-},{}],70:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 require('./angular-resource');
 module.exports = 'ngResource';
 
-},{"./angular-resource":69}],71:[function(require,module,exports){
+},{"./angular-resource":70}],72:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.8
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -18319,11 +18632,11 @@ angular.module('ngSanitize').filter('linky', ['$sanitize', function($sanitize) {
 
 })(window, window.angular);
 
-},{}],72:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 require('./angular-sanitize');
 module.exports = 'ngSanitize';
 
-},{"./angular-sanitize":71}],73:[function(require,module,exports){
+},{"./angular-sanitize":72}],74:[function(require,module,exports){
 /** 
 * @version 2.1.6
 * @license MIT
@@ -18851,10 +19164,10 @@ ng.module('smart-table')
   }]);
 
 })(angular);
-},{}],74:[function(require,module,exports){
+},{}],75:[function(require,module,exports){
 require('./dist/smart-table.js');
 module.exports = 'smart-table';
-},{"./dist/smart-table.js":73}],75:[function(require,module,exports){
+},{"./dist/smart-table.js":74}],76:[function(require,module,exports){
 /**
  * State-based routing for AngularJS
  * @version v0.2.15
@@ -23225,7 +23538,7 @@ angular.module('ui.router.state')
   .filter('isState', $IsStateFilter)
   .filter('includedByState', $IncludedByStateFilter);
 })(window, window.angular);
-},{}],76:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.8
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -52244,11 +52557,11 @@ $provide.value("$locale", {
 })(window, document);
 
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
-},{}],77:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":76}],78:[function(require,module,exports){
+},{"./angular":77}],79:[function(require,module,exports){
 /**
  * Satellizer 0.13.2
  * (c) 2015 Sahat Yalkabov
@@ -53173,7 +53486,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
 
 })(window, window.angular);
 
-},{}],79:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 /*!
  * ui-select
  * http://github.com/angular-ui/ui-select

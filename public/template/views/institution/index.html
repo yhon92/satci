@@ -2,11 +2,11 @@
   <!-- <p>
     <a ui-sref="institutionCreate" class="btn btn-primary">Agregar Institución</a>
   </p> -->
-  <a ui-sref="institutionCreate" class="btn btn-info btn-add-float" title="Agregar Institución">
+  <a ng-if="can('create-applicant')" ui-sref="institutionCreate" class="btn btn-info btn-add-float" title="Agregar Institución">
     <img src="./img/bootswatch/plus_2x.png" alt="">  
   </a>
   
-  <applicant-list type='institutions' edit='institutionEdit' delete='deleteInstitution(id)'></applicant-list>
+  <applicant-list type='institutions' edit='institutionEdit' delete='deleteInstitution(id)' can="can"></applicant-list>
 
 </div>
 

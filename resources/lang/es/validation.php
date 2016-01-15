@@ -75,7 +75,9 @@ return [
 	"url"              => "El formato :attribute es inválido.",
 
 
+	'invalid_user' => 'Usuario y/o Contraseña invalida.',
 	'active_user'	=> 'Usuario inactivo y/o bloqueado.',
+	'permissions_user' => 'No posee permisos para iniciar sesión.',
 	/*
 	|--------------------------------------------------------------------------
 	| Custom Validation Language Lines

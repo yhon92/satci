@@ -5,6 +5,7 @@ angular.module('Solicitude.controllers')
   $scope,
   $stateParams,
   $uibModal,
+  AclService,
   Alertify,
   Solicitudes,
   SolicitudesAssign,
@@ -12,6 +13,8 @@ angular.module('Solicitude.controllers')
   Categories,
   Areas
   ) => {
+
+  $scope.can = AclService.can;
 
   $scope.selected = {};
   $scope.selected.themes = [];

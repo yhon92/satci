@@ -4,7 +4,9 @@
 * Description
 */
 angular.module('Institution.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'Institution.resources'])
-.controller('InstitutionCtrl', ($scope, Alertify, Institutions) => {
+.controller('InstitutionCtrl', ($scope, AclService, Alertify, Institutions) => {
+  
+  $scope.can = AclService.can;
 
   Institutions.get().$promise
   .then((data) => {

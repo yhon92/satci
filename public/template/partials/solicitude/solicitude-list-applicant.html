@@ -38,12 +38,12 @@
             <td>{{ row.reception_date | date:'dd-MM-yyyy' }}</td>
             <td>{{ row.applicant.identification }}</td>
             <td>{{ row.applicant.full_name}}</td>
-            <td>{{ row.topic | limitTo:190 }}</td>
+            <td>{{ row.topic | limitTo:145 }}...</td>
             <td>{{ row.status }}</td>
             <td>
               <div ng-if="row.status == 'Recibido'">
-                <a ui-sref="solicitudeEdit({id: row.id})" uib-tooltip="Editar" class="btn btn-xs btn-warning glyphicon glyphicon-pencil"></a>
-                <a ui-sref="solicitudeAssign({id: row.id})" uib-tooltip="Asignar" class="btn btn-xs btn-primary glyphicon glyphicon-ok"></a>
+                <a ng-if="can('edit-solicitude')" ui-sref="solicitudeEdit({id: row.id})" uib-tooltip="Editar" class="btn btn-xs btn-warning glyphicon glyphicon-pencil"></a>
+                <a ng-if="can('create-assign-solicitude')" ui-sref="solicitudeAssign({id: row.id})" uib-tooltip="Asignar" class="btn btn-xs btn-primary glyphicon glyphicon-ok"></a>
               </div>
             </td>
           </tr>

@@ -5,6 +5,7 @@ angular.module('Solicitude.controllers')
   $filter, 
   $controller, 
   $q, 
+  AclService,
   Alertify,
   Citizens, 
   Institutions, 
@@ -12,6 +13,8 @@ angular.module('Solicitude.controllers')
   Solicitudes, 
   paginateService, 
   PathTemplates) => {
+
+  $scope.can = AclService.can;
 
   $controller('CreateCitizenCtrl', {$scope : $scope});
   $controller('CreateInstitutionCtrl', {$scope : $scope});

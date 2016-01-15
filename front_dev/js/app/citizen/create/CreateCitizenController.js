@@ -1,5 +1,7 @@
 angular.module('Citizen.controllers')
-.controller('CreateCitizenCtrl', ($scope, $state, $filter, Alertify, Helpers,Citizens, Parishes) => {
+.controller('CreateCitizenCtrl', ($scope, $state, $filter, AclService, Alertify, Helpers,Citizens, Parishes) => {
+
+  $scope.can = AclService.can;
 
   $scope.button = {
     submit: 'Agregar',
