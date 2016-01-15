@@ -1,25 +1,29 @@
 'use-stric';
-var gulp          = require('gulp'),
+var gulp = require('gulp');
 //    concat        = require('gulp-concat'),
 //    jade          = require('gulp-jade'),
 //    jshint        = require('gulp-jshint'),
-    livereload    = require('gulp-livereload'),
+var livereload = require('gulp-livereload');
 //    minifyCSS     = require('gulp-minify-css'),
-    notify        = require('gulp-notify'),
+var notify = require('gulp-notify');
 //    plumber       = require('gulp-plumber'),
-    stylus        = require('gulp-stylus'),
+var stylus = require('gulp-stylus');
 //    uglify        = require('gulp-uglify'),
-    babelify      = require('babelify'),
-    browserify    = require('browserify'),
-    nib           = require('nib'),
+var babelify = require('babelify');
+var browserify = require('browserify');
+var nib = require('nib');
 //    watchify      = require('watchify'),
 //    buffer        = require('vinyl-buffer'),
-    source        = require('vinyl-source-stream');
+var source = require('vinyl-source-stream');
 //    transform     = require('vinyl-transform');
 
-    //elixir        = require('laravel-elixir')
+var elixir        = require('laravel-elixir');
 
-//elixir.config.assetsPath = 'front_dev';
+elixir.config.assetsPath = 'front_dev';
+elixir.config.js.browserify.transformers.push({
+    name: 'babelify',
+    options: {"presets": ["es2015"]}
+});
 
 var paths = {
   src: {
@@ -82,7 +86,7 @@ gulp.task('js', function(){
   this.emit('end');
 });
 
-gulp.task('watch', function() {
+gulp.task('w', function() {
   livereload.listen();
   gulp.watch(paths.src.html, ['html']);
   gulp.watch(['./front_dev/styl/**/*.styl'], ['css']);
@@ -93,4 +97,9 @@ gulp.task('watch', function() {
   //gulp.watch(['./app/js/**/*.js', './Gulpfile.js'], ['jshint', 'inject']);
 });
 
-gulp.task('default', ['watch',]);
+elixir(function(mix) {
+  mix.browserify('app.js')
+      .version(['public/js/app.js']);
+});
+
+// gulp.task('default', ['watch',]);

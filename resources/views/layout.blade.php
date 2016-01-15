@@ -98,7 +98,7 @@
 	<!-- Scripts -->
 	<%-- <script src="<% asset('js/libs.js') %>"></script> --%>
 
-	<script src="<% asset('js/app.js') %>"></script>
+	<script src="<% elixir('js/app.js') %>"></script>
 
 	<script type="text/ng-template" id="modalShowCitizen-template">
 		<section class="modal-header">
