@@ -5,7 +5,7 @@ var gulp = require('gulp');
 // jade = require('gulp-jade'),
 // jshint = require('gulp-jshint'),
 var livereload = require('gulp-livereload');
-// minifyCSS = require('gulp-minify-css'),
+// var cssnano = require('gulp-cssnano');
 var notify = require('gulp-notify');
 // plumber = require('gulp-plumber'),
 var stylus = require('gulp-stylus');
@@ -60,7 +60,7 @@ gulp.task('css', function() {
     return notify().write(error);
   })
   .pipe(gulp.dest(paths.dest.css))
-  //.pipe(minifyCSS())
+  //.pipe(cssnano())
   .pipe(livereload())
   .pipe(notify("CSS Completo!"))
 });
@@ -90,10 +90,10 @@ gulp.task('js', function(){
   this.emit('end');
 });
 
-gulp.task('watch', function() {
+gulp.task('dev', function() {
   livereload.listen();
   gulp.watch(paths.src.html, ['html']);
-  gulp.watch(['./front_dev/styl/**/*.styl'], ['css']);
+  gulp.watch(['./front_dev/stylus/**/*.styl'], ['css']);
   gulp.watch(['./front_dev/js/**/*.js'], ['js']);
   //gulp.watch(['./front_dev/js/app/**/*.js'], ['jshint', 'js-app']);
   //gulp.watch(['./app/js/**/*.js'], ['jshint']);
@@ -136,4 +136,4 @@ Elixir(function(mix) {
   //mix.livereload(['public/build/js/*', 'public/css/app.css'])
 });
 
-gulp.task('default', ['watch',]);
+//gulp.task('default', ['watch',]);
