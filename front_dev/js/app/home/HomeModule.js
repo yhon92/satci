@@ -8,6 +8,9 @@ angular.module('SATCI.Home', ['ui.router', 'SATCI.Shared'])
   $stateProvider
   .state('home', {
     url: '/home',
-    templateUrl: `${PathTemplates.views}home/index.html`
+    templateUrl: `${PathTemplates.views}home/index.html`,
+    controller: ($http) => {
+      $http.get('/api/auth/user')
+    }
   })
 })

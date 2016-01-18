@@ -49,7 +49,6 @@ angular.module('SATCI.Login',['ui.router', 'SATCI.Shared'])
         })
         .catch((fails) => {
           Alertify.error(fails.data.error);
-          console.log('error login')
           return false;
         })
       });

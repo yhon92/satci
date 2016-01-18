@@ -82,7 +82,7 @@ angular.module('SATCI', [
   $authProvider.tokenPrefix = "SATCI";
   $authProvider.storageType = 'sessionStorage'
 
-  $urlRouterProvider.otherwise('/auth/login');
+  $urlRouterProvider.otherwise('/home');
 
   $httpProvider.interceptors.push('redirectWhenLoggedOut');
 
@@ -90,7 +90,7 @@ angular.module('SATCI', [
 
   // uiSelectConfig.theme = 'selectize';
 })
-.run(($rootScope, $state, $http, i18n_es, $templateCache, AclService, ResourcesUrl) => {
+.run(($rootScope, $urlRouter, $state, $http, i18n_es, $templateCache, AclService, ResourcesUrl) => {
   $templateCache.remove('template/smart-table/pagination.html');
   // amMoment.changeLocale('de');
   // $stateChangeStart is fired whenever the state changes. We can use some parameters
@@ -98,6 +98,7 @@ angular.module('SATCI', [
   $rootScope.$on('$stateChangeStart', (event, toState) => {
     // Grab the user from local storage and parse it to an object
     let user = JSON.parse(sessionStorage.getItem('user'));
+    let role = JSON.parse(sessionStorage.getItem('AclService'));
     // If there is any user data in local storage then the user is quite
     // likely authenticated. If their token is expired, or if they are
     // otherwise not actually authenticated, they will be redirected to
@@ -106,7 +107,8 @@ angular.module('SATCI', [
       $rootScope.authenticated = true;
       $rootScope.currentUser = user;
       
-      if (!$rootScope.currentAcl) {
+      if (!$rootScope.currentAcl && !role) {
+        event.preventDefault();
         $http.get(ResourcesUrl.api + 'auth/permissions')
         .then((response) => {
           $rootScope.currentAcl = response.data.acl;
@@ -116,17 +118,18 @@ angular.module('SATCI', [
 
           AclService.setAbilities(aclData);
           AclService.attachRole(role);
+          $urlRouter.sync();
         })
         .catch((fails) => {
-          event.preventDefault();
           sessionStorage.removeItem('user');
           $rootScope.authenticated = false;
           $rootScope.currentUser = null;
           $rootScope.currentAcl = null;
-          console.log('error app')
           $state.go('login');
         })
-      };
+      } else {
+        AclService.resume()
+      }
       
       if(toState.name === "login") {
         event.preventDefault();
@@ -135,12 +138,8 @@ angular.module('SATCI', [
     };
   });
 
-  // $rootScope.$on('$routeChangeError', (current, previous, rejection) => {
-  $rootScope.$on('$routeChangeError', (current, rejection) => {
-    if(rejection === 'Unauthorized') {
-      event.preventDefault();
-      event.stopPropagation();
-
+  $rootScope.$on('$stateChangeError', (event, toState, toParams, fromState, fromParams, error) => {
+    if (error.unauthorized) {
       $state.go('home');
     }
   });
