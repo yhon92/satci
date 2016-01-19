@@ -55,6 +55,7 @@ class ThemeRepo extends BaseRepo
                 ->with(['assign_solicitude' => function ($query) use ($solicitude_id) {
                   $query->where('solicitude_id', $solicitude_id);
                 }, 
+                'assign_solicitude.observation', 
                 'assign_solicitude.area_means.area.director', 
                 'assign_solicitude.area_means.means'
                 ])

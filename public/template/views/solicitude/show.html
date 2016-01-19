@@ -23,7 +23,8 @@
                   <a class="btn btn-xs btn-warning glyphicon glyphicon-refresh" uib-tooltip="Act. Estado" ng-init="isCollapsed[keyTheme][keyAssign] = true" ng-click="isCollapsed[keyTheme][keyAssign] = !isCollapsed[keyTheme][keyAssign]"></a>
                 </div>
                 <div ng-if="can('change-state-assign-solicitude')" uib-collapse="isCollapsed[keyTheme][keyAssign]">
-                  <div class="well well-sm margin-none">
+
+                  <form class="well well-sm margin-none" ng-submit="saveUpdate(keyTheme, keyAssign, newStatus, assign.id)">
                     <label for="select" class="control-label" ><strong>Estado:</strong></label>
                     <select class="align-middle" name="status" id="status" ng-init="newStatus = assign.status" ng-model="newStatus" ng-required="true" style="width: 120px;">
                       <option value="Enviado">Enviado</option>
@@ -34,15 +35,15 @@
                     </select>
                     <div ng-if="showComment(newStatus)">
                       <label for="observation" class="control-label display-block"><strong>Observación:</strong></label>
-                      <textarea name="observation" id="observation" cols="51" rows="2" class="display-block" resisable="false" ng-model="observation" ng-required="true"></textarea>
+                      <textarea name="observation" id="observation" cols="51" rows="2" class="display-block" resisable="false" ng-model="observation[keyTheme][keyAssign]" ng-required="true"></textarea>
                     </div>
-                    <button class="btn btn-primary btn-xs" ng-click="saveUpdate(keyTheme, keyAssign, newStatus, assign.id)">Actualizar</button>
-                  </div>
+                    <button type="submit" class="btn btn-primary btn-xs">Actualizar</button>
+                  </form>
                 </div>
                 <section ng-if="showComment(assign.status)">
                   <blockquote>
-                    <small>Rechazado:</small>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                    <small>{{assign.observation.created_at | date:'d/M/yyyy h:mm a'}}:</small>
+                    <p>{{assign.observation.body}}</p>
                   </blockquote>
                 </section>
               </li>

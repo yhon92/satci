@@ -10,6 +10,7 @@ use SATCI\Http\Controllers\Controller;
 use SATCI\Http\Requests\EditAssignSolicitudeRequest;
 use SATCI\Repositories\AreaMeansRepo;
 use SATCI\Repositories\AssignSolicitudeRepo;
+use SATCI\Repositories\AssignObservationRepo;
 use SATCI\Repositories\SolicitudeRepo;
 use SATCI\Repositories\ThemeRepo;
 use Activity;
@@ -20,12 +21,14 @@ class AssignController extends Controller
   
   protected $areaMeansRepo;
   protected $assignRepo;
+  protected $observationRepo;
   protected $solicitudeRepo;
   protected $themeRepo;
 
   public function __construct (
-      AssignSolicitudeRepo $assignRepo,
       AreaMeansRepo $areaMeansRepo, 
+      AssignSolicitudeRepo $assignRepo,
+      AssignObservationRepo $observationRepo,
       SolicitudeRepo $solicitudeRepo,
       ThemeRepo $themeRepo
     ) {
@@ -33,6 +36,7 @@ class AssignController extends Controller
     
     $this->areaMeansRepo = $areaMeansRepo;
     $this->assignRepo = $assignRepo;
+    $this->observationRepo = $observationRepo;
     $this->solicitudeRepo = $solicitudeRepo;
     $this->themeRepo = $themeRepo;
   }
@@ -131,10 +135,23 @@ class AssignController extends Controller
   public function update($id, Request $request)
   {
     $data = $request->all();
-    
+    $status = $data['update']['status'];
+
     DB::beginTransaction();
     try {
       $this->assignRepo->update($id, $data['update']);
+
+      if ($status === 'Atendido' || $status === 'Rechazado') {
+        $uuid = Uuid::generate(5, 'SATCI', Uuid::generate());
+        
+        $observation = ['id' => $uuid->string, 
+                  'assign_solicitude_id' => $id, 
+                  'status' => $status, 
+                  'body' => $data['observation']];
+
+        $this->observationRepo->create($observation);
+      }
+
     } catch (QueryException $e) {
       DB::rollBack();
 
@@ -142,7 +159,6 @@ class AssignController extends Controller
 
       return response()->json(['error' => true], 200);
     }
-
     $assigned = $this->assignRepo->listAssign($data['solicitude_id']);
 
     $update_status = true;
@@ -155,6 +171,7 @@ class AssignController extends Controller
 
     if ($update_status) {
       try {
+
         $this->solicitudeRepo->updateStatus($data['solicitude_id'], 'Finalizado');
 
         Activity::log('Solicitud "' . $data['solicitude_id'] . '" fue actualizado al Estado: "Finalizado"');
@@ -168,7 +185,7 @@ class AssignController extends Controller
     }
     DB::commit();
 
-    return response()->json(['success' => true]);
+    return response()->json(['success' => true], 200);
   }
 
   /**

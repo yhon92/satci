@@ -3027,6 +3027,7 @@ angular.module('Solicitude.controllers').controller('ShowAssignSolicitudeCtrl', 
   $scope.notAssigned = false;
   $scope.isCollapsed = [];
   $scope.newStatus = [];
+  $scope.observation = [];
 
   SolicitudesAssign.list({ solicitude: $stateParams.id }).$promise.then(function (data) {
     if (data.assigned.length > 0) {
@@ -3071,14 +3072,23 @@ angular.module('Solicitude.controllers').controller('ShowAssignSolicitudeCtrl', 
     if ($scope.assigned[keyTheme].assign_solicitude[keyAssign].status == newStatus) {
       $scope.isCollapsed[keyTheme][keyAssign] = true;
     } else {
+
       var assign = {
         update: { status: newStatus },
         solicitude_id: $stateParams.id
       };
 
+      if ($scope.observation[keyTheme]) {
+        var observation = $scope.observation[keyTheme][keyAssign];
+        assign.observation = observation;
+      }
+
       SolicitudesAssign.update({ id: id }, assign).$promise.then(function (data) {
         if (data.success) {
           $scope.assigned[keyTheme].assign_solicitude[keyAssign].status = newStatus;
+          if (observation) {
+            $scope.assigned[keyTheme].assign_solicitude[keyAssign].observation.body = observation;
+          };
           Alertify.success("¡Estado Actualizado!");
           $scope.isCollapsed[keyTheme][keyAssign] = true;
         };

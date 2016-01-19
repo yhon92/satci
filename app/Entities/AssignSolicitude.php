@@ -2,8 +2,8 @@
 namespace SATCI\Entities;
 
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\LogsActivityInterface;
 use Spatie\Activitylog\LogsActivity;
+use Spatie\Activitylog\LogsActivityInterface;
 
 class AssignSolicitude extends Model implements LogsActivityInterface
 {
@@ -15,9 +15,9 @@ class AssignSolicitude extends Model implements LogsActivityInterface
 
   protected $hidden = ['solicitude_id', 'theme_id', 'area_means_id'];
 
-  public function comment()
+  public function observation()
   {
-    return $this->hasMany(AssignComment::class);
+    return $this->hasOne(AssignObservation::class);
   }
   
   public function theme()

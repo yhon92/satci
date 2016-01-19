@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAssignCommentsTable extends Migration
+class CreateAssignObservationTable extends Migration
 {
   /**
    * Run the migrations.
@@ -12,10 +12,11 @@ class CreateAssignCommentsTable extends Migration
    */
   public function up()
   {
-    Schema::create('assign_comments', function (Blueprint $table) {
+    Schema::create('assign_observations', function (Blueprint $table) {
+      $table->uuid('id')->unique();
       $table->uuid('assign_solicitude_id');
       $table->enum('status', ['Enviado', 'Leído', 'Aceptado', 'Rechazado', 'Atendido']);
-      $table->text('observation');
+      $table->text('body');
       $table->timestamps();
 
       $table->primary(['assign_solicitude_id', 'status']);
@@ -31,6 +32,6 @@ class CreateAssignCommentsTable extends Migration
    */
   public function down()
   {
-    Schema::drop('assign_comments');
+    Schema::drop('assign_observations');
   }
 }
