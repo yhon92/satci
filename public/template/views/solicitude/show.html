@@ -19,7 +19,7 @@
                     ({{ assign.area_means.means.name }})
                   </strong>
                 </span>
-                <div ng-if="can('change-state-assign-solicitude')" class="float-right" ng-class="disable(assign.status)">
+                <div ng-if="can('change-state-assign-solicitude')" class="float-right" style="margin-top: -3px;" ng-class="disable(assign.status)">
                   <a class="btn btn-xs btn-warning glyphicon glyphicon-refresh" uib-tooltip="Act. Estado" ng-init="isCollapsed[keyTheme][keyAssign] = true" ng-click="isCollapsed[keyTheme][keyAssign] = !isCollapsed[keyTheme][keyAssign]"></a>
                 </div>
                 <div ng-if="can('change-state-assign-solicitude')" uib-collapse="isCollapsed[keyTheme][keyAssign]">
@@ -32,9 +32,19 @@
                       <option value="Rechazado">Rechazado</option>
                       <option value="Atendido">Atendido</option>
                     </select>
+                    <div ng-if="showComment(newStatus)">
+                      <label for="observation" class="control-label display-block"><strong>Observación:</strong></label>
+                      <textarea name="observation" id="observation" cols="51" rows="2" class="display-block" resisable="false" ng-model="observation" ng-required="true"></textarea>
+                    </div>
                     <button class="btn btn-primary btn-xs" ng-click="saveUpdate(keyTheme, keyAssign, newStatus, assign.id)">Actualizar</button>
                   </div>
                 </div>
+                <section ng-if="showComment(assign.status)">
+                  <blockquote>
+                    <small>Rechazado:</small>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                  </blockquote>
+                </section>
               </li>
             </ul>
           </div>

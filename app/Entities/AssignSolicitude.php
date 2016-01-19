@@ -15,6 +15,11 @@ class AssignSolicitude extends Model implements LogsActivityInterface
 
   protected $hidden = ['solicitude_id', 'theme_id', 'area_means_id'];
 
+  public function comment()
+  {
+    return $this->hasMany(AssignComment::class);
+  }
+  
   public function theme()
   {
     return $this->belongsTo(Theme::class);

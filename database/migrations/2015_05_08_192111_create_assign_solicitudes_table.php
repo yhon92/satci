@@ -21,7 +21,6 @@ class CreateAssignSolicitudesTable extends Migration
 
       $table->timestamps();
 
-      // $table->primary('id');
       $table->primary(['solicitude_id', 'theme_id', 'area_means_id']);
 
       $table->foreign('solicitude_id')->references('id')->on('solicitudes');

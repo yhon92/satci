@@ -10,7 +10,7 @@ angular.module('Solicitude.controllers')
   SolicitudesAssign) => {
   
   $scope.can = AclService.can;
-  
+    
   $scope.assigned = false;
   $scope.notAssigned = false;
   $scope.isCollapsed = [];
@@ -46,6 +46,13 @@ angular.module('Solicitude.controllers')
     }
   };
 
+  $scope.showComment = (status) => {
+    if (status == 'Atendido' || status == 'Rechazado') {
+      return true;
+    }
+    return false;
+  };
+  
   $scope.disable = (status) => {
     if (status == 'Atendido' || status == 'Rechazado')
       return 'display-none';
