@@ -40,19 +40,19 @@
                     <button type="submit" class="btn btn-primary btn-xs">Actualizar</button>
                   </form>
                 </div>
-                <section ng-if="showComment(assign.status) && assign.observation">
-                  <blockquote ng-class="backgroundStatus(assign.status)">
-                    <div ng-init="viewEdit[keyTheme][keyAssign] = false" ng-hide="viewEdit[keyTheme][keyAssign]">
+                <section ng-if="assign.observation.length" ng-repeat="observation in assign.observation">
+                  <blockquote ng-class="backgroundStatus(observation.status)">
+                    <div ng-init="viewEdit[keyTheme][keyAssign][$index] = false" ng-hide="viewEdit[keyTheme][keyAssign][$index]">
                       <div class="float-right" style="margin-top: -3px;">  
-                        <a ng-if="can('change-state-assign-solicitude')" class="btn btn-xs btn-warning glyphicon glyphicon-pencil" uib-tooltip="Editar" ng-click="editObservation(keyTheme, keyAssign)"></a>
+                        <a ng-if="can('change-state-assign-solicitude')" class="btn btn-xs btn-warning glyphicon glyphicon-pencil" uib-tooltip="Editar" ng-click="editObservation(keyTheme, keyAssign, $index)"></a>
                       </div>
-                      <small>{{assign.observation.updated_at | dateTime}}</small>
-                      <p>{{assign.observation.body}}</p>
+                      <small>{{observation.updated_at | dateTime}}</small>
+                      <p>{{observation.body}}</p>
                     </div>
-                    <div ng-show="viewEdit[keyTheme][keyAssign]">
-                      <textarea name="observation" id="observation" cols="51" rows="2" class="display-block" resisable="false" placeholder="Observación" ng-init="newObservation = assign.observation.body" ng-model="newObservation" ng-required="true"></textarea>
-                      <button type="button" class="btn btn-link btn-xs" ng-click="cancel(keyTheme, keyAssign)">Cancelar</button>
-                      <button type="button" class="btn btn-primary btn-xs" ng-click="updateObservation(keyTheme, keyAssign, assign.observation.id, newObservation)">Guardar</button>
+                    <div ng-show="viewEdit[keyTheme][keyAssign][$index]">
+                      <textarea name="observation" id="observation" cols="51" rows="2" class="display-block" resisable="false" placeholder="Observación" ng-init="newObservation = observation.body" ng-model="newObservation" ng-required="true"></textarea>
+                      <button type="button" class="btn btn-link btn-xs" ng-click="cancel(keyTheme, keyAssign, $index)">Cancelar</button>
+                      <button type="button" class="btn btn-primary btn-xs" ng-click="updateObservation(keyTheme, keyAssign, $index, observation.id, newObservation)">Guardar</button>
                     </div>
                   </blockquote>
                 </section>

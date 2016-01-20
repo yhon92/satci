@@ -141,7 +141,7 @@ class AssignController extends Controller
     try {
       $this->assignRepo->update($id, $data['update']);
 
-      if ($status === 'Atendido' || $status === 'Rechazado') {
+      if ($status === 'Aceptado' || $status === 'Atendido' || $status === 'Rechazado') {
         $uuid = Uuid::generate(5, 'SATCI', Uuid::generate());
         
         $observation = ['id' => $uuid->string, 

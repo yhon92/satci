@@ -17,7 +17,7 @@ class AssignSolicitude extends Model implements LogsActivityInterface
 
   public function observation()
   {
-    return $this->hasOne(AssignObservation::class);
+    return $this->hasMany(AssignObservation::class);
   }
   
   public function theme()
