@@ -31,5 +31,12 @@ angular.module('Solicitude.resources', ['ngResource', 'SATCI.Shared'])
       }, 
       url: `${ResourcesUrl.api}solicitude/assign/list/:solicitude`,
     },
+    updateObservation: {
+      method: 'PUT', 
+      params: {
+        id: '@_id',
+      },
+      url: `${ResourcesUrl.api}solicitude/assign/observation/:id`,
+    },
   });
 })

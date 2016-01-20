@@ -16,6 +16,7 @@ angular.module('Solicitude.controllers')
   $scope.isCollapsed = [];
   $scope.newStatus = [];
   $scope.observation = [];
+  $scope.viewEdit = [];
   
   SolicitudesAssign.list({solicitude: $stateParams.id}).$promise
   .then((data) => {
@@ -28,6 +29,15 @@ angular.module('Solicitude.controllers')
   .catch((error) => {
     console.log(error.data)
   });
+
+  $scope.backgroundStatus = (status) => {
+    if (status === 'Rechazado') {
+      return 'error';
+    }
+    if (status === 'Atendido') {
+      return 'success';
+    }
+  };
 
   $scope.statusSelect = (status) => {
     if (status === 'Enviado') {
@@ -59,6 +69,13 @@ angular.module('Solicitude.controllers')
       return 'display-none';
   }
 
+  $scope.editObservation = (keyTheme, keyAssign) => {
+    $scope.viewEdit[keyTheme][keyAssign] = true;
+  }
+  $scope.cancel = (keyTheme, keyAssign) => {
+    $scope.viewEdit[keyTheme][keyAssign] = false;
+  }
+
   $scope.saveUpdate = (keyTheme, keyAssign, newStatus, id) => {
     if ($scope.assigned[keyTheme].assign_solicitude[keyAssign].status == newStatus) {
       $scope.isCollapsed[keyTheme][keyAssign] = true;
@@ -74,12 +91,12 @@ angular.module('Solicitude.controllers')
         assign.observation = observation;
       }
 
-      SolicitudesAssign.update({ id:id }, assign).$promise
-      .then( (data) => {
+      SolicitudesAssign.update({id:id}, assign).$promise
+      .then((data) => {
         if (data.success) {
           $scope.assigned[keyTheme].assign_solicitude[keyAssign].status = newStatus;
-          if (observation) {
-            $scope.assigned[keyTheme].assign_solicitude[keyAssign].observation.body = observation;
+          if (data.observation) {
+            $scope.assigned[keyTheme].assign_solicitude[keyAssign].observation = data.observation;
           };
           Alertify.success("¡Estado Actualizado!")
           $scope.isCollapsed[keyTheme][keyAssign] = true;
@@ -99,4 +116,31 @@ angular.module('Solicitude.controllers')
       });
     }
   }
+
+  $scope.updateObservation = (keyTheme, keyAssign, id, observation) => {
+    let data = {
+      body: observation,
+    };
+
+    SolicitudesAssign.updateObservation({id: id}, data).$promise
+    .then((data) => {
+      if (data.success) {
+        $scope.assigned[keyTheme].assign_solicitude[keyAssign].observation.body = observation;
+        Alertify.success("¡Observación Actualizada!")
+        $scope.viewEdit[keyTheme][keyAssign] = false;
+      };
+    })
+    .catch((fails) => {
+      if (fails.status != 500) {
+        for (let firstKey in fails.data) {
+          for (let secondKey in fails.data[firstKey]) {
+            Alertify.error(fails.data[firstKey][secondKey]);
+          }
+        }
+        $scope.viewEdit[keyTheme][keyAssign] = true;
+      } else {
+        console.log(fails);
+      };
+    })
+  };
 })

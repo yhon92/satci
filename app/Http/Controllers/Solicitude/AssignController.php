@@ -149,7 +149,7 @@ class AssignController extends Controller
                   'status' => $status, 
                   'body' => $data['observation']];
 
-        $this->observationRepo->create($observation);
+        $observation = $this->observationRepo->create($observation);
       }
 
     } catch (QueryException $e) {
@@ -184,6 +184,9 @@ class AssignController extends Controller
       }
     }
     DB::commit();
+    if ($observation) {
+      return response()->json(['success' => true, 'observation' => $observation], 200);
+    }
 
     return response()->json(['success' => true], 200);
   }
@@ -204,6 +207,19 @@ class AssignController extends Controller
     $assigned = $this->themeRepo->themeBySolicitude($id);
 
     return response()->json(['assigned' => $assigned], 200);
+  }
+
+  public function updateObservation($id, Request $request)
+  {
+    try {
+      $this->observationRepo->update($id, $request->all());
+    } catch (QueryException $e) {
+      Log::info($e->errorInfo[2]);
+
+      return response()->json(['error' => true], 200);
+    }
+
+    return response()->json(['success' => true], 200);
   }
 
 }

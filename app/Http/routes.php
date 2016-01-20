@@ -36,7 +36,9 @@ Route::group(['prefix' => 'api', 'namespace' => 'Solicitude'], function () {
 
   Route::get('solicitude/list/{applicant}', 'SolicitudeController@listByApplicant');
 
-	Route::get('solicitude/assign/list/{solicitude}', 'AssignController@listBySolicitude');
+  Route::get('solicitude/assign/list/{solicitude}', 'AssignController@listBySolicitude');
+	
+  Route::put('solicitude/assign/observation/{id}', 'AssignController@updateObservation');
 
 	Route::resource('solicitude/assign', 'AssignController');
 

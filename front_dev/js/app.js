@@ -82,7 +82,11 @@ angular.module('SATCI', [
   $authProvider.tokenPrefix = "SATCI";
   $authProvider.storageType = 'sessionStorage'
 
-  $urlRouterProvider.otherwise('/home');
+  if (JSON.parse(sessionStorage.getItem('user'))) {
+    $urlRouterProvider.otherwise('/home');
+  };
+
+  $urlRouterProvider.otherwise('/auth/login');
 
   $httpProvider.interceptors.push('redirectWhenLoggedOut');
 
