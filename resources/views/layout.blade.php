@@ -120,32 +120,32 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-lg-3 control-label" for="first_name"><strong>Nombres:</strong></label>
-				<div class="col-lg-9">
+				<label class="col-md-3 control-label" for="first_name"><strong>Nombres:</strong></label>
+				<div class="col-md-9">
 					<label class="form-label" for="first_name">{{ applicant.first_name }}</label>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-lg-3 control-label" for="last_name"><strong>Apellidos:</strong></label>
-				<div class="col-lg-9">
+				<label class="col-md-3 control-label" for="last_name"><strong>Apellidos:</strong></label>
+				<div class="col-md-9">
 					<label class="form-label">{{ applicant.last_name }}</label>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-lg-3 control-label" for="address"><strong>Dirección:</strong></label>
-				<div class="col-lg-9">
+				<label class="col-md-3 control-label" for="address"><strong>Dirección:</strong></label>
+				<div class="col-md-9">
 					<label class="form-label">{{ applicant.address }}</label>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-lg-3 control-label" for="number_phone"><strong>Teléfono:</strong></label>
-				<div class="col-lg-9">
+				<label class="col-md-3 control-label" for="number_phone"><strong>Teléfono:</strong></label>
+				<div class="col-md-9">
 					<label class="form-label">{{ applicant.prefix_phone }} - {{ applicant.number_phone }}</label>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-lg-3 control-label" for="parish"><strong>Parroquia:</strong></label>
-				<div class="col-lg-9">
+				<label class="col-md-3 control-label" for="parish"><strong>Parroquia:</strong></label>
+				<div class="col-md-9">
 					<label class="form-label">{{ applicant.parish.name }}</label>
 				</div>
 			</div>
@@ -168,26 +168,26 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-lg-3 control-label" for="first_name"><strong>Nombre:</strong></label>
-				<div class="col-lg-9">
+				<label class="col-md-3 control-label" for="first_name"><strong>Nombre:</strong></label>
+				<div class="col-md-9">
 					<label class="form-label" for="first_name">{{ applicant.full_name }}</label>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-lg-3 control-label" for="address"><strong>Dirección:</strong></label>
-				<div class="col-lg-9">
+				<label class="col-md-3 control-label" for="address"><strong>Dirección:</strong></label>
+				<div class="col-md-9">
 					<label class="form-label">{{ applicant.address }}</label>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-lg-3 control-label" for="number_phone"><strong>Teléfono:</strong></label>
-				<div class="col-lg-9">
+				<label class="col-md-3 control-label" for="number_phone"><strong>Teléfono:</strong></label>
+				<div class="col-md-9">
 					<label class="form-label">{{ applicant.prefix_phone }} - {{ applicant.number_phone }}</label>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-lg-3 control-label" for="parish"><strong>Parroquia:</strong></label>
-				<div class="col-lg-9">
+				<label class="col-md-3 control-label" for="parish"><strong>Parroquia:</strong></label>
+				<div class="col-md-9">
 					<label class="form-label">{{ applicant.parish.name }}</label>
 				</div>
 			</div>
@@ -199,8 +199,8 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-lg-3 control-label" for="agent_first_name"><strong>Nombre:</strong></label>
-				<div class="col-lg-9">
+				<label class="col-md-3 control-label" for="agent_first_name"><strong>Nombre:</strong></label>
+				<div class="col-md-9">
 					<label class="form-label">{{ applicant.agent_full_name }}</label>
 				</div>
 			</div>

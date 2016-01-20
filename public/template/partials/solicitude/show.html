@@ -1,24 +1,24 @@
-<div class="col-md-5 col-md-offset-1">
+<div class="col-md-6 col-md-offset-0 col-lg-5 col-lg-offset-1">
   <div class="panel panel-default">
     <div class="panel-body">
       <form class="form-horizontal" ng-submit="saveSolicitude()">
         <fieldset>
           <legend>Solicitud</legend>
           <div class="form-group">
-            <label class="col-lg-3 control-label" for="solicitude_number"><strong>Nº de Solicitud:</strong></label>
-            <div class="col-lg-9">
+            <label class="col-md-4 col-lg-3 control-label" for="solicitude_number"><strong>Nº de Solicitud:</strong></label>
+            <div class="col-md-8 col-lg-9">
               <label class="form-label">{{ solicitude.solicitude_number }}</label>
             </div>
           </div>
           <div class="form-group">
-            <label class="col-lg-3 control-label" for="reception_date"><strong>F. Recepción:</strong></label>
-            <div class="col-lg-9">
+            <label class="col-md-4 col-lg-3 control-label" for="reception_date"><strong>F. Recepción:</strong></label>
+            <div class="col-md-8 col-lg-9">
               <label class="form-label">{{ solicitude.reception_date | date:'EEEE, dd MMMM, y' }}</label>
             </div>
           </div>
           <div class="form-group">
-            <label class="col-lg-3 control-label"><strong>Razon Social:</strong></label>
-            <div class="col-lg-9">
+            <label class="col-md-4 col-lg-3 control-label"><strong>Razon Social:</strong></label>
+            <div class="col-md-8 col-lg-9">
               <label class="form-label">{{ solicitude.applicant_type | translateApplicant }}</label>
             </div>
           </div>
@@ -29,20 +29,20 @@
             </div>
           </div> -->
           <div class="form-group">
-            <label class="col-lg-3 control-label"><strong>Solicitante:</strong></label>
-            <div class="col-lg-9">
+            <label class="col-md-4 col-lg-3 control-label"><strong>Solicitante:</strong></label>
+            <div class="col-md-8 col-lg-9">
               <a class="form-label text-success pointer" ng-click="showApplicant(solicitude.applicant_type, solicitude.applicant)">{{solicitude.applicant.full_name}}</a>
             </div>
           </div>
           <div class="form-group">
-            <label class="col-lg-3 control-label" for="document_date"><strong>F. Documento:</strong></label>
-            <div class="col-lg-9">
+            <label class="col-md-4 col-lg-3 control-label" for="document_date"><strong>F. Documento:</strong></label>
+            <div class="col-md-8 col-lg-9">
               <label class="form-label">{{ solicitude.document_date | date:'EEEE, dd MMMM, y' }}</label>
             </div>
           </div>
           <div class="form-group">
-            <label class="col-lg-3 control-label" for="topic"><strong>Asunto:</strong></label>
-            <div class="col-lg-9">
+            <label class="col-md-4 col-lg-3 control-label" for="topic"><strong>Asunto:</strong></label>
+            <div class="col-md-8 col-lg-9">
               <p>{{ solicitude.topic }}</p>
             </div>
           </div>
@@ -54,7 +54,7 @@
     <div class="panel panel-default">
       <div class="panel-body">
         <ul class="padding-none">
-          <div class="col-md-5">
+          <div class="col-xs-5 col-xs-offset-1 col-md-5 col-md-offset-1">
             <li class="list-none">
               <span class="button-status label-default"></span>
               Enviado
@@ -68,7 +68,7 @@
               Aceptado
             </li>
           </div>
-          <div class="col-md-5">
+          <div class="col-xs-5 col-md-5">
             <li class="list-none">
               <span class="button-status label-danger"></span>
               Rechazado

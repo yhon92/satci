@@ -1,5 +1,5 @@
 <div class="col-md-12 aling-center" ui-view>
-	<div class="col-md-4 col-md-offset-2">
+	<div class="col-md-6 col-md-offset-0 col-lg-4 col-lg-offset-2">
 		<div class="panel panel-default">
 			<div class="panel-body">
 				<form class="form-horizontal" ng-submit="saveSolicitude()">
@@ -26,13 +26,13 @@
 							<label class="col-lg-4 control-label"><strong>Razon Social:</strong></label>
 							<div class="col-lg-8">
 								<div class="radio">
-									<label>
+									<label class="radio-inline">
 										<input type="radio" name="solicitude.applicant_type" value='Citizen' ng-click='getApplicant("citizen")'>
 										Natural
 									</label>
 								<!-- </div>
 								<div class="radio"> -->
-									<label>
+									<label class="radio-inline">
 										<input type="radio" name="solicitude.applicant_type" value="Institution" ng-click='getApplicant("institution")'>
 										Jurídica
 									</label>

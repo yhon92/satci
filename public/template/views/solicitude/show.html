@@ -1,7 +1,7 @@
 <div class="col-md-12" ui-view>
   <div ui-view='show'></div>
   <div ui-view='assign'>
-    <section class="col-md-5" ng-show="assigned">
+    <section class="col-md-6 col-lg-5" ng-show="assigned">
       <article class="panel panel-primary" ng-repeat="(keyTheme, theme) in assigned">
         <div class="panel-heading">
           <h3 class="panel-title">{{ theme.name }}</h3>
@@ -35,7 +35,7 @@
                     </select>
                     <div ng-if="showComment(newStatus)">
                       <label for="observation" class="control-label display-block"><strong>Observación:</strong></label>
-                      <textarea name="observation" id="observation" cols="51" rows="2" class="display-block" resisable="false" placeholder="Observación" ng-model="observation[keyTheme][keyAssign]" ng-required="true"></textarea>
+                      <textarea name="observation" id="observation" rows="2" class="form-control" resisable="false" placeholder="Observación" ng-model="observation[keyTheme][keyAssign]" ng-required="true"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary btn-xs">Actualizar</button>
                   </form>
@@ -50,7 +50,7 @@
                       <p>{{observation.body}}</p>
                     </div>
                     <div ng-show="viewEdit[keyTheme][keyAssign][$index]">
-                      <textarea name="observation" id="observation" cols="51" rows="2" class="display-block" resisable="false" placeholder="Observación" ng-init="newObservation = observation.body" ng-model="newObservation" ng-required="true"></textarea>
+                      <textarea name="observation" id="observation" rows="2" class="form-control" resisable="false" placeholder="Observación" ng-init="newObservation = observation.body" ng-model="newObservation" ng-required="true"></textarea>
                       <button type="button" class="btn btn-link btn-xs" ng-click="cancel(keyTheme, keyAssign, $index)">Cancelar</button>
                       <button type="button" class="btn btn-primary btn-xs" ng-click="updateObservation(keyTheme, keyAssign, $index, observation.id, newObservation)">Guardar</button>
                     </div>
