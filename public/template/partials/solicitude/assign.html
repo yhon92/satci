@@ -1,4 +1,4 @@
-<div class="col-md-5">
+<div class="col-md-6 col-lg-5">
   <div class="panel panel-default">
     <div class="panel-body">
       <form class="form-horizontal" ng-submit="saveSolicitude()">
@@ -23,8 +23,8 @@
                 </td>
                 <td style="width: 85%;">{{ theme.name }}</td>
                 <td style="width: 10%;">
-                  <button class="btn btn-xs btn-success" ng-if="!theme.state" ng-click="assignArea(key, theme)">Asignar Área</button>
-                  <button class="btn btn-xs btn-warning" ng-if="theme.state" ng-click="editArea(key, theme)">Editar Área</button>
+                  <button class="btn btn-xs btn-success" ng-hide="theme.state" ng-click="assignArea(key, theme)">Asignar Área</button>
+                  <button class="btn btn-xs btn-warning" ng-show="theme.state" ng-click="editArea(key, theme)">Editar Área</button>
                 </td>
               </tr>
             </table>

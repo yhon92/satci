@@ -56,8 +56,8 @@ angular.module('Shared.filters', [])
   }
 })
 .filter('dateTime', ($filter) => {
-  return (input) => {
+  return (input, format) => {
     let tempdate = new Date(input.replace(/-/g,"/"));
-    return $filter('date')(tempdate, "dd-MMM-yyyy hh:mm a");
+    return $filter('date')(tempdate, format).toLowerCase();
   };
 })

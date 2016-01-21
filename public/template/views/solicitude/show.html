@@ -46,7 +46,7 @@
                       <div class="float-right" style="margin-top: -3px;">  
                         <a ng-if="can('change-state-assign-solicitude')" class="btn btn-xs btn-warning glyphicon glyphicon-pencil" uib-tooltip="Editar" ng-click="editObservation(keyTheme, keyAssign, $index)"></a>
                       </div>
-                      <small>{{observation.updated_at | dateTime}}</small>
+                      <span class="text-muted"><strong>{{observation.status}}</strong> - {{observation.updated_at | dateTime: "dd 'de' MMMM yyyy 'a las' hh:mma"}}</span>
                       <p>{{observation.body}}</p>
                     </div>
                     <div ng-show="viewEdit[keyTheme][keyAssign][$index]">
