@@ -13,7 +13,7 @@ return [
 	|
 	*/
 
-	'debug' => env('APP_DEBUG'),
+	'debug' => env('APP_DEBUG', false),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -80,7 +80,7 @@ return [
 
 	'key' => env('APP_KEY', 'SomeRandomString'),
 
-	'cipher' => MCRYPT_RIJNDAEL_128,
+	'cipher' => 'AES-256-CBC',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -180,6 +180,7 @@ return [
 		'Eloquent'  => Illuminate\Database\Eloquent\Model::class,
 		'Event'     => Illuminate\Support\Facades\Event::class,
 		'File'      => Illuminate\Support\Facades\File::class,
+    'Gate'      => Illuminate\Support\Facades\Gate::class,
 		'Hash'      => Illuminate\Support\Facades\Hash::class,
 		'Input'     => Illuminate\Support\Facades\Input::class,
 		'Inspiring' => Illuminate\Foundation\Inspiring::class,

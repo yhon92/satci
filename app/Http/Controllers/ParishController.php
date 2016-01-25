@@ -1,6 +1,7 @@
 <?php 
 namespace SATCI\Http\Controllers;
 
+use Cache;
 use Illuminate\Http\Request;
 use SATCI\Http\Controllers\Controller;
 use SATCI\Repositories\ParishRepo;
@@ -24,7 +25,13 @@ class ParishController extends Controller
    */
   public function index()
   {
-    $parishes = $this->parishRepo->getListParishes();
+    if (!Cache::has('parishes')) {
+      $parishes = $this->parishRepo->getListParishes();
+
+      Cache::forever('parishes', $parishes);
+    } else {
+      $parishes = Cache::get('parishes');
+    }
 
     return response()->json(['parishes' => $parishes], 200);
   }

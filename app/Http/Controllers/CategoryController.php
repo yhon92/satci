@@ -1,6 +1,7 @@
 <?php
 namespace SATCI\Http\Controllers;
 
+use Cache;
 use DB;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -27,7 +28,13 @@ class CategoryController extends Controller
    */
   public function index()
   {
-    $categories = $this->categoryRepo->all();
+    if (!Cache::has('categories')) {
+      $categories = $this->categoryRepo->all();
+      
+      Cache::forever('categories', $categories);
+    } else {
+      $categories = Cache::get('categories');
+    }
 
     return response()->json(['categories' => $categories], 200);
   }
@@ -41,6 +48,9 @@ class CategoryController extends Controller
   public function store(CreateCategoryRequest $request)
   {
     $category = $this->categoryRepo->create($request->all());
+
+    Cache::forget('categories');
+    Cache::forget('categories_only');
 
     return response()->json(['success' => true, 'category' => $category], 200);
   }
@@ -74,6 +84,8 @@ class CategoryController extends Controller
 
       return response()->json(['error' => true], 200);
     }
+    Cache::forget('categories');
+    Cache::forget('categories_only');
 
     return response()->json(['success' => true], 200);
   }
@@ -106,12 +118,21 @@ class CategoryController extends Controller
     
     DB::commit();
 
+    Cache::forget('categories');
+    Cache::forget('categories_only');
+
     return response()->json(['success' => true], 200);
   }
 
   public function listOnlyCategories()
   {
-    $categories = $this->categoryRepo->listOnlyCategories();
+    if (!Cache::has('categories_only')) {
+      $categories = $this->categoryRepo->listOnlyCategories();
+
+      Cache::forever('categories_only', $categories);
+    } else {
+      $categories = Cache::get('categories_only');
+    }
     
     return response()->json(['categories' => $categories], 200);
   }

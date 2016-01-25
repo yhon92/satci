@@ -1,6 +1,7 @@
 <?php
 namespace SATCI\Http\Controllers;
 
+use Cache;
 use DB;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -26,7 +27,13 @@ class DirectorController extends Controller
    */
   public function index()
   {
-    $directors = $this->directorRepo->all();
+    if (!Cache::has('directors')) {
+      $directors = $this->directorRepo->all();
+
+      Cache::forever('directors', $directors);
+    } else {
+      $directors = Cache::get('directors');
+    }
 
     return response()->json(['directors' => $directors], 200);
   }
@@ -40,6 +47,8 @@ class DirectorController extends Controller
   public function store(CreateDirectorRequest $request)
   {
     $director = $this->directorRepo->create($request->all());
+
+    Cache::forget('directors');
 
     return response()->json(['success' => true, 'director' => $director], 200);
   }
@@ -71,6 +80,7 @@ class DirectorController extends Controller
 
       return response()->json(['error' => true], 200);
     }
+    Cache::forget('directors');
 
     return response()->json(['success' => true], 200);
   }
@@ -102,6 +112,8 @@ class DirectorController extends Controller
     }
     
     DB::commit();
+
+    Cache::forget('directors');
 
     return response()->json(['success' => true], 200);
   }

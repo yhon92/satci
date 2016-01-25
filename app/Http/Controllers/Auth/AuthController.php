@@ -2,6 +2,7 @@
 namespace SATCI\Http\Controllers\Auth;
 
 use Auth;
+use Cache;
 use ErrorException;
 use Illuminate\Http\Request;
 use Johnnymn\Sim\Roles\Models\Permission;
@@ -79,19 +80,29 @@ class AuthController extends Controller
 
 	public function permissions()
 	{
-		try {
-			$getRole = Auth::user()->getRoles();	
-			$role = $getRole[0]->slug;
+		$user = Auth::user()->username;
+		// Cache::flush();
+		if (!Cache::has('role_'.$user) || !Cache::has('permissions_'.$user)) {
+			try {
+				$getRole = Auth::user()->getRoles();	
+				$role = $getRole[0]->slug;
 
-			$getPermissions = Auth::user()->getPermissions();
-			$permissions = [];
+				$getPermissions = Auth::user()->getPermissions();
+				$permissions = [];
 
-			foreach ($getPermissions as $key => $value) {
-				array_push($permissions, $value->slug);
+				foreach ($getPermissions as $key => $value) {
+					array_push($permissions, $value->slug);
+				}
+				Cache::forever('role_'.$user, $role);
+				Cache::forever('permissions_'.$user, $permissions);
+
+			} catch (ErrorException $e) {
+				Auth::logout();
+				return response()->json(['error' => trans('validation.permissions_user')], 401);
 			}
-		} catch (ErrorException $e) {
-			Auth::logout();
-			return response()->json(['error' => trans('validation.permissions_user')], 401);
+		} else {
+			$role = Cache::get('role_'.$user);
+			$permissions = Cache::get('permissions_'.$user);
 		}
 
 		return response()->json(['acl' => [$role => $permissions]], 200);

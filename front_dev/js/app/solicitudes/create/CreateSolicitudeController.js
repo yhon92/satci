@@ -14,14 +14,14 @@ angular.module('Solicitude.controllers')
   paginateService, 
   PathTemplates) => {
 
-  $scope.can = AclService.can;
-
   $controller('CreateCitizenCtrl', {$scope : $scope});
   $controller('CreateInstitutionCtrl', {$scope : $scope});
   // $controller('DatepickerCtrl', {$scope : $scope});
 
   let _add = null;
   let _search = null;
+
+  $scope.can = AclService.can;
 
   $scope.solicitude = {
     full_name: '',
@@ -73,10 +73,12 @@ angular.module('Solicitude.controllers')
     $scope.template = `${PathTemplates.partials}solicitude/applicant.html`;
   };
 
-  Parishes.get().$promise
-  .then((data) => {
-    $scope.parishes = data.parishes;
-  });
+  if ($state.is('solicitudeCreate')) {
+    Parishes.get().$promise
+    .then((data) => {
+      $scope.parishes = data.parishes;
+    });
+  }
 
   $scope.searchApplicant = () => {
     $scope.applicantTemplate = null;

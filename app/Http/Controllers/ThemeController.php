@@ -1,6 +1,7 @@
 <?php
 namespace SATCI\Http\Controllers;
 
+use Cache;
 use DB;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -26,8 +27,14 @@ class ThemeController extends Controller
    */
   public function index()
   {
-    $themes = $this->themeRepo->all();
+    if (!Cache::has('themes')) {
+      $themes = $this->themeRepo->all();
 
+      Cache::forever('themes', $themes);
+    } else {
+      $themes = Cache::get('themes');
+    }
+    
     return response()->json(['themes' => $themes], 200);
   }
 
@@ -40,6 +47,8 @@ class ThemeController extends Controller
   public function store(CreateThemeRequest $request)
   {
     $theme = $this->themeRepo->create($request->all());
+
+    Cache::forget('themes');
 
     return response()->json(['success' => true, 'theme' => $theme], 200);
   }
@@ -71,6 +80,7 @@ class ThemeController extends Controller
 
       return response()->json(['error' => true], 200);
     }
+    Cache::forget('themes');
 
     return response()->json(['success' => true], 200);
   }
@@ -102,6 +112,8 @@ class ThemeController extends Controller
     }
     
     DB::commit();
+
+    Cache::forget('themes');
 
     return response()->json(['success' => true], 200);
   }

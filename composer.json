@@ -16,7 +16,6 @@
 		"phpunit/phpunit": "~4.0",
 		"phpspec/phpspec": "~2.1",
 		"fzaninotto/faker": "1.5.*@dev",
-		"doctrine/dbal": "*",
 		"barryvdh/laravel-debugbar": "2.*"
 	},
 	"autoload": {

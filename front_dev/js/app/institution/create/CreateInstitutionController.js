@@ -22,7 +22,7 @@ angular.module('Institution.controllers')
     agent_last_name: ''
   };
 
-  if (!$scope.parishes) {
+  if ($state.is('institutionCreate')) {
     Parishes.get().$promise
     .then((data) => {
       $scope.parishes = data.parishes;

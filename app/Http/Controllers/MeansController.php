@@ -1,6 +1,7 @@
 <?php
 namespace SATCI\Http\Controllers;
 
+use Cache;
 use DB;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -26,7 +27,13 @@ class MeansController extends Controller
    */
   public function index()
   {
-    $means = $this->meansRepo->all();
+    if (!Cache::has('means')) {
+      $means = $this->meansRepo->all();
+
+      Cache::forever('means', $means);
+    } else {
+      $means = Cache::get('means');
+    }
 
     return response()->json(['means' => $means], 200);
   }
@@ -40,6 +47,8 @@ class MeansController extends Controller
   public function store(CreateMeansRequest $request)
   {
     $means = $this->meansRepo->create($request->all());
+    
+    Cache::forget('means');
 
     return response()->json(['success' => true, 'means' => $means], 200);
   }
@@ -71,6 +80,8 @@ class MeansController extends Controller
 
       return response()->json(['error' => true], 200);
     }
+    
+    Cache::forget('means');
 
     return response()->json(['success' => true], 200);
   }
@@ -102,6 +113,8 @@ class MeansController extends Controller
     }
     
     DB::commit();
+
+    Cache::forget('means');
 
     return response()->json(['success' => true], 200);
   }

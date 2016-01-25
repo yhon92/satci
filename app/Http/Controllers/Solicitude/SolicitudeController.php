@@ -2,6 +2,7 @@
 namespace SATCI\Http\Controllers\Solicitude;
 
 use Auth;
+use Cache;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Log;
@@ -124,10 +125,19 @@ class SolicitudeController extends Controller
   {
     if (Auth::user()->is('admin|coordinator|moderator|guest')) {
       $type = ucwords($type);
-      if ($type === 'Citizen' || $type === 'Institution') {
-        Helpers::longApplicant($type);
 
-        $solicitudes = $this->solicitudeRepo->getListByApplicant($type);
+      if ($type === 'Citizen' || $type === 'Institution') {
+        $longType = $type;
+        
+        if (!Cache::has('list_solicitude_by_'.$type)) {      
+          Helpers::longApplicant($longType);
+
+          $solicitudes = $this->solicitudeRepo->getListByApplicant($longType);
+          
+          // Cache::put('list_solicitude_by_'.$type, $solicitudes, 120);
+        } else {
+          $solicitudes = Cache::get('list_solicitude_by_'.$type);
+        }
 
         return response()->json(['solicitudes' => $solicitudes], 200);
       } else {

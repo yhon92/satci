@@ -1,6 +1,7 @@
 <?php
 namespace SATCI\Http\Controllers;
 
+use Cache;
 use DB;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -29,7 +30,13 @@ class AreaController extends Controller
    */
   public function index()
   {
-    $areas = $this->areaRepo->all();
+    if (!Cache::has('areas')) {
+      $areas = $this->areaRepo->all();
+      
+      Cache::forever('areas', $areas);
+    } else {
+      $areas = Cache::get('areas');
+    }
 
     return response()->json(['areas' => $areas], 200);
   }
@@ -53,6 +60,8 @@ class AreaController extends Controller
       return response()->json(['error' => true], 200);
     }
     DB::commit();
+
+    Cache::forget('areas');
 
     $area = $this->areaRepo->get($area->id);
 
@@ -86,6 +95,7 @@ class AreaController extends Controller
 
       return response()->json(['error' => true], 200);
     }
+    Cache::forget('areas');
 
     return response()->json(['success' => true], 200);
   }
@@ -123,6 +133,8 @@ class AreaController extends Controller
     }
     
     DB::commit();
+    
+    Cache::forget('areas');
 
     return response()->json(['success' => true], 200);
   }

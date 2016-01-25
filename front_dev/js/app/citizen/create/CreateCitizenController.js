@@ -20,7 +20,7 @@ angular.module('Citizen.controllers')
     parish: ''
   };
 
-  if (!$scope.parishes) {
+  if ($state.is('citizenCreate')) {
     Parishes.get().$promise
     .then((data) => {
       $scope.parishes = data.parishes;
