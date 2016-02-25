@@ -1,19 +1,20 @@
 <?php
 namespace SATCI\Http\Controllers\Solicitude;
 
+use Activity;
 use DB;
 use Gate;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Log;
+use Mail;
 use SATCI\Http\Controllers\Controller;
 use SATCI\Http\Requests\EditAssignSolicitudeRequest;
 use SATCI\Repositories\AreaMeansRepo;
-use SATCI\Repositories\AssignSolicitudeRepo;
 use SATCI\Repositories\AssignObservationRepo;
+use SATCI\Repositories\AssignSolicitudeRepo;
 use SATCI\Repositories\SolicitudeRepo;
 use SATCI\Repositories\ThemeRepo;
-use Activity;
 use Uuid;
 
 class AssignController extends Controller
@@ -86,8 +87,38 @@ class AssignController extends Controller
                   'area_means_id' => $area_means_id
                 ];
         try {
-          $this->assignRepo->create($data);
+          $assignment = $this->assignRepo->create($data);
+          $assigned_theme = $assignment->theme;
+          $assigned_area = collect($assignment->area_means->area->toArray());
+          $assigned_area_director = collect($assignment->area_means->area->director->toArray());
+          $solicitude = $assignment->solicitude;
+          $applicant = $solicitude->applicant;
+
+          $data_email = [
+            'assignment' => $assignment->toArray(),
+          ];
+
+          if (filter_var($assigned_area->get('email'), FILTER_VALIDATE_EMAIL)) {
+            $email = $assigned_area->get('email');
+          } elseif (filter_var($assigned_area_director->get('email'), FILTER_VALIDATE_EMAIL)) {
+            $email = $assigned_area_director->get('email');
+          } else {
+            throw new Exception('No hay correo electrénico asociado para el envio del email');
+          }
+
+          Mail::later(5, 'emails.assign_solicitude', $data_email, function($message) use ($solicitude, $email, $assigned_theme) {
+            $message->subject('Asignación de Solicitud Nº '. $solicitude->solicitude_number .
+              ' de Tema: ' . $assigned_theme->name);
+            $message->to('yhonguevara@gmail.com');
+          });
+
         } catch (QueryException $e) {
+          DB::rollBack();
+
+          Log::info($e->errorInfo[2]);
+
+          return response()->json(['error' => true], 200);
+        } catch (Exception $e) {
           DB::rollBack();
 
           Log::info($e->errorInfo[2]);

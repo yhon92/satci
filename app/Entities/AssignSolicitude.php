@@ -30,6 +30,11 @@ class AssignSolicitude extends Model implements LogsActivityInterface
     return $this->belongsTo(AreaMeans::class);
   }
 
+  public function solicitude()
+  {
+    return $this->belongsTo(Solicitude::class);
+  }
+
   public function getActivityDescriptionForEvent($eventName)
   {
     if ($eventName == 'created') {
