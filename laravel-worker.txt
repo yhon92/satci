@@ -6,4 +6,5 @@ autorestart=true
 user=vagrant
 numprocs=6
 redirect_stderr=true
-stdout_logfile=/home/vagrant/code/satci/worker.log
+stdout_logfile=/home/vagrant/log/worker.log
+stderr_logfile=/home/vagrant/log/worker-error.log

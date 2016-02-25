@@ -109,7 +109,11 @@ class AssignController extends Controller
           Mail::later(5, 'emails.assign_solicitude', $data_email, function($message) use ($solicitude, $email, $assigned_theme) {
             $message->subject('Asignación de Solicitud Nº '. $solicitude->solicitude_number .
               ' de Tema: ' . $assigned_theme->name);
-            $message->to('yhonguevara@gmail.com');
+            if (App::environment('production') and !App::debug()) {
+              $message->to($email);
+            } else {
+              $message->to(env('MAIL_ADDRESS'));
+            }
           });
 
         } catch (QueryException $e) {
