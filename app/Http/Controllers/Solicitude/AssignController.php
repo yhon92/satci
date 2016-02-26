@@ -2,6 +2,7 @@
 namespace SATCI\Http\Controllers\Solicitude;
 
 use Activity;
+use App;
 use DB;
 use Gate;
 use Illuminate\Database\QueryException;
@@ -109,10 +110,12 @@ class AssignController extends Controller
           Mail::later(5, 'emails.assign_solicitude', $data_email, function($message) use ($solicitude, $email, $assigned_theme) {
             $message->subject('Asignación de Solicitud Nº '. $solicitude->solicitude_number .
               ' de Tema: ' . $assigned_theme->name);
-            if (App::environment('production') and !App::debug()) {
+            if (App::environment('production') and !config('app.debug')) {
               $message->to($email);
+            } elseif (env('MAIL_ADDRESS_TEST', null)) {
+              $message->to(env('MAIL_ADDRESS_TEST'));
             } else {
-              $message->to(env('MAIL_ADDRESS'));
+              $message->to(config('mail.from.address'));
             }
           });
 
