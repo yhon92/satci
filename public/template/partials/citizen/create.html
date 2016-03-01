@@ -1,5 +1,5 @@
 <div ng-if="can('create-applicant')">
-	<form class="form-horizontal" ng-submit="saveCitizen()">
+	<form class="form-horizontal" name="form" ng-submit="saveCitizen()">
 		<div class="form-group">
 			<label class="col-md-3 control-label" for="identification"><strong>Cédula:</strong></label>
 			<div class="col-md-9">
@@ -43,8 +43,8 @@
 			</div>
 		</div>
 		<div class="align-center">
-			<button type="button" class="btn btn-link btn-sm" ng-click="cancelCitizen()">{{button.cancel}}</button>
-			<button type="submit" class="btn btn-primary btn-sm">{{button.submit}}</button>
+			<button type="button" class="btn btn-link btn-sm" ng-click="cancelCitizen()" ng-disabled="form.$submitted">{{button.cancel}}</button>
+			<button type="submit" class="btn btn-primary btn-sm" ng-disabled="form.$submitted">{{button.submit}}</button>
 		</div>
 	</form>
 </div>

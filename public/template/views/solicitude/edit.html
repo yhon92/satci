@@ -2,7 +2,7 @@
 	<div class="col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
 		<div class="panel panel-default">
 			<div class="panel-body">
-				<form class="form-horizontal" ng-submit="saveSolicitude()">
+				<form class="form-horizontal" name="form" ng-submit="saveSolicitude()">
 					<fieldset>
 						<legend>Editar Solicitud</legend>
 						<div class="form-group">
@@ -67,8 +67,8 @@
 							</div>
 						</div>
 						<div class="align-center">
-							<button type="button" class="btn btn-link btn-sm" ng-click="cancel()">Cancelar</button>
-							<button type="submit" class="btn btn-primary btn-sm">Guardar</button>
+							<button type="button" class="btn btn-link btn-sm" ng-click="cancel()" ng-disabled="form.$submitted">Cancelar</button>
+							<button type="submit" class="btn btn-primary btn-sm" ng-disabled="form.$submitted">Guardar</button>
 						</div>
 					</fieldset>
 				</form>
