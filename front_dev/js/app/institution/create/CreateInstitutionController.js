@@ -47,7 +47,7 @@ angular.module('Institution.controllers')
     Institutions.save(dataInstitution).$promise
     .then((data) => {
       if (data.success) {
-        if ($scope.solicitide) {
+        if ($scope.solicitude) {
           $scope.solicitude.full_name = data.institution.full_name;
           $scope.solicitude.identification = data.institution.identification;
           $scope.solicitude.applicant_id = data.institution.id;
