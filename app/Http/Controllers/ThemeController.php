@@ -49,6 +49,7 @@ class ThemeController extends Controller
     $theme = $this->themeRepo->create($request->all());
 
     Cache::forget('themes');
+    Cache::forget('categories');
 
     return response()->json(['success' => true, 'theme' => $theme], 200);
   }
@@ -81,6 +82,7 @@ class ThemeController extends Controller
       return response()->json(['error' => true], 200);
     }
     Cache::forget('themes');
+    Cache::forget('categories');
 
     return response()->json(['success' => true], 200);
   }
@@ -114,6 +116,7 @@ class ThemeController extends Controller
     DB::commit();
 
     Cache::forget('themes');
+    Cache::forget('categories');
 
     return response()->json(['success' => true], 200);
   }
