@@ -10,7 +10,7 @@
 		"tymon/jwt-auth": "0.5.*",
 		"johnnymn/roles-jwt": "0.1.*",
 		"webpatser/laravel-uuid": "2.*",
-		"spatie/activitylog": "^2.3"
+		"spatie/activitylog": "^2.*"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~4.0",
