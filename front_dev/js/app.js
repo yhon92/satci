@@ -27,8 +27,10 @@ import './app/login/LoginModule';
 import './app/means/MeansModule';
 import './app/nav/NavModule';
 import './app/shared/SharedModule'
-import './app/solicitudes/SolicitudeModule';
+import './app/solicitude/SolicitudeModule';
 import './app/theme/ThemeModule';
+import './app/user/UserModule';
+import './app/permission/PermissionModule';
 
 // import './app/';
 import './app/services/RedirectWhenLoggedOut';
@@ -58,6 +60,8 @@ angular.module('SATCI', [
   'SATCI.Shared',
   'SATCI.Solicitude',
   'SATCI.Theme',
+  'SATCI.User',
+  'SATCI.Permission',
 
 
   'SATCI.RedirectWhenLoggedOutServices',

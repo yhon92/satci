@@ -74,8 +74,8 @@
 							<%-- <span class="caret"></span> --%>
 						</a>
 						<ul class="uib-dropdown-menu" role="menu" aria-labelledby="simple-dropdown" uib-dropdown-menu>
-							<li role="menuitem"><a ui-sref="citizen">Usuarios</a></li>
-							<li role="menuitem"><a ui-sref="institution">Permisos</a></li>
+							<li role="menuitem"><a ui-sref="user">Usuarios</a></li>
+							<li role="menuitem"><a ui-sref="permission">Permisos</a></li>
 						</ul>
 					</li>
 				</ul>
