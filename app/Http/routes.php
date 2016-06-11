@@ -26,9 +26,9 @@ Route::group(['prefix' => 'api', 'namespace' => 'Auth'], function () {
 
 });
 
-Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
+Route::group(['prefix' => 'api', 'namespace' => 'Admin'], function () {
 
-	Route::resource('users', 'UsersController');
+	Route::resource('user', 'UserController');
 
 });
 

@@ -10,8 +10,8 @@ angular.module('SATCI.Shared', ['Shared.directives', 'Shared.filters', 'Shared.r
 })
 .constant('ResourcesUrl', {
   api:    '/api/',
+  // admin:  '/admin/',
   // api:    'http://localhost/satci/public/api/',
-  // api:    '/api/',
 })
   // var resourceUrl = '/api/';
   // var resourceUrl = 'http://localhost/satci/public/api/';

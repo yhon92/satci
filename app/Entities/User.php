@@ -2,14 +2,15 @@
 namespace SATCI\Entities;
 
 use Illuminate\Auth\Authenticatable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-use Johnnymn\Sim\Roles\Traits\HasRoleAndPermission;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Crypt;
 use Johnnymn\Sim\Roles\Contracts\HasRoleAndPermission as HasRoleAndPermissionContract;
-use Spatie\Activitylog\LogsActivityInterface;
+use Johnnymn\Sim\Roles\Traits\HasRoleAndPermission;
 use Spatie\Activitylog\LogsActivity;
+use Spatie\Activitylog\LogsActivityInterface;
 
 class User extends Model implements 
   AuthenticatableContract, 
@@ -43,6 +44,16 @@ class User extends Model implements
    */
   protected $hidden = ['password', 'remember_token'];
 
+  public function roles()
+  {
+    return $this->belongsToMany(config('roles.models.role'));
+  }
+
+  public function permissions()
+  {
+    return $this->belongsToMany(config('roles.models.permission'));
+  }
+
   public function getFullNameAttribute()
   {
     return $this->first_name.' '.$this->last_name;
@@ -51,7 +62,7 @@ class User extends Model implements
   public function setPasswordAttribute($value)
   {
     if (!empty($value)) {
-      $this->attributes['password'] = bcrypt($value);
+      $this->attributes['password'] = Crypt::encrypt($value);
     }
   }
 

@@ -112,7 +112,7 @@ angular.module('Solicitude.controllers')
       $scope.solicitude.reception_date = new Date();
     }
 
-    let solicitude = {
+    let data = {
       reception_date: $filter('date')($scope.solicitude.reception_date, 'yyyy-MM-dd'), 
       applicant_type: $scope.solicitude.applicant_type, 
       applicant_id: $scope.solicitude.applicant_id, 
@@ -120,8 +120,8 @@ angular.module('Solicitude.controllers')
       topic: $scope.solicitude.topic, 
     };
 
-    Solicitudes.save(solicitude).$promise
-    .then( (data) => {
+    Solicitudes.save(data).$promise
+    .then((data) => {
       if (data.success) {
         Alertify.success('Solicitud registrada exitosamente');
         $state.transitionTo('solicitude', { 

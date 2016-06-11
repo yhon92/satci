@@ -1,3 +1,124 @@
 <div class="col-md-12" ui-view>
-hola usuario
+  <a class="btn btn-info btn-add-float" title="Agregar Usuario" ng-click="add()">
+    <img src="./img/bootswatch/plus_2x.png" alt="Agregar">
+  </a>
+
+  <div class="col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
+    <section class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title inline-block">Lista de Usuarios</h3>
+        <div class="float-right">
+          <button class="btn btn-default btn-sm ButtonSearch collapsed" ng-click="toggleCollapsed()">
+            <span class="glyphicon glyphicon-search"></span>
+          </button>
+        </div>
+      </div>
+      <div class="panel-body List-container">
+        <div uib-collapse="isCollapsed">
+          <div class="well well-sm form-group">
+            <input type="text" class="form-control" placeholder="Buscar..." ng-model="filter.name">
+          </div>
+        </div>
+        <ul class="list-group ListGroup">
+          <li class="list-group-item ListGroup-item" ng-repeat="user in filtered = ( users  | filter: filter.name)">
+            {{user.first_name}} {{user.last_name}}
+            <div class="float-right">
+              <div class="MenuActions"uib-dropdown is-open="status.isopen" ng-mouseenter="status.isopen = true" ng-mouseleave="status.isopen = false">
+                <button type="button" class="btn btn-link btn-xs MenuActions-button" uib-dropdown-toggle>
+                  <span class="glyphicon glyphicon-option-vertical"></span>
+                </button>
+                <ul class="dropdown-menu MenuActions-list" role="menu">
+                  <li class="MenuActions-item">
+                    <a class="MenuActions-action" ng-click="delete(user)"><span class="glyphicon glyphicon-trash"></span> </a>
+                  </li>
+                  <li class="MenuActions-item">
+                    <a class="MenuActions-action" ng-click="edit(user)"><span class="glyphicon glyphicon-pencil"></span> </a>
+                  </li>
+                  <li class="MenuActions-item">
+                    <a class="MenuActions-action" ng-click="show(user)"><span class="glyphicon glyphicon-eye-open"></span> </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <p class="align-center" ng-show="!filtered.length"><strong>¡No hay resultado!</strong></p>
+      </section>
+    </div>
+  </div>
 </div>
+<script type="text/ng-template" id="modalFormUser-template">
+  <section class="modal-header">
+    <button type="button" class="close" ng-click="close()">×</button>
+    <h4 class="modal-title">{{title}} Usuario</h4>
+  </section>
+  <form class="form-horizontal" ng-submit="save()">
+    <section class="modal-body">
+      <div class="form-group">
+        <div class="col-lg-12">
+          <label for="first_name"><strong>Nombres</strong></label>
+        </div>
+        <div class="col-lg-12">
+          <input type="text" class="form-control" placeholder="Nombres" autofocus ng-model="user.first_name" ng-required="true" only-letters>
+        </div>
+        <div class="col-lg-12">
+          <label for="last_name"><strong>Apellidos</strong></label>
+        </div>
+        <div class="col-lg-12">
+          <input type="text" class="form-control" placeholder="Apellidos" autofocus ng-model="user.last_name" ng-required="true" only-letters>
+        </div>
+        <div class="col-lg-12">
+          <label for="username"><strong>Nombre de Usuario</strong></label>
+        </div>
+        <div class="col-lg-12">
+          <input type="text" class="form-control" placeholder="Nombre de Usuario" autofocus ng-model="user.username" ng-required="true" only-letters>
+        </div>
+        <div class="col-lg-12">
+          <label for="password"><strong>Contraseña</strong></label>
+        </div>
+        <div class="col-lg-12">
+          <input type="password" class="form-control" placeholder="Contraseña" autofocus ng-model="user.password" ng-required="true">
+        </div>
+        <div class="col-lg-12">
+          <label for="password_confirmation"><strong>Confirmar Contraseña</strong></label>
+        </div>
+        <div class="col-lg-12">
+          <input type="password" class="form-control" placeholder="Confirmar Contraseña" autofocus ng-model="user.password_confirmation" ng-required="true">
+        </div>
+      </div>
+    </section>
+    <section class="modal-footer">
+      <button type="button" class="btn btn-link btn-sm" ng-click="close()">{{button.cancel}}</button>
+      <button type="submit" class="btn btn-primary btn-sm">{{button.submit}}</button>
+    </section>
+  </form>
+</script>
+<script type="text/ng-template" id="modalShowUser-template">
+  <section class="modal-header">
+    <button type="button" class="close" ng-click="close()">×</button>
+    <h4 class="modal-title border-bottom"> {{user.first_name}} {{user.last_name}}</h4>
+  </section>
+  <section class="modal-body">
+    <h6 class="text-success"><strong><em>Perfil:</em></strong></h6>
+    <div class="form-group">
+      <div class="col-lg-12">
+        <ul class="list-unstyled">
+          <li ng-repeat="role in roles">- {{role.name}}</li>
+        </ul>
+        <h6 class="align-center" ng-if="notRoles">¡Este usuario no posee perfil asociados!</h6>
+      </div>
+    </div>
+    <h6 class="text-success"><strong><em>Permisos:</em></strong></h6>
+    <div class="form-group">
+      <div class="col-lg-12">
+        <ul class="list-unstyled">
+          <li ng-repeat="permission in permissions">- {{permission.name}}</li>
+        </ul>
+        <h6 class="align-center" ng-if="notPermissions">¡Este usuario no posee permisos asociados!</h6>
+      </div>
+    </div>
+  </section>
+  <section class="modal-footer">
+    <button type="submit" class="btn btn-warning btn-sm" ng-click="close()">Cerrar</button>
+  </section>
+</script>

@@ -18,7 +18,8 @@ class AreaController extends Controller
   protected $areaRepo;
   protected $areaMeansRepo;
 
-  public function __construct(AreaRepo $areaRepo, AreaMeansRepo $areaMeansRepo) {
+  public function __construct(AreaRepo $areaRepo, AreaMeansRepo $areaMeansRepo)
+  {
     $this->middleware('jwt.auth');
     $this->areaRepo = $areaRepo;
     $this->areaMeansRepo = $areaMeansRepo;

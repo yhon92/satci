@@ -12,5 +12,9 @@ angular.module('User.resources', ['ngResource', 'SATCI.Shared'])
         id: '@_id',
       },
     },
+    list: {
+      method: 'GET', 
+      url: `${ResourcesUrl.api}user/list`,
+    },
   });
 })

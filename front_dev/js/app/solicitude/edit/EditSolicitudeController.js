@@ -51,14 +51,14 @@ angular.module('Solicitude.controllers')
   }
 
   $scope.saveSolicitude = () => {
-    let solicitude = {
+    let data = {
       document_date: $filter('date')($scope.solicitude.document_date, 'yyyy-MM-dd'), 
       topic: $scope.solicitude.topic, 
       status: $scope.solicitude.status
     }
-    console.log(solicitude)
-    Solicitudes.update({id: $stateParams.id}, solicitude).$promise
-    .then( (data) => {
+
+    Solicitudes.update({id: $stateParams.id}, data).$promise
+    .then((data) => {
       if (data.success) {
         Alertify.success('Solicitud modificada exitosamente');
         $state.transitionTo('solicitude', { 

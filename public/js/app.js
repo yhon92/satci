@@ -2800,7 +2800,7 @@ angular.module('Solicitude.controllers').controller('CreateSolicitudeCtrl', func
       $scope.solicitude.reception_date = new Date();
     }
 
-    var solicitude = {
+    var data = {
       reception_date: $filter('date')($scope.solicitude.reception_date, 'yyyy-MM-dd'),
       applicant_type: $scope.solicitude.applicant_type,
       applicant_id: $scope.solicitude.applicant_id,
@@ -2808,7 +2808,7 @@ angular.module('Solicitude.controllers').controller('CreateSolicitudeCtrl', func
       topic: $scope.solicitude.topic
     };
 
-    Solicitudes.save(solicitude).$promise.then(function (data) {
+    Solicitudes.save(data).$promise.then(function (data) {
       if (data.success) {
         Alertify.success('Solicitud registrada exitosamente');
         $state.transitionTo('solicitude', {
@@ -2981,13 +2981,13 @@ angular.module('Solicitude.controllers').controller('EditSolicitudeCtrl', functi
   };
 
   $scope.saveSolicitude = function () {
-    var solicitude = {
+    var data = {
       document_date: $filter('date')($scope.solicitude.document_date, 'yyyy-MM-dd'),
       topic: $scope.solicitude.topic,
       status: $scope.solicitude.status
     };
-    console.log(solicitude);
-    Solicitudes.update({ id: $stateParams.id }, solicitude).$promise.then(function (data) {
+
+    Solicitudes.update({ id: $stateParams.id }, data).$promise.then(function (data) {
       if (data.success) {
         Alertify.success('Solicitud modificada exitosamente');
         $state.transitionTo('solicitude', {
@@ -3630,7 +3630,103 @@ angular.module('SATCI.Datepicker', []).controller('DatepickerCtrl', function ($s
 },{}],69:[function(require,module,exports){
 'use strict';
 
-angular.module('User.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'User.resources']).controller('UserCtrl', function ($scope, $uibModal, Alertify, Helpers, Users) {});
+angular.module('User.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'User.resources']).controller('UserCtrl', function ($scope, $uibModal, Alertify, Helpers, Users) {
+
+  Users.get().$promise.then(function (data) {
+    $scope.users = data.users;
+  }).catch(function (fails) {});
+
+  $scope.filter = {
+    name: ''
+  };
+
+  $scope.isCollapsed = true;
+
+  $scope.toggleCollapsed = function () {
+    $scope.filter.name = '';
+    $scope.isCollapsed = !$scope.isCollapsed;
+  };
+
+  $scope.add = function () {
+    var modalInstance = $uibModal.open({
+      templateUrl: 'modalFormUser-template',
+      controller: 'CreateUserCtrl',
+      size: 'sm',
+      backdrop: 'static',
+      keyboard: false
+    });
+
+    modalInstance.result.then(function (data) {
+      $scope.users.push(data);
+    });
+  };
+
+  $scope.show = function (_user) {
+    var modalInstance = $uibModal.open({
+      templateUrl: 'modalShowUser-template',
+      controller: 'ShowUserCtrl',
+      size: 'dm',
+      resolve: {
+        user: function user() {
+          return _user;
+        }
+      }
+    });
+  };
+
+  $scope.edit = function (_user2) {
+    var modalInstance = $uibModal.open({
+      templateUrl: 'modalFormUser-template',
+      controller: 'EditUserCtrl',
+      size: 'sm',
+      backdrop: 'static',
+      keyboard: false,
+      resolve: {
+        user: function user() {
+          return _user2;
+        }
+      }
+    });
+  };
+
+  /*$scope.delete = (category) => {
+     let id = category.id;
+    
+    let index = Helpers.getIndex($scope.categories, id);
+     Alertify.set({ labels: {ok: "Eliminar", cancel: "Cancelar"} });
+     Alertify.confirm('Confirma que desea eliminar la categoría: '+
+      '</br>Nombre: <strong class="text-danger">'+ category.name +'</strong>'
+      )
+    .then((ok) => {
+      Categories.delete({id: id}).$promise
+      .then( (data) => {
+        if (data.success) {
+          $scope.categories.splice(index,1);
+          Alertify.success('¡Categoría eliminada!');
+        }
+        if (data.conflict) {
+          Alertify.log('¡No es posible eliminar por tener <strong class="text-warning">Temas</strong> asociados!');
+        }
+        if (data.error) {
+          Alertify.error('¡Ocurrio un error al intentar eliminar!');
+        }
+      })
+      .catch((fails) => {
+        if (fails.status != 500) {
+          for (let firstKey in fails.data) {
+            for (let secondKey in fails.data[firstKey]) {
+              Alertify.error(fails.data[firstKey][secondKey]);
+            }
+          }
+        } else {
+          console.log(fails);
+        };
+      });
+    }, (cancel) => {
+      return false;
+    }); 
+  };*/
+});
 
 },{}],70:[function(require,module,exports){
 'use strict';
@@ -3668,18 +3764,150 @@ angular.module('User.resources', ['ngResource', 'SATCI.Shared']).factory('Users'
       params: {
         id: '@_id'
       }
+    },
+    list: {
+      method: 'GET',
+      url: ResourcesUrl.api + 'user/list'
     }
   });
 });
 
 },{}],72:[function(require,module,exports){
-"use strict";
+'use strict';
+
+angular.module('User.controllers').controller('CreateUserCtrl', function ($scope, $filter, $uibModalInstance, Alertify, Helpers, Users) {
+  $scope.title = 'Agregar';
+
+  $scope.button = {
+    submit: 'Agregar',
+    cancel: 'Cancelar'
+  };
+
+  $scope.user = {
+    "first_name": null,
+    "last_name": null,
+    "username": null,
+    "password": null,
+    "password_confirmation": null
+  };
+
+  $scope.save = function () {
+
+    var data = {
+      "first_name": $filter('titleCase')($scope.user.first_name),
+      "last_name": $filter('titleCase')($scope.user.last_name),
+      "username": $filter('lowercase')($scope.user.username),
+      "password": $scope.user.password,
+      "password_confirmation": $scope.user.password_confirmation
+    };
+
+    Users.save(data).$promise.then(function (data) {
+      if (data.success) {
+        Alertify.success('¡Usuario registrado!');
+        $uibModalInstance.close(data.user);
+      }
+      if (data.error) {
+        Alertify.error('¡No se pudo registrar el usuario!');
+      }
+    }).catch(function (fails) {
+      if (fails.status != 500) {
+        for (var firstKey in fails.data) {
+          for (var secondKey in fails.data[firstKey]) {
+            Alertify.error(fails.data[firstKey][secondKey]);
+          }
+        }
+      } else {
+        console.log(fails);
+      };
+    });
+  };
+
+  $scope.close = function () {
+    $uibModalInstance.dismiss();
+  };
+});
 
 },{}],73:[function(require,module,exports){
-"use strict";
+'use strict';
+
+angular.module('User.controllers').controller('EditUserCtrl', function ($scope, $filter, $uibModalInstance, Alertify, Users, user) {
+  $scope.title = 'Editar';
+
+  $scope.button = {
+    submit: 'Guardar',
+    cancel: 'Cancelar'
+  };
+
+  $scope.user = {
+    "first_name": user.first_name,
+    "last_name": user.last_name,
+    "username": user.username,
+    "password": null,
+    "password_confirmation": null
+  };
+
+  $scope.save = function () {
+    var data = {
+      "first_name": $filter('titleCase')($scope.user.first_name),
+      "last_name": $filter('titleCase')($scope.user.last_name),
+      "username": $filter('lowercase')($scope.user.username),
+      "password": $scope.user.password,
+      "password_confirmation": $scope.user.password_confirmation
+    };
+
+    Users.update({ id: user.id }, data).$promise.then(function (data) {
+      if (data.success) {
+        Alertify.success('¡Usuario editado!');
+        user = $scope.user;
+        $uibModalInstance.close(user);
+      }
+      if (data.error) {
+        Alertify.error('¡No se pudo editar el usuario!');
+      }
+    }).catch(function (fails) {
+      if (fails.status != 500) {
+        for (var firstKey in fails.data) {
+          for (var secondKey in fails.data[firstKey]) {
+            Alertify.error(fails.data[firstKey][secondKey]);
+          }
+        }
+      } else {
+        console.log(fails);
+      };
+    });
+  };
+
+  $scope.close = function () {
+    $uibModalInstance.dismiss();
+  };
+});
 
 },{}],74:[function(require,module,exports){
-"use strict";
+'use strict';
+
+angular.module('User.controllers').controller('ShowUserCtrl', function ($scope, $uibModalInstance, user) {
+  $scope.user = user;
+  $scope.roles = false;
+  $scope.notRoles = false;
+  $scope.permissions = false;
+  $scope.notPermissions = false;
+
+  if (user.roles != undefined && user.roles.length > 0) {
+    $scope.roles = user.roles;
+  } else {
+    $scope.notRoles = true;
+  }
+
+  if (user.permissions != undefined && user.permissions.length > 0) {
+    $scope.permissions = user.permissions;
+  } else {
+    $scope.notPermissions = true;
+  }
+
+  $scope.close = function () {
+    $uibModalInstance.dismiss();
+  };
+});
 
 },{}],75:[function(require,module,exports){
 (function (global){
