@@ -14,7 +14,8 @@ class UserRepo extends BaseRepo
 
   public static function create($data)
   {
-    unset($data['password_confirmation']);
+    // dd($data);
+    // unset($data['password_confirmation']);
 
     return User::create($data);
   }

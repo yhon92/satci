@@ -50,7 +50,7 @@ class UserController extends Controller
 	{
 		DB::beginTransaction();
 		try {
-			$user = $this->userRepo->create($request->all());
+			$user = $this->userRepo->create($request->only('first_name', 'last_name', 'username', 'password'));
 		} catch (QueryException $e) {
       DB::rollBack();
       

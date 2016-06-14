@@ -6,7 +6,6 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Crypt;
 use Johnnymn\Sim\Roles\Contracts\HasRoleAndPermission as HasRoleAndPermissionContract;
 use Johnnymn\Sim\Roles\Traits\HasRoleAndPermission;
 use Spatie\Activitylog\LogsActivity;
@@ -54,16 +53,16 @@ class User extends Model implements
     return $this->belongsToMany(config('roles.models.permission'));
   }
 
-  public function getFullNameAttribute()
-  {
-    return $this->first_name.' '.$this->last_name;
-  }
-
   public function setPasswordAttribute($value)
   {
     if (!empty($value)) {
-      $this->attributes['password'] = Crypt::encrypt($value);
+      $this->attributes['password'] = bcrypt($value);
     }
+  }
+
+  public function getFullNameAttribute()
+  {
+    return $this->first_name.' '.$this->last_name;
   }
 
   public function setActiveAttribute($value)
