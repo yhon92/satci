@@ -28,6 +28,7 @@ class CreateUserRequest extends Request
     'first_name' => 'required',
     'last_name' => 'required',
     'password' => 'required|confirmed|min:3',
+    'active' => 'required|boolean',
     ];
   }
 

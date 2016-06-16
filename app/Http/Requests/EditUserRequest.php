@@ -23,11 +23,20 @@ class EditUserRequest extends Request
    */
   public function rules()
   {
-    return [
+    $rules = [
       // 'username' => 'required|unique:users,username',
     'first_name' => 'required',
     'last_name' => 'required',
+    'active' => 'required|boolean',
     ];
+
+    $password = $this->request->get('password');
+
+    if (!empty($password)) {
+      $rules['password'] = 'required|confirmed|min:3';
+    }
+
+    return $rules;
   }
 
 }

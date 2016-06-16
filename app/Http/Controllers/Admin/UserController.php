@@ -50,7 +50,7 @@ class UserController extends Controller
 	{
 		DB::beginTransaction();
 		try {
-			$user = $this->userRepo->create($request->only('first_name', 'last_name', 'username', 'password'));
+			$user = $this->userRepo->create($request->only('first_name', 'last_name', 'username', 'password', 'active'));
 		} catch (QueryException $e) {
       DB::rollBack();
       
@@ -86,18 +86,24 @@ class UserController extends Controller
 	 */
 	public function update($id, EditUserRequest $request)
 	{
-		// Helpers::isCheck($request, 'active');
+		try {
+			$password = $request->get('password');
 
-		// $this->user->fill([
-		// 	'first_name' => $request->first_name,
-		// 	'last_name' => $request->last_name,
-		// 	'active' => $request->active,
-		// 	]);
+			$data = $request->only('first_name', 'last_name', 'active');
+			
+			if (!empty($password)) {
+				$data = $request->only('first_name', 'last_name', 'password', 'active');
+			} 
+      
+      $this->userRepo->update($id, $data);
+    } catch (QueryException $e) {
+      Log::info($e->errorInfo[2]);
 
-		// $this->user->save();
+      return response()->json(['error' => true], 200);
+    }
+    Cache::forget('users');
 
-		// return redirect()->back();
-		// return redirect()->route('admin.users.index');
+    return response()->json(['success' => true], 200);
 	}
 
 	/**

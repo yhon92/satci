@@ -130,6 +130,7 @@ return [
 		'document_date' 				=> 'Fecha del Documento',
 		'topic' 								=> 'Asunto',
 		'status' 								=> 'Estado',
+		'active' 								=> 'Estado',
 		// '' => '',
 		// '' => '',
 		// '' => '',

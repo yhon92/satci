@@ -1,6 +1,7 @@
 angular.module('User.controllers')
 .controller('CreateUserCtrl', ($scope, $filter, $uibModalInstance, Alertify, Helpers, Users) => {
   $scope.title = 'Agregar';
+  $scope.add = true;
 
   $scope.button = {
     submit: 'Agregar',
@@ -13,6 +14,21 @@ angular.module('User.controllers')
     "username": null,
     "password": null,
     "password_confirmation": null,
+    "active": true,
+  };
+
+  if ($scope.user.active) {
+    $scope.status = 'Activo';
+  } else {
+    $scope.status = 'Inactivo';
+  }
+
+  $scope.checkStatus = () => {
+    if ($scope.user.active) {
+      $scope.status = 'Activo';
+    } else {
+      $scope.status = 'Inactivo';
+    }
   };
 
   $scope.save = () => {
@@ -23,6 +39,7 @@ angular.module('User.controllers')
       "username": $filter('lowercase')($scope.user.username),
       "password": $scope.user.password,
       "password_confirmation": $scope.user.password_confirmation,
+      "active": $scope.user.active,
     };
 
     Users.save(data).$promise

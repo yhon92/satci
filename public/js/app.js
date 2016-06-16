@@ -3777,6 +3777,7 @@ angular.module('User.resources', ['ngResource', 'SATCI.Shared']).factory('Users'
 
 angular.module('User.controllers').controller('CreateUserCtrl', function ($scope, $filter, $uibModalInstance, Alertify, Helpers, Users) {
   $scope.title = 'Agregar';
+  $scope.add = true;
 
   $scope.button = {
     submit: 'Agregar',
@@ -3788,7 +3789,22 @@ angular.module('User.controllers').controller('CreateUserCtrl', function ($scope
     "last_name": null,
     "username": null,
     "password": null,
-    "password_confirmation": null
+    "password_confirmation": null,
+    "active": true
+  };
+
+  if ($scope.user.active) {
+    $scope.status = 'Activo';
+  } else {
+    $scope.status = 'Inactivo';
+  }
+
+  $scope.checkStatus = function () {
+    if ($scope.user.active) {
+      $scope.status = 'Activo';
+    } else {
+      $scope.status = 'Inactivo';
+    }
   };
 
   $scope.save = function () {
@@ -3798,7 +3814,8 @@ angular.module('User.controllers').controller('CreateUserCtrl', function ($scope
       "last_name": $filter('titleCase')($scope.user.last_name),
       "username": $filter('lowercase')($scope.user.username),
       "password": $scope.user.password,
-      "password_confirmation": $scope.user.password_confirmation
+      "password_confirmation": $scope.user.password_confirmation,
+      "active": $scope.user.active
     };
 
     Users.save(data).$promise.then(function (data) {
@@ -3832,6 +3849,7 @@ angular.module('User.controllers').controller('CreateUserCtrl', function ($scope
 
 angular.module('User.controllers').controller('EditUserCtrl', function ($scope, $filter, $uibModalInstance, Alertify, Users, user) {
   $scope.title = 'Editar';
+  $scope.add = false;
 
   $scope.button = {
     submit: 'Guardar',
@@ -3843,7 +3861,22 @@ angular.module('User.controllers').controller('EditUserCtrl', function ($scope, 
     "last_name": user.last_name,
     "username": user.username,
     "password": null,
-    "password_confirmation": null
+    "password_confirmation": null,
+    "active": user.active
+  };
+
+  if ($scope.user.active) {
+    $scope.status = 'Activo';
+  } else {
+    $scope.status = 'Inactivo';
+  }
+
+  $scope.checkStatus = function () {
+    if ($scope.user.active) {
+      $scope.status = 'Activo';
+    } else {
+      $scope.status = 'Inactivo';
+    }
   };
 
   $scope.save = function () {
@@ -3852,7 +3885,8 @@ angular.module('User.controllers').controller('EditUserCtrl', function ($scope, 
       "last_name": $filter('titleCase')($scope.user.last_name),
       "username": $filter('lowercase')($scope.user.username),
       "password": $scope.user.password,
-      "password_confirmation": $scope.user.password_confirmation
+      "password_confirmation": $scope.user.password_confirmation,
+      "active": $scope.user.active
     };
 
     Users.update({ id: user.id }, data).$promise.then(function (data) {

@@ -65,25 +65,32 @@
           <label for="last_name"><strong>Apellidos</strong></label>
         </div>
         <div class="col-lg-12">
-          <input type="text" class="form-control" placeholder="Apellidos" autofocus ng-model="user.last_name" ng-required="true" only-letters>
+          <input type="text" class="form-control" placeholder="Apellidos" ng-model="user.last_name" ng-required="true" only-letters>
         </div>
         <div class="col-lg-12">
           <label for="username"><strong>Nombre de Usuario</strong></label>
         </div>
         <div class="col-lg-12">
-          <input type="text" class="form-control" placeholder="Nombre de Usuario" autofocus ng-model="user.username" ng-required="true" only-letters>
+          <input type="text" class="form-control" placeholder="Nombre de Usuario" ng-model="user.username" ng-required="true" ng-if="add" only-letters>
+          <label class="form-label" ng-if="!add">{{user.username}}</label>
         </div>
         <div class="col-lg-12">
           <label for="password"><strong>Contraseña</strong></label>
         </div>
         <div class="col-lg-12">
-          <input type="password" class="form-control" placeholder="Contraseña" autofocus ng-model="user.password" ng-required="true">
+          <input type="password" class="form-control" placeholder="Contraseña" ng-model="user.password" ng-required="add">
         </div>
         <div class="col-lg-12">
           <label for="password_confirmation"><strong>Confirmar Contraseña</strong></label>
         </div>
         <div class="col-lg-12">
-          <input type="password" class="form-control" placeholder="Confirmar Contraseña" autofocus ng-model="user.password_confirmation" ng-required="true">
+          <input type="password" class="form-control" placeholder="Confirmar Contraseña" ng-model="user.password_confirmation" ng-required="add">
+        </div>
+        <div class="col-lg-12">
+          <label for="active"><strong>Estado</strong></label>
+        </div>
+        <div class="col-lg-12">
+          <input type="checkbox" ng-change="checkStatus()" ng-model="user.active">{{status}}
         </div>
       </div>
     </section>

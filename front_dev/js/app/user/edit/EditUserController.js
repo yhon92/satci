@@ -1,6 +1,7 @@
 angular.module('User.controllers')
 .controller('EditUserCtrl', ($scope, $filter, $uibModalInstance, Alertify, Users, user) => {
   $scope.title = 'Editar';
+  $scope.add = false;
 
   $scope.button = {
     submit: 'Guardar',
@@ -13,6 +14,21 @@ angular.module('User.controllers')
     "username": user.username,
     "password": null,
     "password_confirmation": null,
+    "active": user.active,
+  };
+
+  if ($scope.user.active) {
+    $scope.status = 'Activo';
+  } else {
+    $scope.status = 'Inactivo';
+  }
+
+  $scope.checkStatus = () => {
+    if ($scope.user.active) {
+      $scope.status = 'Activo';
+    } else {
+      $scope.status = 'Inactivo';
+    }
   };
 
   $scope.save = () => {
@@ -22,6 +38,7 @@ angular.module('User.controllers')
       "username": $filter('lowercase')($scope.user.username),
       "password": $scope.user.password,
       "password_confirmation": $scope.user.password_confirmation,
+      "active": $scope.user.active,
     };
 
     Users.update({id: user.id}, data).$promise
