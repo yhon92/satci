@@ -48,6 +48,9 @@ angular.module('User.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'Us
   };
 
   $scope.edit = (user) => {
+
+    let index = Helpers.getIndex($scope.users, user.id);
+
     let modalInstance = $uibModal.open({
       templateUrl: 'modalFormUser-template',
       controller: 'EditUserCtrl',
@@ -60,28 +63,35 @@ angular.module('User.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'Us
         }
       }
     });
+
+    modalInstance.result.then((data) => {
+      $scope.users[index].first_name = data.first_name;
+      $scope.users[index].last_name = data.last_name;
+      $scope.users[index].username = data.username;
+      $scope.users[index].active = data.active;
+    });
   };
 
-  /*$scope.delete = (category) => {
+  $scope.delete = (user) => {
 
-    let id = category.id;
+    let id = user.id;
     
-    let index = Helpers.getIndex($scope.categories, id);
+    let index = Helpers.getIndex($scope.users, id);
 
     Alertify.set({ labels: {ok: "Eliminar", cancel: "Cancelar"} });
 
     Alertify.confirm('Confirma que desea eliminar la categoría: '+
-      '</br>Nombre: <strong class="text-danger">'+ category.name +'</strong>'
+      '</br>Nombre: <strong class="text-danger">'+ user.first_name +' '+ user.last_name +'</strong>'
       )
     .then((ok) => {
-      Categories.delete({id: id}).$promise
+      Users.delete({id: id}).$promise
       .then( (data) => {
         if (data.success) {
-          $scope.categories.splice(index,1);
-          Alertify.success('¡Categoría eliminada!');
+          $scope.users.splice(index,1);
+          Alertify.success('¡Usuario eliminado!');
         }
         if (data.conflict) {
-          Alertify.log('¡No es posible eliminar por tener <strong class="text-warning">Temas</strong> asociados!');
+          Alertify.log('¡No es posible eliminar por tener <strong class="text-warning">Multiples Registros</strong> asociados!');
         }
         if (data.error) {
           Alertify.error('¡Ocurrio un error al intentar eliminar!');
@@ -101,6 +111,6 @@ angular.module('User.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'Us
     }, (cancel) => {
       return false;
     }); 
-  };*/
+  };
 
 })

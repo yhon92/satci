@@ -23,6 +23,7 @@ angular.module('Theme.controllers')
       name: $scope.theme.name,
       category_id: $scope.theme.category_id,
     };
+    
     Themes.update({id: theme.id}, data).$promise
     .then((data) => {
       if (data.success) {

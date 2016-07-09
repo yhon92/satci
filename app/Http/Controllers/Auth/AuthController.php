@@ -80,9 +80,9 @@ class AuthController extends Controller
 
 	public function permissions()
 	{
-		$user = Auth::user()->username;
+		$username = Auth::user()->username;
 		// Cache::flush();
-		if (!Cache::has('role_'.$user) || !Cache::has('permissions_'.$user)) {
+		if (!Cache::has('role_'.$username) || !Cache::has('permissions_'.$username)) {
 			try {
 				$getRole = Auth::user()->getRoles();	
 				$role = $getRole[0]->slug;
@@ -93,16 +93,16 @@ class AuthController extends Controller
 				foreach ($getPermissions as $key => $value) {
 					array_push($permissions, $value->slug);
 				}
-				Cache::forever('role_'.$user, $role);
-				Cache::forever('permissions_'.$user, $permissions);
+				Cache::forever('role_'.$username, $role);
+				Cache::forever('permissions_'.$username, $permissions);
 
 			} catch (ErrorException $e) {
 				Auth::logout();
 				return response()->json(['error' => trans('validation.permissions_user')], 401);
 			}
 		} else {
-			$role = Cache::get('role_'.$user);
-			$permissions = Cache::get('permissions_'.$user);
+			$role = Cache::get('role_'.$username);
+			$permissions = Cache::get('permissions_'.$username);
 		}
 
 		return response()->json(['acl' => [$role => $permissions]], 200);

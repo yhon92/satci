@@ -32,7 +32,7 @@ angular.module('User.controllers')
   };
 
   $scope.save = () => {
-    let data = {
+    let dataUser = {
       "first_name": $filter('titleCase')($scope.user.first_name),
       "last_name": $filter('titleCase')($scope.user.last_name),
       "username": $filter('lowercase')($scope.user.username),
@@ -41,11 +41,11 @@ angular.module('User.controllers')
       "active": $scope.user.active,
     };
 
-    Users.update({id: user.id}, data).$promise
+    Users.update({id: user.id}, dataUser).$promise
     .then((data) => {
       if (data.success) {
         Alertify.success('¡Usuario editado!');
-        user = $scope.user;
+        user = dataUser;
         $uibModalInstance.close(user);
       }
       if (data.error) {

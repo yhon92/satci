@@ -29,7 +29,7 @@ class UserController extends Controller
 	 */
 	public function index()
 	{
-		Cache::forget('users');
+		Cache::forget('users'); // QUITAR SOLO POR MOTIVO DE DESARROLLO
 		if (!Cache::has('users')) {
       $users = $this->userRepo->all();
 
@@ -112,22 +112,37 @@ class UserController extends Controller
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id, Request $request)
+	public function destroy($id)
 	{
-		// User::destroy($id);
-		// $this->user->delete();
+		$user = $this->userRepo->get($id);
+		$username = $user->username;
 
-		// $message = 'El usuario ' . $this->user->full_name . ' fue eliminado';
+		$roles = $this->userRepo->allRoles($id);
 
-		// if ($request->ajax()) {
-		// 	return response()->json([
-		// 		'id' 			=> $this->user->id,
-		// 		'message' => $message
-		// 		]);
-		// }
+		$permissions = $this->userRepo->allPermissions($id);
 
-		// session()->flash('message', $message);
+		if (count($roles) > 0 || count($permissions) > 0) {
+      return response()->json(['conflict' => true], 200);
+    } else {
+      DB::beginTransaction();
 
-		// return redirect()->route('admin.users.index');
+      try {
+        $this->userRepo->delete($id);
+      } catch (QueryException $e) {
+        DB::rollBack();
+
+        Log::info($e->errorInfo[2]);
+
+        return response()->json(['error' => true], 200);
+      }
+    }
+    
+    DB::commit();
+
+    Cache::forget('users');
+    Cache::forget('role_'.$username);
+		Cache::forget('permissions_'.$username);
+
+    return response()->json(['success' => true], 200);
 	}
 }

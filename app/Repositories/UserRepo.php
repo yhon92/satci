@@ -1,7 +1,6 @@
 <?php 
 namespace SATCI\Repositories;
 
-use Crypt;
 use SATCI\Entities\User;
 
 class UserRepo extends BaseRepo
@@ -14,9 +13,6 @@ class UserRepo extends BaseRepo
 
   public static function create($data)
   {
-    // dd($data);
-    // unset($data['password_confirmation']);
-
     return User::create($data);
   }
 
@@ -42,6 +38,25 @@ class UserRepo extends BaseRepo
   public static function all()
   {
     return User::orderBy('first_name', 'ASC')->with('roles', 'permissions')->get();
+  }
+
+  public static function listLog()
+  {
+    // return User::
+  }
+
+  public static function allRoles($id)
+  {
+    $user = User::find($id);
+
+    return $user->getRoles();
+  }
+
+  public static function allPermissions($id)
+  {
+    $user = User::find($id);
+
+    return $user->getPermissions();
   }
 
 }
