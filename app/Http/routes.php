@@ -68,15 +68,24 @@ Route::group(['prefix' => 'api'], function () {
 
   Route::resource('theme', 'ThemeController');
 
+  Route::group(['prefix' => 'statistic'], function () {
+    
+    Route::get('/', 'StatisticController@index');
+    
+    Route::post('/allByStatus', 'StatisticController@allByStatus');
+    
+    Route::post('/allByApplicant', 'StatisticController@allByApplicant');
+
+  });
+
+  Route::group(['prefix' => 'report'], function () {
+    
+    Route::get('/', 'ReportController@index');
+    
+    Route::post('/allByStatus', 'ReportController@allByStatus');
+    
+    Route::post('/allByApplicant', 'ReportController@allByApplicant');
+
+  });
 });
 
-Route::group(['prefix' => 'api'], function () {
-  
-  Route::get('statistics', 'StatisticsController@index');
-  
-  Route::post('statistics/allByStatus', 'StatisticsController@allByStatus');
-  
-  Route::post('statistics/allByApplicant', 'StatisticsController@allByApplicant');
-
-
-});
