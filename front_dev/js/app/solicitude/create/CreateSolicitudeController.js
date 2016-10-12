@@ -188,6 +188,13 @@ angular.module('Solicitude.controllers')
       }
     };
 
+    $scope.dateOptions = {
+      minDate: '',
+      maxDate: '',
+      formatYear: 'yy',
+      startingDay: 1
+    };
+
     $scope.today = () => {
       $scope.datepicker.reception_date = new Date();
       $scope.datepicker.document_date = new Date();
@@ -202,12 +209,12 @@ angular.module('Solicitude.controllers')
     $scope.toggleMin = () => {
       // $scope.minDate = $scope.minDate ? null : new Date();
       let date = new Date();
-      $scope.minDate = date.getFullYear() + '-01-02'
+      $scope.dateOptions.minDate = new Date(date.getFullYear() + '-01-02');
     };
     $scope.toggleMin();
 
     $scope.toggleMax = () => {
-      $scope.maxDate = $scope.maxDate ? null : new Date();
+      $scope.dateOptions.maxDate = $scope.dateOptions.maxDate ? null : new Date();
     };
     $scope.toggleMax();
 
@@ -216,11 +223,6 @@ angular.module('Solicitude.controllers')
       $event.stopPropagation();
 
       $scope.datepicker[value] = !$scope.datepicker[value];
-    };
-
-    $scope.dateOptions = {
-      formatYear: 'yy',
-      startingDay: 1
     };
 
     $scope.formats = ['dd-MMMM-yyyy', 'dd/MM/yyyy', 'dd.MM.yyyy', 'shortDate'];

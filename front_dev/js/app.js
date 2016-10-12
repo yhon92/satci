@@ -13,6 +13,9 @@ import 'angular-smart-table';
 // import 'angular-moment';
 // import 'ng-fx';
 import 'satellizer';
+import 'd3';
+import 'nvd3';
+import 'angular-nvd3';
 
 import './libs/ng-alertify';
 
@@ -29,6 +32,7 @@ import './app/nav/NavModule';
 import './app/shared/SharedModule'
 import './app/solicitude/SolicitudeModule';
 import './app/theme/ThemeModule';
+import './app/statistic/StatisticModule';
 import './app/user/UserModule';
 import './app/permission/PermissionModule';
 
@@ -47,6 +51,7 @@ angular.module('SATCI', [
   'angular-loading-bar',
   'Alertify',
   'mm.acl',
+  'nvd3',
 
   'SATCI.Area',
   'SATCI.Category',
@@ -60,6 +65,7 @@ angular.module('SATCI', [
   'SATCI.Shared',
   'SATCI.Solicitude',
   'SATCI.Theme',
+  'SATCI.Statistic',
   'SATCI.User',
   'SATCI.Permission',
 

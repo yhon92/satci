@@ -54,6 +54,17 @@
 							<li role="menuitem"><a ui-sref="institution">Jurídico</a></li>
 						</ul>
 					</li>
+					<li ng-if="can('config')" ng-class="navActive('info')" class="dropdown" uib-dropdown>
+						<a class="dropdown-toggle" role="button" uib-dropdown-toggle>
+							Información
+							<%-- <span class="caret"></span> --%>
+						</a>
+						<ul class="uib-dropdown-menu" role="menu" aria-labelledby="simple-dropdown" uib-dropdown-menu>
+							<li role="menuitem"><a ui-sref="report">Reportes</a></li>
+							<li class="divider"></li>
+							<li role="menuitem"><a ui-sref="statistic">Estadísticas</a></li>
+						</ul>
+					</li>
 					<li ng-if="can('config')" ng-class="navActive('config')" class="dropdown" uib-dropdown>
 						<a class="dropdown-toggle" role="button" uib-dropdown-toggle>
 							Configuración

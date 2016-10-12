@@ -1,4 +1,3 @@
-// ['ui.router', 'ui.select', 'ui.bootstrap', 'Alertify', 'SATCI.Shared', 'Solicitude.resources', 'Theme.resources', 'Category.resources', 'Area.resources']
 angular.module('Solicitude.controllers')
 .controller('AssignSolicitudeCtrl', (
   $state,

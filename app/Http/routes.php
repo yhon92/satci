@@ -69,3 +69,14 @@ Route::group(['prefix' => 'api'], function () {
   Route::resource('theme', 'ThemeController');
 
 });
+
+Route::group(['prefix' => 'api'], function () {
+  
+  Route::get('statistics', 'StatisticsController@index');
+  
+  Route::post('statistics/allByStatus', 'StatisticsController@allByStatus');
+  
+  Route::post('statistics/allByApplicant', 'StatisticsController@allByApplicant');
+
+
+});

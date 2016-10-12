@@ -143,6 +143,7 @@ return [
 		Spatie\Activitylog\ActivitylogServiceProvider::class,
 		Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
 		Johnnymn\Sim\Roles\RolesServiceProvider::class,
+    Barryvdh\DomPDF\ServiceProvider::class,
 		/*
 		 * Application Service Providers...
 		 */
@@ -207,6 +208,7 @@ return [
 		'Uuid' 			 => Webpatser\Uuid\Uuid::class,
     'JWTAuth' 	 => Tymon\JWTAuth\Facades\JWTAuth::class,
     'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
+    'PDF'        => Barryvdh\DomPDF\Facade::class,
 
 	],
 
