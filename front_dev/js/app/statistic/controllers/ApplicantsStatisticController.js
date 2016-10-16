@@ -1,5 +1,5 @@
 angular.module('Statistic.controllers')
-.controller('ApplicantsStatisticCtrl', ($scope, $filter, $uibModal, Alertify, Statistics) => {
+.controller('ApplicantsStatisticCtrl', ($scope, $filter, $uibModal, Alertify, Helpers, Statistics) => {
 
   $scope.solicitudes = {
     date_from: null,
@@ -8,14 +8,19 @@ angular.module('Statistic.controllers')
 
   $scope.dataTotal = [];
 
+  let colors = Helpers.paletteColors;
+
   $scope.optionsTotal = {
     chart: {
       type: 'pieChart',
       height: 500,
-      x: function(d){return d.key;},
-      y: function(d){return d.y;},
+      x: function(d){return d.applicant;},
+      y: function(d){return d.quantity;},
       showLabels: true,
       duration: 500,
+      color: function(d,i){
+        return (d.data && d.data.color) || colors[i % colors.length]
+      },
       labelThreshold: 0.01,
       labelSunbeamLayout: true,
       labelType: 'percent',

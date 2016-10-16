@@ -1,0 +1,124 @@
+html {
+  margin: 4mm;
+  font-family: 'Helvetica';
+  font-size: 10pt;
+}
+body {
+  margin-top: 30mm;
+  width: 100%;
+}
+.Header {
+  /*background: transparent;*/
+  display: inline-block;
+  position: fixed;
+}
+.Header-Logo {
+  width: 65mm;
+  position: absolute;
+  /*top: 0;
+  right: 0;*/
+}
+.Header-Menbrete {
+  display: inline-block;
+  margin-top: 15mm;
+  /*width: 348mm;*/
+}
+.Header-Menbrete h1 {
+  margin: 0;
+  padding: 0;
+}
+.Header-Date {
+  width: 35mm;
+  position: absolute;
+  top: 4mm;
+  right: 0;
+}
+.Header-Date p{
+  margin: 0;
+  padding: 0;
+}
+.Title {
+  border: 1px solid black;
+  margin-top: 5mm;
+  margin-bottom: 5mm;
+}
+.Title p {
+  margin: 0;
+}
+.Table {
+  transform: translate(-1px, -1px);
+  margin: 0;
+  border-spacing: 0;
+  /* width: 100%; */
+  /* width: 348mm; */
+}
+.Table, th, tr, td {
+  border-collapse: collapse;
+  border: 1px solid black; 
+}
+.Table th {
+  height: 60px;
+  padding: 0;
+}
+.Table tr {
+  /* width: 34mm; */
+}
+.Table td {
+  padding: 5px 4px 4px 4px;
+  width: 0;
+}
+.Table .not-line td {
+  border-top: 1px transparent;
+  border-bottom: 1px transparent;
+}
+
+.page-break {
+  page-break-after: always;
+}
+
+.square {
+  border: 1px solid black;
+}
+.square-without-top {
+  border: 1px solid black;
+  border-top: none;
+}
+.left-text {
+  text-align: left;
+}
+.center-text {
+  text-align: center;
+}
+.right-text {
+  text-align: right;
+}
+.justify-text {
+  text-align: justify;
+  /* word-wrap: break-word; */
+}
+.margin-none {
+  margin: 0;
+}
+.margin-sm {
+  margin: 5px 0;
+}
+.font-sm {
+  font-size: 7pt;
+}
+.rotate-text {
+  height: 60px;
+  /* white-space: nowrap; */
+  font-size: 7pt;
+}
+.rotate-text > div {
+  transform: translate(20px, 0px) rotate(-90deg);
+  width: 5px;
+}
+.rotate-text > div > span{
+}
+.tamano {
+  margin-top: 200px;
+  background: red;
+  height: 20px;
+  width: 348mm;
+}

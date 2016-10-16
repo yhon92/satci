@@ -1,5 +1,5 @@
 angular.module('Statistic.controllers')
-.controller('SolicitudesStatisticCtrl', ($scope, $filter, $uibModal, Alertify, Statistics) => {
+.controller('SolicitudesStatisticCtrl', ($scope, $filter, $uibModal, Alertify, Helpers, Statistics) => {
 
   $scope.solicitudes = {
     date_from: null,
@@ -9,14 +9,19 @@ angular.module('Statistic.controllers')
   $scope.dataTotal = [];
   $scope.notData = true;
 
+  let colors = Helpers.paletteColors;
+                
   $scope.optionsTotal = {
     chart: {
       type: 'pieChart',
       height: 500,
-      x: function(d){return d.key;},
-      y: function(d){return d.y;},
+      x: function(d){return d.status;},
+      y: function(d){return d.quantity;},
       showLabels: true,
       duration: 500,
+      color: function(d,i){
+        return (d.data && d.data.color) || colors[i % colors.length]
+      },
       labelThreshold: 0.01,
       labelSunbeamLayout: true,
       labelType: 'percent',
@@ -39,21 +44,32 @@ angular.module('Statistic.controllers')
   };
 
   $scope.searchSolicitudes = () => {
+
     let data = {
-      type: 'solicitudes',
       date_from: $filter('date')($scope.solicitudes.date_from, 'yyyy-MM-dd'),
       date_to: $filter('date')($scope.solicitudes.date_to, 'yyyy-MM-dd'),
+      parish: $scope.parish,
     };
+
+    if (data.parish === undefined || data.parish === '') {
+      data.parish = 'all';
+    }
 
     Statistics.allByStatus(data).$promise
     .then((response) => {
       if (response.succes) {
-        // $scope.notData = false;
+        $scope.notData = false;
+        let [totalQuantity, totalPercent] = calculatingPercentage(response.data);
+        $scope.totalQuantity = totalQuantity;
+        $scope.totalPercent = totalPercent;
         $scope.dataTotal = response.data;
       }
       if (response.error) {
-        // $scope.notData = true;
+        $scope.notData = true;
+        $scope.totalQuantity = null;
+        $scope.totalPercent = null;
         $scope.dataTotal = [];
+        Alertify.log('¡No hay datos disponibles!');
       }
     })
     .catch((fails) => {
@@ -61,6 +77,25 @@ angular.module('Statistic.controllers')
     });
 
   };
+
+  function calculatingPercentage(data) {
+    let totalQuantity = 0;
+    let totalPercent = 0;
+    
+    for (let i in data) {
+      totalQuantity += data[i].quantity;
+    }
+
+    for (let i in data) {
+      let percent = 0;
+      
+      percent = Math.round((data[i].quantity / totalQuantity) * 100);
+      data[i].percent = percent;
+      totalPercent += percent;
+    }
+     
+    return [totalQuantity, totalPercent];
+  }
 
 
   /******************************************************Datepicker******************************************************/

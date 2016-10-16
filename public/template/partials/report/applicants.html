@@ -1,0 +1,43 @@
+<div class="col-md-4 well well-sm bs-component">
+  <form class="form-horizontal" name="form" ng-submit="search()">
+    <div class="form-group">
+      <label class="col-lg-4 control-label"><strong>Razon Social:</strong></label>
+      <div class="col-lg-8">
+        <div class="radio">
+          <label class="radio-inline">
+            <input type="radio" name="applicant_type" value='Citizen' ng-model="applicant_type">
+            Natural
+          </label>
+          <label class="radio-inline">
+            <input type="radio" name="applicant_type" value="Institution" ng-model="applicant_type">
+            Jurídico
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-lg-4 control-label" for="parish"><strong>Parroquia:</strong></label>
+      <div class="col-lg-8">
+        <select type="role" class="form-control" name="parish" id="parish" ng-model="parish">
+          <option value="">Todas</option>
+          <option value="1">Coronel Mariano Peraza</option>
+          <option value="2">Cuara</option>
+          <option value="3">Diego de Lozada</option>
+          <option value="4">José Bernardo Dorante</option>
+          <option value="5">Juan Bautista Rodríguez</option>
+          <option value="6">Paraíso de San José</option>
+          <option value="7">San Miguel</option>
+          <option value="8">Tintorero</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-lg-12 align-center">
+        <button type="submit" class="btn btn-primary btn-md">Buscar</button>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="col-md-8">
+  <object data="{{content}}" type="application/pdf" style="width:100%; height:690px" />
+</div>

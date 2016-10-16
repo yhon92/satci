@@ -30,12 +30,11 @@ class StatisticController extends Controller
 
   public function allByStatus(Request $request)
   {
-    $data = $request->all();
-    $type = $data['type'];
-    $from = $data['date_from'];
-    $to = $data['date_to'];
+    $from = $request->input('date_from');
+    $to = $request->input('date_to');
+    $parish = $request->input('parish');
     
-    $data = $this->statisticRepo->countSolicitudeForStatus($from, $to);
+    $data = $this->statisticRepo->countSolicitudeForStatus($from, $to, $parish);
 
     if (empty($data)) {
       return response()->json(['error' => true], 200);
@@ -52,12 +51,12 @@ class StatisticController extends Controller
 
     $data = [
       [
-        'key' => 'Personal',
-        'y' => $citizen
+        'applicant' => 'Personal',
+        'quantity' => $citizen
       ],
       [
-        'key' =>'Institución',
-        'y' => $institution
+        'applicant' =>'Institución',
+        'quantity' => $institution
       ],
     ];
     return response()->json(['succes' => true, 'data' => $data], 200);

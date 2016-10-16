@@ -28,7 +28,7 @@ class CitizenController extends Controller
    */
   public function index()
   {
-    $citizens = $this->citizenRepo->all();
+    $citizens = $this->citizenRepo->getListCitizens();
     
     return response()->json(['citizens' => $citizens], 200);
   }

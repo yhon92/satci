@@ -41,7 +41,7 @@ class Handler extends ExceptionHandler
   public function render($request, Exception $e)
   {
     if ($e instanceof NotFoundHttpException) {
-      return response()->view('layout')->header('Content-Type', 'text/html');
+      return response()->view('layouts.app')->header('Content-Type', 'text/html');
     }
 
     if ($e instanceof Johnnymn\Sim\Roles\Exceptions\RoleDeniedException) {

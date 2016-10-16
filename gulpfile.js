@@ -32,7 +32,8 @@ Elixir.config.assetsPath = 'front_dev';
 var paths = {
   src: {
     js    : './front_dev/js/app.js',
-    css   : './front_dev/stylus/app.styl',
+    css   : ['./front_dev/stylus/app.styl',
+            './front_dev/stylus/pdf.styl'],
     html  : ['./public/template/**/*.html', 
             './resources/views/**/*.html', 
             './resources/views/**/*.blade.php']
@@ -130,9 +131,9 @@ Elixir.extend('browserifyAngular', function(opts) {
 });
 
 Elixir(function(mix) {
-  mix.stylus('app.styl', null, {use: [nib()] })
+  mix.stylus(['app.styl'], null, {use: [nib()] })
   mix.browserifyAngular({src: paths.src.js, dist: paths.dest.js})
-  mix.version(['public/js/app.js', 'public/css/app.css'])
+  mix.version(['public/js/app.js', 'public/css/app.css', 'public/css/pdf.css'])
   //mix.livereload(['public/build/js/*', 'public/css/app.css'])
 });
 

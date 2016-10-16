@@ -1,5 +1,5 @@
 angular.module('Statistic.controllers')
-.controller('AssignmentsStatisticCtrl', ($scope, $filter, $uibModal, Alertify, Statistics) => {
+.controller('AssignmentsStatisticCtrl', ($scope, $filter, $uibModal, Alertify, Helpers, Statistics) => {
 
   $scope.solicitudes = {
     date_from: null,
@@ -7,6 +7,8 @@ angular.module('Statistic.controllers')
   };
 
   $scope.dataTotal = [];
+
+  let colors = Helpers.paletteColors;
 
   $scope.optionsTotal = {
     chart: {
@@ -16,6 +18,9 @@ angular.module('Statistic.controllers')
       y: function(d){return d.y;},
       showLabels: true,
       duration: 500,
+      color: function(d,i){
+        return (d.data && d.data.color) || colors[i % colors.length]
+      },
       labelThreshold: 0.01,
       labelSunbeamLayout: true,
       labelType: 'percent',

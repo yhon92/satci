@@ -29,12 +29,13 @@ import './app/institution/InstitutionModule';
 import './app/login/LoginModule';
 import './app/means/MeansModule';
 import './app/nav/NavModule';
+import './app/permission/PermissionModule';
+import './app/report/ReportModule';
 import './app/shared/SharedModule'
 import './app/solicitude/SolicitudeModule';
-import './app/theme/ThemeModule';
 import './app/statistic/StatisticModule';
+import './app/theme/ThemeModule';
 import './app/user/UserModule';
-import './app/permission/PermissionModule';
 
 // import './app/';
 import './app/services/RedirectWhenLoggedOut';
@@ -62,12 +63,13 @@ angular.module('SATCI', [
   'SATCI.Login',
   'SATCI.Means',
   'SATCI.Nav',
+  'SATCI.Permission',
+  'SATCI.Report',
   'SATCI.Shared',
   'SATCI.Solicitude',
-  'SATCI.Theme',
   'SATCI.Statistic',
+  'SATCI.Theme',
   'SATCI.User',
-  'SATCI.Permission',
 
 
   'SATCI.RedirectWhenLoggedOutServices',

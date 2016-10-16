@@ -1,33 +1,82 @@
-<div class="col-md-6 well bs-component">
-  <form class="form-horizontal" name="form" ng-submit="searchSolicitudes()">
-    <div class="form-group">
-      <label class="col-lg-1 control-label" for="date_from"><strong>Desde:</strong></label>
-      <div class="col-lg-4">
-        <p class="input-group">
-          <input class="form-control" type="text" id="date_from" placeholder="Desde" none-key name='date_from' ng-model="solicitudes.date_from" uib-datepicker-popup="dd-MM-yyyy" is-open="datepicker.date_from" datepicker-options="dateOptions" ng-required="true" current-text='Hoy' clear-text='Borrar' close-text="Cerrar">
-          <span class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-click="open($event, 'date_from')"><i class="glyphicon glyphicon-calendar"></i></button>
-          </span>
-        </p>
+<div class="col-md-6">
+    <div class="col-md-12 well well-sm bs-component">
+    <form class="form-horizontal" name="form" ng-submit="searchSolicitudes()">
+      <div class="form-group">
+        <label class="col-lg-2 col-md-2 control-label" for="date_from"><strong>Desde:</strong></label>
+        <div class="col-lg-4 col-md-5">
+          <p class="input-group">
+            <input class="form-control" type="text" id="date_from" placeholder="Desde" none-key name='date_from' ng-model="solicitudes.date_from" uib-datepicker-popup="dd-MM-yyyy" is-open="datepicker.date_from" datepicker-options="dateOptions" ng-required="true" current-text='Hoy' clear-text='Borrar' close-text="Cerrar">
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="open($event, 'date_from')"><i class="glyphicon glyphicon-calendar"></i></button>
+            </span>
+          </p>
+        </div>
       </div>
+      <div class="form-group">
+        <label class="col-lg-2 col-md-2 control-label" for="date_to"><strong>Hasta:</strong></label>
+        <div class="col-lg-4 col-md-5">
+          <p class="input-group">
+            <input class="form-control" type="text" id="date_to" placeholder="Hasta" none-key name='date_to' ng-model="solicitudes.date_to" uib-datepicker-popup="dd-MM-yyyy" is-open="datepicker.date_to" datepicker-options="dateOptions" ng-required="true" current-text='Hoy' clear-text='Borrar' close-text="Cerrar">
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="open($event, 'date_to')"><i class="glyphicon glyphicon-calendar"></i></button>
+            </span>
+          </p>
+        </div>
+        <div class="col-lg-2 align-center">
+          <button type="submit" class="btn btn-primary btn-md">Buscar</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-lg-2 col-md-2 control-label" for="parish"><strong>Parroquia:</strong></label>
+        <div class="col-lg-6 col-md-6">
+          <select type="role" class="form-control" name="parish" id="parish" ng-model="parish">
+            <option value="">Todas</option>
+            <option value="1">Coronel Mariano Peraza</option>
+            <option value="2">Cuara</option>
+            <option value="3">Diego de Lozada</option>
+            <option value="4">José Bernardo Dorante</option>
+            <option value="5">Juan Bautista Rodríguez</option>
+            <option value="6">Paraíso de San José</option>
+            <option value="7">San Miguel</option>
+            <option value="8">Tintorero</option>
+          </select>
+        </div>
+      </div>
+      <!-- <div class="form-group">
+        <div class="col-lg-12 align-center">
+          <button type="submit" class="btn btn-primary btn-md">Buscar</button>
+        </div>
+      </div> -->
+    </form>
+  </div>
+  <div class="col-md-12 panel panel-default" ng-hide="notData">
+    <div class="panel-body padding-none">
+      <table class="table table-condensed table-striped margin-none">
+        <thead>
+          <tr>
+            <th>Estado</th>
+            <th>Cant.</th>
+            <th>%</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="(key, value) in dataTotal">
+            <td>{{value.status}}</td>
+            <td>{{value.quantity}}</td>
+            <td>{{value.percent}}%</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th>Total:</th>
+            <th>{{totalQuantity}}</th>
+            <th>{{totalPercent}}%</th>
+          </tr>
+        </tfoot>
+      </table>
     </div>
-    <div class="form-group">
-      <label class="col-lg-1 control-label" for="date_to"><strong>Hasta:</strong></label>
-      <div class="col-lg-4">
-        <p class="input-group">
-          <input class="form-control" type="text" id="date_to" placeholder="Hasta" none-key name='date_to' ng-model="solicitudes.date_to" uib-datepicker-popup="dd-MM-yyyy" is-open="datepicker.date_to" datepicker-options="dateOptions" ng-required="true" current-text='Hoy' clear-text='Borrar' close-text="Cerrar">
-          <span class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-click="open($event, 'date_to')"><i class="glyphicon glyphicon-calendar"></i></button>
-          </span>
-        </p>
-      </div>
-      <div class="col-lg-2 align-center">
-        <button type="submit" class="btn btn-primary btn-md">Buscar</button>
-      </div>
-    </div>
-  </form>
+  </div>
 </div>
-<!-- <div class="col-md-6" ng-hide="notData"> -->
 <div class="col-md-6">
   <nvd3 options="optionsTotal" data="dataTotal"></nvd3>
 </div>

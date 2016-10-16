@@ -35,10 +35,17 @@ class InstitutionRepo extends BaseRepo
     return Institution::destroy($id);
   }
 
-  public static function getListInstitutions()
+  public static function getListInstitutions($parish = 'all')
   {
-    return Institution::orderBy('full_name', 'ASC')
-                      ->get();
+    if ($parish === 'all' || empty($parish)) {
+      return Institution::orderBy('parish_id', 'ASC')
+                        ->orderBy('full_name', 'ASC')
+                        ->get();  
+    }
+    
+    return Institution::where('parish_id', $parish)
+                  ->orderBy('full_name', 'ASC')
+                  ->get();
       // ->paginate();
   }
 

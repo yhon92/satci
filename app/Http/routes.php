@@ -13,7 +13,7 @@ Blade::setEscapedContentTags('<%%', '%%>'); // for escaped data
 */
 
 Route::get('/', function () {
-	return view('layout');
+	return view('layouts.app');
 });
 
 Route::group(['prefix' => 'api', 'namespace' => 'Auth'], function () {
@@ -80,11 +80,15 @@ Route::group(['prefix' => 'api'], function () {
 
   Route::group(['prefix' => 'report'], function () {
     
-    Route::get('/', 'ReportController@index');
+    // Route::get('/', 'ReportController@index');
+    // Route::post('/', 'ReportController@index');
+    // Route::post('/allByStatus', 'ReportController@allByStatus');
     
-    Route::post('/allByStatus', 'ReportController@allByStatus');
-    
-    Route::post('/allByApplicant', 'ReportController@allByApplicant');
+    Route::group(['prefix' => 'list'], function () {
+
+      Route::post('/applicant', 'ReportController@listApplicant');
+
+    });
 
   });
 });

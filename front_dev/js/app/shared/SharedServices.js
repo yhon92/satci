@@ -54,5 +54,35 @@ angular.module('Shared.services', [])
       {operator: '0424'}, 
       {operator: '0426'}, 
     ],
+
+    paletteColors: [
+      "#ff7900", 
+      "#00a2d4", 
+      "#05c001", 
+      "#ffde00", 
+      "#00cfd6", 
+      "#00844b", 
+      "#e17f9e", 
+      "#0064b3", 
+      "#8500b8", 
+      "#fe0000", 
+      "#87837a",
+      "#0600ff"
+    ],
+
+    /*paletteColors: [
+      "#6700bf", 
+      "#0600ff", 
+      "#00c0a7", 
+      "#05c001", 
+      "#d2ff00", 
+      "#fcff00", 
+      "#ffde00", 
+      "#ffb900", 
+      "#ff7900", 
+      "#fe0000", 
+      "#bf0199", 
+      "#9500c0"
+    ],*/
   }
 })

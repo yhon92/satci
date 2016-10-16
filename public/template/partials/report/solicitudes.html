@@ -1,0 +1,33 @@
+<div class="col-md-6 well well-sm bs-component">
+  <form class="form-horizontal" name="form" ng-submit="searchSolicitudes()">
+    <div class="form-group">
+      <label class="col-lg-1 control-label" for="date_from"><strong>Desde:</strong></label>
+      <div class="col-lg-4">
+        <p class="input-group">
+          <input class="form-control" type="text" id="date_from" placeholder="Desde" none-key name='date_from' ng-model="solicitudes.date_from" uib-datepicker-popup="dd-MM-yyyy" is-open="datepicker.date_from" datepicker-options="dateOptions" ng-required="true" current-text='Hoy' clear-text='Borrar' close-text="Cerrar">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="open($event, 'date_from')"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </p>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-lg-1 control-label" for="date_to"><strong>Hasta:</strong></label>
+      <div class="col-lg-4">
+        <p class="input-group">
+          <input class="form-control" type="text" id="date_to" placeholder="Hasta" none-key name='date_to' ng-model="solicitudes.date_to" uib-datepicker-popup="dd-MM-yyyy" is-open="datepicker.date_to" datepicker-options="dateOptions" ng-required="true" current-text='Hoy' clear-text='Borrar' close-text="Cerrar">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="open($event, 'date_to')"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </p>
+      </div>
+      <div class="col-lg-2 align-center">
+        <button type="submit" class="btn btn-primary btn-md">Buscar</button>
+      </div>
+    </div>
+  </form>
+</div>
+<!-- <div class="col-md-6" ng-hide="notData"> -->
+<div class="col-md-6">
+  <nvd3 options="optionsTotal" data="dataTotal"></nvd3>
+</div>
