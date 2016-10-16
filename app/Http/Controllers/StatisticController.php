@@ -14,18 +14,8 @@ class StatisticController extends Controller
 
   public function __construct (StatisticRepo $statisticRepo)
   {
+    $this->middleware('jwt.auth');
     $this->statisticRepo = $statisticRepo;
-  }
-  /**
-   * Display a listing of the resource.
-   *
-   * @return \Illuminate\Http\Response
-   */
-  public function index()
-  {
-    $data = $this->statisticRepo->countForStatus_2();
-
-    return response()->json($data, 200);
   }
 
   public function allByStatus(Request $request)
@@ -43,22 +33,33 @@ class StatisticController extends Controller
     return response()->json(['succes' => true, 'data' => $data], 200);
   }
 
-  public function allByApplicant()
+  public function allByApplicant(Request $request)
   {
-    $citizen = $this->statisticRepo->countForApplicant('Citizen');
+    $from = $request->input('date_from');
+    $to = $request->input('date_to');
+    $parish = $request->input('parish');
 
-    $institution = $this->statisticRepo->countForApplicant('Institution');
+    $data = $this->statisticRepo->countForApplicant($from, $to, $parish);
+    
+    if (empty($data)) {
+      return response()->json(['error' => true], 200);
+    }
 
-    $data = [
-      [
-        'applicant' => 'Personal',
-        'quantity' => $citizen
-      ],
-      [
-        'applicant' =>'Institución',
-        'quantity' => $institution
-      ],
-    ];
+    return response()->json(['succes' => true, 'data' => $data], 200);
+  }
+
+  public function allSolicitudeByTheme(Request $request)
+  {
+    $from = $request->input('date_from');
+    $to = $request->input('date_to');
+    $parish = $request->input('parish');
+    
+    $data = $this->statisticRepo->countSolicitudeForTheme($from, $to, $parish);
+
+    if (empty($data)) {
+      return response()->json(['error' => true], 200);
+    }
+
     return response()->json(['succes' => true, 'data' => $data], 200);
   }
 

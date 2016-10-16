@@ -1,6 +1,6 @@
-<div class="col-md-6">
-  <div class="col-md-12 well well-sm bs-component">
-    <form class="form-horizontal" name="form" ng-submit="searchAssignments()">
+<div class="col-md-12">
+    <div class="col-md-6 well well-sm bs-component">
+    <form class="form-horizontal" name="form" ng-submit="searchSolicitudes()">
       <div class="form-group">
         <label class="col-lg-2 col-md-2 control-label" for="date_from"><strong>Desde:</strong></label>
         <div class="col-lg-4 col-md-5">
@@ -49,7 +49,12 @@
       </div> -->
     </form>
   </div>
-  <div class="col-md-12 panel panel-default" ng-hide="notData">
+</div>
+<div class="col-md-12 margin-none">
+  <nvd3 id="themesChart" options="optionsChart" data="dataChart"></nvd3>
+</div>
+<div class="col-md-12" ng-hide="notData">
+  <div class="col-md-6 panel panel-default">
     <div class="panel-body padding-none">
       <table class="table table-condensed table-striped margin-none">
         <thead>
@@ -60,8 +65,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="(key, value) in dataChart">
-            <td>{{value.status}}</td>
+          <tr ng-repeat="(key, value) in dataResumen">
+            <td>{{value.theme}}</td>
             <td>{{value.quantity}}</td>
             <td>{{value.percent}}%</td>
           </tr>
@@ -76,7 +81,4 @@
       </table>
     </div>
   </div>
-</div>
-<div class="col-md-6">
-  <nvd3 options="optionsChart" data="dataChart"></nvd3>
 </div>

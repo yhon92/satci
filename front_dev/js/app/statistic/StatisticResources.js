@@ -16,5 +16,11 @@ angular.module('Statistic.resources', ['ngResource', 'SATCI.Shared'])
       url: `${ResourcesUrl.api}statistic/allByApplicant`,
       // isArray: true,
     },
+    allSolicitudeByTheme: {
+      method: 'POST', 
+      url: `${ResourcesUrl.api}statistic/allSolicitudeByTheme`,
+      // isArray: true,
+    },
+
   });
 })

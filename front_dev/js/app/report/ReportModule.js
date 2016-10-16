@@ -3,9 +3,6 @@ import './ReportResources';
 import './controllers/ApplicantsReportController';
 // import './controllers/AssignmentsReportController';
 // import './controllers/SolicitudesReportController';
-// import './create/CreateReportController';
-// import './edit/EditReportController';
-// import './show/ShowReportController';
 
 angular.module('SATCI.Report', [
   'ui.router', 

@@ -11,7 +11,7 @@ angular.module('Shared.filters', [])
   return (input) => {
     input = input.toLowerCase();
     
-    let smallWords = /^(a|y|de|del|que|para|con|vs?\.?|via)$/i;
+    let smallWords = /^(a|y|de|del|que|para|con|vs|en|el?\.?|via)$/i;
 
     return input.replace(/[A-Za-z0-9\u00C0-\u00FF]+[^\s-]*/g, (match, index, title) => {
       if (index > 0 && index + match.length !== title.length &&

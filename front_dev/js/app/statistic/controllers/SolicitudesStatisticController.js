@@ -1,17 +1,15 @@
 angular.module('Statistic.controllers')
 .controller('SolicitudesStatisticCtrl', ($scope, $filter, $uibModal, Alertify, Helpers, Statistics) => {
 
-  $scope.solicitudes = {
-    date_from: null,
-    date_to: null,
-  };
+  $scope.date_from = null;
+  $scope.date_to = null;
 
-  $scope.dataTotal = [];
+  $scope.dataChart = [];
   $scope.notData = true;
 
   let colors = Helpers.paletteColors;
                 
-  $scope.optionsTotal = {
+  $scope.optionsChart = {
     chart: {
       type: 'pieChart',
       height: 500,
@@ -29,16 +27,9 @@ angular.module('Statistic.controllers')
         return d3.format('.,2f')(d);
       },
       legend: {
-        /*margin: {
-          top: 1,
-          right: 200,
-          bottom: 0,
-          left: 0
-        },*/
         align: false,
         rightAlign: false,
       },
-
       noData: '',
     }
   };
@@ -46,8 +37,8 @@ angular.module('Statistic.controllers')
   $scope.searchSolicitudes = () => {
 
     let data = {
-      date_from: $filter('date')($scope.solicitudes.date_from, 'yyyy-MM-dd'),
-      date_to: $filter('date')($scope.solicitudes.date_to, 'yyyy-MM-dd'),
+      date_from: $filter('date')($scope.date_from, 'yyyy-MM-dd'),
+      date_to: $filter('date')($scope.date_to, 'yyyy-MM-dd'),
       parish: $scope.parish,
     };
 
@@ -62,13 +53,13 @@ angular.module('Statistic.controllers')
         let [totalQuantity, totalPercent] = calculatingPercentage(response.data);
         $scope.totalQuantity = totalQuantity;
         $scope.totalPercent = totalPercent;
-        $scope.dataTotal = response.data;
+        $scope.dataChart = response.data;
       }
       if (response.error) {
         $scope.notData = true;
         $scope.totalQuantity = null;
         $scope.totalPercent = null;
-        $scope.dataTotal = [];
+        $scope.dataChart = [];
         Alertify.log('¡No hay datos disponibles!');
       }
     })
@@ -87,14 +78,16 @@ angular.module('Statistic.controllers')
     }
 
     for (let i in data) {
-      let percent = 0;
+      let percent = 0;      
+      percent = (data[i].quantity / totalQuantity) * 100;
       
-      percent = Math.round((data[i].quantity / totalQuantity) * 100);
+      percent = Number(Math.round(percent+'e2')+'e-2');
+
       data[i].percent = percent;
       totalPercent += percent;
     }
      
-    return [totalQuantity, totalPercent];
+    return [totalQuantity, Math.round(totalPercent)];
   }
 
 

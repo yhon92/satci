@@ -70,20 +70,16 @@ Route::group(['prefix' => 'api'], function () {
 
   Route::group(['prefix' => 'statistic'], function () {
     
-    Route::get('/', 'StatisticController@index');
-    
     Route::post('/allByStatus', 'StatisticController@allByStatus');
     
     Route::post('/allByApplicant', 'StatisticController@allByApplicant');
+    
+    Route::post('/allSolicitudeByTheme', 'StatisticController@allSolicitudeByTheme');
 
   });
 
   Route::group(['prefix' => 'report'], function () {
-    
-    // Route::get('/', 'ReportController@index');
-    // Route::post('/', 'ReportController@index');
-    // Route::post('/allByStatus', 'ReportController@allByStatus');
-    
+        
     Route::group(['prefix' => 'list'], function () {
 
       Route::post('/applicant', 'ReportController@listApplicant');

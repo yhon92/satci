@@ -1,21 +1,20 @@
 angular.module('Statistic.controllers')
 .controller('AssignmentsStatisticCtrl', ($scope, $filter, $uibModal, Alertify, Helpers, Statistics) => {
 
-  $scope.solicitudes = {
-    date_from: null,
-    date_to: null,
-  };
+  $scope.date_from = null;
+  $scope.date_to = null;
 
-  $scope.dataTotal = [];
+  $scope.dataChart = [];
+  $scope.notData = true;
 
   let colors = Helpers.paletteColors;
-
-  $scope.optionsTotal = {
+                
+  $scope.optionsChart = {
     chart: {
       type: 'pieChart',
       height: 500,
-      x: function(d){return d.key;},
-      y: function(d){return d.y;},
+      x: function(d){return d.status;},
+      y: function(d){return d.quantity;},
       showLabels: true,
       duration: 500,
       color: function(d,i){
@@ -28,35 +27,40 @@ angular.module('Statistic.controllers')
         return d3.format('.,2f')(d);
       },
       legend: {
-        /*margin: {
-          top: 1,
-          right: 200,
-          bottom: 0,
-          left: 0
-        },*/
         align: false,
         rightAlign: false,
       },
-
       noData: '',
     }
   };
 
   $scope.searchSolicitudes = () => {
+
     let data = {
-      type: 'solicitudes',
-      date_from: $filter('date')($scope.solicitudes.date_from, 'yyyy-MM-dd'),
-      date_to: $filter('date')($scope.solicitudes.date_to, 'yyyy-MM-dd'),
+      date_from: $filter('date')($scope.date_from, 'yyyy-MM-dd'),
+      date_to: $filter('date')($scope.date_to, 'yyyy-MM-dd'),
+      parish: $scope.parish,
     };
+
+    if (data.parish === undefined || data.parish === '') {
+      data.parish = 'all';
+    }
 
     Statistics.allByStatus(data).$promise
     .then((response) => {
       if (response.succes) {
-        // $scope.notData = false;
-        $scope.dataTotal = response.data;
+        $scope.notData = false;
+        let [totalQuantity, totalPercent] = calculatingPercentage(response.data);
+        $scope.totalQuantity = totalQuantity;
+        $scope.totalPercent = totalPercent;
+        $scope.dataChart = response.data;
       }
       if (response.error) {
         $scope.notData = true;
+        $scope.totalQuantity = null;
+        $scope.totalPercent = null;
+        $scope.dataChart = [];
+        Alertify.log('¡No hay datos disponibles!');
       }
     })
     .catch((fails) => {
@@ -64,6 +68,27 @@ angular.module('Statistic.controllers')
     });
 
   };
+
+  function calculatingPercentage(data) {
+    let totalQuantity = 0;
+    let totalPercent = 0;
+    
+    for (let i in data) {
+      totalQuantity += data[i].quantity;
+    }
+
+    for (let i in data) {
+      let percent = 0;      
+      percent = (data[i].quantity / totalQuantity) * 100;
+      
+      percent = Number(Math.round(percent+'e2')+'e-2');
+
+      data[i].percent = percent;
+      totalPercent += percent;
+    }
+     
+    return [totalQuantity, Math.round(totalPercent)];
+  }
 
 
   /******************************************************Datepicker******************************************************/

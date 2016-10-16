@@ -1,34 +1,43 @@
 angular.module('Statistic.controllers')
-.controller('ApplicantsStatisticCtrl', ($scope, $filter, $uibModal, Alertify, Helpers, Statistics) => {
+.controller('ThemesStatisticCtrl', ($scope, $filter, $uibModal, Alertify, Helpers, Statistics) => {
 
   $scope.date_from = null;
   $scope.date_to = null;
 
-  $scope.dataChart = [];
+  $scope.dataChart = [{
+    key: 'Datos Temas',
+    values: [],
+  }];
+
   $scope.notData = true;
 
   let colors = Helpers.paletteColors;
-
+                
   $scope.optionsChart = {
     chart: {
-      type: 'pieChart',
-      height: 500,
-      x: function(d){return d.applicant;},
-      y: function(d){return d.quantity;},
-      showLabels: true,
+      type: 'discreteBarChart',
+      height: 450,
+      margin : {
+          top: 20,
+          right: 20,
+          bottom: 50,
+          left: 55
+      },
+      x: function(d){return d.theme;},
+      y: function(d){return d.quantity + (1e-10);},
+      showValues: true,
+      valueFormat: function(d){
+          return d3.format(',.0f')(d);
+      },
       duration: 500,
-      color: function(d,i){
-        return (d.data && d.data.color) || colors[i % colors.length]
+      xAxis: {
+          // axisLabel: 'Temas',
+          rotateLabels: -50,
+          fontSize: 9,
       },
-      labelThreshold: 0.01,
-      labelSunbeamLayout: true,
-      labelType: 'percent',
-      valueFormat: function(d) {
-        return d3.format('.,2f')(d);
-      },
-      legend: {
-        align: false,
-        rightAlign: false,
+      yAxis: {
+          axisLabel: '',
+          axisLabelDistance: -10,
       },
       noData: '',
     }
@@ -46,20 +55,26 @@ angular.module('Statistic.controllers')
       data.parish = 'all';
     }
 
-    Statistics.allByApplicant(data).$promise
+    Statistics.allSolicitudeByTheme(data).$promise
     .then((response) => {
       if (response.succes) {
         $scope.notData = false;
         let [totalQuantity, totalPercent] = calculatingPercentage(response.data);
         $scope.totalQuantity = totalQuantity;
         $scope.totalPercent = totalPercent;
-        $scope.dataChart = response.data;
+        $scope.dataResumen = response.data;
+        $scope.dataChart[0].values = response.data;
+
+        let svgContainer = document.getElementById('themesChart');
+        let svg = svgContainer.querySelector('svg');
+        // svg.style.height = '800px';
+        svg.style.height = '580px';
       }
       if (response.error) {
         $scope.notData = true;
         $scope.totalQuantity = null;
         $scope.totalPercent = null;
-        $scope.dataChart = [];
+        $scope.dataChart[0].values = [];
         Alertify.log('¡No hay datos disponibles!');
       }
     })
