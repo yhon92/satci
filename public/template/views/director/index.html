@@ -8,7 +8,7 @@
       <section class="panel-heading">
         <h3 class="panel-title inline-block">Lista de Directores</h3>
         <div class="float-right">
-          <button class="btn btn-default btn-sm ButtonSearch collapsed" ng-click="toggleCollapsed()">
+          <button class="btn btn-default btn-sm ButtonSearch" ng-click="print()">
             <span class="glyphicon glyphicon-print"></span>
           </button>
           <button class="btn btn-default btn-sm ButtonSearch collapsed" ng-click="toggleCollapsed()">
@@ -178,5 +178,14 @@
   </section>
   <section class="modal-footer">
     <button type="submit" class="btn btn-warning btn-sm" ng-click="close()">Cerrar</button>
+  </section>
+</script>
+<script type="text/ng-template" id="modalViewPdf-template">
+  <section class="modal-header">
+    <button type="button" class="close" ng-click="close()">×</button>
+    <h4 class="modal-title border-bottom">{{pdf.title}}</h4>
+  </section>
+  <section class="modal-body">
+    <object data="{{pdf.content}}" type="application/pdf" style="width:100%; height:690px" />
   </section>
 </script>

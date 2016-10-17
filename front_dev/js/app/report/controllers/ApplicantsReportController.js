@@ -13,11 +13,14 @@ angular.module('Report.controllers')
       data.parish = 'all';
     }
 
-    $http.post(`${ResourcesUrl.api}report/list/applicant/`, data, {responseType: 'arraybuffer'})
-      .then((response) => {
-        let file = new Blob([response.data], {type: 'application/pdf'});
-        let fileURL = URL.createObjectURL(file);
-        $scope.content = $sce.trustAsResourceUrl(fileURL);
+    // $http.post(`${ResourcesUrl.api}report/list/applicant/`, data, {responseType: 'arraybuffer'})
+    let applicant = Reports.getListApplicants(data);
+    
+    applicant.then((response) => {
+      console.log(response);
+      let file = new Blob([response.data], {type: 'application/pdf'});
+      let fileURL = URL.createObjectURL(file);
+      $scope.content = $sce.trustAsResourceUrl(fileURL);
     });
 
   };

@@ -85,6 +85,8 @@ Route::group(['prefix' => 'api'], function () {
 
       Route::post('/applicant', 'ReportController@listApplicant');
 
+      Route::post('/directors', 'ReportController@listDirectors');
+
     });
 
   });

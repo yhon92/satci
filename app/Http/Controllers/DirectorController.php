@@ -28,7 +28,7 @@ class DirectorController extends Controller
   public function index()
   {
     if (!Cache::has('directors')) {
-      $directors = $this->directorRepo->all();
+      $directors = $this->directorRepo->listDirectors();
 
       Cache::forever('directors', $directors);
     } else {

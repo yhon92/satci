@@ -1,5 +1,5 @@
 angular.module('Director.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'Director.resources'])
-.controller('DirectorCtrl', ($scope, $uibModal, Helpers, Alertify, Directors) => {
+.controller('DirectorCtrl', ($scope, $sce, $uibModal, Helpers, Alertify, Directors, Reports) => {
 
   Directors.get().$promise
   .then((data) => {
@@ -8,6 +8,38 @@ angular.module('Director.controllers', ['ui.router', 'Alertify', 'SATCI.Shared',
   .catch((fails) => {
 
   });
+
+  $scope.print = () => {
+    let directors = Reports.getListDirectors();
+    directors.then((response) => {
+
+      let modalInstance = $uibModal.open({
+        templateUrl: 'modalViewPdf-template',
+        controller: ($scope, $uibModalInstance, pdf) => {
+
+          let file = new Blob([pdf], {type: 'application/pdf'});
+          let fileURL = URL.createObjectURL(file);
+
+          $scope.pdf = {
+            title: 'Lista de Directores y Jefes',
+            content: $sce.trustAsResourceUrl(fileURL),
+          };
+          
+          $scope.close = () => {
+            $uibModalInstance.dismiss();
+          };
+
+        },
+        size: 'lg',
+        resolve: {
+          pdf: () => {
+            return response.data;
+          }
+        }
+      });
+
+    });
+  };
   
   $scope.filter = {
     name: '',

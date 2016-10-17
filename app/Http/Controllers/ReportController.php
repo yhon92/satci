@@ -6,6 +6,7 @@ use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use SATCI\Http\Controllers\Controller;
 use SATCI\Repositories\CitizenRepo;
+use SATCI\Repositories\DirectorRepo;
 use SATCI\Repositories\InstitutionRepo;
 
 /**
@@ -23,14 +24,22 @@ class ReportController extends Controller
 {
   protected $domPdf;
   protected $citizenRepo;
+  protected $directorRepo;
   protected $institutionepo;
 
-  public function __construct(PDF $domPdf, CitizenRepo $citizenRepo, InstitutionRepo $institutionRepo)
+  public function __construct
+  (
+    PDF $domPdf, 
+    CitizenRepo $citizenRepo, 
+    DirectorRepo $directorRepo,
+    InstitutionRepo $institutionRepo
+  )
   {
     $this->middleware('jwt.auth');
     $this->domPdf = $domPdf;
     $this->citizenRepo = $citizenRepo;
     $this->institutionRepo = $institutionRepo;
+    $this->directorRepo = $directorRepo;
   }
   /**
    * Display a listing of the resource.
@@ -78,6 +87,23 @@ class ReportController extends Controller
 
     $pdf = $this->domPdf->loadView($template, compact($applicant, 'title'));
     $pdf->setPaper('legal', 'landscape');        
+    $pdf->output();
+
+    $dom_pdf = $pdf->getDomPDF();
+    $canvas = $dom_pdf->get_canvas();
+    $canvas->page_text(898, 50, "Pág: {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
+
+    return $pdf->stream($title + '.pdf');
+  }
+
+  public function listDirectors()
+  {
+    $title = 'Lista de Directors y Jefes';
+    $directors = $this->directorRepo->listDirectors();
+    $index = 1;
+
+    $pdf = $this->domPdf->loadView('report.listDirectors', compact('directors', 'title', 'index'));
+    $pdf->setPaper('legal', 'landscape');
     $pdf->output();
 
     $dom_pdf = $pdf->getDomPDF();

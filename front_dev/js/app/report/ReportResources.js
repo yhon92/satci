@@ -4,17 +4,27 @@
 * Description
 */
 angular.module('Report.resources', ['ngResource', 'SATCI.Shared'])
-.factory('Reports', ($resource, ResourcesUrl) => {
-  return $resource( `${ResourcesUrl.api}report/:id`, {id: '@_id'}, {
-    allByStatus: {
+.factory('Reports', ($http, ResourcesUrl) => {
+  return {
+    /*getByStatus: {
       method: 'POST', 
       url: `${ResourcesUrl.api}report/allByStatus`,
       // isArray: true,
+    },*/
+    getListApplicants: (data) => {
+      return $http({
+        method: 'POST', 
+        url: `${ResourcesUrl.api}report/list/applicant`,
+        data: data,
+        responseType: 'arraybuffer',
+      });
     },
-    allByApplicant: {
-      method: 'POST', 
-      url: `${ResourcesUrl.api}report/allByApplicant`,
-      // isArray: true,
-    },
-  });
-})
+    getListDirectors: () => {
+      return $http({
+        method: 'POST', 
+        url: `${ResourcesUrl.api}report/list/directors`,
+        responseType: 'arraybuffer',
+      });
+    }
+  }
+});

@@ -37,7 +37,7 @@ class DirectorRepo extends BaseRepo
     return Director::destroy($id);
   }
 
-  public static function all()
+  public static function listDirectors()
   {
     return Director::with('areas')->orderBy('full_name', 'ASC')->get();
   }

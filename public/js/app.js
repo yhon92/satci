@@ -1038,11 +1038,41 @@ angular.module('Citizen.controllers');
 },{}],20:[function(require,module,exports){
 'use strict';
 
-angular.module('Director.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'Director.resources']).controller('DirectorCtrl', function ($scope, $uibModal, Helpers, Alertify, Directors) {
+angular.module('Director.controllers', ['ui.router', 'Alertify', 'SATCI.Shared', 'Director.resources']).controller('DirectorCtrl', function ($scope, $sce, $uibModal, Helpers, Alertify, Directors, Reports) {
 
   Directors.get().$promise.then(function (data) {
     $scope.directors = data.directors;
   }).catch(function (fails) {});
+
+  $scope.print = function () {
+    var directors = Reports.getListDirectors();
+    directors.then(function (response) {
+
+      var modalInstance = $uibModal.open({
+        templateUrl: 'modalViewPdf-template',
+        controller: function controller($scope, $uibModalInstance, pdf) {
+
+          var file = new Blob([pdf], { type: 'application/pdf' });
+          var fileURL = URL.createObjectURL(file);
+
+          $scope.pdf = {
+            title: 'Lista de Directores y Jefes',
+            content: $sce.trustAsResourceUrl(fileURL)
+          };
+
+          $scope.close = function () {
+            $uibModalInstance.dismiss();
+          };
+        },
+        size: 'lg',
+        resolve: {
+          pdf: function pdf() {
+            return response.data;
+          }
+        }
+      });
+    });
+  };
 
   $scope.filter = {
     name: ''
@@ -2088,17 +2118,29 @@ angular.module('SATCI.Report', ['ui.router', 'SATCI.Shared', 'Report.controllers
 *
 * Description
 */
-angular.module('Report.resources', ['ngResource', 'SATCI.Shared']).factory('Reports', function ($resource, ResourcesUrl) {
-  return $resource(ResourcesUrl.api + 'report/:id', { id: '@_id' }, {
-    allByStatus: {
-      method: 'POST',
-      url: ResourcesUrl.api + 'report/allByStatus'
+angular.module('Report.resources', ['ngResource', 'SATCI.Shared']).factory('Reports', function ($http, ResourcesUrl) {
+  return {
+    /*getByStatus: {
+      method: 'POST', 
+      url: `${ResourcesUrl.api}report/allByStatus`,
+      // isArray: true,
+    },*/
+    getListApplicants: function getListApplicants(data) {
+      return $http({
+        method: 'POST',
+        url: ResourcesUrl.api + 'report/list/applicant',
+        data: data,
+        responseType: 'arraybuffer'
+      });
     },
-    allByApplicant: {
-      method: 'POST',
-      url: ResourcesUrl.api + 'report/allByApplicant'
+    getListDirectors: function getListDirectors() {
+      return $http({
+        method: 'POST',
+        url: ResourcesUrl.api + 'report/list/directors',
+        responseType: 'arraybuffer'
+      });
     }
-  });
+  };
 });
 
 },{}],50:[function(require,module,exports){
@@ -2118,7 +2160,11 @@ angular.module('Report.controllers').controller('ApplicantsReportCtrl', function
       data.parish = 'all';
     }
 
-    $http.post(ResourcesUrl.api + 'report/list/applicant/', data, { responseType: 'arraybuffer' }).then(function (response) {
+    // $http.post(`${ResourcesUrl.api}report/list/applicant/`, data, {responseType: 'arraybuffer'})
+    var applicant = Reports.getListApplicants(data);
+
+    applicant.then(function (response) {
+      console.log(response);
       var file = new Blob([response.data], { type: 'application/pdf' });
       var fileURL = URL.createObjectURL(file);
       $scope.content = $sce.trustAsResourceUrl(fileURL);
