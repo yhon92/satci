@@ -55,7 +55,7 @@ angular.module('Statistic.controllers')
       data.parish = 'all';
     }
 
-    Statistics.allSolicitudeByTheme(data).$promise
+    Statistics.solicitudeByTheme(data).$promise
     .then((response) => {
       if (response.succes) {
         $scope.notData = false;

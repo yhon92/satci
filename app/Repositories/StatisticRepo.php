@@ -20,10 +20,12 @@ class StatisticRepo
               ->select(DB::raw('status, count(status) as quantity'))
               ->whereBetween('reception_date', [$from, $to])
               ->groupBy('status')
+              ->orderBy('status')
               ->get();
     }
 
-    return DB::select("select status, count(status) as quantity from solicitudes as ts
+    return DB::select("select status, count(status) as quantity 
+      from solicitudes as ts
       inner join (
         select id as applicant_id, text('SATCI\Entities\Citizen') as applicant_type, parish_id 
           from citizens where parish_id = :parish_id
@@ -31,11 +33,12 @@ class StatisticRepo
         select id as applicant_id, text('SATCI\Entities\Institution') as applicant_type, parish_id 
           from institutions where parish_id = :parish_id
       ) a on ts.applicant_type = a.applicant_type and ts.applicant_id = a.applicant_id
-        where reception_date between :from and :to group by status", 
+      where reception_date between :from and :to 
+      group by status", 
       ['parish_id' => $parish, 'from' => $from, 'to' => $to]);
   }
 
-  public static function countForApplicant($from, $to, $parish = 'all')
+  public static function countSolicitudeForApplicant($from, $to, $parish = 'all')
   {
     if ($parish === 'all' || empty($parish)) {
       
@@ -47,7 +50,7 @@ class StatisticRepo
         count(*) as quantity
         from solicitudes as ts
         where ts.reception_date between :from and :to
-        group by applicant", 
+        group by applicant order by applicant", 
         ['from' => $from, 'to' => $to]);
     }
      
@@ -66,7 +69,7 @@ class StatisticRepo
           from institutions where parish_id = :parish_id
       ) a on ts.applicant_type = a.applicant_type and ts.applicant_id = a.applicant_id
       where ts.reception_date between :from and :to
-      group by applicant", 
+      group by applicant order by applicant", 
       ['parish_id' => $parish, 'from' => $from, 'to' => $to]);
   }
 
@@ -77,10 +80,12 @@ class StatisticRepo
       return DB::select("select tt.name as theme, count(a.theme_id) as quantity 
         from (
           select distinct solicitude_id, theme_id from assign_solicitudes tas
-          inner join solicitudes ts on tas.solicitude_id = ts.id
+          inner join solicitudes ts 
+            on tas.solicitude_id = ts.id
           where ts.reception_date between :from and :to
         ) a 
-        inner join themes tt on a.theme_id = tt.id 
+        inner join themes tt 
+          on a.theme_id = tt.id 
         group by name, theme_id order by name", 
         ['from' => $from, 'to' => $to]);
     }
@@ -100,9 +105,48 @@ class StatisticRepo
           where reception_date between :from and :to
         ) so on tas.solicitude_id = so.solicitude_id
       ) ass 
-      inner join themes tt on ass.theme_id = tt.id 
+      inner join themes tt 
+        on ass.theme_id = tt.id 
       group by name, theme_id order by theme", 
     ['parish_id' => $parish, 'from' => $from, 'to' => $to]);
+  }
+
+  public static function countAssignmentsForStatus($from, $to, $parish = 'all')
+  {
+    if ($parish === 'all' || empty($parish)) {
+      
+      /*return DB::select("select tas.status, count(tas.status) as quantity 
+        from assign_solicitudes as tas
+        inner join solicitudes ts 
+          on tas.solicitude_id = ts.id
+        where ts.reception_date between :from and :to
+        group by tas.status order by status",
+        ['from' => $from, 'to' => $to]);*/
+
+      return DB::table('assign_solicitudes')
+              ->select(DB::raw('assign_solicitudes.status, count(assign_solicitudes.status) as quantity'))
+              ->join('solicitudes', 'assign_solicitudes.solicitude_id', '=', 'solicitudes.id')
+              ->whereBetween('reception_date', [$from, $to])
+              ->groupBy('assign_solicitudes.status')
+              ->orderBy('assign_solicitudes.status')
+              ->get();
+    }
+
+    return DB::select("select tas.status, count(tas.status) as quantity 
+      from assign_solicitudes as tas
+      inner join (
+        select ts.id as solicitude_id from solicitudes as ts
+        inner join (
+          select id as applicant_id, text('SATCI\Entities\Citizen') as applicant_type, parish_id 
+            from citizens where parish_id = :parish_id
+          union
+          select id as applicant_id, text('SATCI\Entities\Institution') as applicant_type, parish_id 
+            from institutions where parish_id = :parish_id
+        ) a on ts.applicant_type = a.applicant_type and ts.applicant_id = a.applicant_id
+        where reception_date between :from and :to
+      ) so on tas.solicitude_id = so.solicitude_id
+      group by status order by status",
+      ['parish_id' => $parish, 'from' => $from, 'to' => $to]);
   }
 
 }

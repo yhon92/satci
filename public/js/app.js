@@ -2058,9 +2058,6 @@ require('./controllers/ApplicantsReportController');
 
 // import './controllers/AssignmentsReportController';
 // import './controllers/SolicitudesReportController';
-// import './create/CreateReportController';
-// import './edit/EditReportController';
-// import './show/ShowReportController';
 
 angular.module('SATCI.Report', ['ui.router', 'SATCI.Shared', 'Report.controllers', 'Report.resources']).config(function ($authProvider, $stateProvider, PathTemplates) {
   $stateProvider.state('report', {
@@ -3550,19 +3547,22 @@ angular.module('SATCI.Statistic', ['ui.router', 'SATCI.Shared', 'Statistic.contr
 */
 angular.module('Statistic.resources', ['ngResource', 'SATCI.Shared']).factory('Statistics', function ($resource, ResourcesUrl) {
   return $resource(ResourcesUrl.api + 'statistic/:id', { id: '@_id' }, {
-    allByStatus: {
+    solicitudeByStatus: {
       method: 'POST',
-      url: ResourcesUrl.api + 'statistic/allByStatus'
+      url: ResourcesUrl.api + 'statistic/solicitudeByStatus'
     },
-    allByApplicant: {
+    solicitudeByApplicant: {
       method: 'POST',
-      url: ResourcesUrl.api + 'statistic/allByApplicant'
+      url: ResourcesUrl.api + 'statistic/solicitudeByApplicant'
     },
-    allSolicitudeByTheme: {
+    solicitudeByTheme: {
       method: 'POST',
-      url: ResourcesUrl.api + 'statistic/allSolicitudeByTheme'
+      url: ResourcesUrl.api + 'statistic/solicitudeByTheme'
+    },
+    assignedByStatus: {
+      method: 'POST',
+      url: ResourcesUrl.api + 'statistic/assignedByStatus'
     }
-
   });
 });
 
@@ -3622,7 +3622,7 @@ angular.module('Statistic.controllers').controller('ApplicantsStatisticCtrl', fu
       data.parish = 'all';
     }
 
-    Statistics.allByApplicant(data).$promise.then(function (response) {
+    Statistics.solicitudeByApplicant(data).$promise.then(function (response) {
       if (response.succes) {
         $scope.notData = false;
 
@@ -3796,7 +3796,7 @@ angular.module('Statistic.controllers').controller('AssignmentsStatisticCtrl', f
     }
   };
 
-  $scope.searchSolicitudes = function () {
+  $scope.searchAssignments = function () {
 
     var data = {
       date_from: $filter('date')($scope.date_from, 'yyyy-MM-dd'),
@@ -3808,7 +3808,7 @@ angular.module('Statistic.controllers').controller('AssignmentsStatisticCtrl', f
       data.parish = 'all';
     }
 
-    Statistics.allByStatus(data).$promise.then(function (response) {
+    Statistics.assignedByStatus(data).$promise.then(function (response) {
       if (response.succes) {
         $scope.notData = false;
 
@@ -3994,7 +3994,7 @@ angular.module('Statistic.controllers').controller('SolicitudesStatisticCtrl', f
       data.parish = 'all';
     }
 
-    Statistics.allByStatus(data).$promise.then(function (response) {
+    Statistics.solicitudeByStatus(data).$promise.then(function (response) {
       if (response.succes) {
         $scope.notData = false;
 
@@ -4189,7 +4189,7 @@ angular.module('Statistic.controllers').controller('ThemesStatisticCtrl', functi
       data.parish = 'all';
     }
 
-    Statistics.allSolicitudeByTheme(data).$promise.then(function (response) {
+    Statistics.solicitudeByTheme(data).$promise.then(function (response) {
       if (response.succes) {
         $scope.notData = false;
 

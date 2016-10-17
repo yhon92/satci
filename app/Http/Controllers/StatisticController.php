@@ -18,7 +18,7 @@ class StatisticController extends Controller
     $this->statisticRepo = $statisticRepo;
   }
 
-  public function allByStatus(Request $request)
+  public function solicitudeByStatus(Request $request)
   {
     $from = $request->input('date_from');
     $to = $request->input('date_to');
@@ -33,13 +33,13 @@ class StatisticController extends Controller
     return response()->json(['succes' => true, 'data' => $data], 200);
   }
 
-  public function allByApplicant(Request $request)
+  public function solicitudeByApplicant(Request $request)
   {
     $from = $request->input('date_from');
     $to = $request->input('date_to');
     $parish = $request->input('parish');
 
-    $data = $this->statisticRepo->countForApplicant($from, $to, $parish);
+    $data = $this->statisticRepo->countSolicitudeForApplicant($from, $to, $parish);
     
     if (empty($data)) {
       return response()->json(['error' => true], 200);
@@ -48,7 +48,7 @@ class StatisticController extends Controller
     return response()->json(['succes' => true, 'data' => $data], 200);
   }
 
-  public function allSolicitudeByTheme(Request $request)
+  public function solicitudeByTheme(Request $request)
   {
     $from = $request->input('date_from');
     $to = $request->input('date_to');
@@ -63,4 +63,18 @@ class StatisticController extends Controller
     return response()->json(['succes' => true, 'data' => $data], 200);
   }
 
+  public function assignedByStatus(Request $request)
+  {
+    $from = $request->input('date_from');
+    $to = $request->input('date_to');
+    $parish = $request->input('parish');
+    
+    $data = $this->statisticRepo->countAssignmentsForStatus($from, $to, $parish);
+
+    if (empty($data)) {
+      return response()->json(['error' => true], 200);
+    }
+
+    return response()->json(['succes' => true, 'data' => $data], 200);
+  }
  }

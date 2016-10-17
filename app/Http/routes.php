@@ -70,12 +70,13 @@ Route::group(['prefix' => 'api'], function () {
 
   Route::group(['prefix' => 'statistic'], function () {
     
-    Route::post('/allByStatus', 'StatisticController@allByStatus');
+    Route::post('/solicitudeByStatus', 'StatisticController@solicitudeByStatus');
     
-    Route::post('/allByApplicant', 'StatisticController@allByApplicant');
+    Route::post('/solicitudeByApplicant', 'StatisticController@solicitudeByApplicant');
     
-    Route::post('/allSolicitudeByTheme', 'StatisticController@allSolicitudeByTheme');
+    Route::post('/solicitudeByTheme', 'StatisticController@solicitudeByTheme');
 
+    Route::post('/assignedByStatus', 'StatisticController@assignedByStatus');
   });
 
   Route::group(['prefix' => 'report'], function () {

@@ -6,21 +6,25 @@
 angular.module('Statistic.resources', ['ngResource', 'SATCI.Shared'])
 .factory('Statistics', ($resource, ResourcesUrl) => {
   return $resource( `${ResourcesUrl.api}statistic/:id`, {id: '@_id'}, {
-    allByStatus: {
+    solicitudeByStatus: {
       method: 'POST', 
-      url: `${ResourcesUrl.api}statistic/allByStatus`,
+      url: `${ResourcesUrl.api}statistic/solicitudeByStatus`,
       // isArray: true,
     },
-    allByApplicant: {
+    solicitudeByApplicant: {
       method: 'POST', 
-      url: `${ResourcesUrl.api}statistic/allByApplicant`,
+      url: `${ResourcesUrl.api}statistic/solicitudeByApplicant`,
       // isArray: true,
     },
-    allSolicitudeByTheme: {
+    solicitudeByTheme: {
       method: 'POST', 
-      url: `${ResourcesUrl.api}statistic/allSolicitudeByTheme`,
+      url: `${ResourcesUrl.api}statistic/solicitudeByTheme`,
       // isArray: true,
     },
-
+    assignedByStatus: {
+      method: 'POST', 
+      url: `${ResourcesUrl.api}statistic/assignedByStatus`,
+      // isArray: true,
+    },
   });
 })

@@ -34,7 +34,7 @@ angular.module('Statistic.controllers')
     }
   };
 
-  $scope.searchSolicitudes = () => {
+  $scope.searchAssignments = () => {
 
     let data = {
       date_from: $filter('date')($scope.date_from, 'yyyy-MM-dd'),
@@ -46,7 +46,7 @@ angular.module('Statistic.controllers')
       data.parish = 'all';
     }
 
-    Statistics.allByStatus(data).$promise
+    Statistics.assignedByStatus(data).$promise
     .then((response) => {
       if (response.succes) {
         $scope.notData = false;
